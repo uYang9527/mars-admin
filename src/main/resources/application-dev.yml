@@ -1,0 +1,182 @@
+spring:
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+  application:
+    name: easy-admin-boot3
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3307/easy-admin-boot3?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    hikari:
+      #连接池名
+      pool-name: HikariCP
+      #最小空闲连接数
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认10分钟
+      idle-timeout: 600000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 10
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒
+      connection-timeout: 30000
+      # 连接测试query
+      connection-test-query: SELECT 1
+# redis配置
+  data:
+    redis:
+      #单机配置
+      host: 127.0.0.1
+      port: 6379
+      # 数据索引
+      database: 0
+      # 连接超时时间（毫秒）
+      timeout: 50000
+      password:
+      ###连接池配置###
+      jedis:
+        pool:
+          # 连接池最大连接数（使用负值表示没有限制）
+          max-active: 100
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1
+          # 连接池中的最大空闲连接
+          max-idle: 30
+          # 连接池中的最小空闲连接
+          min-idle: 10
+
+# 开启redis监听
+redis:
+  listener:
+    enable: true
+
+
+
+# 是否启用数据权限拼接
+data-scope:
+  enable: true
+  # 数据逻辑实现最小验证（查询）单位：dept 部门（dept_scope字段）、user 用户 (create_id 字段),默认user。
+  logic-min-unit: user
+
+# 生成工具
+generator:
+  path:
+    # 前端项目地址
+    web:
+    # 后端项目地址，默认自动检测springboot项目路径，无需配置。
+    api:
+  # 模块名，指定代码生成的模块
+  module-name: easy-admin-boot3
+  service-name: system
+  global:
+    author: Mars
+    packages: com.mars.easy.admin
+
+# swagger文档配置
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+springdoc:
+  default-flat-param-object: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha·
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '后台系统接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.mars.easy.admin.modules.system
+    - group: '工具接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.mars.easy.admin.modules.tool
+    - group: '业务接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.mars.easy.admin.modules.business
+
+# minio配置
+minio:
+  endpoint: http://192.168.56.101:9001/
+  access-key: NhQlOFYcyXiQm40DpW56
+  secret-key: O1q6YRp79cTeNrtHT8yHXgcFWcOTDJNpKpRsYMzp
+  bucket-name: sz-boot-parent-local
+
+# mybatis-flex配置
+mybatis-flex:
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
+    auto-mapping-behavior: full
+    auto-mapping-unknown-column-behavior: none
+    cache-enabled: false
+  global-config:
+    deleted-value-of-logic-delete: "T"
+    normal-value-of-logic-delete: "F"
+# 分页配置
+page-helper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+# sa-token
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # 是否开启自动续签
+  auto-renew: true
+  # token固定超时 设为七天 (必定过期) 单位: 秒
+  timeout: 604800
+  # 多端不同 token 有效期 可查看 LoginHelper.loginByDevice 方法自定义
+  # token最低活跃时间 (指定时间无操作就过期) 单位: 秒
+  active-timeout: 86400
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+  # jwt秘钥
+  jwt-secret-key: abcdefghijklmnopqrstuvwxyz
+  # 允许动态设置 token 有效期
+  dynamic-active-timeout: true
+  # 允许从 请求参数 读取 token
+  is-read-body: false
+  # 允许从 header 读取 token
+  is-read-header: true
+  # 关闭 cookie 鉴权 从根源杜绝 csrf 漏洞风险
+  is-read-cookie: false
+  # token前缀
+  token-prefix: "Bearer"
+  # 同一账号最大登录数量，-1代表不限
+  max-login-count: -1
+# 接口白名单
+router:
+  whitelist:
+    - "/v3/api-docs/**"
+    - "/auth/login"
+    - "/register"
+    - "/sys-dict/dict"
+    - "/doc.html"
+    - "/webjars/**"
+    - "/swagger-resources"
+    - "/favicon.ico"
+    - "/common/**"
+    - "/swagger-ui.html"
+    - "/www/**"
+    - "/wechat/**"
+
+

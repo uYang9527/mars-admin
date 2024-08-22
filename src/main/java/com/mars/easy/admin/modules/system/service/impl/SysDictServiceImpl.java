@@ -1,0 +1,262 @@
+package com.mars.easy.admin.modules.system.service.impl;
+
+
+import com.mars.easy.admin.framework.enums.CommonResponseEnum;
+import com.mars.easy.admin.framework.redis.RedisCache;
+import com.mars.easy.admin.framework.service.DictService;
+import com.mars.easy.admin.framework.util.BeanCopyUtils;
+import com.mars.easy.admin.framework.util.PageUtils;
+import com.mars.easy.admin.framework.util.StreamUtils;
+import com.mars.easy.admin.framework.util.Utils;
+import com.mars.easy.admin.modules.tool.service.GeneratorTableService;
+import com.mybatisflex.core.logicdelete.LogicDeleteManager;
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.mars.easy.admin.modules.system.mapper.SysDictMapper;
+import com.mars.easy.admin.modules.system.mapper.SysDictTypeMapper;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictCreateDTO;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictListDTO;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictUpdateDTO;
+import com.mars.easy.admin.modules.system.pojo.po.SysDict;
+import com.mars.easy.admin.modules.system.pojo.po.SysDictType;
+import com.mars.easy.admin.modules.system.pojo.po.table.SysDictTableDef;
+import com.mars.easy.admin.modules.system.pojo.vo.sysdict.DictVO;
+import com.mars.easy.admin.modules.system.service.SysDictService;
+import com.mars.easy.admin.modules.system.service.SysDictTypeService;
+import com.mars.easy.admin.framework.entity.DictCustomVO;
+import com.mars.easy.admin.framework.entity.PageResult;
+import com.mars.easy.admin.framework.entity.SelectIdsDTO;
+import freemarker.template.Template;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import static com.mars.easy.admin.modules.system.pojo.po.table.SysDictTypeTableDef.SYS_DICT_TYPE;
+
+
+/**
+ * <p>
+ * 字典表 服务实现类
+ * </p>
+ *
+ * @Author 程序员Mars
+ * @since 2023-08-18
+ */
+@Service
+@RequiredArgsConstructor
+public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService, DictService {
+
+    private final SysDictTypeMapper sysDictTypeMapper;
+
+    private final SysDictTypeService sysDictTypeService;
+
+    private final RedisCache redisCache;
+
+    private final GeneratorTableService generatorTableService;
+
+    private static Long generateCustomId(Long firstPart, int secondPart) {
+        secondPart += 1;
+        String paddedFirstPart = String.format("%04d", firstPart); // 格式化为四位数字，不足补零
+        String paddedSecondPart = String.format("%03d", secondPart); // 格式化为三位数字，不足补零
+        String part = paddedFirstPart + paddedSecondPart;
+        return Long.valueOf(part);
+    }
+
+    @Override
+    public void create(SysDictCreateDTO dto) {
+        SysDict sysDict = BeanCopyUtils.springCopy(dto, SysDict.class);
+        QueryWrapper wrapper;
+        long count = QueryChain.of(sysDictTypeMapper)
+                .eq(SysDictType::getId, dto.getSysDictTypeId())
+                .count();
+        CommonResponseEnum.INVALID_ID.message("SYS_DICT_TYPE不存在").assertTrue(count < 1);
+
+        wrapper = QueryWrapper.create()
+                .where(SysDictTableDef.SYS_DICT.SYS_DICT_TYPE_ID.eq(dto.getSysDictTypeId()))
+                .where(SysDictTableDef.SYS_DICT.CODE_NAME.eq(dto.getCodeName()));
+        CommonResponseEnum.EXISTS.message("字典已存在").assertTrue(count(wrapper) > 0);
+        SysDictType sysDictType = sysDictTypeService.detail(dto.getSysDictTypeId());
+        String typeCode = sysDictType.getTypeCode();
+        wrapper = QueryWrapper.create()
+                .where(SysDictTableDef.SYS_DICT.SYS_DICT_TYPE_ID.eq(dto.getSysDictTypeId()));
+        AtomicReference<Long> dictCount = new AtomicReference<>(0L);
+        QueryWrapper finalWrapper = wrapper;
+        // 跳过逻辑删除，查询真实count数
+        LogicDeleteManager.execWithoutLogicDelete(() -> {
+            dictCount.set(count(finalWrapper));
+        });
+        Long generateCustomId = generateCustomId(dto.getSysDictTypeId(), dictCount.get().intValue());
+        sysDict.setId(generateCustomId);
+        save(sysDict);
+        redisCache.clearDict(typeCode); // 清除redis缓存
+    }
+
+    @Override
+    public void update(SysDictUpdateDTO dto) {
+        SysDict sysDict = BeanCopyUtils.springCopy(dto, SysDict.class);
+        long count = QueryChain.of(this.mapper)
+                .select()
+                .from(SysDictTableDef.SYS_DICT)
+                .where(SysDictTableDef.SYS_DICT.ID.ne(dto.getId()))
+                .and(SysDictTableDef.SYS_DICT.SYS_DICT_TYPE_ID.eq(dto.getSysDictTypeId()))
+                .and(SysDictTableDef.SYS_DICT.CODE_NAME.eq(dto.getCodeName()))
+                .count();
+        CommonResponseEnum.EXISTS.message(SysDictTableDef.SYS_DICT.CODE_NAME.getName() + "已存在").assertTrue(count > 0);
+        sysDict.setId(dto.getId());
+        saveOrUpdate(sysDict);
+
+        SysDictType sysDictType = sysDictTypeService.detail(dto.getSysDictTypeId());
+        String typeCode = sysDictType.getTypeCode();
+        redisCache.clearDict(typeCode); // 清除redis缓存
+    }
+
+    @Override
+    public void remove(SelectIdsDTO dto) {
+        QueryWrapper wrapper = QueryWrapper.create()
+                .where(SysDictTableDef.SYS_DICT.ID.in(dto.getIds()));
+        List<SysDict> list = list(wrapper);
+        for (SysDict sysDict : list) {
+            SysDictType sysDictType = sysDictTypeService.detail(sysDict.getSysDictTypeId());
+            redisCache.clearDict(sysDictType.getTypeCode()); // 清除redis缓存
+        }
+        removeById((Serializable) dto.getIds());
+    }
+
+    @Override
+    public PageResult<SysDict> list(SysDictListDTO dto) {
+        QueryChain<SysDict> chain = QueryChain.of(this.mapper)
+                .select()
+                .from(SysDictTableDef.SYS_DICT)
+                .where(SysDictTableDef.SYS_DICT.SYS_DICT_TYPE_ID.eq(dto.getSysDictTypeId()));
+        if (Utils.isNotNull(dto.getCodeName())) {
+            chain.and(SysDictTableDef.SYS_DICT.CODE_NAME.like(dto.getCodeName()));
+        }
+        Page<SysDict> page = chain.orderBy(SysDictTableDef.SYS_DICT.SORT.asc()).page(PageUtils.getPage(dto));
+        return PageUtils.getPageResult(page);
+    }
+
+    @Override
+    public Map<String, List<DictCustomVO>> dictList(String typeCode) {
+        Map<String, List<DictCustomVO>> dictMap = new HashMap<>();
+        if (!Utils.isNotNull(typeCode)) {
+            return dictMap;
+        }
+        if (redisCache.hasKey() && redisCache.hasHashKey(typeCode)) {
+            List<DictCustomVO> dictVOs = redisCache.getDictByType(typeCode);
+            dictMap = dictVOs.stream()
+                    .collect(Collectors.groupingBy(
+                            DictCustomVO::getSysDictTypeCode,
+                            LinkedHashMap::new,
+                            Collectors.toList()
+                    ));
+        } else {
+            List<DictVO> dictVOS = this.mapper.listDict(typeCode);
+            List<DictCustomVO> dictCustomVOS = BeanCopyUtils.copyList(dictVOS, DictCustomVO.class);
+            if (dictVOS.size() > 0) {
+                redisCache.setDict(typeCode, dictCustomVOS);
+            }
+            dictMap = dictCustomVOS.stream()
+                    .collect(Collectors.groupingBy(
+                            DictCustomVO::getSysDictTypeCode,
+                            LinkedHashMap::new,
+                            Collectors.toList()
+                    ));
+        }
+        return dictMap;
+    }
+
+    @Override
+    public Map<String, List<DictCustomVO>> dictAll() {
+        List<DictVO> dictVOS = this.mapper.listDict("");
+        Map<String, List<DictCustomVO>> dictMap = dictVOS.stream()
+                .collect(Collectors.groupingBy(DictVO::getSysDictTypeCode,
+                        LinkedHashMap::new, // 使用 LinkedHashMap 作为分组的容器,有序解决乱序问题
+                        Collectors.mapping(dictVO -> BeanCopyUtils.copy(dictVO, DictCustomVO.class), Collectors.toList())));
+        redisCache.putAllDict(dictMap);
+        return dictMap;
+    }
+
+    @Override
+    public List<DictCustomVO> getDictByType(String typeCode) {
+        List<DictCustomVO> dictVOS = new ArrayList<>();
+        if (redisCache.hasHashKey(typeCode)) {
+            dictVOS = redisCache.getDictByType(typeCode);
+        } else {
+            List<DictVO> voList = this.mapper.listDict(typeCode);
+            dictVOS = BeanCopyUtils.copyList(voList, DictCustomVO.class);
+            if (Utils.isNotNull(dictVOS)) {
+                redisCache.setDict(typeCode, dictVOS);
+            }
+        }
+        return dictVOS;
+    }
+
+    @Override
+    public String getDictLabel(String dictType, String dictValue, String separator) {
+        Map<String, List<DictCustomVO>> dictMap = dictList(dictType);
+        if (dictMap.containsKey(dictType)) {
+            List<DictCustomVO> dictLists = dictMap.get(dictType);
+            Map<String, String> map = StreamUtils.toMap(dictLists, DictCustomVO::getId, DictCustomVO::getCodeName); // {"1000003":"禁言","1000002":"禁用","1000001":"正常"}
+            return map.getOrDefault(dictValue, "");
+        }
+        return "";
+    }
+
+    @Override
+    public String getDictValue(String dictType, String dictLabel, String separator) {
+        Map<String, List<DictCustomVO>> dictMap = dictList(dictType);
+        if (dictMap.containsKey(dictType)) {
+            List<DictCustomVO> dictLists = dictMap.get(dictType);
+            Map<String, String> map = StreamUtils.toMap(dictLists, DictCustomVO::getCodeName, DictCustomVO::getId); // {"禁言":"1000003","禁用":"1000002","正常":"1000001"}
+            return map.getOrDefault(dictLabel, "");
+        }
+        return "";
+    }
+
+    @Override
+    public Map<String, String> getAllDict(String dictType) {
+        Map<String, List<DictCustomVO>> dictMap = dictList(dictType);
+        if (dictMap.containsKey(dictType)) {
+            List<DictCustomVO> dictLists = dictMap.get(dictType);
+            return StreamUtils.toMap(dictLists, DictCustomVO::getCodeName, DictCustomVO::getId);
+        }
+        return new HashMap<>();
+    }
+
+    @SneakyThrows
+    @Override
+    public String exportDictSql(SelectIdsDTO dto) {
+        String generatedContent = "";
+        if (Utils.isNotNull(dto.getIds())) {
+            List<SysDictType> dictTypeList = QueryChain.of(SysDictType.class)
+                    .where(SYS_DICT_TYPE.ID.in(dto.getIds())).list();
+
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .in(SysDict::getSysDictTypeId, dto.getIds())
+                    .orderBy(SysDict::getSysDictTypeId).asc()
+                    .orderBy(SysDict::getSort).asc();
+            List<SysDict> dictList = list(queryWrapper);
+            Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put("dictTypeList", dictTypeList);
+            dataModel.put("dictList", dictList);
+            Template template = generatorTableService.getDictSqlTemplate();
+            try (StringWriter writer = new StringWriter()) {
+                template.process(dataModel, writer);
+                generatedContent = writer.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return generatedContent;
+    }
+
+}

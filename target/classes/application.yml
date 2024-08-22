@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  servlet:
+    context-path: /api/admin
+  port: 8888
+

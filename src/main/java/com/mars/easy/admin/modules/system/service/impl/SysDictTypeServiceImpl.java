@@ -1,0 +1,116 @@
+package com.mars.easy.admin.modules.system.service.impl;
+
+
+import com.mars.easy.admin.framework.enums.CommonResponseEnum;
+import com.mars.easy.admin.framework.util.BeanCopyUtils;
+import com.mars.easy.admin.framework.util.PageUtils;
+import com.mars.easy.admin.framework.util.SysConfigUtils;
+import com.mars.easy.admin.framework.util.Utils;
+import com.mybatisflex.core.logicdelete.LogicDeleteManager;
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryChain;
+import com.mybatisflex.core.query.QueryMethods;
+import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.mars.easy.admin.modules.system.mapper.SysDictTypeMapper;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictTypeAddDTO;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictTypeListDTO;
+import com.mars.easy.admin.modules.system.pojo.dto.sysdict.SysDictTypeUpDTO;
+import com.mars.easy.admin.modules.system.pojo.po.SysDictType;
+import com.mars.easy.admin.modules.system.service.SysDictTypeService;
+import com.mars.easy.admin.framework.entity.PageResult;
+import com.mars.easy.admin.framework.entity.SelectIdsDTO;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.mars.easy.admin.modules.system.pojo.po.table.SysDictTypeTableDef.SYS_DICT_TYPE;
+
+
+/**
+ * <p>
+ * 字典类型 服务实现类
+ * </p>
+ *
+ * @Author 程序员Mars
+ * @since 2023-08-18
+ */
+@Service
+public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements SysDictTypeService {
+
+
+    @Override
+    public void create(SysDictTypeAddDTO dto) {
+        String confValue = SysConfigUtils.getConfValue("sys.dict.startNo");
+        SysDictType sysDictType = BeanCopyUtils.copy(dto, SysDictType.class);
+        String type = dto.getType();
+        if ("system".equals(type)) { // 系统字典
+            AtomicReference<Long> maxId = new AtomicReference<>(0L);
+            LogicDeleteManager.execWithoutLogicDelete(() -> {
+                Long count = QueryChain.of(SysDictType.class).select(QueryMethods.max(SYS_DICT_TYPE.ID)).from(SYS_DICT_TYPE).where(SYS_DICT_TYPE.ID.lt(confValue)).oneAs(Long.class);
+                maxId.set(count);
+            });
+            sysDictType.setId(maxId.get() + 1);
+        } else {
+            AtomicReference<Long> maxId = new AtomicReference<>(0L);
+            LogicDeleteManager.execWithoutLogicDelete(() -> {
+                Long count = QueryChain.of(SysDictType.class).select(QueryMethods.max(SYS_DICT_TYPE.ID)).from(SYS_DICT_TYPE).where(SYS_DICT_TYPE.ID.ge(confValue)).oneAs(Long.class);
+                maxId.set(count);
+            });
+            if (Utils.isNotNull(maxId) && Utils.isNotNull(maxId.get())) {
+                sysDictType.setId(maxId.get() + 1);
+            } else {
+                sysDictType.setId(Utils.getLongVal(confValue));
+            }
+        }
+        QueryWrapper wrapper = QueryWrapper.create().where(SYS_DICT_TYPE.TYPE_CODE.eq(dto.getTypeCode()));
+        CommonResponseEnum.EXISTS.message("typeCode已存在").assertTrue(count(wrapper) > 0);
+        save(sysDictType);
+    }
+
+    @Override
+    public void update(SysDictTypeUpDTO dto) {
+        SysDictType sysDictType = BeanCopyUtils.springCopy(dto, SysDictType.class);
+        sysDictType.setId(dto.getId());
+        // 修改时的重复性效验需要排除本身
+        QueryWrapper wrapper = QueryWrapper.create().where(SYS_DICT_TYPE.TYPE_CODE.eq(dto.getTypeCode())).where(SYS_DICT_TYPE.ID.ne(dto.getId()));
+        CommonResponseEnum.EXISTS.message("typeCode已存在").assertTrue(count(wrapper) > 0);
+        saveOrUpdate(sysDictType);
+    }
+
+    @Override
+    public void remove(SelectIdsDTO dto) {
+        removeById((Serializable) dto.getIds());
+    }
+
+    @Override
+    public SysDictType detail(Long id) {
+        SysDictType dictType = getById(id);
+        CommonResponseEnum.INVALID_ID.assertNull(dictType);
+        return dictType;
+    }
+
+    @Override
+    public PageResult<SysDictType> list(SysDictTypeListDTO dto) {
+        QueryWrapper wrapper = QueryWrapper.create();
+        if (Utils.isNotNull(dto.getTypeName())) {
+            wrapper.where(SYS_DICT_TYPE.TYPE_NAME.like(dto.getTypeName()));
+        }
+        if (Utils.isNotNull(dto.getTypeCode())) {
+            wrapper.where(SYS_DICT_TYPE.TYPE_CODE.like(dto.getTypeCode()));
+        }
+        wrapper.orderBy(SYS_DICT_TYPE.CREATE_TIME.asc());
+        Page<SysDictType> page = page(PageUtils.getPage(dto), wrapper);
+        return PageUtils.getPageResult(page);
+    }
+
+    @Override
+    public List<SysDictType> selectOptionsType() {
+        QueryWrapper wrapper = QueryWrapper.create().orderBy(SYS_DICT_TYPE.CREATE_TIME.desc());
+        return list(wrapper);
+    }
+
+
+}
