@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 80036
  Source Host           : localhost:3307
- Source Schema         : sz_admin_preview
+ Source Schema         : easy-admin-boot3
 
  Target Server Type    : MySQL
  Target Server Version : 80036
  File Encoding         : 65001
 
- Date: 22/08/2024 17:36:43
+ Date: 23/08/2024 17:48:00
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `address_book`  (
   `update_user` bigint NOT NULL COMMENT '修改人',
   `is_deleted` int NOT NULL DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '地址管理' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '地址管理' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of address_book
@@ -63,7 +63,7 @@ CREATE TABLE `category`  (
   `update_user` bigint NOT NULL COMMENT '修改人',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_category_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '菜品及套餐分类' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '菜品及套餐分类' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of category
@@ -102,7 +102,7 @@ CREATE TABLE `generator_table`  (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Generator Table' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Generator Table' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of generator_table
@@ -149,7 +149,7 @@ CREATE TABLE `generator_table_column`  (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Generator Table Column' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Generator Table Column' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of generator_table_column
@@ -253,7 +253,7 @@ CREATE TABLE `sys_config`  (
   `update_time` datetime NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '参数配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_config
@@ -280,7 +280,7 @@ CREATE TABLE `sys_data_role`  (
   `create_id` int NULL DEFAULT NULL COMMENT '创建人',
   `update_id` int NULL DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_data_role
@@ -299,7 +299,7 @@ CREATE TABLE `sys_data_role_menu`  (
   `role_id` int NOT NULL COMMENT 'sys_data_role_id （数据角色表）',
   `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'sys_menu_id （菜单表）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色-菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 73 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色-菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_data_role_menu
@@ -319,7 +319,7 @@ CREATE TABLE `sys_data_role_relation`  (
   `relation_type_cd` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关联类型，data_scope_relation_type',
   `relation_id` int NULL DEFAULT NULL COMMENT '关联表id，联动relation_type_cd',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 73 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色-关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统数据角色-关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_data_role_relation
@@ -349,7 +349,7 @@ CREATE TABLE `sys_dept`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dept
@@ -470,7 +470,7 @@ CREATE TABLE `sys_dept_leader`  (
   `dept_id` int NULL DEFAULT NULL,
   `leader_id` int NULL DEFAULT NULL COMMENT 'sys_user_id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门领导人表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门领导人表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dept_leader
@@ -550,7 +550,7 @@ CREATE TABLE `sys_dict_type`  (
   `delete_id` int NULL DEFAULT NULL,
   `type` enum('system','business') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'business' COMMENT '字典类型: system 系统, business 业务',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1007 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1008 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字典类型' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -665,6 +665,7 @@ INSERT INTO `sys_menu` VALUES ('225c153f5ef44fdebfae786137f669c9', '5d7dd77835a9
 INSERT INTO `sys_menu` VALUES ('26ecd3786ec74a369074f84b9269bc41', 'b06f77bf931947c78cc5883b465bbd19', '', '', '新增', '', '', '', 1, 1, '1002003', 'teacher.statistics.create', 'F', 'F', 'F', 'F', 'F', 'F', '2024-05-10 21:45:48', '2024-05-10 21:45:48', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('29d33eba6b73420287d8f7e64aea62b3', '88b2e5def2ff474fa8bf3537d4a2fe5b', '/system/configManage', 'configManage', '系统参数', 'Key', '/system/configManage/index', '', 500, 2, '1002002', 'sys.config.query_table', 'F', 'T', 'F', 'F', 'F', 'T', '2023-11-24 09:54:25', '2024-08-21 10:20:28', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('2ac65a12992042c3967bc14778b3b3bb', '053f2943b7fd4331aeaeac4b1766ff07', '', '', '修改', '', '', '', 200, 2, '1002003', 'teacher.statistics.update', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:47:01', '2024-08-22 07:47:01', '', '', 'F', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES ('2aed10e3c4774d2aad1d3e8a47b58323', 'ad37751e2c9343858030352eb7d6ff47', '/dataScreen', 'dataScreen', '大屏可视化', 'CreditCard', '/dataScreen/index', '', 100, 2, '1002002', '111', 'F', 'F', 'F', 'T', 'F', 'F', '2024-08-23 09:13:36', '2024-08-23 17:24:25', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('2d6b78ad03de4cf1a3899f25cd7fe0ee', '0e529e8a9dbf450898b695e051c36d48', '', '', '删除按钮', '', '', '', 400, 3, '1002003', 'generator.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-02-15 10:22:50', '2024-05-10 20:54:24', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('2f301d6b09a1426f956036eda953524b', 'd0b2e5a6c6f043ffb027f3ef73160980', '', '', '删除', '', '', '', 300, 2, '1002003', 'teacher.statistics.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:46:19', '2024-08-22 07:46:19', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('30764235550142dbb73680468aae8de5', 'd9a559dd03c74142ae130115c2bc0135', '', '', '导入', '', '', '', 400, 2, '1002003', 'address.book.import', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 08:10:01', '2024-08-22 08:10:01', '', '', 'F', NULL, NULL, NULL);
@@ -694,7 +695,7 @@ INSERT INTO `sys_menu` VALUES ('48ae285ec8b34a759fe93c8a7c249687', '170a5b7ec83a
 INSERT INTO `sys_menu` VALUES ('49a022c710e6445f97ff81c601e84dba', '0', '/power', 'power', '权限管理', 'Stamp', '', '', 1, 1, '1002001', '', 'F', 'T', 'F', 'F', 'F', 'F', '2024-08-21 02:22:42', '2024-08-21 10:44:34', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('4da4a737f7c14b7ba095aa6fae296542', '053f2943b7fd4331aeaeac4b1766ff07', '', '', '新增', '', '', '', 100, 2, '1002003', 'teacher.statistics.create', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:47:01', '2024-08-22 07:47:01', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('4f39ef0fd2f748f6ab7d6d20d98bc4af', 'dcb6aabcd910469ebf3efbc7e43282d4', '', '', '新增字典类型', '', '', '', 100, 3, '1002003', 'sys.dict.add_type_btn', 'F', 'F', 'F', 'F', 'F', 'F', '2023-08-31 15:52:38', '2024-05-10 20:41:28', '1', '1', 'F', NULL, NULL, NULL);
-INSERT INTO `sys_menu` VALUES ('51850917b1b64b19b8f905f38cba101d', '0', '/address', 'address', '地址管理', 'Baseball', '', '', 600, 1, '1002001', '', 'F', 'T', 'F', 'F', 'F', 'F', '2024-08-22 08:25:52', '2024-08-22 08:26:13', '1', '', 'F', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES ('51850917b1b64b19b8f905f38cba101d', '0', '/address', 'address', '地址管理', 'Baseball', '', '', 600, 1, '1002001', '', 'T', 'T', 'F', 'F', 'F', 'F', '2024-08-22 08:25:52', '2024-08-23 17:10:58', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('532236cbc86b45fe9f3a0e774c20d760', '170a5b7ec83a43ec877b6be40d4aaa3a', '', '', '修改', '', '', '', 200, 3, '1002003', 'address.book.update', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 08:14:00', '2024-08-22 08:26:43', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('5b0ef931e3aa49a3bee93e9bf89c5c9c', '71736f023ae142c7a6e77bba748d5aa7', '', '', '删除', '', '', '', 300, 2, '1002003', 'teacher.statistics.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:51:27', '2024-08-22 07:51:27', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('5b33ac3d630543d09d1388fae4d13fc0', '9e731ff422184fc1be2022c5c985735e', '', '', '修改', '', '', '', 200, 3, '1002003', 'sys.client.update', 'F', 'F', 'F', 'F', 'F', 'F', '2024-01-22 10:52:09', '2024-08-22 08:44:09', '', '1', 'T', NULL, NULL, NULL);
@@ -754,6 +755,7 @@ INSERT INTO `sys_menu` VALUES ('a845e977c64b4058928e726d74f8542c', 'd31e04155683
 INSERT INTO `sys_menu` VALUES ('a982fc3dcd984cd78e001862794727f9', '7f60993ea7a642449b2d4e13c7b01e4c', '', '', '导出', '', '', '', 500, 3, '1002003', 'category.export', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 08:23:24', '2024-08-22 08:44:05', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('a98b1e7e9a6947efb6bac31693e35875', 'c5090b9c5ceb47ec9028039e3485b61e', '', '', '修改', '', '', '', 200, 2, '1002003', 'teacher.statistics.update', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:40:22', '2024-08-22 07:40:22', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('abc2a2e040a3406d8efba7773f61fb59', '59a6daac957440adaa9af5c7ecf9153d', '', '', '删除', '', '', '', 300, 2, '1002003', 'teacher.statistics.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:54:33', '2024-08-22 07:54:33', '', '', 'F', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES ('ad37751e2c9343858030352eb7d6ff47', '0', '/proTable', 'proTable', '大屏可视化', 'Postcard', '', '', 600, 1, '1002001', '', 'F', 'T', 'F', 'F', 'F', 'F', '2024-08-23 09:10:45', '2024-08-23 17:21:47', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('b00050f7adc14872b31ab96ad870dd1d', '71736f023ae142c7a6e77bba748d5aa7', '', '', '新增', '', '', '', 100, 2, '1002003', 'teacher.statistics.create', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 07:51:27', '2024-08-22 07:51:27', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('b35b081acb8a4361a2ae89f35612995d', '3edd396d3c234b66932aad46bd23cae8', '', '', '删除', '', '', '', 300, 2, '1002003', 'address.book.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-22 08:10:19', '2024-08-22 08:10:19', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('b428eba3f9a34025a46c394df5390b88', '29d33eba6b73420287d8f7e64aea62b3', '', '', '删除参数', '', '', '', 300, 3, '1002003', 'sys.config.delete_btn', 'F', 'F', 'F', 'F', 'F', 'F', '2023-11-24 09:58:06', '2024-05-10 20:53:43', '1', '1', 'F', NULL, NULL, NULL);
@@ -798,7 +800,7 @@ INSERT INTO `sys_menu` VALUES ('f67bf535049440ceaf06703a9b4026e4', '71736f023ae1
 INSERT INTO `sys_menu` VALUES ('f6a46cf9b38741398c78a02d55cf44e1', '733bd8d9099b4cccb0f4faba9defeb7a', '', '', '删除', '', '', '', 300, 2, '1002003', 'teacher.statistics.remove', 'F', 'F', 'F', 'F', 'F', 'F', '2024-08-21 02:46:27', '2024-08-21 02:46:27', '', '', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('fa0c65ad783d4bf9b919a6db02ef1428', '99c2ee7b882749e597bcd62385f368fb', '', '', '删除菜单', '', '', '', 300, 3, '1002003', 'sys.menu.delete_btn', 'F', 'F', 'F', 'F', 'F', 'F', '2023-08-31 16:28:57', '2024-05-10 20:41:18', '1', '1', 'F', NULL, NULL, NULL);
 INSERT INTO `sys_menu` VALUES ('fbdcbcc0ccf547b4b78a4fc2cf303236', '0e529e8a9dbf450898b695e051c36d48', '', '', 'zip下载按钮', '', '', '', 500, 3, '1002003', 'generator.zip', 'F', 'F', 'F', 'F', 'F', 'F', '2024-02-15 10:23:17', '2024-05-10 20:54:27', '1', '1', 'F', NULL, NULL, NULL);
-INSERT INTO `sys_menu` VALUES ('fdb5bb3ee6714fe0bc4ae6a1816ce141', '0', '/dish', 'dish', '菜品管理', 'Basketball', '', '', 600, 1, '1002001', '', 'F', 'T', 'F', 'F', 'F', 'F', '2024-08-22 08:26:43', '2024-08-22 08:26:55', '1', '', 'F', NULL, NULL, NULL);
+INSERT INTO `sys_menu` VALUES ('fdb5bb3ee6714fe0bc4ae6a1816ce141', '0', '/dish', 'dish', '菜品管理', 'Basketball', '', '', 600, 1, '1002001', '', 'T', 'T', 'F', 'F', 'F', 'F', '2024-08-22 08:26:43', '2024-08-23 17:10:53', '1', '1', 'F', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -816,7 +818,7 @@ CREATE TABLE `sys_role`  (
   `is_lock` enum('T','F') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'F' COMMENT '是否锁定',
   `permissions` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '标识，唯一',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role
@@ -835,7 +837,7 @@ CREATE TABLE `sys_role_menu`  (
   `menu_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'sys_menu_id （菜单表）',
   `role_id` int NOT NULL COMMENT 'sys_role_id （角色表）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统角色-菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 387 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统角色-菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -860,64 +862,66 @@ INSERT INTO `sys_role_menu` VALUES (265, 'c95bf036f1534a6087a8076ac990f91d', 2);
 INSERT INTO `sys_role_menu` VALUES (266, 'a181c53b3ebc4aee86d966e944674efd', 2);
 INSERT INTO `sys_role_menu` VALUES (267, 'bc3f518a69a349298fcd0cda4301e986', 2);
 INSERT INTO `sys_role_menu` VALUES (268, 'a982fc3dcd984cd78e001862794727f9', 2);
-INSERT INTO `sys_role_menu` VALUES (269, '49a022c710e6445f97ff81c601e84dba', 1);
-INSERT INTO `sys_role_menu` VALUES (270, '140c9ed43ef54542bbcdde8a5d928400', 1);
-INSERT INTO `sys_role_menu` VALUES (271, '0f98b89c67e54cb0bcff2b56aa98832f', 1);
-INSERT INTO `sys_role_menu` VALUES (272, '8255bac5eae748a0a8500167963b3e00', 1);
-INSERT INTO `sys_role_menu` VALUES (273, 'cea01dcde9b24b5a8686bdc33c438cd7', 1);
-INSERT INTO `sys_role_menu` VALUES (274, '6e25a716c1a646009a9be90b16f0a682', 1);
-INSERT INTO `sys_role_menu` VALUES (275, '330a1a0a857c4ad1a95327db5134e420', 1);
-INSERT INTO `sys_role_menu` VALUES (276, 'e91eeaea8f1546d3921839469fe247b6', 1);
-INSERT INTO `sys_role_menu` VALUES (277, '686a5522b0334d4da51aa15b3fd1a303', 1);
-INSERT INTO `sys_role_menu` VALUES (278, '30942929802f41cc850722c78db089e7', 1);
-INSERT INTO `sys_role_menu` VALUES (279, 'c6dd479d5b304731be403d7551c60d70', 1);
-INSERT INTO `sys_role_menu` VALUES (280, 'df2894b4c06e47cab84142d81edc494d', 1);
-INSERT INTO `sys_role_menu` VALUES (281, '0933b165ffc14d558e8de43ccb6687f6', 1);
-INSERT INTO `sys_role_menu` VALUES (282, '445b73dda9a34ad681d2705a7abcf2f6', 1);
-INSERT INTO `sys_role_menu` VALUES (283, '5b5fb3748c6a4ed5a4dda3877508c3a7', 1);
-INSERT INTO `sys_role_menu` VALUES (284, '99c2ee7b882749e597bcd62385f368fb', 1);
-INSERT INTO `sys_role_menu` VALUES (285, '9338bf2f57984825bc227bb618f9db81', 1);
-INSERT INTO `sys_role_menu` VALUES (286, '05194ef5fa7a4a308a44f6f5c6791c3a', 1);
-INSERT INTO `sys_role_menu` VALUES (287, 'fa0c65ad783d4bf9b919a6db02ef1428', 1);
-INSERT INTO `sys_role_menu` VALUES (288, 'ee36ad68586e42fa8a896215c544cb76', 1);
-INSERT INTO `sys_role_menu` VALUES (289, '8354d626cc65487594a7c38e98de1bad', 1);
-INSERT INTO `sys_role_menu` VALUES (290, '8fd6721941494fd5bbe16bec82b235be', 1);
-INSERT INTO `sys_role_menu` VALUES (291, '006bdbacd71a481f88b6acf895529acd', 1);
-INSERT INTO `sys_role_menu` VALUES (292, '3ba9407560a1490583fefa10b22bc74f', 1);
-INSERT INTO `sys_role_menu` VALUES (293, '88b2e5def2ff474fa8bf3537d4a2fe5b', 1);
-INSERT INTO `sys_role_menu` VALUES (294, 'dcb6aabcd910469ebf3efbc7e43282d4', 1);
-INSERT INTO `sys_role_menu` VALUES (295, '4f39ef0fd2f748f6ab7d6d20d98bc4af', 1);
-INSERT INTO `sys_role_menu` VALUES (296, '818cc6e1889d46579525ad8ab921eeb8', 1);
-INSERT INTO `sys_role_menu` VALUES (297, '9830d86487184961b90fc527c9604720', 1);
-INSERT INTO `sys_role_menu` VALUES (298, '81647226a2d047e8ab0b70472350ee69', 1);
-INSERT INTO `sys_role_menu` VALUES (299, '97f11d74c98047ba80f011a3da9d882c', 1);
-INSERT INTO `sys_role_menu` VALUES (300, '1a86a9d2b3ca49439277fff9f499c7cd', 1);
-INSERT INTO `sys_role_menu` VALUES (301, '29d33eba6b73420287d8f7e64aea62b3', 1);
-INSERT INTO `sys_role_menu` VALUES (302, 'ede76f5e60b640aa9de2ba7216b90ceb', 1);
-INSERT INTO `sys_role_menu` VALUES (303, '3a54d488132b4331bf3cd5e6d86ffcf4', 1);
-INSERT INTO `sys_role_menu` VALUES (304, 'b428eba3f9a34025a46c394df5390b88', 1);
-INSERT INTO `sys_role_menu` VALUES (305, 'da1b46db642f42978f83ed5eb34870ce', 1);
-INSERT INTO `sys_role_menu` VALUES (306, '0e529e8a9dbf450898b695e051c36d48', 1);
-INSERT INTO `sys_role_menu` VALUES (307, 'b5ce6412c26447348a7267de3ea11a21', 1);
-INSERT INTO `sys_role_menu` VALUES (308, '3d7eed8398d3457c897b2e8bf838e9c6', 1);
-INSERT INTO `sys_role_menu` VALUES (309, '310d02bb121645d1b7a7f949f48c981b', 1);
-INSERT INTO `sys_role_menu` VALUES (310, '2d6b78ad03de4cf1a3899f25cd7fe0ee', 1);
-INSERT INTO `sys_role_menu` VALUES (311, 'fbdcbcc0ccf547b4b78a4fc2cf303236', 1);
-INSERT INTO `sys_role_menu` VALUES (312, '012efc4ef8d24304a8562534f319524a', 1);
-INSERT INTO `sys_role_menu` VALUES (313, '51850917b1b64b19b8f905f38cba101d', 1);
-INSERT INTO `sys_role_menu` VALUES (314, '170a5b7ec83a43ec877b6be40d4aaa3a', 1);
-INSERT INTO `sys_role_menu` VALUES (315, '5f53304f035b4f65939189d310db9bff', 1);
-INSERT INTO `sys_role_menu` VALUES (316, '532236cbc86b45fe9f3a0e774c20d760', 1);
-INSERT INTO `sys_role_menu` VALUES (317, '21fc0a3b7cf54ef6a57fffab15477aac', 1);
-INSERT INTO `sys_role_menu` VALUES (318, '48ae285ec8b34a759fe93c8a7c249687', 1);
-INSERT INTO `sys_role_menu` VALUES (319, '60b6985308e54911b86ca2cc184e1bf5', 1);
-INSERT INTO `sys_role_menu` VALUES (320, 'fdb5bb3ee6714fe0bc4ae6a1816ce141', 1);
-INSERT INTO `sys_role_menu` VALUES (321, '7f60993ea7a642449b2d4e13c7b01e4c', 1);
-INSERT INTO `sys_role_menu` VALUES (322, 'ea9c07fa26ab4b7b80d9368edcc03758', 1);
-INSERT INTO `sys_role_menu` VALUES (323, 'c95bf036f1534a6087a8076ac990f91d', 1);
-INSERT INTO `sys_role_menu` VALUES (324, 'a181c53b3ebc4aee86d966e944674efd', 1);
-INSERT INTO `sys_role_menu` VALUES (325, 'bc3f518a69a349298fcd0cda4301e986', 1);
-INSERT INTO `sys_role_menu` VALUES (326, 'a982fc3dcd984cd78e001862794727f9', 1);
+INSERT INTO `sys_role_menu` VALUES (327, '49a022c710e6445f97ff81c601e84dba', 1);
+INSERT INTO `sys_role_menu` VALUES (328, '140c9ed43ef54542bbcdde8a5d928400', 1);
+INSERT INTO `sys_role_menu` VALUES (329, '0f98b89c67e54cb0bcff2b56aa98832f', 1);
+INSERT INTO `sys_role_menu` VALUES (330, '8255bac5eae748a0a8500167963b3e00', 1);
+INSERT INTO `sys_role_menu` VALUES (331, 'cea01dcde9b24b5a8686bdc33c438cd7', 1);
+INSERT INTO `sys_role_menu` VALUES (332, '6e25a716c1a646009a9be90b16f0a682', 1);
+INSERT INTO `sys_role_menu` VALUES (333, '330a1a0a857c4ad1a95327db5134e420', 1);
+INSERT INTO `sys_role_menu` VALUES (334, 'e91eeaea8f1546d3921839469fe247b6', 1);
+INSERT INTO `sys_role_menu` VALUES (335, '686a5522b0334d4da51aa15b3fd1a303', 1);
+INSERT INTO `sys_role_menu` VALUES (336, '30942929802f41cc850722c78db089e7', 1);
+INSERT INTO `sys_role_menu` VALUES (337, 'c6dd479d5b304731be403d7551c60d70', 1);
+INSERT INTO `sys_role_menu` VALUES (338, 'df2894b4c06e47cab84142d81edc494d', 1);
+INSERT INTO `sys_role_menu` VALUES (339, '0933b165ffc14d558e8de43ccb6687f6', 1);
+INSERT INTO `sys_role_menu` VALUES (340, '445b73dda9a34ad681d2705a7abcf2f6', 1);
+INSERT INTO `sys_role_menu` VALUES (341, '5b5fb3748c6a4ed5a4dda3877508c3a7', 1);
+INSERT INTO `sys_role_menu` VALUES (342, '99c2ee7b882749e597bcd62385f368fb', 1);
+INSERT INTO `sys_role_menu` VALUES (343, '9338bf2f57984825bc227bb618f9db81', 1);
+INSERT INTO `sys_role_menu` VALUES (344, '05194ef5fa7a4a308a44f6f5c6791c3a', 1);
+INSERT INTO `sys_role_menu` VALUES (345, 'fa0c65ad783d4bf9b919a6db02ef1428', 1);
+INSERT INTO `sys_role_menu` VALUES (346, 'ee36ad68586e42fa8a896215c544cb76', 1);
+INSERT INTO `sys_role_menu` VALUES (347, '8354d626cc65487594a7c38e98de1bad', 1);
+INSERT INTO `sys_role_menu` VALUES (348, '8fd6721941494fd5bbe16bec82b235be', 1);
+INSERT INTO `sys_role_menu` VALUES (349, '006bdbacd71a481f88b6acf895529acd', 1);
+INSERT INTO `sys_role_menu` VALUES (350, '3ba9407560a1490583fefa10b22bc74f', 1);
+INSERT INTO `sys_role_menu` VALUES (351, '88b2e5def2ff474fa8bf3537d4a2fe5b', 1);
+INSERT INTO `sys_role_menu` VALUES (352, 'dcb6aabcd910469ebf3efbc7e43282d4', 1);
+INSERT INTO `sys_role_menu` VALUES (353, '4f39ef0fd2f748f6ab7d6d20d98bc4af', 1);
+INSERT INTO `sys_role_menu` VALUES (354, '818cc6e1889d46579525ad8ab921eeb8', 1);
+INSERT INTO `sys_role_menu` VALUES (355, '9830d86487184961b90fc527c9604720', 1);
+INSERT INTO `sys_role_menu` VALUES (356, '81647226a2d047e8ab0b70472350ee69', 1);
+INSERT INTO `sys_role_menu` VALUES (357, '97f11d74c98047ba80f011a3da9d882c', 1);
+INSERT INTO `sys_role_menu` VALUES (358, '1a86a9d2b3ca49439277fff9f499c7cd', 1);
+INSERT INTO `sys_role_menu` VALUES (359, '29d33eba6b73420287d8f7e64aea62b3', 1);
+INSERT INTO `sys_role_menu` VALUES (360, 'ede76f5e60b640aa9de2ba7216b90ceb', 1);
+INSERT INTO `sys_role_menu` VALUES (361, '3a54d488132b4331bf3cd5e6d86ffcf4', 1);
+INSERT INTO `sys_role_menu` VALUES (362, 'b428eba3f9a34025a46c394df5390b88', 1);
+INSERT INTO `sys_role_menu` VALUES (363, 'da1b46db642f42978f83ed5eb34870ce', 1);
+INSERT INTO `sys_role_menu` VALUES (364, '0e529e8a9dbf450898b695e051c36d48', 1);
+INSERT INTO `sys_role_menu` VALUES (365, 'b5ce6412c26447348a7267de3ea11a21', 1);
+INSERT INTO `sys_role_menu` VALUES (366, '3d7eed8398d3457c897b2e8bf838e9c6', 1);
+INSERT INTO `sys_role_menu` VALUES (367, '310d02bb121645d1b7a7f949f48c981b', 1);
+INSERT INTO `sys_role_menu` VALUES (368, '2d6b78ad03de4cf1a3899f25cd7fe0ee', 1);
+INSERT INTO `sys_role_menu` VALUES (369, 'fbdcbcc0ccf547b4b78a4fc2cf303236', 1);
+INSERT INTO `sys_role_menu` VALUES (370, '012efc4ef8d24304a8562534f319524a', 1);
+INSERT INTO `sys_role_menu` VALUES (371, '51850917b1b64b19b8f905f38cba101d', 1);
+INSERT INTO `sys_role_menu` VALUES (372, '170a5b7ec83a43ec877b6be40d4aaa3a', 1);
+INSERT INTO `sys_role_menu` VALUES (373, '5f53304f035b4f65939189d310db9bff', 1);
+INSERT INTO `sys_role_menu` VALUES (374, '532236cbc86b45fe9f3a0e774c20d760', 1);
+INSERT INTO `sys_role_menu` VALUES (375, '21fc0a3b7cf54ef6a57fffab15477aac', 1);
+INSERT INTO `sys_role_menu` VALUES (376, '48ae285ec8b34a759fe93c8a7c249687', 1);
+INSERT INTO `sys_role_menu` VALUES (377, '60b6985308e54911b86ca2cc184e1bf5', 1);
+INSERT INTO `sys_role_menu` VALUES (378, 'ad37751e2c9343858030352eb7d6ff47', 1);
+INSERT INTO `sys_role_menu` VALUES (379, '2aed10e3c4774d2aad1d3e8a47b58323', 1);
+INSERT INTO `sys_role_menu` VALUES (380, 'fdb5bb3ee6714fe0bc4ae6a1816ce141', 1);
+INSERT INTO `sys_role_menu` VALUES (381, '7f60993ea7a642449b2d4e13c7b01e4c', 1);
+INSERT INTO `sys_role_menu` VALUES (382, 'ea9c07fa26ab4b7b80d9368edcc03758', 1);
+INSERT INTO `sys_role_menu` VALUES (383, 'c95bf036f1534a6087a8076ac990f91d', 1);
+INSERT INTO `sys_role_menu` VALUES (384, 'a181c53b3ebc4aee86d966e944674efd', 1);
+INSERT INTO `sys_role_menu` VALUES (385, 'bc3f518a69a349298fcd0cda4301e986', 1);
+INSERT INTO `sys_role_menu` VALUES (386, 'a982fc3dcd984cd78e001862794727f9', 1);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -946,7 +950,7 @@ CREATE TABLE `sys_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username_index`(`username` ASC) USING BTREE,
   INDEX `create_time_index`(`create_time` DESC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
@@ -963,7 +967,7 @@ CREATE TABLE `sys_user_data_role`  (
   `role_id` int NOT NULL COMMENT '数据角色id (sys_data_role_id)',
   `user_id` int NOT NULL COMMENT '用户id(sys_user_id)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户-数据角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户-数据角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_data_role
@@ -982,7 +986,7 @@ CREATE TABLE `sys_user_dept`  (
   `dept_id` int NULL DEFAULT NULL COMMENT 'sys_dept_id',
   `user_id` int NULL DEFAULT NULL COMMENT 'sys_user_id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户-部门关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户-部门关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_dept
@@ -999,7 +1003,7 @@ CREATE TABLE `sys_user_role`  (
   `role_id` int NOT NULL COMMENT '角色id (sys_role_id)',
   `user_id` int NOT NULL COMMENT '用户id(sys_user_id)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户-角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统用户-角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -1061,7 +1065,7 @@ CREATE TABLE `teacher_statistics`  (
   `update_id` int NULL DEFAULT NULL COMMENT '更新人id',
   `dept_scope` json NULL COMMENT '部门范围',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '教师统计总览表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '教师统计总览表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of teacher_statistics
