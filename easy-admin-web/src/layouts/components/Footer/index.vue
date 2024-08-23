@@ -1,6 +1,6 @@
 <template>
   <div class="footer flx-center">
-    <a href="https://szadmin.cn" target="_blank">
+    <a href="" target="_blank">
       Easy-Admin v{{ getVersion() }} | Copyright © 2022-{{ new Date().getFullYear() }}
     </a>
   </div>

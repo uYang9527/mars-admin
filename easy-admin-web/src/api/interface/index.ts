@@ -9,6 +9,12 @@ export interface IResultData<T = any> extends IResult {
   data: T
 }
 
+export namespace Upload {
+  export interface ResFileUrl {
+    fileUrl: string;
+  }
+}
+
 export interface IPage<T = any> {
   current: number
   limit: number

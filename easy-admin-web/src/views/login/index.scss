@@ -1,9 +1,13 @@
 .login-container {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: 550px;
   background-color: #eeeeee;
   background-image: url('@/assets/images/login_bg.svg');
   background-size: cover;
+
 
   .login-box {
     position: relative;
@@ -79,6 +83,7 @@
     }
   }
 }
+
 
 @media screen and (width <= 1250px) {
   .login-left {
