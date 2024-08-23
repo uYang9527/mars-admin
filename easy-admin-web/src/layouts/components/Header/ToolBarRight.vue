@@ -1,21 +1,21 @@
 <template>
   <div class="tool-bar-ri">
     <div class="header-icon">
-      <AssemblySize id="assemblySize" />
-      <Language id="language" />
-      <SearchMenu id="searchMenu" />
-      <ThemeSetting id="themeSetting" />
-      <Message id="message" />
-      <Fullscreen id="fullscreen" />
+      <AssemblySize id="assemblySize"/>
+      <!--      <Language id="language" />-->
+      <SearchMenu id="searchMenu"/>
+      <ThemeSetting id="themeSetting"/>
+      <Message id="message"/>
+      <Fullscreen id="fullscreen"/>
     </div>
     <span class="username">{{ username }}</span>
-    <Avatar />
+    <Avatar/>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useUserStore } from '@/stores/modules/user'
+import {computed} from 'vue'
+import {useUserStore} from '@/stores/modules/user'
 import AssemblySize from './components/AssemblySize.vue'
 import Language from './components/Language.vue'
 import SearchMenu from './components/SearchMenu.vue'
