@@ -2,8 +2,7 @@
 
 ### 介绍 📖
 
-Easy-Admin 一款基于 Vue3.4、TypeScript、Vite5、Pinia、Element-Plus 开源的后台管理框架，使用目前最新技术栈开发。项目提供强大的 [ProTable](https://juejin.cn/post/7166068828202336263) 组件，在一定程度上提高您的开发效率。另外本项目还封装了一些常用组件、Hooks、指令、动态路由、按钮级别权限控制等功能。
-
+🔥 官方推荐 🔥 Easy-Admin是一套开源的快速开发平台，毫无保留给个人及企业免费使用，项目前后台不分离， 高效率开发，一键生成前后台代码和菜单权限，中小企业快速开发脚手架。 前端采用Vue、Element UI、LayUi、 后端采用Spring Boot、Mysql、Redis & Jwt。 权限认证使用Jwt，支持多终端认证系统。 支持加载动态权限菜单，多方式轻松权限控制。
 
 
 ### 代码仓库 ⭐
