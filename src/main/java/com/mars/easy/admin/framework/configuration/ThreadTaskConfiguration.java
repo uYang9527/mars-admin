@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class ThreadTaskConfiguration {
 
-    private static final String THREAD_NAME_PREFIX = "sz-admin-thread_";
+    private static final String THREAD_NAME_PREFIX = "easy-admin-thread_";
 
     @Bean
     public Executor taskExecutor() {

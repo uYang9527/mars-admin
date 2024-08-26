@@ -215,7 +215,7 @@ const codeGene = (row: IGenerator.Info) => {
 const download = (row: IGenerator.Info) => {
   useDownload(
     downloadZip,
-    'sz-admin-' + row.tableName,
+    'code-' + row.tableName,
     { tableNames: [row.tableName] },
     true,
     '.zip'

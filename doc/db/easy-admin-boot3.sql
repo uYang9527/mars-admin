@@ -235,7 +235,7 @@ CREATE TABLE `sys_client`  (
 -- ----------------------------
 -- Records of sys_client
 -- ----------------------------
-INSERT INTO `sys_client` VALUES ('195da9fcce574852b850068771cde034', 'sz-admin', '839ce050d3814949af9b2e1f815bc620', 'password', '1004001', 86400, 604800, '1003001', 'F', NULL, 1, '2024-01-22 13:43:51', 1, '2024-04-12 16:06:49', '演示client，禁止删除', 'T');
+INSERT INTO `sys_client` VALUES ('195da9fcce574852b850068771cde034', 'easy-admin', '839ce050d3814949af9b2e1f815bc620', 'password', '1004001', 86400, 604800, '1003001', 'F', NULL, 1, '2024-01-22 13:43:51', 1, '2024-04-12 16:06:49', '演示client，禁止删除', 'T');
 
 -- ----------------------------
 -- Table structure for sys_config

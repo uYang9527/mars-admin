@@ -99,7 +99,7 @@ public class GeneratorTableController {
     public void downloadZip(@RequestBody SelectTablesDTO dto, HttpServletResponse response) throws IOException {
         byte[] data = generatorTableService.downloadZip(dto);
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setHeader("Content-Disposition", "attachment; filename=\"sz-admin.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"easy-admin.zip\"");
         response.setContentLength(data.length);
 
         // 将字节数组写入输出流

@@ -196,7 +196,7 @@
               <el-space :size="2" class="column-table-header-yiwen">
                 <el-tooltip
                   effect="dark"
-                  content="逻辑删除标识，需配合mf配置 deleted-value-of-logic-delete 、normal-value-of-logic-delete 使用。sz-admin中默认设置其属性为T、F"
+                  content="逻辑删除标识，需配合mf配置 deleted-value-of-logic-delete 、normal-value-of-logic-delete 使用。easy-admin中默认设置其属性为T、F"
                   placement="top"
                 >
                   <i :class="'iconfont icon-yiwen'"></i>
