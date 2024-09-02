@@ -11,19 +11,39 @@
 
 
 
-### 项目功能 🔨
+## 系统要求
 
-- 使用 Vue3.4 + TypeScript 开发，单文件组件**＜script setup＞**
-- 采用 Vite5 作为项目开发、打包工具（配置 gzip/brotli 打包、tsx 语法、跨域代理…）
-- 使用 Pinia 替代 Vuex，轻量、简单、易用，集成 Pinia 持久化插件
-- 使用 TypeScript 对 Axios 整个二次封装（请求拦截、取消、常用请求封装…）
-- 基于 Element 二次封装 [ProTable](https://juejin.cn/post/7166068828202336263) 组件，表格页面全部为配置项 Columns
-- 支持 Element 组件大小切换、多主题布局、暗黑模式、i18n 国际化
-- 使用 VueRouter 配置动态路由权限拦截、路由懒加载，支持页面按钮权限控制
-- 使用 KeepAlive 对页面进行缓存，支持多级嵌套路由缓存
-- 常用自定义指令开发（权限、复制、水印、拖拽、节流、防抖、长按…）
-- 使用 Prettier 统一格式化代码，集成 ESLint、Stylelint 代码校验规范
-- 使用 husky、lint-staged、commitlint、czg、cz-git 规范提交信息
+- JDK >= 21
+- MySQL >= 8.0.34
+- Maven >= 3.8
+- Node >= 16.x
+
+## 核心技术
+
+- **SpringBoot 3.x：** 最新的Spring Boot版本，提供更优的性能和更丰富的特性。
+- **Sa-Token**：一个轻量级 Java 权限认证框架，简化权限认证，保障应用的安全性。
+- **Mybatis Flex**：一个优雅的 `MyBatis` 增强框架，它非常轻量、同时拥有极高的性能与灵活性。
+- **Knife4j**：一个为 `Swagger` 接口文档增强的工具，提供了更直观的 API 文档展示和更便捷的接口测试体验。
+- **Minio**：一个开源的对象存储服务，提供高性能、分布式存储解决方案，兼容 S3 API。
+- **HikariCP**：选择 `HikariCP` 作为 JDBC 连接池，提供快速且高效的数据库连接管理。
+
+- **Vue 3.4**：采用 `Vue 3.4`，Vue.js 的最新稳定版本，提供更强的性能和更丰富的功能，构建响应式用户界面。
+- **Vite 5**：使用 `Vite 5` 作为前端开发和构建工具，它利用现代浏览器的原生 ES 模块导入特性，提供了快速的冷启动和即时模块热更新。
+- **TypeScript**：通过 `TypeScript` 的集成，引入静态类型检查，增强了代码的可维护性和可读性，提前避免潜在的错误。
+- **Pinia**：状态管理采用 `Pinia`，这是 Vue 3 的解构式状态管理库，它简单、灵活且易于使用，优化了应用的状态管理。
+- **Element-Plus**：一个基于 Vue 3 的组件库，提供了一系列高质量的 UI 组件，帮助开发者快速构建美观、功能完备的用户界面。
+
+## 功能列表
+
+- **账户管理**：负责管理系统用户的创建、配置及权限分配，确保用户身份的合法性和操作的合规性。
+- **角色管理**：实现角色与权限的精细绑定，通过角色分配简化用户权限管理，提高系统安全性和灵活性。
+- **菜单管理**：定制化系统导航结构，通过权限细分确保用户仅访问授权的操作界面，增强操作的直观性和可控性。
+- **字典管理**：维护系统内静态数据字典，如配置项、枚举值等，以统一管理和优化数据的一致性。
+- **参数管理**：动态调整系统运行参数，无需重启即可实时生效，提升系统响应速度和运维效率。
+- **客户端管理**：监管客户端接入，确保客户端的合法性和安全性，维护系统的整体稳定性。
+- **部门管理**：构建组织架构，通过树状结构展示，支持数据权限的层级化管理，加强信息的有序性和安全性。
+- **代码生成器**：自动化生成前后端代码模板，支持CRUD操作，加速开发周期，提升开发效率。
+- **WebSocket**：提供WebSocket支持。
 
 ### 安装使用步骤 📔
 
@@ -60,58 +80,51 @@ pnpm build:test
 pnpm build:pro
 ```
 
-- **Lint：**
 
-```text
-# eslint 检测代码
-pnpm lint:eslint
-
-# prettier 格式化代码
-pnpm lint:prettier
-
-# stylelint 格式化样式
-pnpm lint:stylelint
-```
-
-- **commit：**
-
-```text
-# 提交代码（提交前会自动执行 lint:lint-staged 命令）
-pnpm commit
-```
 
 ### 项目截图 📷
 
 - 登录页：
 
-![login_light](https://i.imgtg.com/2023/04/13/8tknp.png)
-
-![login_dark](https://i.imgtg.com/2023/04/13/8tmpP.png)
+![login_light](https://ooo.0x0.ooo/2024/09/02/Ot9csg.png)
 
 - 首页：
 
-![home_light](https://i.imgtg.com/2023/04/13/8tl1j.png)
+![home_light](https://ooo.0x0.ooo/2024/09/02/Ot9soB.png)
 
-![home_dark](https://i.imgtg.com/2023/04/13/8tpfb.png)
+![home_dark](https://ooo.0x0.ooo/2024/09/02/Ot9Ves.png)
 
-- 表格页：
+- 用户管理：
 
-![table_light](https://i.imgtg.com/2023/04/13/8tfMx.png)
+![table_light](https://ooo.0x0.ooo/2024/09/02/Ot9YGK.png)
 
-![table_dark](https://i.imgtg.com/2023/04/13/8tv8F.png)
+![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot9f3a.png)
 
-- 数据可视化
 
-![dashboard](https://i.imgtg.com/2023/04/14/82Grx.png)
+- 角色管理：
 
-- 数据大屏：
+![table_light](https://ooo.0x0.ooo/2024/09/02/Ot9jtN.png)
 
-![dataScreen](https://i.imgtg.com/2023/01/16/QP8HF.png)
+![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot92jC.png)
+
+
+- 菜单管理：
+
+![table_light](https://ooo.0x0.ooo/2024/09/02/Ot98WL.png)
+
+![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot9usX.png)
+
+
+- 大屏可视化
+
+![dashboard](https://ooo.0x0.ooo/2024/09/02/Ot99hS.png)
+
+
 
 ### 文件资源目录 📚
 
 ```text
-Geeker-Admin
+Easy-Admin-Web
 ├─ .husky                  # husky 配置文件
 ├─ .vscode                 # VSCode 推荐配置
 ├─ build                   # Vite 配置项
