@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/25 10:25
  * @description: 分页对象
  */

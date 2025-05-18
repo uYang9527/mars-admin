@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.util.List;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/29 11:10
  * @description: WebMvc配置, 注意这里，实现@WebMvcConfigurer会导致全局jackson配置失效
  */

@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/5/28 16:44
  * @description: 时间工具类
  */

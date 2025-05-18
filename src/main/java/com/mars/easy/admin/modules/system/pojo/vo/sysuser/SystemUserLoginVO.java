@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/5/24 19:47
  * @description: 临时login返回对象结构，后续oauth集成后失效
  */

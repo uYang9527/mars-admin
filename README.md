@@ -2,7 +2,7 @@
 
 ### 介绍 📖
 
-🔥 官方推荐 🔥 Easy-Admin是一套开源的快速开发平台，毫无保留给个人及企业免费使用，项目前后台不分离， 高效率开发，一键生成前后台代码和菜单权限，中小企业快速开发脚手架。 前端采用Vue、Element UI、LayUi、 后端采用Spring Boot、Mysql、Redis & Jwt。 权限认证使用Jwt，支持多终端认证系统。 支持加载动态权限菜单，多方式轻松权限控制。
+🔥 官方推荐 🔥 Easy-Admin是一套开源的快速开发平台，毫无保留给个人及企业免费使用，项目前后台不分离， 高效率开发，一键生成前后台代码和菜单权限，中小企业快速开发脚手架。 前端采用Vue、Element UI、 后端采用Spring Boot3、Mysql、Redis。 权限认证使用Sa-Token，支持多终端认证系统。 支持加载动态权限菜单，多方式轻松权限控制。
 
 
 ### 代码仓库 ⭐
@@ -13,7 +13,7 @@
 
 ## 系统要求
 
-- JDK >= 21
+- JDK >= 17
 - MySQL >= 8.0.34
 - Maven >= 3.8
 - Node >= 16.x
@@ -90,43 +90,4 @@ pnpm build:pro
 
 
 
-### 项目截图 📷
 
-- 登录页：
-
-![login_light](https://ooo.0x0.ooo/2024/09/02/Ot9csg.png)
-
-- 首页：
-
-![home_light](https://ooo.0x0.ooo/2024/09/02/Ot9soB.png)
-
-![home_dark](https://ooo.0x0.ooo/2024/09/02/Ot9Ves.png)
-
-- 用户管理：
-
-![table_light](https://ooo.0x0.ooo/2024/09/02/Ot9YGK.png)
-
-![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot9f3a.png)
-
-
-- 角色管理：
-
-![table_light](https://ooo.0x0.ooo/2024/09/02/Ot9jtN.png)
-
-![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot92jC.png)
-
-
-- 菜单管理：
-
-![table_light](https://ooo.0x0.ooo/2024/09/02/Ot98WL.png)
-
-![table_dark](https://ooo.0x0.ooo/2024/09/02/Ot9usX.png)
-
-
-- 大屏可视化
-
-![dashboard](https://ooo.0x0.ooo/2024/09/02/Ot99hS.png)
-
-## 联系方式
-
-![dashboard](https://ooo.0x0.ooo/2024/09/02/Ot93ot.jpg)

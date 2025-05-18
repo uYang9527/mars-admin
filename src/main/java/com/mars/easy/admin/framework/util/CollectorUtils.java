@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/26 9:09
  * @description: 集合tools
  */

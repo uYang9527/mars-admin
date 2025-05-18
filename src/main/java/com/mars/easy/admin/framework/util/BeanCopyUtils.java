@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2021/9/1 22:04
  * @description: bean copy
  */

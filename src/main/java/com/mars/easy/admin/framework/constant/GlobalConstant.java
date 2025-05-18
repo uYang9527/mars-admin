@@ -3,7 +3,7 @@ package com.mars.easy.admin.framework.constant;
 /**
  * 常量管理
  *
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/23 10:20
  * @description:
  */

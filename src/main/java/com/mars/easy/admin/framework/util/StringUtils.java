@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2021/9/7 8:02
  * @description: StringUtil
  */

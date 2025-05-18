@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * -- 弃用，后续移除
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/29 10:52
  * @description: 自定义参数解析器
  * - 用于 GET 请求 对象传参的 蛇形 - 驼峰 转换

@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/25 11:12
  * @description: result parent类
  */

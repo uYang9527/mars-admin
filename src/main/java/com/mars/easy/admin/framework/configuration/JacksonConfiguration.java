@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/26 10:38
  * @description: （使用Jackson）全局统一格式化处理：
  * - Null 转为 空字符串

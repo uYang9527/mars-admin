@@ -22,7 +22,7 @@ import java.util.function.Function;
 /**
  * spring工具类 方便在（非spring ioc）非spring管理环境中获取bean
  *
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2021/9/15 13:37
  * @description: SpringBootApplicationContextUtil 通过ApplicationContext上下文对象自定义获取bean
  */

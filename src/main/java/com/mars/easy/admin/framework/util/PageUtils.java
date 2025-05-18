@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author: sz
+ * @author: 程序员Mars
  * @date: 2022/8/25 10:32
  * @description: (根据list)获取PageResult对象
  */
