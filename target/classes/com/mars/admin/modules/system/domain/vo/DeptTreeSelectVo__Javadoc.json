@@ -1,0 +1,1 @@
+{"doc":" 角色部门列表树信息\n\n @author Michelle.Chung\n","fields":[{"name":"checkedKeys","doc":" 选中部门列表\n"},{"name":"depts","doc":" 下拉树结构列表\n"}],"enumConstants":[],"methods":[],"constructors":[]}

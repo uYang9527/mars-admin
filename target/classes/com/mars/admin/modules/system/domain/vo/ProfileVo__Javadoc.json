@@ -1,0 +1,1 @@
+{"doc":" 用户个人信息\n\n @author Michelle.Chung\n","fields":[{"name":"user","doc":" 用户信息\n"},{"name":"roleGroup","doc":" 用户所属角色组\n"},{"name":"postGroup","doc":" 用户所属岗位组\n"}],"enumConstants":[],"methods":[],"constructors":[]}

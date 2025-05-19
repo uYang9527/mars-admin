@@ -1,0 +1,1 @@
+{"doc":" 角色菜单列表树信息\n\n @author Michelle.Chung\n","fields":[{"name":"checkedKeys","doc":" 选中菜单列表\n"},{"name":"menus","doc":" 菜单下拉树结构列表\n"}],"enumConstants":[],"methods":[],"constructors":[]}

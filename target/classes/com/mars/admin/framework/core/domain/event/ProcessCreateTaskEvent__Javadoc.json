@@ -1,0 +1,1 @@
+{"doc":" 流程创建任务监听\n\n @author may\n","fields":[{"name":"tenantId","doc":" 租户ID\n"},{"name":"flowCode","doc":" 流程定义编码\n"},{"name":"nodeCode","doc":" 审批节点编码\n"},{"name":"taskId","doc":" 任务id\n"},{"name":"businessId","doc":" 业务id\n"}],"enumConstants":[],"methods":[],"constructors":[]}

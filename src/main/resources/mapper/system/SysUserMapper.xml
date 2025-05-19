@@ -1,166 +1,73 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.easy.admin.modules.system.mapper.SysUserMapper">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysUserMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.mars.easy.admin.modules.system.pojo.po.SysUser">
-        <id column="id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="pwd" property="pwd"/>
-        <result column="phone" property="phone"/>
-        <result column="nickname" property="nickname"/>
-        <result column="sex" property="sex"/>
-        <result column="birthday" property="birthday"/>
-        <result column="logo" property="logo"/>
-        <result column="age" property="age"/>
-        <result column="id_card" property="idCard"/>
-        <result column="email" property="email"/>
-        <result column="account_status_cd" property="accountStatusCd"/>
-        <result column="user_tag_cd" property="userTagCd"/>
-        <result column="last_login_time" property="lastLoginTime"/>
-        <result column="create_time" property="createTime"/>
-        <result column="update_time" property="updateTime"/>
-        <result column="del_flag" property="delFlag"/>
-        <result column="create_id" property="createId"/>
-        <result column="update_id" property="updateId"/>
+    <resultMap type="com.mars.admin.modules.system.domain.vo.SysUserVo" id="SysUserResult">
+        <id property="userId" column="user_id"/>
+    </resultMap>
+    <resultMap type="com.mars.admin.modules.system.domain.vo.SysUserExportVo" id="SysUserExportResult">
+        <id property="userId" column="user_id"/>
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        username, pwd, phone, nickname, sex, birthday, logo, age, id_card, email, account_status_cd, user_tag_cd, last_login_time, create_time, update_time, del_flag, create_id, update_id
-    </sql>
+    <select id="selectPageUserList" resultMap="SysUserResult">
+        select
+        <if test="ew.getSqlSelect != null">
+            ${ew.getSqlSelect}
+        </if>
+        <if test="ew.getSqlSelect == null">
+            u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,
+            u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark
+        </if>
+        from sys_user u
+        ${ew.getCustomSqlSegment}
+    </select>
 
-    <!--查询（部门）用户列表-->
-    <select id="querySysUserListByDept" resultType="com.mars.easy.admin.modules.system.pojo.vo.sysuser.SysUserVO">
-        SELECT su.*
-        FROM sys_user su
-        JOIN
-        sys_user_dept sud ON su.id = sud.user_id
-        JOIN
-        sys_dept_closure sdc ON sud.dept_id = sdc.ancestor_id
-        JOIN
-        sys_dept sd ON sud.dept_id = sd.id
-        <where>
-            su.del_flag = 'F'
-            AND sd.del_flag ='F'
-            AND sdc.descendant_id IS NOT NULL
-            <if test="deptId != null and deptId != -1 ">
-                <choose>
-                    <when test="isThisDeep">AND sud.dept_id = #{deptId}</when>
-                    <otherwise>
-                        AND sud.dept_id IN (SELECT descendant_id FROM sys_dept_closure WHERE ancestor_id = #{deptId})
-                    </otherwise>
-                </choose>
-            </if>
-            <if test="nickname != null and nickname != ''">AND su.nickname like concat('%', #{nickname}, '%')</if>
-            <if test="username != null and username != ''">AND su.username = #{username}</if>
-            <if test="phone != null and phone != ''">AND su.phone = #{phone}</if>
-        </where>
-        GROUP BY su.id
-        ORDER BY su.create_time ASC
+    <select id="selectUserList" resultMap="SysUserResult">
+        select
+        <if test="ew.getSqlSelect != null">
+            ${ew.getSqlSelect}
+        </if>
+        <if test="ew.getSqlSelect == null">
+            u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,
+            u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark
+        </if>
+        from sys_user u
+        ${ew.getCustomSqlSegment}
     </select>
-    <!--查询（未分配部门）用户列表-->
-    <select id="querySysUserListNotDept" resultType="com.mars.easy.admin.modules.system.pojo.vo.sysuser.SysUserVO">
-        SELECT
-        su.*
-        FROM
-        sys_user su
-        LEFT JOIN
-        sys_user_dept sud ON su.id = sud.user_id
-        LEFT JOIN
-        sys_dept_closure sdc ON sud.dept_id = sdc.ancestor_id
-        LEFT JOIN
-        sys_dept sd ON sud.dept_id = sd.id
-        <where>
-            su.del_flag = 'F'
-            AND ( sdc.descendant_id IS NULL OR sd.del_flag ='T' )
-            <if test="nickname != null and nickname != ''">AND su.nickname like concat('%', #{nickname}, '%')</if>
-            <if test="username != null and username != ''">AND su.username = #{username}</if>
-            <if test="phone != null and phone != ''">AND su.phone = #{phone}</if>
-        </where>
-        GROUP BY su.id
-        ORDER BY su.create_time ASC
+
+    <select id="selectUserExportList" resultMap="SysUserExportResult">
+        select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phonenumber, u.sex,
+            u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
+            d.dept_name, d.leader, u1.user_name as leaderName
+        from sys_user u
+            left join sys_dept d on u.dept_id = d.dept_id
+            left join sys_user u1 on u1.user_id = d.leader
+        ${ew.getCustomSqlSegment}
     </select>
-    <select id="queryAllSysUserList" resultType="com.mars.easy.admin.modules.system.pojo.vo.sysuser.SysUserVO">
-        SELECT * from (
-        SELECT
-        su.*
-        FROM
-        sys_user su
-        JOIN sys_user_dept sud ON su.id = sud.user_id
-        JOIN sys_dept_closure sdc ON sud.dept_id = sdc.ancestor_id
-        JOIN sys_dept sd ON sud.dept_id = sd.id
-        <where>
-            su.del_flag = 'F'
-            AND sdc.descendant_id IS NOT NULL
-            <if test="nickname != null and nickname != ''">AND su.nickname like concat('%', #{nickname}, '%')</if>
-            <if test="username != null and username != ''">AND su.username = #{username}</if>
-            <if test="phone != null and phone != ''">AND su.phone = #{phone}</if>
-        </where>
-        GROUP BY
-        su.id UNION ALL
-        SELECT
-        su.*
-        FROM
-        sys_user su
-        LEFT JOIN sys_user_dept sud ON su.id = sud.user_id
-        LEFT JOIN sys_dept_closure sdc ON sud.dept_id = sdc.ancestor_id
-        LEFT JOIN sys_dept sd ON sud.dept_id = sd.id
-        <where>
-            su.del_flag = 'F'
-            AND sud.user_id IS NULL
-            <if test="nickname != null and nickname != ''">AND su.nickname like concat('%', #{nickname}, '%')</if>
-            <if test="username != null and username != ''">AND su.username = #{username}</if>
-            <if test="phone != null and phone != ''">AND su.phone = #{phone}</if>
-        </where>
-        GROUP BY
-        su.id
-        ) AS t ORDER BY t.create_time ASC
+
+    <select id="selectAllocatedList" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+        from sys_user u
+             left join sys_dept d on u.dept_id = d.dept_id
+             left join sys_user_role sur on u.user_id = sur.user_id
+             left join sys_role r on r.role_id = sur.role_id
+        ${ew.getCustomSqlSegment}
     </select>
-    <select id="queryUserDeptInfo" resultType="com.mars.easy.admin.modules.system.pojo.vo.sysuser.UserDeptInfoVO">
-        SELECT
-        user_id,
-        GROUP_CONCAT(dept_id ORDER BY dept_id) AS dept_ids,
-        GROUP_CONCAT(CONCAT(dept_id, ':', dept_name) ORDER BY dept_id) AS dept_infos
-        FROM
-            (SELECT
-            sud.user_id,
-            sd.id AS dept_id,
-            sd.name AS dept_name
-            FROM
-            sys_user_dept sud
-            JOIN
-            sys_dept sd ON sud.dept_id = sd.id
-            WHERE sd.del_flag = "F"
-            ) AS subquery
-            WHERE user_id IN
-            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
-                #{userId}
-            </foreach>
-        GROUP BY
-        user_id;
+
+    <select id="selectUnallocatedList" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phonenumber, u.status, u.create_time
+        from sys_user u
+             left join sys_dept d on u.dept_id = d.dept_id
+             left join sys_user_role sur on u.user_id = sur.user_id
+             left join sys_role r on r.role_id = sur.role_id
+        ${ew.getCustomSqlSegment}
     </select>
-    <select id="queryUserRoleInfo" resultType="com.mars.easy.admin.modules.system.pojo.vo.sysuser.UserRoleInfoVO">
-        SELECT
-            user_id,
-            GROUP_CONCAT(role_id ORDER BY role_id) AS role_ids,
-            GROUP_CONCAT(CONCAT( role_id, ':', role_name )) AS role_infos
-        FROM
-            (
-                SELECT
-                    sur.user_id,
-                    sur.role_id,
-                    sr.role_name
-                FROM
-                    sys_user_role sur
-                        LEFT JOIN sys_role sr ON sur.role_id = sr.id
-                    WHERE sr.del_flag = "F"
-            ) AS subquery
-        WHERE user_id IN
-        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
-            #{userId}
-        </foreach>
-        GROUP BY
-            user_id;
+
+    <select id="countUserById" resultType="Long">
+        select count(*) from sys_user where del_flag = '0' and user_id = #{userId}
     </select>
+
+
 </mapper>

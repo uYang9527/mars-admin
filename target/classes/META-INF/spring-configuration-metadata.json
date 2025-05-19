@@ -1,0 +1,316 @@
+{
+  "groups": [
+    {
+      "name": "api-decrypt",
+      "type": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties"
+    },
+    {
+      "name": "captcha",
+      "type": "com.mars.admin.framework.web.config.properties.CaptchaProperties",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "mybatis-encryptor",
+      "type": "com.mars.admin.framework.encrypt.properties.EncryptorProperties",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "redisson",
+      "type": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties"
+    },
+    {
+      "name": "redisson.cluster-servers-config",
+      "type": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
+      "sourceMethod": "getClusterServersConfig()"
+    },
+    {
+      "name": "redisson.single-server-config",
+      "type": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
+      "sourceMethod": "getSingleServerConfig()"
+    },
+    {
+      "name": "tenant",
+      "type": "com.mars.admin.framework.tenant.properties.TenantProperties",
+      "sourceType": "com.mars.admin.framework.tenant.properties.TenantProperties"
+    },
+    {
+      "name": "thread-pool",
+      "type": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties"
+    },
+    {
+      "name": "xss",
+      "type": "com.mars.admin.framework.web.config.properties.XssProperties",
+      "sourceType": "com.mars.admin.framework.web.config.properties.XssProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "api-decrypt.enabled",
+      "type": "java.lang.Boolean",
+      "description": "加密开关",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties"
+    },
+    {
+      "name": "api-decrypt.header-flag",
+      "type": "java.lang.String",
+      "description": "头部标识",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties"
+    },
+    {
+      "name": "api-decrypt.private-key",
+      "type": "java.lang.String",
+      "description": "请求解密私钥",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties"
+    },
+    {
+      "name": "api-decrypt.public-key",
+      "type": "java.lang.String",
+      "description": "响应加密公钥",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.ApiDecryptProperties"
+    },
+    {
+      "name": "captcha.category",
+      "type": "com.mars.admin.framework.web.enums.CaptchaCategory",
+      "description": "验证码类别",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "captcha.char-length",
+      "type": "java.lang.Integer",
+      "description": "字符验证码长度",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "captcha.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "captcha.number-length",
+      "type": "java.lang.Integer",
+      "description": "数字验证码位数",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "captcha.type",
+      "type": "com.mars.admin.framework.web.enums.CaptchaType",
+      "description": "验证码类型",
+      "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
+    },
+    {
+      "name": "mybatis-encryptor.algorithm",
+      "type": "com.mars.admin.framework.encrypt.enumd.AlgorithmType",
+      "description": "默认算法",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "mybatis-encryptor.enable",
+      "type": "java.lang.Boolean",
+      "description": "过滤开关",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "mybatis-encryptor.encode",
+      "type": "com.mars.admin.framework.encrypt.enumd.EncodeType",
+      "description": "编码方式，base64\/hex",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "mybatis-encryptor.password",
+      "type": "java.lang.String",
+      "description": "安全秘钥",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "mybatis-encryptor.private-key",
+      "type": "java.lang.String",
+      "description": "私钥",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "mybatis-encryptor.public-key",
+      "type": "java.lang.String",
+      "description": "公钥",
+      "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
+    },
+    {
+      "name": "redisson.cluster-servers-config.client-name",
+      "type": "java.lang.String",
+      "description": "客户端名称",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
+    },
+    {
+      "name": "redisson.cluster-servers-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接空闲超时，单位：毫秒",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.master-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "description": "master最小空闲连接数",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.master-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "master连接池大小",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.read-mode",
+      "type": "org.redisson.config.ReadMode",
+      "description": "读取模式",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
+    },
+    {
+      "name": "redisson.cluster-servers-config.slave-connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "description": "slave最小空闲连接数",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.slave-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "slave连接池大小",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "发布和订阅连接池大小",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.cluster-servers-config.subscription-mode",
+      "type": "org.redisson.config.SubscriptionMode",
+      "description": "订阅模式",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
+    },
+    {
+      "name": "redisson.cluster-servers-config.timeout",
+      "type": "java.lang.Integer",
+      "description": "命令等待超时，单位：毫秒",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.key-prefix",
+      "type": "java.lang.String",
+      "description": "redis缓存key前缀",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties"
+    },
+    {
+      "name": "redisson.netty-threads",
+      "type": "java.lang.Integer",
+      "description": "Netty线程池数量,默认值 = 当前处理核数量 * 2",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.single-server-config.client-name",
+      "type": "java.lang.String",
+      "description": "客户端名称",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
+    },
+    {
+      "name": "redisson.single-server-config.connection-minimum-idle-size",
+      "type": "java.lang.Integer",
+      "description": "最小空闲连接数",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.single-server-config.connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "连接池大小",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.single-server-config.idle-connection-timeout",
+      "type": "java.lang.Integer",
+      "description": "连接空闲超时，单位：毫秒",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.single-server-config.subscription-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "发布和订阅连接池大小",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.single-server-config.timeout",
+      "type": "java.lang.Integer",
+      "description": "命令等待超时，单位：毫秒",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
+      "defaultValue": 0
+    },
+    {
+      "name": "redisson.threads",
+      "type": "java.lang.Integer",
+      "description": "线程池数量,默认值 = 当前处理核数量 * 2",
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "tenant.enable",
+      "type": "java.lang.Boolean",
+      "description": "是否启用",
+      "sourceType": "com.mars.admin.framework.tenant.properties.TenantProperties"
+    },
+    {
+      "name": "tenant.excludes",
+      "type": "java.util.List<java.lang.String>",
+      "description": "排除表",
+      "sourceType": "com.mars.admin.framework.tenant.properties.TenantProperties"
+    },
+    {
+      "name": "thread-pool.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否开启线程池",
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "thread-pool.keep-alive-seconds",
+      "type": "java.lang.Integer",
+      "description": "线程池维护线程所允许的空闲时间",
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "thread-pool.queue-capacity",
+      "type": "java.lang.Integer",
+      "description": "队列最大长度",
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "xss.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Xss开关",
+      "sourceType": "com.mars.admin.framework.web.config.properties.XssProperties"
+    },
+    {
+      "name": "xss.exclude-urls",
+      "type": "java.util.List<java.lang.String>",
+      "description": "排除路径",
+      "sourceType": "com.mars.admin.framework.web.config.properties.XssProperties"
+    }
+  ],
+  "hints": []
+}
