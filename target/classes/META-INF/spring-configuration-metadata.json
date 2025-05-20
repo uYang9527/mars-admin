@@ -11,6 +11,11 @@
       "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
     },
     {
+      "name": "gen",
+      "type": "com.mars.admin.modules.generator.config.GenConfig",
+      "sourceType": "com.mars.admin.modules.generator.config.GenConfig"
+    },
+    {
       "name": "justauth",
       "type": "com.mars.admin.framework.social.config.properties.SocialProperties",
       "sourceType": "com.mars.admin.framework.social.config.properties.SocialProperties"

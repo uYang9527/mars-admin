@@ -1,56 +1,66 @@
-import { createApp } from 'vue'
-import pinia from '@/stores'
+import { createApp } from 'vue';
+// global css
+import 'virtual:uno.css';
+import '@/assets/styles/index.scss';
+import 'element-plus/theme-chalk/dark/css-vars.css';
+// iconfont css
+import "@/assets/iconfont/iconfont.scss";
 
-import '@/styles/index.scss'
+// App、router、store
+import App from './App.vue';
+import store from './store';
+import router from './router';
 
-// element plus
-import ElementPlus from 'element-plus'
-// element css
-import 'element-plus/dist/index.css'
-// element dark css
-import 'element-plus/theme-chalk/dark/css-vars.css'
 
+// 自定义指令
+import directive from './directive';
+
+// 注册插件
+import plugins from './plugins/index'; // plugins
+
+// 高亮组件
+// import 'highlight.js/styles/a11y-light.css';
+import 'highlight.js/styles/atom-one-dark.css';
+import 'highlight.js/lib/common';
+import HighLight from '@highlightjs/vue-plugin';
+
+// svg图标
+import 'virtual:svg-icons-register';
+import ElementIcons from '@/plugins/svgicon';
 // element icons
-import * as Icons from '@element-plus/icons-vue'
+import * as Icons from "@element-plus/icons-vue";
 
-// vue i18n
-import I18n from '@/languages'
+// permission control
+import './permission';
 
-import App from '@/App.vue'
-import router from '@/router'
+// 国际化
+import i18n from '@/lang/index';
 
-// custom directives
-import directives from '@/directives/index'
+// vxeTable
+import VXETable from 'vxe-table';
+import 'vxe-table/lib/style.css';
+VXETable.config({
+  zIndex: 999999
+});
 
-// errorHandler
-import errorHandler from '@/utils/errorHandler'
-// svg icons
-import 'virtual:svg-icons-register'
+// 修改 el-dialog 默认点击遮照为不关闭
+import { ElDialog } from 'element-plus';
+ElDialog.props.closeOnClickModal.default = false;
 
-// highlight 高亮
-import 'highlight.js/styles/atom-one-dark.css'
-import 'highlight.js/lib/common'
-import hljsVuePlugin from '@highlightjs/vue-plugin'
-import { isLocalEnv } from '@/utils'
+const app = createApp(App);
 
-const app = createApp(App)
-
-if (!isLocalEnv()) {
-  app.config.errorHandler = errorHandler
-}
-
+app.use(HighLight);
+app.use(ElementIcons);
+app.use(router);
+app.use(store);
+app.use(i18n);
+app.use(VXETable);
+app.use(plugins);
+// 自定义指令
+directive(app);
 // register the element Icons component
-Object.keys(Icons).forEach((key) => {
-  app.component(key, Icons[key as keyof typeof Icons])
-})
+Object.keys(Icons).forEach(key => {
+  app.component(key, Icons[key as keyof typeof Icons]);
+});
 
-app.use(ElementPlus)
-app.use(pinia)
-app.use(router)
-app.use(directives)
-app.use(I18n)
-
-// app.use(router)
-app.use(hljsVuePlugin)
-
-app.mount('#app')
+app.mount('#app');

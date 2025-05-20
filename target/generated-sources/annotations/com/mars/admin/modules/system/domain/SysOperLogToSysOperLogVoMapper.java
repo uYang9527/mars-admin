@@ -3,12 +3,12 @@ package com.mars.admin.modules.system.domain;
 import com.mars.admin.modules.system.domain.bo.SysOperLogBoToSysOperLogMapper;
 import com.mars.admin.modules.system.domain.vo.SysOperLogVo;
 import com.mars.admin.modules.system.domain.vo.SysOperLogVoToSysOperLogMapper;
-import io.github.linpeilie.AutoMapperConfig__14;
+import io.github.linpeilie.AutoMapperConfig__18;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__14.class,
+    config = AutoMapperConfig__18.class,
     uses = {SysOperLogVoToSysOperLogMapper.class,SysOperLogBoToSysOperLogMapper.class},
     imports = {}
 )

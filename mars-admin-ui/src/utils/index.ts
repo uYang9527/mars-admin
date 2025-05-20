@@ -1,361 +1,318 @@
-import { isArray } from '@/utils/is'
+import { parseTime } from '@/utils/ruoyi';
 
 /**
- * @description 获取localStorage
- * @param {String} key Storage名称
- * @returns {String}
+ * 表格时间格式化
  */
-export function localGet(key: string) {
-  const value = window.localStorage.getItem(key)
-  try {
-    return JSON.parse(window.localStorage.getItem(key) as string)
-  } catch (error) {
-    return value
-  }
-}
+export const formatDate = (cellValue: string) => {
+  if (cellValue == null || cellValue == '') return '';
+  const date = new Date(cellValue);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  const minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+};
 
 /**
- * @description 存储localStorage
- * @param {String} key Storage名称
- * @param {*} value Storage值
- * @returns {void}
+ * @param {number} time
+ * @param {string} option
+ * @returns {string}
  */
-export function localSet(key: string, value: any) {
-  window.localStorage.setItem(key, JSON.stringify(value))
-}
-
-/**
- * @description 清除localStorage
- * @param {String} key Storage名称
- * @returns {void}
- */
-export function localRemove(key: string) {
-  window.localStorage.removeItem(key)
-}
-
-/**
- * @description 清除所有localStorage
- * @returns {void}
- */
-export function localClear() {
-  window.localStorage.clear()
-}
-
-/**
- * @description 判断数据类型
- * @param {*} val 需要判断类型的数据
- * @returns {String}
- */
-export function isType(val: any) {
-  if (val === null) {
-    return 'null'
-  }
-  if (typeof val !== 'object') {
-    return typeof val
-  }
-  return Object.prototype.toString.call(val).slice(8, -1).toLocaleLowerCase()
-}
-
-/**
- * @description 生成唯一 uuid
- * @returns {String}
- */
-export function generateUUID() {
-  let uuid = ''
-  for (let i = 0; i < 32; i++) {
-    const random = (Math.random() * 16) | 0
-    if (i === 8 || i === 12 || i === 16 || i === 20) {
-      uuid += '-'
-    }
-    uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16)
-  }
-  return uuid
-}
-
-/**
- * 判断两个对象是否相同
- * @param {Object} a 要比较的对象一
- * @param {Object} b 要比较的对象二
- * @returns {Boolean} 相同返回 true，反之 false
- */
-export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]: any }) {
-  if (!a || !b) {
-    return false
-  }
-  const aProps = Object.getOwnPropertyNames(a)
-  const bProps = Object.getOwnPropertyNames(b)
-  if (aProps.length !== bProps.length) {
-    return false
-  }
-  for (let i = 0; i < aProps.length; i++) {
-    const propName = aProps[i]
-    const propA = a[propName]
-    const propB = b[propName]
-    if (!Object.prototype.hasOwnProperty.call(b, propName)) {
-      return false
-    }
-    if (propA instanceof Object) {
-      if (!isObjectValueEqual(propA, propB)) {
-        return false
-      }
-    } else if (propA !== propB) {
-      return false
-    }
-  }
-  return true
-}
-
-/**
- * @description 生成随机数
- * @param {Number} min 最小值
- * @param {Number} max 最大值
- * @returns {Number}
- */
-export function randomNum(min: number, max: number): number {
-  return Math.floor(Math.random() * (min - max) + max)
-}
-
-/**
- * @description 获取当前时间对应的提示语
- * @returns {String}
- */
-export function getTimeState() {
-  const timeNow = new Date()
-  const hours = timeNow.getHours()
-  if (hours >= 6 && hours <= 10) {
-    return `早上好 ⛅`
-  }
-  if (hours >= 10 && hours <= 14) {
-    return `中午好 🌞`
-  }
-  if (hours >= 14 && hours <= 18) {
-    return `下午好 🌞`
-  }
-  if (hours >= 18 && hours <= 24) {
-    return `晚上好 🌛`
-  }
-  if (hours >= 0 && hours <= 6) {
-    return `凌晨好 🌛`
-  }
-}
-
-/**
- * @description 获取浏览器默认语言
- * @returns {String}
- */
-export function getBrowserLang(): string {
-  const browserLang = navigator.language ? navigator.language : navigator.browserLanguage
-  let defaultBrowserLang
-  if (['cn', 'zh', 'zh-cn'].includes(browserLang.toLowerCase())) {
-    defaultBrowserLang = 'zh'
+export const formatTime = (time: string, option: string) => {
+  let t: number;
+  if (('' + time).length === 10) {
+    t = parseInt(time) * 1000;
   } else {
-    defaultBrowserLang = 'en'
+    t = +time;
   }
-  return defaultBrowserLang
-}
+  const d: any = new Date(t);
+  const now = Date.now();
+
+  const diff = (now - d) / 1000;
+
+  if (diff < 30) {
+    return '刚刚';
+  } else if (diff < 3600) {
+    // less 1 hour
+    return Math.ceil(diff / 60) + '分钟前';
+  } else if (diff < 3600 * 24) {
+    return Math.ceil(diff / 3600) + '小时前';
+  } else if (diff < 3600 * 24 * 2) {
+    return '1天前';
+  }
+  if (option) {
+    return parseTime(t, option);
+  } else {
+    return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分';
+  }
+};
 
 /**
- * @description 使用递归扁平化菜单，方便添加动态路由
- * @param {Array} menuList 菜单列表
- * @returns {Array}
- */
-export function getFlatMenuList(menuList: Menu.MenuOptions[]): Menu.MenuOptions[] {
-  const newMenuList: Menu.MenuOptions[] = JSON.parse(JSON.stringify(menuList))
-  return newMenuList.flatMap((item) => [
-    item,
-    ...(item.children ? getFlatMenuList(item.children) : [])
-  ])
-}
-
-/**
- * @description 使用递归过滤出需要渲染在左侧菜单的列表 (需剔除 isHidden == true 的菜单)
- * @param {Array} menuList 菜单列表
- * @returns {Array}
- * */
-export function getShowMenuList(menuList: Menu.MenuOptions[]): Menu.MenuOptions[] {
-  const newMenuList: Menu.MenuOptions[] = JSON.parse(JSON.stringify(menuList))
-  return newMenuList.filter((item) => {
-    item.children?.length && (item.children = getShowMenuList(item.children))
-    return item.meta?.isHidden === 'F'
-  })
-}
-
-/**
- * @description 使用递归找出所有面包屑存储到 pinia/vuex 中
- * @param {Array} menuList 菜单列表
- * @param {Array} parent 父级菜单
- * @param {Object} result 处理后的结果
+ * @param {string} url
  * @returns {Object}
  */
-export const getAllBreadcrumbList = (
-  menuList: Menu.MenuOptions[],
-  parent: any[] = [],
-  result: {
-    [key: string]: any
-  } = {}
-) => {
-  for (const item of menuList) {
-    result[item.path] = [...parent, item]
-    if (item.children) {
-      getAllBreadcrumbList(item.children, result[item.path], result)
-    }
-  }
-  return result
-}
+export const getQueryObject = (url: string) => {
+  url = url == null ? window.location.href : url;
+  const search = url.substring(url.lastIndexOf('?') + 1);
+  const obj: { [key: string]: string } = {};
+  const reg = /([^?&=]+)=([^?&=]*)/g;
+  search.replace(reg, (rs, $1, $2) => {
+    const name = decodeURIComponent($1);
+    let val = decodeURIComponent($2);
+    val = String(val);
+    obj[name] = val;
+    return rs;
+  });
+  return obj;
+};
 
 /**
- * @description 使用递归处理路由菜单 path，生成一维数组 (第一版本地路由鉴权会用到，该函数暂未使用)
- * @param {Array} menuList 所有菜单列表
- * @param {Array} menuPathArr 菜单地址的一维数组 ['**','**']
+ * @param {string} input value
+ * @returns {number} output value
+ */
+export const byteLength = (str: string) => {
+  // returns the byte length of an utf8 string
+  let s = str.length;
+  for (let i = str.length - 1; i >= 0; i--) {
+    const code = str.charCodeAt(i);
+    if (code > 0x7f && code <= 0x7ff) s++;
+    else if (code > 0x7ff && code <= 0xffff) s += 2;
+    if (code >= 0xdc00 && code <= 0xdfff) i--;
+  }
+  return s;
+};
+
+/**
+ * @param {Array} actual
  * @returns {Array}
  */
-export function getMenuListPath(
-  menuList: Menu.MenuOptions[],
-  menuPathArr: string[] = []
-): string[] {
-  for (const item of menuList) {
-    if (typeof item === 'object' && item.path) {
-      menuPathArr.push(item.path)
-    }
-    if (item.children?.length) {
-      getMenuListPath(item.children, menuPathArr)
+export const cleanArray = (actual: Array<any>) => {
+  const newArray: any[] = [];
+  for (let i = 0; i < actual.length; i++) {
+    if (actual[i]) {
+      newArray.push(actual[i]);
     }
   }
-  return menuPathArr
-}
+  return newArray;
+};
 
 /**
- * @description 递归查询当前 path 所对应的菜单对象 (该函数暂未使用)
- * @param {Array} menuList 菜单列表
- * @param {String} path 当前访问地址
- * @returns {Object | null}
- */
-export function findMenuByPath(
-  menuList: Menu.MenuOptions[],
-  path: string
-): Menu.MenuOptions | null {
-  for (const item of menuList) {
-    if (item.path === path) return item
-    if (item.children) {
-      const res = findMenuByPath(item.children, path)
-      if (res) return res
-    }
-  }
-  return null
-}
-
-/**
- * @description 使用递归过滤需要缓存的菜单 name (该函数暂未使用)
- * @param {Array} menuList 所有菜单列表
- * @param {Array} keepAliveNameArr 缓存的菜单 name ['**','**']
+ * @param {Object} json
  * @returns {Array}
- * */
-export function getKeepAliveRouterName(
-  menuList: Menu.MenuOptions[],
-  keepAliveNameArr: string[] = []
-): string[] {
-  menuList.forEach((item) => {
-    item.meta.isKeepAlive === 'T' && item.name && keepAliveNameArr.push(item.name)
-    item.children?.length && getKeepAliveRouterName(item.children, keepAliveNameArr)
-  })
-  return keepAliveNameArr
-}
+ */
+export const param = (json: any) => {
+  if (!json) return '';
+  return cleanArray(
+    Object.keys(json).map((key) => {
+      if (json[key] === undefined) return '';
+      return encodeURIComponent(key) + '=' + encodeURIComponent(json[key]);
+    })
+  ).join('&');
+};
 
 /**
- * @description 格式化表格单元格默认值 (el-table-column)
- * @param {Number} row 行
- * @param {Number} col 列
- * @param {*} callValue 当前单元格值
- * @returns {String}
- * */
-export function formatTableColumn(row: number, col: number, callValue: any) {
-  // 如果当前值为数组，使用 / 拼接（根据需求自定义）
-  if (isArray(callValue)) {
-    return callValue.length ? callValue.join(' / ') : '--'
+ * @param {string} url
+ * @returns {Object}
+ */
+export const param2Obj = (url: string) => {
+  const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ');
+  if (!search) {
+    return {};
   }
-  return callValue ?? '--'
-}
+  const obj: any = {};
+  const searchArr = search.split('&');
+  searchArr.forEach((v) => {
+    const index = v.indexOf('=');
+    if (index !== -1) {
+      const name = v.substring(0, index);
+      const val = v.substring(index + 1, v.length);
+      obj[name] = val;
+    }
+  });
+  return obj;
+};
 
 /**
- * @description 处理值无数据情况
- * @param {*} callValue 需要处理的值
- * @returns {String}
- * */
-export function formatValue(callValue: any) {
-  // 如果当前值为数组，使用 / 拼接（根据需求自定义）
-  if (isArray(callValue)) return callValue.length ? callValue.join(' / ') : '--'
-  return callValue ?? '--'
-}
+ * @param {string} val
+ * @returns {string}
+ */
+export const html2Text = (val: string) => {
+  const div = document.createElement('div');
+  div.innerHTML = val;
+  return div.textContent || div.innerText;
+};
 
 /**
- * @description 处理 prop 为多级嵌套的情况，返回的数据 (列如: prop: user.name)
- * @param {Object} row 当前行数据
- * @param {String} prop 当前 prop
- * @returns {*}
- * */
-export function handleRowAccordingToProp(row: { [key: string]: any }, prop: string) {
-  if (!prop.includes('.')) {
-    return row[prop] ?? '--'
+ * Merges two objects, giving the last one precedence
+ * @param {Object} target
+ * @param {(Object|Array)} source
+ * @returns {Object}
+ */
+export const objectMerge = (target: any, source: any | any[]) => {
+  if (typeof target !== 'object') {
+    target = {};
   }
-  prop.split('.').forEach((item) => (row = row[item] ?? '--'))
-  return row
-}
-
-/**
- * @description 处理 prop，当 prop 为多级嵌套时 ==> 返回最后一级 prop
- * @param {String} prop 当前 prop
- * @returns {String}
- * */
-export function handleProp(prop: string) {
-  const propArr = prop.toString().split('.')
-  if (propArr.length === 1) {
-    return prop
+  if (Array.isArray(source)) {
+    return source.slice();
   }
-  return propArr[propArr.length - 1]
-}
+  Object.keys(source).forEach((property) => {
+    const sourceProperty = source[property];
+    if (typeof sourceProperty === 'object') {
+      target[property] = objectMerge(target[property], sourceProperty);
+    } else {
+      target[property] = sourceProperty;
+    }
+  });
+  return target;
+};
 
 /**
- * @description 根据枚举列表查询当需要的数据（如果指定了 label 和 value 的 key值，会自动识别格式化）
- * @param {String} callValue 当前单元格值
- * @param {Array} enumData 字典列表
- * @param {Array} fieldNames label && value && children 的 key 值
- * @param {String} type 过滤类型（目前只有 tag）
- * @returns {String}
- * */
-export function filterEnum(callValue: any, enumData?: any, fieldNames?: any, type?: 'tag') {
-  const value = fieldNames?.value ?? 'value'
-  const label = fieldNames?.label ?? 'label'
-  const children = fieldNames?.children ?? 'children'
-  const tagType = fieldNames?.tagType ?? 'tagType'
-  let filterData: { [key: string]: any } = {}
-  // 判断 enumData 是否为数组
-  if (Array.isArray(enumData)) filterData = findItemNested(enumData, callValue, value, children)
-  // 判断是否输出的结果为 tag 类型
-  if (type === 'tag') {
-    return filterData ? filterData[tagType] || '' : ''
+ * @param {HTMLElement} element
+ * @param {string} className
+ */
+export const toggleClass = (element: HTMLElement, className: string) => {
+  if (!element || !className) {
+    return;
+  }
+  let classString = element.className;
+  const nameIndex = classString.indexOf(className);
+  if (nameIndex === -1) {
+    classString += '' + className;
   } else {
-    return filterData ? filterData[label] : '--'
+    classString = classString.substring(0, nameIndex) + classString.substring(nameIndex + className.length);
   }
-}
+  element.className = classString;
+};
 
 /**
- * @description 递归查找 callValue 对应的 enum 值
- * */
-export function findItemNested(enumData: any, callValue: any, value: string, children: string) {
-  return enumData.reduce((accumulator: any, current: any) => {
-    if (accumulator) return accumulator
-    if (current[value]?.toString() === callValue?.toString()) return current
-    if (current[children]) return findItemNested(current[children], callValue, value, children)
-  }, null)
-}
-
-/**
- * 是否是local env
+ * @param {string} type
+ * @returns {Date}
  */
-export function isLocalEnv() {
-  return (
-    import.meta.env.MODE === 'development' ||
-    import.meta.env.MODE === 'local' ||
-    import.meta.env.MODE === 'dev'
-  )
-}
+export const getTime = (type: string) => {
+  if (type === 'start') {
+    return new Date().getTime() - 3600 * 1000 * 24 * 90;
+  } else {
+    return new Date(new Date().toDateString());
+  }
+};
+
+/**
+ * @param {Function} func
+ * @param {number} wait
+ * @param {boolean} immediate
+ * @return {*}
+ */
+export const debounce = (func: any, wait: number, immediate: boolean) => {
+  let timeout: any, args: any, context: any, timestamp: any, result: any;
+
+  const later = function () {
+    // 据上一次触发时间间隔
+    const last = +new Date() - timestamp;
+
+    // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
+    if (last < wait && last > 0) {
+      timeout = setTimeout(later, wait - last);
+    } else {
+      timeout = null;
+      // 如果设定为immediate===true，因为开始边界已经调用过了此处无需调用
+      if (!immediate) {
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+      }
+    }
+  };
+
+  return (...args: any) => {
+    context = this;
+    timestamp = +new Date();
+    const callNow = immediate && !timeout;
+    // 如果延时不存在，重新设定延时
+    if (!timeout) timeout = setTimeout(later, wait);
+    if (callNow) {
+      result = func.apply(context, args);
+      context = args = null;
+    }
+    return result;
+  };
+};
+
+/**
+ * This is just a simple version of deep copy
+ * Has a lot of edge cases bug
+ * If you want to use a perfect deep copy, use lodash's _.cloneDeep
+ * @param {Object} source
+ * @returns {Object}
+ */
+export const deepClone = (source: any) => {
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments', 'deepClone' as any);
+  }
+  const targetObj: any = source.constructor === Array ? [] : {};
+  Object.keys(source).forEach((keys) => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys]);
+    } else {
+      targetObj[keys] = source[keys];
+    }
+  });
+  return targetObj;
+};
+
+/**
+ * @param {Array} arr
+ * @returns {Array}
+ */
+export const uniqueArr = (arr: any) => {
+  return Array.from(new Set(arr));
+};
+
+/**
+ * @returns {string}
+ */
+export const createUniqueString = (): string => {
+  const timestamp = +new Date() + '';
+  const num = (1 + Math.random()) * 65536;
+  const randomNum = parseInt(num + '');
+  return (+(randomNum + timestamp)).toString(32);
+};
+
+/**
+ * Check if an element has a class
+ * @param ele
+ * @param {string} cls
+ * @returns {boolean}
+ */
+export const hasClass = (ele: HTMLElement, cls: string): boolean => {
+  return !!ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+};
+
+/**
+ * Add class to element
+ * @param ele
+ * @param {string} cls
+ */
+export const addClass = (ele: HTMLElement, cls: string) => {
+  if (!hasClass(ele, cls)) ele.className += ' ' + cls;
+};
+
+/**
+ * Remove class from element
+ * @param ele
+ * @param {string} cls
+ */
+export const removeClass = (ele: HTMLElement, cls: string) => {
+  if (hasClass(ele, cls)) {
+    const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+    ele.className = ele.className.replace(reg, ' ');
+  }
+};
+
+/**
+ * @param {string} path
+ * @returns {Boolean}
+ */
+export const isExternal = (path: string) => {
+  return /^(https?:|http?:|mailto:|tel:)/.test(path);
+};

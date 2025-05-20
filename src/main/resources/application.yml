@@ -130,7 +130,7 @@ mybatis-plus:
   # 自定义配置 是否全局开启逻辑删除 关闭后 所有逻辑删除功能将失效
   enableLogicDelete: true
   # 多包名使用 例如 com.mars.admin.framework.**.mapper,org.xxx.**.mapper
-  mapperPackage: com.mars.admin.framework.**.mapper
+  mapperPackage: com.mars.admin.modules.**.mapper
   # 对应的 XML 文件位置
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 实体扫描，多个package用逗号或者分号分隔

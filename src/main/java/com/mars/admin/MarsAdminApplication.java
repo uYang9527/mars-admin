@@ -6,9 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 
-@MapperScan("com.mars.admin.modules.*.mapper")
+@MapperScan("${mybatis-plus.mapperPackage}")
 @SpringBootApplication
-@ComponentScan("com.mars.admin")
 public class MarsAdminApplication {
 
     public static void main(String[] args) {

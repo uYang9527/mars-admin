@@ -1,35 +1,40 @@
 <template>
-  <svg :style="iconStyle" aria-hidden="true">
-    <use :xlink:href="symbolId" />
+  <svg :class="svgClass" aria-hidden="true">
+    <use :xlink:href="iconName" :fill="color" />
   </svg>
 </template>
 
 <script setup lang="ts">
-defineOptions({
-  name: 'SvgIcon'
-})
-import { computed } from 'vue'
-import type { CSSProperties } from 'vue'
+import { propTypes } from '@/utils/propTypes';
 
-interface SvgProps {
-  name: string // 图标的名称 ==> 必传
-  prefix?: string // 图标的前缀 ==> 非必传（默认为"icon"）
-  iconStyle?: CSSProperties // 图标的样式 ==> 非必传
-  width?: number
-  height?: number
+const props = defineProps({
+  iconClass: propTypes.string.isRequired,
+  className: propTypes.string.def(''),
+  color: propTypes.string.def('')
+});
+const iconName = computed(() => `#icon-${props.iconClass}`);
+const svgClass = computed(() => {
+  if (props.className) {
+    return `svg-icon ${props.className}`;
+  }
+  return 'svg-icon';
+});
+</script>
+
+<style lang="scss" scoped>
+.sub-el-icon,
+.nav-icon {
+  display: inline-block;
+  font-size: 15px;
+  margin-right: 12px;
+  position: relative;
 }
 
-const props = withDefaults(defineProps<SvgProps>(), {
-  prefix: 'icon',
-  width: 16,
-  height: 16
-})
-
-const symbolId = computed(() => `#${props.prefix}-${props.name}`)
-
-const iconStyle = computed(() => ({
-  width: `${props.width}px`,
-  height: `${props.height}px`,
-  fill: 'var(--color)'
-}))
-</script>
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  position: relative;
+  fill: currentColor;
+  vertical-align: -2px;
+}
+</style>

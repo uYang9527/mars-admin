@@ -19,6 +19,7 @@ import com.mars.admin.framework.mybatis.interceptor.PlusDataPermissionIntercepto
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeansException;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -27,8 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  * @author Mars
  */
+@Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@MapperScan("${mybatis-plus.mapperPackage}")
 @PropertySource(value = "classpath:common-mybatis.yml", factory = YmlPropertySourceFactory.class)
 public class MybatisPlusConfig {
 
