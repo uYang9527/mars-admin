@@ -1,13 +1,13 @@
-# Masy-Admin
+# Mars-Admin
 
 ### 介绍 📖
 
-🔥 官方推荐 🔥 Easy-Admin是一套开源的快速开发平台，毫无保留给个人及企业免费使用，项目前后台分离， 高效率开发，一键生成前后台代码和菜单权限，中小企业快速开发脚手架。 前端采用Vue、Element UI、 后端采用Spring Boot3、Mysql、Redis。 权限认证使用Sa-Token，支持多终端认证系统。 支持加载动态权限菜单，多方式轻松权限控制。
+🔥 官方推荐 🔥 Mars-Admin是一套开源的快速开发平台，毫无保留给个人及企业免费使用，项目前后台分离， 高效率开发，一键生成前后台代码和菜单权限，中小企业快速开发脚手架。 前端采用Vue、Element UI、 后端采用Spring Boot3、Mysql、Redis。 权限认证使用Sa-Token，支持多终端认证系统。 支持加载动态权限菜单，多方式轻松权限控制。
 
 
 ### 代码仓库 ⭐
 
-- Gitee：https://gitee.com/Marsfactory/easy-admin
+- Gitee：https://gitee.com/Marsfactory/mars-admin
 
 
 
@@ -53,40 +53,6 @@
 ```
 
 
-### 安装使用步骤 📔
-
-- **Clone：**
-
-```text
-# Gitee
-git clone https://gitee.com/Marsfactory/mars-admin
-```
-
-- **Install：**
-
-```text
-pnpm install
-```
-
-- **Run：**
-
-```text
-pnpm dev
-pnpm serve
-```
-
-- **Build：**
-
-```text
-# 开发环境
-pnpm build:dev
-
-# 测试环境
-pnpm build:test
-
-# 生产环境
-pnpm build:pro
-```
 
 
 
