@@ -91,17 +91,16 @@ const tabsDrop = () => {
 // 初始化需要固定的 tabs
 const initTabs = () => {
   authStore.flatMenuListGet.forEach((item) => {
-    if (item.meta.isAffix === 'T' && item.meta.isHidden === 'F' && item.meta.isFull === 'F') {
-      const tabsParams = {
-        icon: item.meta.icon,
-        title: item.meta.title,
-        path: item.path,
-        name: item.name,
-        close: item.meta.isAffix !== 'T',
-        isKeepAlive: item.meta.isKeepAlive === 'T'
-      }
-      tabStore.addTabs(tabsParams)
+    console.log(item)
+    const tabsParams = {
+      icon: item.meta.icon,
+      title: item.meta.title,
+      path: item.path,
+      name: item.name,
+      close: item.meta.isAffix !== 'T',
+      isKeepAlive: item.meta.isKeepAlive === 'T'
     }
+    tabStore.addTabs(tabsParams)
   })
 }
 

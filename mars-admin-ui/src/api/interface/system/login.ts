@@ -4,6 +4,7 @@ export namespace ILogin {
     username: string
     password: string
     clientId: string
+    tenantId: string
     grantType: string
   }
 

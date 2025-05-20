@@ -74,6 +74,7 @@ const loginForm = reactive({
   username: '',
   password: '',
   clientId: '',
+  tenantId: '000000',
   grantType: ''
 })
 

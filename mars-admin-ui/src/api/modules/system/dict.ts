@@ -81,7 +81,7 @@ export const deleteDictData = (params: { ids: string[] }) => {
  */
 export const getAllDict = () => {
   return http.get<Record<string, IDict.DictCustom[]>>(
-    ADMIN_MODULE + `/sys-dict/dict`,
+    ADMIN_MODULE + `/system/dict/data/dict`,
     {},
     { loading: false }
   )

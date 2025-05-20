@@ -7,6 +7,7 @@ export const loginApi = (params: ILogin.LoginParams) => {
   const clientId = import.meta.env.VITE_APP_CLIENT_ID
   params.grantType = 'password'
   params.clientId = clientId
+  params.tenantId = "000000"
   return http.post<ILogin.LoginInfo>(ADMIN_MODULE + `/auth/login`, params, { loading: false }) // 正常 post json 请求  ==>  application/json
   // return http.post(`/login`, params, { loading: false }); // 控制当前请求不显示 loading
   // return http.post(`/login`, {}, { params }); // post 请求携带 query 参数  ==>  ?username=admin&password=123456
@@ -16,12 +17,12 @@ export const loginApi = (params: ILogin.LoginParams) => {
 
 // 获取菜单列表
 export const getAuthMenuListApi = () => {
-  return http.get<Menu.MenuOptions[]>(ADMIN_MODULE + `/sys-menu/menu`, {}, { loading: false })
+  return http.get<Menu.MenuOptions[]>(ADMIN_MODULE + `/system/menu/list`, {}, { loading: false })
 }
 
 // 获取按钮权限
 export const getAuthButtonListApi = () => {
-  return http.get<string[]>(ADMIN_MODULE + `/sys-menu/btn/permissions`, {}, { loading: false })
+  return http.get<string[]>(ADMIN_MODULE + `/system/menu/btn/permissions`, {}, { loading: false })
 }
 
 // 用户退出登录
@@ -31,5 +32,5 @@ export const logoutApi = () => {
 
 // 获取用户角色
 export const getAuthRoleListApi = () => {
-  return http.get<string[]>(ADMIN_MODULE + `/sys-menu/user/roles`, {}, { loading: false })
+  return http.get<string[]>(ADMIN_MODULE + `/system/menu/user/roles`, {}, { loading: false })
 }

@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus'
  * 成功状态
  * @type {string}
  */
-export const CODE_SUCCESS: string = '0000'
+export const CODE_SUCCESS: number = 200
 /**
  * 无效Token
  * @type {string}
