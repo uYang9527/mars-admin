@@ -7,7 +7,7 @@ import com.mars.admin.framework.mybatis.core.domain.BaseEntity;
 /**
  * 租户基类
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

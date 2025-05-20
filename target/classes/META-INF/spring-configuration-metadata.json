@@ -11,6 +11,16 @@
       "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
     },
     {
+      "name": "justauth",
+      "type": "com.mars.admin.framework.social.config.properties.SocialProperties",
+      "sourceType": "com.mars.admin.framework.social.config.properties.SocialProperties"
+    },
+    {
+      "name": "mail",
+      "type": "com.mars.admin.framework.mail.config.properties.MailProperties",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
       "name": "mybatis-encryptor",
       "type": "com.mars.admin.framework.encrypt.properties.EncryptorProperties",
       "sourceType": "com.mars.admin.framework.encrypt.properties.EncryptorProperties"
@@ -103,6 +113,78 @@
       "sourceType": "com.mars.admin.framework.web.config.properties.CaptchaProperties"
     },
     {
+      "name": "justauth.type",
+      "type": "java.util.Map<java.lang.String,com.mars.admin.framework.social.config.properties.SocialLoginConfigProperties>",
+      "description": "授权类型",
+      "sourceType": "com.mars.admin.framework.social.config.properties.SocialProperties"
+    },
+    {
+      "name": "mail.auth",
+      "type": "java.lang.Boolean",
+      "description": "是否需要用户名密码验证",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.connection-timeout",
+      "type": "java.lang.Long",
+      "description": "Socket连接超时值，单位毫秒，缺省值不超时",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.enabled",
+      "type": "java.lang.Boolean",
+      "description": "过滤开关",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.from",
+      "type": "java.lang.String",
+      "description": "发送方，遵循RFC-822标准<br> 发件人可以是以下形式： <pre> 1. user@xxx.xx 2.  name &lt;user@xxx.xx&gt; <\/pre>",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.host",
+      "type": "java.lang.String",
+      "description": "SMTP服务器域名",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.pass",
+      "type": "java.lang.String",
+      "description": "密码",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.port",
+      "type": "java.lang.Integer",
+      "description": "SMTP服务端口",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.ssl-enable",
+      "type": "java.lang.Boolean",
+      "description": "使用 SSL安全连接",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.starttls-enable",
+      "type": "java.lang.Boolean",
+      "description": "使用 STARTTLS安全连接，STARTTLS是对纯文本通信协议的扩展。它将纯文本连接升级为加密连接（TLS或SSL）， 而不是使用一个单独的加密通信端口。",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.timeout",
+      "type": "java.lang.Long",
+      "description": "SMTP超时时长，单位毫秒，缺省值不超时",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
+      "name": "mail.user",
+      "type": "java.lang.String",
+      "description": "用户名",
+      "sourceType": "com.mars.admin.framework.mail.config.properties.MailProperties"
+    },
+    {
       "name": "mybatis-encryptor.algorithm",
       "type": "com.mars.admin.framework.encrypt.enumd.AlgorithmType",
       "description": "默认算法",
@@ -148,22 +230,19 @@
       "name": "redisson.cluster-servers-config.idle-connection-timeout",
       "type": "java.lang.Integer",
       "description": "连接空闲超时，单位：毫秒",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.master-connection-minimum-idle-size",
       "type": "java.lang.Integer",
       "description": "master最小空闲连接数",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.master-connection-pool-size",
       "type": "java.lang.Integer",
       "description": "master连接池大小",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.read-mode",
@@ -175,22 +254,19 @@
       "name": "redisson.cluster-servers-config.slave-connection-minimum-idle-size",
       "type": "java.lang.Integer",
       "description": "slave最小空闲连接数",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.slave-connection-pool-size",
       "type": "java.lang.Integer",
       "description": "slave连接池大小",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.subscription-connection-pool-size",
       "type": "java.lang.Integer",
       "description": "发布和订阅连接池大小",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.cluster-servers-config.subscription-mode",
@@ -202,8 +278,7 @@
       "name": "redisson.cluster-servers-config.timeout",
       "type": "java.lang.Integer",
       "description": "命令等待超时，单位：毫秒",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$ClusterServersConfig"
     },
     {
       "name": "redisson.key-prefix",
@@ -215,8 +290,7 @@
       "name": "redisson.netty-threads",
       "type": "java.lang.Integer",
       "description": "Netty线程池数量,默认值 = 当前处理核数量 * 2",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties"
     },
     {
       "name": "redisson.single-server-config.client-name",
@@ -228,43 +302,37 @@
       "name": "redisson.single-server-config.connection-minimum-idle-size",
       "type": "java.lang.Integer",
       "description": "最小空闲连接数",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
     },
     {
       "name": "redisson.single-server-config.connection-pool-size",
       "type": "java.lang.Integer",
       "description": "连接池大小",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
     },
     {
       "name": "redisson.single-server-config.idle-connection-timeout",
       "type": "java.lang.Integer",
       "description": "连接空闲超时，单位：毫秒",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
     },
     {
       "name": "redisson.single-server-config.subscription-connection-pool-size",
       "type": "java.lang.Integer",
       "description": "发布和订阅连接池大小",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
     },
     {
       "name": "redisson.single-server-config.timeout",
       "type": "java.lang.Integer",
       "description": "命令等待超时，单位：毫秒",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties$SingleServerConfig"
     },
     {
       "name": "redisson.threads",
       "type": "java.lang.Integer",
       "description": "线程池数量,默认值 = 当前处理核数量 * 2",
-      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.redis.config.properties.RedissonProperties"
     },
     {
       "name": "tenant.enable",
@@ -282,22 +350,19 @@
       "name": "thread-pool.enabled",
       "type": "java.lang.Boolean",
       "description": "是否开启线程池",
-      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
-      "defaultValue": false
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties"
     },
     {
       "name": "thread-pool.keep-alive-seconds",
       "type": "java.lang.Integer",
       "description": "线程池维护线程所允许的空闲时间",
-      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties"
     },
     {
       "name": "thread-pool.queue-capacity",
       "type": "java.lang.Integer",
       "description": "队列最大长度",
-      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties",
-      "defaultValue": 0
+      "sourceType": "com.mars.admin.framework.core.config.properties.ThreadPoolProperties"
     },
     {
       "name": "xss.enabled",

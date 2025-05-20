@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 用户信息
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Data
 public class SysUserInfoVo {

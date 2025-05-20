@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 租户套餐管理
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Validated
 @RequiredArgsConstructor

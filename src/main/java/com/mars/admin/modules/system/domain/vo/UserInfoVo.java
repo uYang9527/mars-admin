@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * 登录用户信息
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Data
 public class UserInfoVo {

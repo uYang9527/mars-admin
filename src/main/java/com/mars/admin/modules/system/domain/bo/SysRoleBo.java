@@ -14,7 +14,7 @@ import com.mars.admin.modules.system.domain.SysRole;
 /**
  * 角色信息业务对象 sys_role
  *
- * @author Michelle.Chung
+ * @author mars
  */
 
 @Data

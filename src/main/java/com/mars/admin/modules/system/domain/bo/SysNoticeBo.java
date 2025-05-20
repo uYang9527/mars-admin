@@ -12,7 +12,7 @@ import com.mars.admin.modules.system.domain.SysNotice;
 /**
  * 通知公告业务对象 sys_notice
  *
- * @author Michelle.Chung
+ * @author mars
  */
 
 @Data

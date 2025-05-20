@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 上传对象信息
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Data
 public class SysOssUploadVo {

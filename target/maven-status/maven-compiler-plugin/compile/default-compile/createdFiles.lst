@@ -100,6 +100,7 @@ com\mars\admin\framework\core\exception\file\FileException__Javadoc.json
 com\mars\admin\framework\encrypt\core\EncryptContext__Javadoc.json
 com\mars\admin\modules\system\domain\bo\SysPostBo.class
 com\mars\admin\modules\system\domain\vo\SysTenantVo.class
+com\mars\admin\modules\system\domain\vo\SysOperLogVoToSysOperLogMapperImpl.class
 com\mars\admin\modules\system\domain\bo\SysRoleBoToSysRoleMapper.class
 com\mars\admin\framework\core\constant\RegexConstants__Javadoc.json
 com\mars\admin\modules\system\controller\monitor\SysOperlogController__Javadoc.json
@@ -221,7 +222,6 @@ com\mars\admin\framework\mybatis\handler\PlusDataPermissionHandler__Javadoc.json
 com\mars\admin\framework\oss\exception\OssException__Javadoc.json
 com\mars\admin\modules\system\domain\SysCache__Javadoc.json
 com\mars\admin\framework\encrypt\core\encryptor\Sm2Encryptor.class
-com\mars\admin\modules\system\domain\SysTenantToSysTenantVoMapperImpl.class
 com\mars\admin\modules\system\mapper\SysOssMapper__Javadoc.json
 com\mars\admin\framework\translation\core\handler\TranslationBeanSerializerModifier.class
 com\mars\admin\framework\encrypt\config\EncryptorAutoConfiguration__Javadoc.json
@@ -291,7 +291,6 @@ com\mars\admin\modules\system\mapper\SysTenantMapper__Javadoc.json
 com\mars\admin\modules\system\mapper\SysRoleMapper.class
 com\mars\admin\framework\core\factory\YmlPropertySourceFactory__Javadoc.json
 com\mars\admin\framework\core\constant\GlobalConstants__Javadoc.json
-io\github\linpeilie\ConverterMapperAdapter__0.class
 com\mars\admin\framework\core\exception\file\FileException.class
 com\mars\admin\framework\core\domain\model\RegisterBody__Javadoc.json
 com\mars\admin\modules\system\service\ISysTenantService__Javadoc.json
@@ -419,6 +418,7 @@ com\mars\admin\modules\system\domain\SysDeptToSysDeptVoMapperImpl.class
 com\mars\admin\modules\system\service\impl\SysPostServiceImpl.class
 com\mars\admin\modules\system\domain\vo\SysClientVoToSysClientMapper.class
 com\mars\admin\framework\encrypt\filter\EncryptResponseBodyWrapper$1.class
+io\github\linpeilie\ConverterMapperAdapter__8.class
 com\mars\admin\modules\system\controller\system\SysUserController__Javadoc.json
 com\mars\admin\framework\mybatis\enums\DataBaseType__Javadoc.json
 com\mars\admin\framework\encrypt\core\encryptor\Sm4Encryptor__Javadoc.json
@@ -564,6 +564,7 @@ com\mars\admin\modules\system\mapper\SysConfigMapper__Javadoc.json
 com\mars\admin\framework\encrypt\config\EncryptorAutoConfiguration.class
 com\mars\admin\framework\core\utils\file\FileUtils.class
 com\mars\admin\framework\log\enums\BusinessStatus.class
+io\github\linpeilie\AutoMapperConfig__8.class
 com\mars\admin\framework\mybatis\helper\DataPermissionHelper__Javadoc.json
 com\mars\admin\framework\mybatis\core\page\TableDataInfo__Javadoc.json
 com\mars\admin\framework\web\config\properties\CaptchaProperties.class
@@ -677,7 +678,6 @@ com\mars\admin\modules\system\domain\bo\SysPostBo__Javadoc.json
 com\mars\admin\modules\system\domain\vo\SysPostVoToSysPostMapperImpl.class
 com\mars\admin\framework\core\utils\regex\RegexUtils.class
 com\mars\admin\modules\system\service\impl\SysClientServiceImpl__Javadoc.json
-io\github\linpeilie\AutoMapperConfig__0.class
 com\mars\admin\modules\system\service\impl\SysPermissionServiceImpl.class
 com\mars\admin\framework\redis\utils\QueueUtils__Javadoc.json
 com\mars\admin\framework\core\domain\model\EmailLoginBody__Javadoc.json
@@ -693,6 +693,7 @@ com\mars\admin\modules\system\controller\system\SysDictDataController__Javadoc.j
 com\mars\admin\modules\system\service\impl\SysDeptServiceImpl.class
 com\mars\admin\framework\excel\annotation\CellMerge.class
 com\mars\admin\modules\system\domain\vo\SysOperLogVo.class
+com\mars\admin\modules\system\domain\SysDictTypeToSysDictTypeVoMapperImpl.class
 com\mars\admin\modules\system\domain\SysClientToSysClientVoMapperImpl.class
 com\mars\admin\modules\system\service\impl\SysSensitiveServiceImpl.class
 com\mars\admin\modules\system\domain\SysNoticeToSysNoticeVoMapper.class
@@ -788,7 +789,6 @@ com\mars\admin\modules\system\mapper\SysUserRoleMapper__Javadoc.json
 com\mars\admin\framework\encrypt\utils\EncryptUtils__Javadoc.json
 com\mars\admin\framework\redis\handler\KeyPrefixHandler__Javadoc.json
 com\mars\admin\modules\system\service\ISysUserService__Javadoc.json
-com\mars\admin\modules\system\domain\vo\SysMenuVoToSysMenuMapperImpl.class
 com\mars\admin\modules\system\domain\bo\SysDeptBoToSysDeptMapper.class
 com\mars\admin\modules\system\service\ISysNoticeService__Javadoc.json
 com\mars\admin\modules\system\domain\SysTenantPackage.class

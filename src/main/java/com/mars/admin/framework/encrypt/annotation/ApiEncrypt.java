@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 强制加密注解
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Documented
 @Target({ElementType.METHOD})

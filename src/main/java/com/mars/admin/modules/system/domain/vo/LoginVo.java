@@ -1,6 +1,7 @@
 package com.mars.admin.modules.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mars.admin.framework.core.domain.model.LoginUser;
 import lombok.Data;
 
 @Data
@@ -40,6 +41,11 @@ public class LoginVo {
      * 用户 openid
      */
     private String openid;
+
+    /**
+     * 用户信息
+     */
+    private LoginUser userInfo;
 
 
 }

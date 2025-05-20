@@ -4,7 +4,7 @@ server:
   port: 8080
   servlet:
     # 应用的访问路径
-    context-path: /api/admin
+    context-path: /
   # undertow 配置
   undertow:
     # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
@@ -178,7 +178,7 @@ springdoc:
   #    persistAuthorization: true
   info:
     # 标题
-    title: '标题：RuoYi-Vue-Plus多租户管理系统_接口文档'
+    title: '标题：Mars-Admin多租户管理系统_接口文档'
     # 描述
     description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
     # 版本

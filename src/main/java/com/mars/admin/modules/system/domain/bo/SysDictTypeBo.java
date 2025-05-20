@@ -13,7 +13,7 @@ import com.mars.admin.modules.system.domain.SysDictType;
 /**
  * 字典类型业务对象 sys_dict_type
  *
- * @author Michelle.Chung
+ * @author mars
  */
 
 @Data

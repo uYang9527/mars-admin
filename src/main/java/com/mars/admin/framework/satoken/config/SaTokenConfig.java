@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * sa-token 配置
  *
- * @author Lion Li
+ * @author Mars
  */
 @AutoConfiguration
 public class SaTokenConfig {

@@ -3,12 +3,12 @@ package com.mars.admin.modules.system.domain.vo;
 import com.mars.admin.modules.system.domain.SysDept;
 import com.mars.admin.modules.system.domain.SysDeptToSysDeptVoMapper;
 import com.mars.admin.modules.system.domain.bo.SysDeptBoToSysDeptMapper;
-import io.github.linpeilie.AutoMapperConfig__0;
+import io.github.linpeilie.AutoMapperConfig__14;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__0.class,
+    config = AutoMapperConfig__14.class,
     uses = {SysDeptBoToSysDeptMapper.class,SysDeptToSysDeptVoMapper.class,SysDeptToSysDeptVoMapper.class},
     imports = {}
 )

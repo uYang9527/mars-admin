@@ -3,12 +3,12 @@ package com.mars.admin.modules.system.domain.vo;
 import com.mars.admin.modules.system.domain.SysRoleToSysRoleVoMapper;
 import com.mars.admin.modules.system.domain.SysUser;
 import com.mars.admin.modules.system.domain.SysUserToSysUserVoMapper;
-import io.github.linpeilie.AutoMapperConfig__0;
+import io.github.linpeilie.AutoMapperConfig__14;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__0.class,
+    config = AutoMapperConfig__14.class,
     uses = {SysRoleVoToSysRoleMapper.class,SysRoleToSysRoleVoMapper.class,SysUserToSysUserVoMapper.class},
     imports = {}
 )

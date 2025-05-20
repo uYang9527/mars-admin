@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.RedisConfiguration;
 /**
  * 幂等功能配置
  *
- * @author Lion Li
+ * @author Mars
  */
 @AutoConfiguration(after = RedisConfiguration.class)
 public class IdempotentConfig {

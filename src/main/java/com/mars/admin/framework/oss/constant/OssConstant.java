@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 对象存储常量
  *
- * @author Lion Li
+ * @author Mars
  */
 public interface OssConstant {
 

@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * 租户业务对象 sys_tenant
  *
- * @author Michelle.Chung
+ * @author mars
  */
 
 @Data

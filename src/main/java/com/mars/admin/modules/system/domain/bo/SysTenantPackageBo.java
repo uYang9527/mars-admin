@@ -13,7 +13,7 @@ import com.mars.admin.modules.system.domain.SysTenantPackage;
 /**
  * 租户套餐业务对象 sys_tenant_package
  *
- * @author Michelle.Chung
+ * @author mars
  */
 
 @Data
@@ -36,7 +36,7 @@ public class SysTenantPackageBo extends BaseEntity {
     /**
      * 关联菜单id
      */
-    @AutoMapping(target = "menuIds", expression = "java(com.mars.admin.framework.common.core.utils.StringUtils.join(source.getMenuIds(), \",\"))")
+    @AutoMapping(target = "menuIds", expression = "java(com.mars.admin.framework.core.utils.StringUtils.join(source.getMenuIds(), \",\"))")
     private Long[] menuIds;
 
     /**

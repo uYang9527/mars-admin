@@ -7,7 +7,7 @@ import com.mars.admin.modules.system.domain.vo.SysTenantPackageVo;
 /**
  * 租户套餐Mapper接口
  *
- * @author Michelle.Chung
+ * @author mars
  */
 public interface SysTenantPackageMapper extends BaseMapperPlus<SysTenantPackage, SysTenantPackageVo> {
 

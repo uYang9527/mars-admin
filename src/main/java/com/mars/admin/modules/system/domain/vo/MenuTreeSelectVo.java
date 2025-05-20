@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 角色菜单列表树信息
  *
- * @author Michelle.Chung
+ * @author mars
  */
 @Data
 public class MenuTreeSelectVo {

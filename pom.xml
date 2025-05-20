@@ -29,6 +29,9 @@
         <hutool.version>5.8.35</hutool.version>
         <redisson.version>3.45.1</redisson.version>
 
+        <!-- SMS 配置 -->
+        <sms4j.version>3.3.4</sms4j.version>
+
         <mapstruct-plus.version>1.4.6</mapstruct-plus.version>
         <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
         <lock4j.version>2.2.7</lock4j.version>
@@ -262,6 +265,34 @@
             <groupId>io.github.linpeilie</groupId>
             <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
             <version>${mapstruct-plus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>jakarta.mail</artifactId>
+        </dependency>
+
+        <!--短信sms4j-->
+        <dependency>
+            <groupId>org.dromara.sms4j</groupId>
+            <artifactId>sms4j-spring-boot-starter</artifactId>
+            <version>${sms4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.16.7</version>
         </dependency>
 
 

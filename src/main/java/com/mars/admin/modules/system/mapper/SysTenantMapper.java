@@ -7,7 +7,7 @@ import com.mars.admin.modules.system.domain.vo.SysTenantVo;
 /**
  * 租户Mapper接口
  *
- * @author Michelle.Chung
+ * @author mars
  */
 public interface SysTenantMapper extends BaseMapperPlus<SysTenant, SysTenantVo> {
 

@@ -7,7 +7,7 @@ import com.mars.admin.modules.system.domain.vo.SysClientVo;
 /**
  * 授权管理Mapper接口
  *
- * @author Michelle.Chung
+ * @author mars
  * @date 2023-05-15
  */
 public interface SysClientMapper extends BaseMapperPlus<SysClient, SysClientVo> {
