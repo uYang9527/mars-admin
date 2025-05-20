@@ -4513,3 +4513,11 @@ param1=sys_client(java.lang.String)
 2025-05-20 17:31:26 [XNIO-1 task-3] INFO  c.m.a.f.w.i.PlusWebInvokeTimeInterceptor - [PLUS]结束请求 => URL[GET /monitor/online/list],耗时:[1128]毫秒
 2025-05-20 17:31:27 [XNIO-1 task-3] INFO  c.m.a.f.w.i.PlusWebInvokeTimeInterceptor - [PLUS]开始请求 => URL[GET /monitor/cache],无参数
 2025-05-20 17:31:27 [XNIO-1 task-3] INFO  c.m.a.f.w.i.PlusWebInvokeTimeInterceptor - [PLUS]结束请求 => URL[GET /monitor/cache],耗时:[195]毫秒
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  io.undertow - stopping server: Undertow - 2.3.12.Final
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  io.undertow.servlet - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  c.m.a.f.core.config.ThreadPoolConfig - ====关闭后台任务任务线程池====
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource start closing ....
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - master - Shutdown initiated...
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - master - Shutdown completed.
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  c.b.d.d.d.DefaultDataSourceDestroyer - dynamic-datasource close the datasource named [master] success,
+2025-05-20 17:39:34 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource all closed success,bye

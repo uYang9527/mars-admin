@@ -3,7 +3,7 @@ package com.mars.admin.modules.generator.constant;
 /**
  * 代码生成通用常量
  *
- * @author ruoyi
+ * @author mars
  */
 public interface GenConstants {
     /**

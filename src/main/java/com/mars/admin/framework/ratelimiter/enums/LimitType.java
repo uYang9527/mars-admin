@@ -3,7 +3,7 @@ package com.mars.admin.framework.ratelimiter.enums;
 /**
  * 限流类型
  *
- * @author ruoyi
+ * @author mars
  */
 
 public enum LimitType {
