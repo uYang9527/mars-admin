@@ -49,7 +49,7 @@
 
 ```
  账号: admin
- 密码: Mars123456
+ 密码: 123456
 ```
 
 
@@ -59,7 +59,7 @@
 
 ```text
 # Gitee
-git clone https://gitee.com/Marsfactory/easy-admin
+git clone https://gitee.com/Marsfactory/mars-admin
 ```
 
 - **Install：**
