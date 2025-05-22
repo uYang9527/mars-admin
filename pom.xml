@@ -40,6 +40,8 @@
         <!-- OSS 配置 -->
         <aws.sdk.version>2.28.22</aws.sdk.version>
 
+        <snailjob.version>1.4.0</snailjob.version>
+
         <!-- 面向运行时的D-ORM依赖 -->
         <anyline.version>8.7.2-20250101</anyline.version>
 
@@ -315,6 +317,18 @@
             <groupId>org.anyline</groupId>
             <artifactId>anyline-data-jdbc-mysql</artifactId>
             <version>${anyline.version}</version>
+        </dependency>
+
+        <!-- SnailJob client -->
+        <dependency>
+            <groupId>com.aizuda</groupId>
+            <artifactId>snail-job-client-starter</artifactId>
+            <version>${snailjob.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aizuda</groupId>
+            <artifactId>snail-job-client-job-core</artifactId>
+            <version>${snailjob.version}</version>
         </dependency>
 
 

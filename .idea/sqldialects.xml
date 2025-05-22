@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/doc/db/mars-admin.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/snail-job/snail-job-demo/docs/demo.sql" dialect="GenericSQL" />
   </component>
 </project>

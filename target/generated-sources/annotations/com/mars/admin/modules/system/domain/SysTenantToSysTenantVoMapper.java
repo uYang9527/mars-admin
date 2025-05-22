@@ -5,12 +5,12 @@ import com.mars.admin.modules.system.domain.vo.SysTenantVo;
 import com.mars.admin.modules.system.domain.vo.SysTenantVoToSysTenantMapper;
 import com.mars.admin.modules.system.domain.vo.SysTenantVoToTenantListVoMapper;
 import com.mars.admin.modules.web.domain.vo.TenantListVoToSysTenantVoMapper;
-import io.github.linpeilie.AutoMapperConfig__18;
+import io.github.linpeilie.AutoMapperConfig__19;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__18.class,
+    config = AutoMapperConfig__19.class,
     uses = {TenantListVoToSysTenantVoMapper.class,SysTenantVoToTenantListVoMapper.class,SysTenantVoToSysTenantMapper.class,SysTenantBoToSysTenantMapper.class},
     imports = {}
 )
