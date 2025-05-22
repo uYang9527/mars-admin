@@ -2,12 +2,12 @@ package com.mars.admin.modules.web.domain.vo;
 
 import com.mars.admin.modules.system.domain.vo.SysTenantVo;
 import com.mars.admin.modules.system.domain.vo.SysTenantVoToTenantListVoMapper;
-import io.github.linpeilie.AutoMapperConfig__19;
+import io.github.linpeilie.AutoMapperConfig__21;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__19.class,
+    config = AutoMapperConfig__21.class,
     uses = {SysTenantVoToTenantListVoMapper.class},
     imports = {}
 )

@@ -1,0 +1,1 @@
+{"doc":"","fields":[{"name":"username","doc":" 用户名\n"},{"name":"password","doc":" 密码\n"},{"name":"clientId","doc":" 客户端id\n"},{"name":"grantType","doc":" 授权类型\n"},{"name":"tenantId","doc":" 租戶id\n"},{"name":"code","doc":" 微信小承轩登录code\n"}],"enumConstants":[],"methods":[],"constructors":[]}

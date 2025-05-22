@@ -2,8 +2,8 @@ com.mars.admin.modules.system.domain.vo.SysOperLogVo
 com.mars.admin.modules.web.domain.vo.TenantListVo
 com.mars.admin.modules.system.domain.bo.SysClientBo
 com.mars.admin.modules.system.domain.bo.SysOssBo
-com.mars.admin.modules.system.domain.vo.SysUserVo
 com.mars.admin.modules.system.domain.vo.SysNoticeVo
+com.mars.admin.modules.system.domain.vo.SysUserVo
 com.mars.admin.modules.system.domain.bo.SysOssConfigBo
 com.mars.admin.modules.system.domain.bo.SysRoleBo
 com.mars.admin.modules.system.domain.bo.SysUserBo
@@ -22,13 +22,13 @@ com.mars.admin.modules.system.domain.vo.SysDictTypeVo
 com.mars.admin.modules.system.domain.bo.SysDeptBo
 com.mars.admin.modules.system.domain.vo.SysTenantVo
 com.mars.admin.modules.system.domain.bo.SysNoticeBo
-com.mars.admin.modules.system.domain.vo.SysDictDataVo
 com.mars.admin.modules.system.domain.bo.SysDictTypeBo
+com.mars.admin.modules.system.domain.vo.SysDictDataVo
 com.mars.admin.modules.system.domain.bo.SysTenantBo
 com.mars.admin.modules.system.domain.vo.SysRoleVo
 com.mars.admin.modules.system.domain.vo.SysTenantPackageVo
 com.mars.admin.modules.system.domain.vo.SysMenuVo
 com.mars.admin.modules.system.domain.vo.SysConfigVo
-com.mars.admin.modules.system.domain.vo.SysClientVo
 com.mars.admin.modules.system.domain.bo.SysLogininforBo
+com.mars.admin.modules.system.domain.vo.SysClientVo
 com.mars.admin.modules.system.domain.bo.SysPostBo
