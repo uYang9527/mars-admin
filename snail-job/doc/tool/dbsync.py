@@ -794,7 +794,7 @@ def main():
     )
     args = parser.parse_args()
 
-    sql_file = pathlib.Path("../sql/snail_job_mysql.sql").resolve().as_posix()
+    sql_file = pathlib.Path("../sql/snail_job.sql").resolve().as_posix()
     convertor = None
     if args.type == "postgre":
         convertor = PostgreSQLConvertor(sql_file)
