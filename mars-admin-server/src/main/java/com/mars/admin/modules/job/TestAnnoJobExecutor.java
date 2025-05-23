@@ -18,8 +18,6 @@ public class TestAnnoJobExecutor {
     public ExecuteResult jobExecute(JobArgs jobArgs) {
         SnailJobLog.LOCAL.info("testJobExecutor. jobArgs:{}", JsonUtil.toJsonString(jobArgs));
         SnailJobLog.REMOTE.info("testJobExecutor. jobArgs:{}", JsonUtil.toJsonString(jobArgs));
-        int i = 1 / 0;
-        System.out.println(i);
         return ExecuteResult.success("测试成功");
     }
 }
