@@ -3,12 +3,12 @@ package com.mars.admin.modules.system.domain;
 import com.mars.admin.modules.system.domain.bo.SysSocialBoToSysSocialMapper;
 import com.mars.admin.modules.system.domain.vo.SysSocialVo;
 import com.mars.admin.modules.system.domain.vo.SysSocialVoToSysSocialMapper;
-import io.github.linpeilie.AutoMapperConfig__25;
+import io.github.linpeilie.AutoMapperConfig__20;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__25.class,
+    config = AutoMapperConfig__20.class,
     uses = {SysSocialVoToSysSocialMapper.class,SysSocialBoToSysSocialMapper.class},
     imports = {}
 )

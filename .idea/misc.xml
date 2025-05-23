@@ -7,6 +7,9 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/.flattened-pom.xml" />
         <option value="$PROJECT_DIR$/mars-admin-server/pom.xml" />
+        <option value="$PROJECT_DIR$/mars-job/pom.xml" />
+        <option value="$PROJECT_DIR$/mars-admin-depends/snail-job/pom.xml" />
+        <option value="$PROJECT_DIR$/mars-admin-depends/mars-admin-monitor/pom.xml" />
       </list>
     </option>
   </component>

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-23T00:01:34+0800",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
+    date = "2025-05-23T16:13:40+0800",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.15 (Microsoft)"
 )
 @Component
 public class SysDictDataBoToSysDictDataMapperImpl implements SysDictDataBoToSysDictDataMapper {

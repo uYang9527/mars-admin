@@ -2,12 +2,12 @@ package com.mars.admin.modules.system.domain.bo;
 
 import com.mars.admin.framework.log.event.OperLogEvent;
 import com.mars.admin.framework.log.event.OperLogEventToSysOperLogBoMapper;
-import io.github.linpeilie.AutoMapperConfig__25;
+import io.github.linpeilie.AutoMapperConfig__20;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__25.class,
+    config = AutoMapperConfig__20.class,
     uses = {SysOperLogBoToSysOperLogMapper.class,OperLogEventToSysOperLogBoMapper.class},
     imports = {}
 )

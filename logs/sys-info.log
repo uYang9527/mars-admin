@@ -35,3 +35,40 @@
 2025-05-23 00:00:46 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - master - Shutdown completed.
 2025-05-23 00:00:46 [SpringApplicationShutdownHook] INFO  c.b.d.d.d.DefaultDataSourceDestroyer - dynamic-datasource close the datasource named [master] success,
 2025-05-23 00:00:46 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource all closed success,bye
+2025-05-23 16:13:47 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-05-23 16:13:47 [main] INFO  com.mars.admin.MarsAdminApplication - Starting MarsAdminApplication using Java 17.0.15 with PID 46076 (D:\java-project\mars-admin\mars-admin-server\target\classes started by 85099 in D:\java-project\mars-admin)
+2025-05-23 16:13:47 [main] INFO  com.mars.admin.MarsAdminApplication - The following 1 profile is active: "dev"
+2025-05-23 16:13:50 [main] INFO  io.undertow.servlet - Initializing Spring embedded WebApplicationContext
+2025-05-23 16:13:51 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource detect P6SPY plugin and enabled it
+2025-05-23 16:13:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - master - Starting...
+2025-05-23 16:13:51 [main] INFO  com.zaxxer.hikari.pool.HikariPool - master - Added connection com.mysql.cj.jdbc.ConnectionImpl@744f0e0b
+2025-05-23 16:13:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - master - Start completed.
+2025-05-23 16:13:51 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource - add a datasource named [master] success
+2025-05-23 16:13:51 [main] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource initial loaded [1] datasource,primary datasource named [master]
+2025-05-23 16:13:52 [main] INFO  c.m.a.f.redis.config.RedisConfig - 初始化 redis 配置
+2025-05-23 16:13:52 [main] INFO  org.redisson.Version - Redisson 3.45.1
+2025-05-23 16:13:53 [redisson-netty-1-6] INFO  o.r.connection.ConnectionsHolder - 1 connections initialized for 101.34.75.156/101.34.75.156:6379
+2025-05-23 16:13:54 [redisson-netty-1-3] INFO  o.r.connection.ConnectionsHolder - 8 connections initialized for 101.34.75.156/101.34.75.156:6379
+2025-05-23 16:13:55 [main] INFO  c.a.s.c.j.c.e.b.AbstractScriptExecutor$SnailFileUtils - [FileUtils] [workspace] use user.home as workspace: C:\Users\85099/snailJob/worker
+2025-05-23 16:13:56 [main] INFO  c.m.a.f.json.config.JacksonConfig - 初始化 jackson 配置
+2025-05-23 16:14:04 [main] INFO  io.undertow - starting server: Undertow - 2.3.12.Final
+2025-05-23 16:14:04 [main] INFO  org.xnio - XNIO version 3.8.8.Final
+2025-05-23 16:14:04 [main] INFO  org.xnio.nio - XNIO NIO Implementation Version 3.8.8.Final
+2025-05-23 16:14:04 [main] INFO  org.jboss.threads - JBoss Threads version 3.5.0.Final
+2025-05-23 16:14:04 [main] INFO  com.mars.admin.MarsAdminApplication - Started MarsAdminApplication in 17.301 seconds (process running for 17.98)
+2025-05-23 16:14:04 [main] INFO  c.a.s.c.c.init.SnailJobStartListener - snail-job client is preparing to start... v1.4.0
+2025-05-23 16:14:05 [main] INFO  c.a.s.c.c.rpc.server.SnailGrpcServer - ------> snail-job remoting server start success, grpc = com.aizuda.snailjob.client.common.rpc.server.SnailGrpcServer, port = 17889
+2025-05-23 16:14:05 [main] INFO  c.a.s.c.c.r.c.SnailJobGrpcClient - grpc client started connect to server
+2025-05-23 16:14:05 [main] INFO  c.a.s.c.c.init.SnailJobStartListener - snail-job client started successfully v1.4.0
+2025-05-23 16:14:06 [main] INFO  c.m.a.m.s.r.SystemApplicationRunner - 初始化OSS配置成功
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.a.s.c.c.init.SnailJobCloseListener - snail-job client about to shutdown v1.4.0
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.a.s.c.c.l.report.AbstractLogReport - AsyncReport Log about to shutdown
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.a.s.c.c.l.report.AbstractLogReport - AsyncReport Log has been shutdown
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.a.s.c.c.init.SnailJobCloseListener - snail-job client closed successfully v1.4.0
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  io.undertow - stopping server: Undertow - 2.3.12.Final
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.m.a.f.core.config.ThreadPoolConfig - ====关闭后台任务任务线程池====
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource start closing ....
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - master - Shutdown initiated...
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - master - Shutdown completed.
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.b.d.d.d.DefaultDataSourceDestroyer - dynamic-datasource close the datasource named [master] success,
+2025-05-23 16:14:39 [SpringApplicationShutdownHook] INFO  c.b.d.d.DynamicRoutingDataSource - dynamic-datasource all closed success,bye

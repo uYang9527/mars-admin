@@ -2,12 +2,12 @@ package com.mars.admin.modules.system.domain.vo;
 
 import com.mars.admin.modules.system.domain.SysDictType;
 import com.mars.admin.modules.system.domain.SysDictTypeToSysDictTypeVoMapper;
-import io.github.linpeilie.AutoMapperConfig__25;
+import io.github.linpeilie.AutoMapperConfig__20;
 import io.github.linpeilie.BaseMapper;
 import org.mapstruct.Mapper;
 
 @Mapper(
-    config = AutoMapperConfig__25.class,
+    config = AutoMapperConfig__20.class,
     uses = {SysDictTypeToSysDictTypeVoMapper.class},
     imports = {}
 )
