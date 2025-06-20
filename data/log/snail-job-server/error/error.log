@@ -168,3 +168,1314 @@ com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authe
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
 	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:15:51.472 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-10] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 3
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:01.474 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-11] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 4
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:11.471 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-12] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 5
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:21.458 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-13] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 6
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:31.465 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-14] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 8
+metadata {
+  uri: "/sync/version"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "null"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:31.465 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-15] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 7
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:41.458 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-16] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 9
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:16:51.458 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-17] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 10
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:01.459 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-18] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 11
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:11.464 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-19] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 12
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:21.455 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-20] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 13
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:31.454 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-21] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 14
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:31.454 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-22] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 15
+metadata {
+  uri: "/sync/version"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "null"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:41.457 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-23] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 16
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:17:51.455 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-24] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 17
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:01.454 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-25] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 18
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:11.455 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-26] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 19
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:21.461 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-27] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 20
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:31.457 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-29] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 22
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:31.457 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-28] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 21
+metadata {
+  uri: "/sync/version"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "null"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:41.459 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-30] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 23
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:18:51.485 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-31] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 24
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2025-05-23 16:19:01.468 [NETTY_ACTOR_SYSTEM-pekko.actor.netty-receive-request-dispatcher-32] ERROR com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor - http request error. [reqId: 25
+metadata {
+  uri: "/beat"
+  headers {
+    key: "Host"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "group-name"
+    value: "test_group"
+  }
+  headers {
+    key: "host-id"
+    value: "1925827886321750016"
+  }
+  headers {
+    key: "host-ip"
+    value: "127.0.0.1"
+  }
+  headers {
+    key: "host-port"
+    value: "17889"
+  }
+  headers {
+    key: "namespace"
+    value: "764d604ec6fc45f68cd92514c40e9e1a"
+  }
+  headers {
+    key: "token"
+    value: "SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj"
+  }
+  headers {
+    key: "version"
+    value: "0"
+  }
+}
+body: "[\"PING\"]"
+]
+com.aizuda.snailjob.server.common.exception.SnailJobServerException: Token authentication failed. [namespace:764d604ec6fc45f68cd92514c40e9e1a groupName:test_group token:SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj]
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.doProcess(GrpcRequestHandlerActor.java:96)
+	at com.aizuda.snailjob.server.common.rpc.server.grpc.GrpcRequestHandlerActor.lambda$createReceive$0(GrpcRequestHandlerActor.java:64)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:33)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:29)
+	at scala.PartialFunction.applyOrElse(PartialFunction.scala:214)
+	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:213)
+	at org.apache.pekko.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:29)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at org.apache.pekko.actor.Actor.aroundReceive(Actor.scala:547)
+	at org.apache.pekko.actor.Actor.aroundReceive$(Actor.scala:545)
+	at org.apache.pekko.actor.AbstractActor.aroundReceive(AbstractActor.scala:229)
+	at org.apache.pekko.actor.ActorCell.receiveMessage(ActorCell.scala:590)
+	at org.apache.pekko.actor.ActorCell.invoke(ActorCell.scala:557)
+	at org.apache.pekko.dispatch.Mailbox.processMailbox(Mailbox.scala:273)
+	at org.apache.pekko.dispatch.Mailbox.run(Mailbox.scala:234)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
