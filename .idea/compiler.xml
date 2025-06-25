@@ -50,9 +50,11 @@
           <entry name="$PROJECT_DIR$/../../repository/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
         <module name="mars-admin-server" />
-        <module name="mars-admin" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mars-admin" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

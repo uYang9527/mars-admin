@@ -1,33 +1,30 @@
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetUno,
-  presetWebFonts,
-  transformerDirectives,
-  transformerVariantGroup
-} from 'unocss';
+import { defineConfig } from '@unocss/vite';
+import transformerDirectives from '@unocss/transformer-directives';
+import transformerVariantGroup from '@unocss/transformer-variant-group';
+import presetUno from '@unocss/preset-uno';
+import type { Theme } from '@unocss/preset-uno';
+import { presetSoybeanAdmin } from '@sa/uno-preset';
+import { themeVars } from './src/theme/vars';
 
-export default defineConfig({
-  shortcuts: {
-    'panel-title':
-      'pb-[5px] font-sans leading-[1.1] font-medium text-base text-[#6379bb] border-b border-b-solid border-[var(--el-border-color-light)] mb-5 mt-0'
-  },
-  theme: {
-    colors: {
-      primary: 'var(--el-color-primary)',
-      primary_dark: 'var(--el-color-primary-light-5)'
+export default defineConfig<Theme>({
+  content: {
+    pipeline: {
+      exclude: ['node_modules', 'dist']
     }
   },
-  presets: [
-    presetUno(),
-    presetAttributify(),
-    presetIcons(),
-    presetTypography(),
-    presetWebFonts({
-      fonts: {}
-    })
-  ],
-  transformers: [transformerDirectives(), transformerVariantGroup()]
+  theme: {
+    ...themeVars,
+    fontSize: {
+      'icon-xs': '0.875rem',
+      'icon-small': '1rem',
+      icon: '1.125rem',
+      'icon-large': '1.5rem',
+      'icon-xl': '2rem'
+    }
+  },
+  shortcuts: {
+    'card-wrapper': 'rd-8px shadow-sm'
+  },
+  transformers: [transformerDirectives(), transformerVariantGroup()],
+  presets: [presetUno({ dark: 'class' }), presetSoybeanAdmin()]
 });

@@ -1,77 +1,184 @@
-## 平台简介
+<div align="center">
+  <img src="./public/favicon.svg" width="160" />
+  <h1>SoybeanAdmin</h1>
+  <span>中文 | <a href="./README.en_US.md">English</a></span>
+</div>
 
-- 本仓库为前端技术栈 [Vue3](https://v3.cn.vuejs.org) + [TS](https://www.typescriptlang.org/) + [Element Plus](https://element-plus.org/zh-CN) + [Vite](https://cn.vitejs.dev) 版本。
-- 成员项目: 基于 vben5(ant-design-vue) 的前端项目 [ruoyi-plus-vben5](https://gitee.com/dapppp/ruoyi-plus-vben5)
+---
 
-## 配套后端代码仓库地址
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![github stars](https://img.shields.io/github/stars/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
+[![github forks](https://img.shields.io/github/forks/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
+[![gitee stars](https://gitee.com/honghuangdc/soybean-admin/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin)
 
-| 介绍         | 项目名              | 项目地址                                                                                                                                                                           |
-|------------|:-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 🔥 分布式集群框架 | Mars-Admin   | - [Gitee](https://gitee.com/MarsFactory/Mars-Admin)<br> - [GitHub](https://github.com/dromara/Mars-Admin)<br> - [GitCode](https://gitcode.com/dromara/Mars-Admin)      |
-| 🔥 微服务框架   | RuoYi-Cloud-Plus | - [Gitee](https://gitee.com/MarsFactory/RuoYi-Cloud-Plus)<br>- [GitHub](https://github.com/dromara/RuoYi-Cloud-Plus)<br> - [GitCode](https://gitcode.com/dromara/RuoYi-Cloud-Plus) |
+<a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-## 前端运行
+> [!NOTE]
+> 如果您觉得 `SoybeanAdmin`对您有所帮助，或者您喜欢我们的项目，请在 GitHub 上给我们一个 ⭐️。您的支持是我们持续改进和增加新功能的动力！感谢您的支持！
+
+## 简介
+
+[`SoybeanAdmin`](https://github.com/soybeanjs/soybean-admin) 是一个清新优雅、高颜值且功能强大的后台管理模板，基于最新的前端技术栈，包括 Vue3, Vite5, TypeScript, Pinia 和 UnoCSS。它内置了丰富的主题配置和组件，代码规范严谨，实现了自动化的文件路由系统。此外，它还采用了基于 ApiFox 的在线Mock数据方案。`SoybeanAdmin` 为您提供了一站式的后台管理解决方案，无需额外配置，开箱即用。同样是一个快速学习前沿技术的最佳实践。
+
+## 特性
+
+- **前沿技术应用**：采用 Vue3, Vite5, TypeScript, Pinia 和 UnoCSS 等最新流行的技术栈。
+- **清晰的项目架构**：采用 pnpm monorepo 架构，结构清晰，优雅易懂。
+- **严格的代码规范**：遵循 [SoybeanJS 规范](https://docs.soybeanjs.cn/zh/standard)，集成了eslint, prettier 和 simple-git-hooks，保证代码的规范性。
+- **TypeScript**： 支持严格的类型检查，提高代码的可维护性。
+- **丰富的主题配置**：内置多样的主题配置，与 UnoCSS 完美结合。
+- **内置国际化方案**：轻松实现多语言支持。
+- **自动化文件路由系统**：自动生成路由导入、声明和类型。更多细节请查看 [Elegant Router](https://github.com/soybeanjs/elegant-router)。
+- **灵活的权限路由**：同时支持前端静态路由和后端动态路由。
+- **丰富的页面组件**：内置多样页面和组件，包括403、404、500页面，以及布局组件、标签组件、主题配置组件等。
+- **命令行工具**：内置高效的命令行工具，git提交、删除文件、发布等。
+- **移动端适配**：完美支持移动端，实现自适应布局。
+
+
+## 版本
+
+- **NaiveUI 版本:**
+  - [预览地址](https://naive.soybeanjs.cn/)
+  - [Github 仓库](https://github.com/soybeanjs/soybean-admin)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin)
+- **AntDesignVue 版本:**
+  - [预览地址](https://antd.soybeanjs.cn/)
+  - [Github 仓库](https://github.com/soybeanjs/soybean-admin-antd)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin-antd)
+- **ElementPlus 版本:**
+  - [预览地址](https://elp.soybeanjs.cn/)
+  - [Github 仓库](https://github.com/soybeanjs/soybean-admin-element-plus)
+- **旧版:**
+  - [预览地址](https://legacy.soybeanjs.cn/)
+  - [Github 仓库](https://github.com/soybeanjs/soybean-admin/tree/legacy)
+
+
+## 文档
+
+- [地址](https://docs.soybeanjs.cn)
+- [旧版文档](https://legacy-docs.soybeanjs.cn)
+
+## 示例图片
+
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-01.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-02.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-03.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-04.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-05.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-06.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-07.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-08.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-09.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-10.png)
+![](https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean-admin-v1-mobile.png)
+
+
+## 使用
+
+**环境准备**
+
+确保你的环境满足以下要求：
+
+- **git**: 你需要git来克隆和管理项目版本。
+- **NodeJS**: >=18.12.0，推荐 18.19.0 或更高。
+- **pnpm**: >= 8.7.0，推荐 8.14.0 或更高。
+
+**克隆项目**
 
 ```bash
-# 安装依赖
-npm install --registry=https://registry.npmmirror.com
-
-# 启动服务
-npm run dev
-
-# 构建生产环境
-npm run build:prod
-
-# 前端访问地址 http://localhost:80
+git clone https://github.com/soybeanjs/soybean-admin.git
 ```
 
-## 本框架与RuoYi的业务差异
+**安装依赖**
 
-| 业务         | 功能说明                                                      | 本框架 | RuoYi                         |
-| ------------ | ------------------------------------------------------------- | ------ | ----------------------------- |
-| 租户管理     | 系统内租户的管理 如:租户套餐、过期时间、用户数量、企业信息等  | 支持   | 无                            |
-| 租户套餐管理 | 系统内租户所能使用的套餐管理 如:套餐内所包含的菜单等          | 支持   | 无                            |
-| 用户管理     | 用户的管理配置 如:新增用户、分配用户所属部门、角色、岗位等    | 支持   | 支持                          |
-| 部门管理     | 配置系统组织机构（公司、部门、小组） 树结构展现支持数据权限   | 支持   | 支持                          |
-| 岗位管理     | 配置系统用户所属担任职务                                      | 支持   | 支持                          |
-| 菜单管理     | 配置系统菜单、操作权限、按钮权限标识等                        | 支持   | 支持                          |
-| 角色管理     | 角色菜单权限分配、设置角色按机构进行数据范围权限划分          | 支持   | 支持                          |
-| 字典管理     | 对系统中经常使用的一些较为固定的数据进行维护                  | 支持   | 支持                          |
-| 参数管理     | 对系统动态配置常用参数                                        | 支持   | 支持                          |
-| 通知公告     | 系统通知公告信息发布维护                                      | 支持   | 支持                          |
-| 操作日志     | 系统正常操作日志记录和查询 系统异常信息日志记录和查询         | 支持   | 支持                          |
-| 登录日志     | 系统登录日志记录查询包含登录异常                              | 支持   | 支持                          |
-| 文件管理     | 系统文件展示、上传、下载、删除等管理                          | 支持   | 无                            |
-| 文件配置管理 | 系统文件上传、下载所需要的配置信息动态添加、修改、删除等管理  | 支持   | 无                            |
-| 在线用户管理 | 已登录系统的在线用户信息监控与强制踢出操作                    | 支持   | 支持                          |
-| 定时任务     | 运行报表、任务管理(添加、修改、删除)、日志管理、执行器管理等  | 支持   | 仅支持任务与日志管理          |
-| 代码生成     | 多数据源前后端代码的生成（java、html、xml、sql）支持CRUD下载  | 支持   | 仅支持单数据源                |
-| 系统接口     | 根据业务代码自动生成相关的api接口文档                         | 支持   | 支持                          |
-| 服务监控     | 监视集群系统CPU、内存、磁盘、堆栈、在线日志、Spring相关配置等 | 支持   | 仅支持单机CPU、内存、磁盘监控 |
-| 缓存监控     | 对系统的缓存信息查询，命令统计等。                            | 支持   | 支持                          |
-| 在线构建器   | 拖动表单元素生成相应的HTML代码。                              | 支持   | 支持                          |
-| 使用案例     | 系统的一些功能案例                                            | 支持   | 不支持                        |
+```bash
+pnpm i
+```
+> 由于本项目采用了 pnpm monorepo 的管理方式，因此请不要使用 npm 或 yarn 来安装依赖。
 
-## 演示图例
+**启动项目**
 
-|                                                                                                      |                                                                                                      |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| ![输入图片说明](https://foruda.gitee.com/images/1680077524361362822/270bb429_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680077619939771291/989bf9b6_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680077681751513929/1c27c5bd_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680077721559267315/74d63e23_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680077765638904515/1b75d4a6_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078026375951297/eded7a4b_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078237104531207/0eb1b6a7_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078254306078709/5931e22f_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078287971528493/0b9af60a_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078308138770249/8d3b6696_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078352553634393/db5ef880_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078378238393374/601e4357_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078414983206024/2aae27c1_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078446738419874/ecce7d59_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078475971341775/149e8634_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078491666717143/3fadece7_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078558863188826/fb8ced2a_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078574561685461/ae68a0b2_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078594932772013/9d8bfec6_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078626493093532/fcfe4ff6_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078643608812515/0295bd4f_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078685196286463/d7612c81_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078703877318597/56fce0bc_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078716586545643/b6dbd68f_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078734103217688/eb1e6aa6_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078759131415480/73c525d8_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078779416197879/75e3ed02_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078802329118061/77e10915_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078893627848351/34a1c342_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078928175016986/f126ec4a_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078941718318363/b68a0f72_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680078963175518631/3bb769a1_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078982294090567/b31c343d_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680079000642440444/77ca82a9_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680079020995074177/03b7d52e_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680079039367822173/76811806_1766278.png '屏幕截图') |
-| ![输入图片说明](https://foruda.gitee.com/images/1680079274333484664/4dfdc7c0_1766278.png '屏幕截图') | ![输入图片说明](https://foruda.gitee.com/images/1680079290467458224/d6715fcf_1766278.png '屏幕截图') |
+```bash
+pnpm dev
+```
+
+**构建项目**
+
+```bash
+pnpm build
+```
+
+**代码同步**
+
+参考 [代码同步](https://docs.soybeanjs.cn/zh/guide/sync) 文档。
+
+## 周边生态
+
+- [electron-mock-admin](https://github.com/lixin59/electron-mock-api): 一个 Mock Api 管理系统，帮助前端开发伙伴快速实现接口的 mock。
+- [T-Shell](https://github.com/TheBlindM/T-Shell): 是一个可配置命令提示的终端模拟器和 SSH 客户端。
+- [pea](https://github.com/haitang1894/pea) : 采用SpringBoot3.2 + JDK21、MyBatis-Plus、SpringSecurity安全框架等，适配 [soybean-admin](https://gitee.com/honghuangdc/soybean-admin) 开发的简单权限系统。
+- [MalusAdmin](https://github.com/pridejoy/MalusAdmin): 基于 Vue3/TypeScript/NaiveUI 和 NET7 & Sqlsugar 开发的后台管理框架。采用最原生最简洁的方式来实现, 前端清新优雅高颜值，后端 结构清晰，优雅易懂，功能强大。
+- [PanisAdmin](https://github.com/paynezhuang/panis-admin): 采用SpringBoot3、SaToken、MySQL等框架开发，二次修改 [soybean-admin](https://github.com/soybeanjs/soybean-admin)，适配动态菜单/按钮级别的鉴权，保留原汁原味、清新优雅、高颜值的后台管理系统脚手架。
+- [snail-job](https://github.com/aizuda/snail-job): 一款兼具 “高性能、高颜值、高活跃” 的分布式任务重试和分布式任务调度平台。
+- [SuperApi](https://github.com/TmmTop/SuperApi): 快速将你的 idea 变成线上稳定运行的产品！ 无实体建库建表，对无实体库表进行增删改查，支持 15 种条件查询，以及分页，列表，无限级树形列表 等功能的 API 部署！ 拥有接口文档，Auth 授权，接口限流，获取客户端真实 IP，先进的服务器缓存组件，动态 API 等功能，期待您的体验！
+- [FastSoyAdmin](https://github.com/sleep1223/fast-soy-admin): 基于 FastAPI+Vue3+Naive UI 的现代化轻量管理平台.
+
+
+## 如何贡献
+
+我们热烈欢迎并感谢所有形式的贡献。如果您有任何想法或建议，欢迎通过提交 [pull requests](https://github.com/soybeanjs/soybean-admin/pulls) 或创建 GitHub [issue](https://github.com/soybeanjs/soybean-admin/issues/new) 来分享。
+
+## Git 提交规范
+
+本项目已内置 `commit` 命令，您可以通过执行 `pnpm commit` 来生成符合 [Conventional Commits]([conventionalcommits](https://www.conventionalcommits.org/)) 规范的提交信息。在提交PR时，请务必使用 `commit` 命令来创建提交信息，以确保信息的规范性。
+
+
+## 浏览器支持
+
+推荐使用最新版的 Chrome 浏览器进行开发，以获得更好的体验。
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt="IE" width="24px" height="24px"  />](http://godban.github.io/browsers-support-badges/) | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/) | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/) | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/) | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/) |
+| --- | --- | --- | --- | --- |
+| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
+## 开源作者
+
+[Soybean](https://github.com/honghuangdc)
+
+
+## 贡献者
+
+感谢以下贡献者的贡献。如果您想为本项目做出贡献，请参考 [如何贡献](#如何贡献)。
+
+<a href="https://github.com/soybeanjs/soybean-admin/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=soybeanjs/soybean-admin" />
+</a>
+
+## 交流
+
+`SoybeanAdmin` 是完全开源免费的项目，在帮助开发者更方便地进行中大型管理系统开发，同时也提供微信和 QQ 交流群，使用问题欢迎在群内提问。
+
+  <div>
+    <p>QQ交流群</p>
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-3.jpg" style="width:200px" />
+  </div>
+  <!-- <div>
+    <p>微信群</p>
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/picgo/soybean-admin-wechat-0620.jpg" style="width:200px" />
+  </div> -->
+  <div>
+    <p>添加下面微信邀请进微信群</p>
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/wechat-soybeanjs.jpg" style="width:200px" />
+  </div>
+  <div>
+    <p>添加 Soybean 的微信，业务咨询、合作、项目架构、一对一指导等</p>
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/wechat-soybean.jpg" style="width:200px" />
+  </div>
+
+## Star 趋势
+
+[![Star History Chart](https://api.star-history.com/svg?repos=soybeanjs/soybean-admin&type=Date)](https://star-history.com/#soybeanjs/soybean-admin&Date)
+
+## 开源协议
+
+项目基于 [MIT © 2021 Soybean](./LICENSE) 协议，仅供学习参考，商业使用请保留作者版权信息，作者不保证也不承担任何软件的使用风险。
