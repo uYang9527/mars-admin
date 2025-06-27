@@ -30,13 +30,44 @@ public class SysUserController extends BaseController<SysUser, Long> {
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/user/list           - 获取所有用户
     // GET    /system/user/{id}           - 根据ID获取用户
-    // GET    /system/user/page           - 分页查询用户
+    // GET    /system/user/page           - 分页查询用户（重写以支持查询条件）
     // POST   /system/user                - 新增用户
     // PUT    /system/user                - 更新用户
     // DELETE /system/user/{id}           - 删除用户
     // DELETE /system/user/batch          - 批量删除用户
     
-    // 基础的增删改查功能已由BaseController提供，这里只保留特有的业务方法
+    // 基础的增删改查功能已由BaseController提供，这里重写部分方法以支持业务逻辑
+
+    /**
+     * 分页查询用户（重写以支持查询条件）
+     */
+    @GetMapping("/pageList")
+    @Operation(summary = "分页查询用户", description = "分页查询用户列表，支持条件筛选")
+    public Result<com.mybatisflex.core.paginate.Page<SysUser>> pageList(
+            @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
+            @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") Integer size,
+            @Parameter(description = "用户名") @RequestParam(required = false) String userName,
+            @Parameter(description = "昵称") @RequestParam(required = false) String nickName,
+            @Parameter(description = "手机号") @RequestParam(required = false) String phone,
+            @Parameter(description = "邮箱") @RequestParam(required = false) String email,
+            @Parameter(description = "性别") @RequestParam(required = false) Integer userGender,
+            @Parameter(description = "状态") @RequestParam(required = false) Integer status) {
+
+        // 构造查询条件
+        SysUser queryUser = new SysUser();
+        queryUser.setUsername(userName);
+        queryUser.setNickname(nickName);
+        queryUser.setPhone(phone);
+        queryUser.setEmail(email);
+        queryUser.setGender(userGender);
+        queryUser.setStatus(status);
+
+        // 分页查询
+        com.mybatisflex.core.paginate.Page<SysUser> page = com.mybatisflex.core.paginate.Page.of(current, size);
+        com.mybatisflex.core.paginate.Page<SysUser> result = sysUserService.selectUserPage(page, queryUser);
+
+        return Result.success(result);
+    }
 
     /**
      * 重置用户密码

@@ -59,7 +59,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     public Page<SysUser> selectUserPage(Page<SysUser> page, SysUser user) {
         QueryWrapper query = QueryWrapper.create()
-                .select()
+                .select(SYS_USER.ALL_COLUMNS)
                 .from(SYS_USER)
                 .where(SYS_USER.IS_DELETED.eq(0));
 
@@ -71,6 +71,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         }
         if (StringUtils.hasText(user.getPhone())) {
             query.and(SYS_USER.PHONE.like(user.getPhone()));
+        }
+        if (StringUtils.hasText(user.getEmail())) {
+            query.and(SYS_USER.EMAIL.like(user.getEmail()));
+        }
+        if (user.getGender() != null) {
+            query.and(SYS_USER.GENDER.eq(user.getGender()));
         }
         if (user.getStatus() != null) {
             query.and(SYS_USER.STATUS.eq(user.getStatus()));

@@ -2,21 +2,22 @@ import { transformRecordToOption } from '@/utils/common';
 
 export const enableStatusRecord: Record<Api.Common.EnableStatus, App.I18n.I18nKey> = {
   '1': 'page.manage.common.status.enable',
-  '2': 'page.manage.common.status.disable'
+  '0': 'page.manage.common.status.disable'
 };
 
 export const enableStatusOptions = transformRecordToOption(enableStatusRecord);
 
 export const userGenderRecord: Record<Api.SystemManage.UserGender, App.I18n.I18nKey> = {
-  '1': 'page.manage.user.gender.male',
-  '2': 'page.manage.user.gender.female'
+  '0': 'page.manage.user.gender.male',
+  '1': 'page.manage.user.gender.female'
 };
 
 export const userGenderOptions = transformRecordToOption(userGenderRecord);
 
 export const menuTypeRecord: Record<Api.SystemManage.MenuType, App.I18n.I18nKey> = {
-  '1': 'page.manage.menu.type.directory',
-  '2': 'page.manage.menu.type.menu'
+  'M': 'page.manage.menu.type.directory',
+  'C': 'page.manage.menu.type.menu',
+  'F': 'page.manage.menu.type.button'
 };
 
 export const menuTypeOptions = transformRecordToOption(menuTypeRecord);

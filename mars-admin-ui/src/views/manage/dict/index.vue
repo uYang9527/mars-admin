@@ -273,6 +273,9 @@ const searchForm = reactive({
   status: null
 });
 
+// 折叠状态
+const collapsed = ref(false);
+
 // 查看字典数据
 async function viewDictData(dictType) {
   selectedDictType.value = dictType.dictType;
@@ -435,6 +438,10 @@ function handleDictDataSubmitted() {
   loadDictData();
 }
 
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
+
 onMounted(() => {
   getDictTypeData();
 });
@@ -443,58 +450,76 @@ onMounted(() => {
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
-      <AForm
-        :model="searchForm"
-        :label-col="{
-          span: 5,
-          md: 7
-        }"
-      >
-        <ARow :gutter="[16, 16]" wrap>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="字典名称" name="dictName" class="m-0">
-              <AInput v-model:value="searchForm.dictName" placeholder="请输入字典名称" />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="字典类型" name="dictType" class="m-0">
-              <AInput v-model:value="searchForm.dictType" placeholder="请输入字典类型" />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="状态" name="status" class="m-0">
-              <ASelect
-                v-model:value="searchForm.status"
-                placeholder="请选择状态"
-                :options="[
-                  { label: '正常', value: 1 },
-                  { label: '停用', value: 0 }
-                ]"
-                clearable
-              />
-            </AFormItem>
-          </ACol>
-          <div class="flex-1">
-            <AFormItem class="m-0">
-              <div class="w-full flex-y-center justify-end gap-12px">
-                <AButton @click="handleReset">
-                  <template #icon>
-                    <icon-ic-round-refresh class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.reset') }}</span>
-                </AButton>
-                <AButton type="primary" ghost @click="handleSearch">
-                  <template #icon>
-                    <icon-ic-round-search class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.search') }}</span>
-                </AButton>
-              </div>
-            </AFormItem>
-          </div>
-        </ARow>
-      </AForm>
+    <ACard 
+      :title="$t('common.search')" 
+      :bordered="false" 
+      class="card-wrapper" 
+      :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
+      :data-collapsed="collapsed"
+    >
+      <template #extra>
+        <AButton type="text" @click="toggleCollapsed">
+          <template #icon>
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+            <icon-mdi:chevron-up v-else class="text-icon" />
+          </template>
+          {{ collapsed ? '展开' : '收起' }}
+        </AButton>
+      </template>
+      
+      <div v-show="!collapsed">
+        <AForm
+          :model="searchForm"
+          :label-col="{
+            span: 5,
+            md: 7
+          }"
+        >
+          <ARow :gutter="[16, 16]" wrap>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="字典名称" name="dictName" class="m-0">
+                <AInput v-model:value="searchForm.dictName" placeholder="请输入字典名称" />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="字典类型" name="dictType" class="m-0">
+                <AInput v-model:value="searchForm.dictType" placeholder="请输入字典类型" />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="状态" name="status" class="m-0">
+                <ASelect
+                  v-model:value="searchForm.status"
+                  placeholder="请选择状态"
+                  :options="[
+                    { label: '正常', value: 1 },
+                    { label: '停用', value: 0 }
+                  ]"
+                  clearable
+                />
+              </AFormItem>
+            </ACol>
+            <div class="flex-1">
+              <AFormItem class="m-0">
+                <div class="w-full flex-y-center justify-end gap-12px">
+                  <AButton @click="handleReset">
+                    <template #icon>
+                      <icon-ic-round-refresh class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.reset') }}</span>
+                  </AButton>
+                  <AButton type="primary" ghost @click="handleSearch">
+                    <template #icon>
+                      <icon-ic-round-search class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.search') }}</span>
+                  </AButton>
+                </div>
+              </AFormItem>
+            </div>
+          </ARow>
+        </AForm>
+      </div>
     </ACard>
 
     <!-- 字典类型表格区域 -->
@@ -663,8 +688,32 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.text-icon {
+  font-size: 16px;
+}
+
+/* 折叠状态下的卡片样式优化 */
 .card-wrapper {
-  @apply flex-col-stretch gap-16px overflow-hidden;
+  transition: all 0.3s ease;
+}
+
+/* 折叠时隐藏卡片主体，只保留标题栏 */
+.card-wrapper :deep(.ant-card-body) {
+  transition: all 0.3s ease;
+}
+
+/* 当折叠时，强制隐藏卡片主体 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 优化折叠后的卡片头部样式 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+  margin-bottom: 0 !important;
+  border-bottom: none !important;
 }
 
 /* 字典数据弹窗样式 */

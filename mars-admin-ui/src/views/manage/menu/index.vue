@@ -238,6 +238,9 @@ const searchForm = reactive({
   status: null
 });
 
+// 折叠状态
+const collapsed = ref(false);
+
 // 原始菜单数据
 const originalMenuList = ref<Api.SystemManage.Menu[]>([]);
 
@@ -267,6 +270,10 @@ function handleReset() {
   getMenuList();
 }
 
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
+
 // 提交后刷新列表
 function handleSubmitted() {
   modalVisible.value = false;
@@ -280,67 +287,85 @@ getMenuList();
 <template>
   <div class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
-      <AForm
-        :model="searchForm"
-        :label-col="{
-          span: 5,
-          md: 7
-        }"
-      >
-        <ARow :gutter="[16, 16]" wrap>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="菜单名称" name="menuName" class="m-0">
-              <AInput 
-                v-model:value="searchForm.menuName" 
-                placeholder="请输入菜单名称" 
-                @input="handleSearch"
-              />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="菜单编码" name="menuCode" class="m-0">
-              <AInput 
-                v-model:value="searchForm.menuCode" 
-                placeholder="请输入菜单编码" 
-                @input="handleSearch"
-              />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="状态" name="status" class="m-0">
-              <ASelect
-                v-model:value="searchForm.status"
-                placeholder="请选择状态"
-                :options="[
-                  { label: '启用', value: '1' },
-                  { label: '禁用', value: '0' }
-                ]"
-                clearable
-                @change="handleSearch"
-              />
-            </AFormItem>
-          </ACol>
-          <div class="flex-1">
-            <AFormItem class="m-0">
-              <div class="w-full flex-y-center justify-end gap-12px">
-                <AButton @click="handleReset">
-                  <template #icon>
-                    <icon-ic-round-refresh class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.reset') }}</span>
-                </AButton>
-                <AButton type="primary" ghost @click="handleSearch">
-                  <template #icon>
-                    <icon-ic-round-search class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.search') }}</span>
-                </AButton>
-              </div>
-            </AFormItem>
-          </div>
-        </ARow>
-      </AForm>
+    <ACard 
+      :title="$t('common.search')" 
+      :bordered="false" 
+      class="card-wrapper" 
+      :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
+      :data-collapsed="collapsed"
+    >
+      <template #extra>
+        <AButton type="text" @click="toggleCollapsed">
+          <template #icon>
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+            <icon-mdi:chevron-up v-else class="text-icon" />
+          </template>
+          {{ collapsed ? '展开' : '收起' }}
+        </AButton>
+      </template>
+      
+      <div v-show="!collapsed">
+        <AForm
+          :model="searchForm"
+          :label-col="{
+            span: 5,
+            md: 7
+          }"
+        >
+          <ARow :gutter="[16, 16]" wrap>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="菜单名称" name="menuName" class="m-0">
+                <AInput 
+                  v-model:value="searchForm.menuName" 
+                  placeholder="请输入菜单名称" 
+                  @input="handleSearch"
+                />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="菜单编码" name="menuCode" class="m-0">
+                <AInput 
+                  v-model:value="searchForm.menuCode" 
+                  placeholder="请输入菜单编码" 
+                  @input="handleSearch"
+                />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="状态" name="status" class="m-0">
+                <ASelect
+                  v-model:value="searchForm.status"
+                  placeholder="请选择状态"
+                  :options="[
+                    { label: '启用', value: '1' },
+                    { label: '禁用', value: '0' }
+                  ]"
+                  clearable
+                  @change="handleSearch"
+                />
+              </AFormItem>
+            </ACol>
+            <div class="flex-1">
+              <AFormItem class="m-0">
+                <div class="w-full flex-y-center justify-end gap-12px">
+                  <AButton @click="handleReset">
+                    <template #icon>
+                      <icon-ic-round-refresh class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.reset') }}</span>
+                  </AButton>
+                  <AButton type="primary" ghost @click="handleSearch">
+                    <template #icon>
+                      <icon-ic-round-search class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.search') }}</span>
+                  </AButton>
+                </div>
+              </AFormItem>
+            </div>
+          </ARow>
+        </AForm>
+      </div>
     </ACard>
 
     <!-- 表格区域 -->
@@ -423,5 +448,62 @@ getMenuList();
 /* 图标居中对齐 */
 :deep(.ant-table-tbody .ant-table-cell) {
   vertical-align: middle;
+}
+
+/* 表格滚动条优化 */
+:deep(.ant-table-body) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+}
+
+:deep(.ant-table-body::-webkit-scrollbar) {
+  width: 8px;
+  height: 8px;
+}
+
+:deep(.ant-table-body::-webkit-scrollbar-thumb) {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+:deep(.ant-table-body::-webkit-scrollbar-thumb:hover) {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(99, 102, 241, 0.6));
+  transform: scale(1.1);
+}
+
+:deep(.ant-table-body::-webkit-scrollbar-track) {
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 4px;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+}
+
+/* 折叠状态下的卡片样式优化 */
+.card-wrapper {
+  transition: all 0.3s ease;
+}
+
+/* 折叠时隐藏卡片主体，只保留标题栏 */
+.card-wrapper :deep(.ant-card-body) {
+  transition: all 0.3s ease;
+}
+
+/* 当折叠时，强制隐藏卡片主体 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 优化折叠后的卡片头部样式 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+  margin-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
+.text-icon {
+  font-size: 16px;
 }
 </style>

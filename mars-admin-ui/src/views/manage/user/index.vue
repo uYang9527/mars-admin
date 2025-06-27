@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch, computed } from 'vue';
 import type { Ref } from 'vue';
-import { Button, Popconfirm, Space, Tag } from 'ant-design-vue';
+import { Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { 
   fetchGetUserList, 
@@ -15,6 +15,7 @@ import { useAppStore } from '@/store/modules/app';
 import { enableStatusRecord, userGenderRecord } from '@/constants/business';
 import UserOperateDrawer, { type OperateType } from './modules/user-operate-drawer.vue';
 import UserSearch from './modules/user-search.vue';
+import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
 
 const appStore = useAppStore();
 
@@ -37,6 +38,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
     columns: () => [
       {
         key: 'index',
+        dataIndex: 'index',
         title: $t('common.index'),
         width: 64,
         align: 'center',
@@ -44,18 +46,21 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       },
       {
         key: 'userName',
+        dataIndex: 'userName',
         title: $t('page.manage.user.userName'),
         align: 'center',
         minWidth: 100
       },
       {
         key: 'nickName',
+        dataIndex: 'nickName',
         title: $t('page.manage.user.nickName'),
         align: 'center',
         minWidth: 100
       },
       {
         key: 'userGender',
+        dataIndex: 'userGender',
         title: $t('page.manage.user.userGender'),
         align: 'center',
         width: 80,
@@ -66,23 +71,26 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
 
           const label = $t(userGenderRecord[record.userGender]);
 
-          return <Tag color={record.userGender === '0' ? 'blue' : 'pink'}>{label}</Tag>;
+          return <Tag color={record.userGender === 0 ? 'blue' : 'pink'}>{label}</Tag>;
         }
       },
       {
         key: 'phone',
+        dataIndex: 'phone',
         title: $t('page.manage.user.userPhone'),
         align: 'center',
         width: 120
       },
       {
         key: 'email',
+        dataIndex: 'email',
         title: $t('page.manage.user.userEmail'),
         align: 'center',
         minWidth: 200
       },
       {
         key: 'status',
+        dataIndex: 'status',
         title: $t('page.manage.user.userStatus'),
         align: 'center',
         width: 100,
@@ -93,7 +101,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
 
           const label = $t(enableStatusRecord[record.status]);
 
-          return <Tag color={record.status === '0' ? 'success' : 'error'}>{label}</Tag>;
+          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
         }
       },
       {
@@ -110,11 +118,11 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
               <Button size="small">重置密码</Button>
             </Popconfirm>
             <Button
-              type={record.status === '0' ? 'default' : 'primary'}
+              type={record.status === 1 ? 'default' : 'primary'}
               size="small"
               onClick={() => toggleStatus(record.id, record.status)}
             >
-              {record.status === '0' ? '禁用' : '启用'}
+              {record.status === 1 ? '禁用' : '启用'}
             </Button>
             <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
               <Button danger size="small">
@@ -154,7 +162,7 @@ async function handleDelete(id: number) {
 }
 
 async function toggleStatus(id: number, status: string) {
-  const newStatus = status === '0' ? '1' : '0';
+  const newStatus = status === 1 ? 0 : 1;
   const { error } = await fetchChangeUserStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
@@ -197,7 +205,7 @@ function edit(id: number) {
         :columns="columns"
         :data-source="data"
         size="small"
-        :scroll="{ x: 'max-content' }"
+        :scroll="{ x: 'max-content', y: 'calc(100vh - 320px)' }"
         :loading="loading"
         row-key="id"
         :pagination="mobilePagination"

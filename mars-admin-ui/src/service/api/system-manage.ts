@@ -24,7 +24,7 @@ export function fetchGetAllRoles() {
 /** get user list */
 export function fetchGetUserList(params?: Api.SystemManage.UserSearchParams) {
   return request<Api.SystemManage.UserList>({
-    url: '/system/user/page',
+    url: '/system/user/pageList',
     method: 'get',
     params
   });

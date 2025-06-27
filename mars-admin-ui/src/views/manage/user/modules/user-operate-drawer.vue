@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, ref } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import { 
   fetchAddUser, 
@@ -66,11 +66,11 @@ function createDefaultModel(): Model {
   return {
     userName: '',
     nickName: '',
-    userGender: '0',
+    userGender: 0,
     phone: '',
     email: '',
-    status: '0',
-    deptId: 0,
+    status: 1,
+    deptId: null,
     roleIds: [],
     postIds: [],
     remark: ''
@@ -133,13 +133,13 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
 });
 
 const genderOptions = [
-  { label: '男', value: '0' },
-  { label: '女', value: '1' }
+  { label: '男', value: 0 },
+  { label: '女', value: 1 }
 ];
 
 const statusOptions = [
-  { label: '启用', value: '0' },
-  { label: '禁用', value: '1' }
+  { label: '启用', value: 1 },
+  { label: '禁用', value: 0 }
 ];
 
 // 角色选项

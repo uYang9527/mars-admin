@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { $t } from '@/locales';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import { enableStatusOptions, userGenderOptions } from '@/constants/business';
@@ -20,14 +20,17 @@ const { formRef, validate, resetFields } = useAntdForm();
 
 const model = defineModel<Api.SystemManage.UserSearchParams>('model', { required: true });
 
-type RuleKey = Extract<keyof Api.SystemManage.UserSearchParams, 'userEmail' | 'userPhone'>;
+// 折叠状态
+const collapsed = ref(false);
+
+type RuleKey = Extract<keyof Api.SystemManage.UserSearchParams, 'email' | 'phone'>;
 
 const rules = computed<Record<RuleKey, App.Global.FormRule>>(() => {
   const { patternRules } = useFormRules(); // inside computed to make locale reactive
 
   return {
-    userEmail: patternRules.email,
-    userPhone: patternRules.phone
+    email: patternRules.email,
+    phone: patternRules.phone
   };
 });
 
@@ -40,81 +43,131 @@ async function search() {
   await validate();
   emit('search');
 }
+
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
 </script>
 
 <template>
-  <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
-    <AForm
-      ref="formRef"
-      :model="model"
-      :rules="rules"
-      :label-col="{
-        span: 5,
-        md: 7
-      }"
-    >
-      <ARow :gutter="[16, 16]" wrap>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.userName')" name="userName" class="m-0">
-            <AInput v-model:value="model.userName" :placeholder="$t('page.manage.user.form.userName')" />
-          </AFormItem>
-        </ACol>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.userGender')" name="userGender" class="m-0">
-            <ASelect
-              v-model:value="model.userGender"
-              :placeholder="$t('page.manage.user.form.userGender')"
-              :options="translateOptions(userGenderOptions)"
-              clearable
-            />
-          </AFormItem>
-        </ACol>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.nickName')" name="nickName" class="m-0">
-            <AInput v-model:value="model.nickName" :placeholder="$t('page.manage.user.form.nickName')" />
-          </AFormItem>
-        </ACol>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.userPhone')" name="userPhone" class="m-0">
-            <AInput v-model:value="model.userPhone" :placeholder="$t('page.manage.user.form.userPhone')" />
-          </AFormItem>
-        </ACol>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.userEmail')" name="userEmail" class="m-0">
-            <AInput v-model:value="model.userEmail" :placeholder="$t('page.manage.user.form.userEmail')" />
-          </AFormItem>
-        </ACol>
-        <ACol :span="24" :md="12" :lg="6">
-          <AFormItem :label="$t('page.manage.user.userStatus')" name="userStatus" class="m-0">
-            <ASelect
-              v-model:value="model.status"
-              :placeholder="$t('page.manage.user.form.userStatus')"
-              :options="translateOptions(enableStatusOptions)"
-              clearable
-            />
-          </AFormItem>
-        </ACol>
-        <div class="flex-1">
-          <AFormItem class="m-0">
-            <div class="w-full flex-y-center justify-end gap-12px">
-              <AButton @click="reset">
-                <template #icon>
-                  <icon-ic-round-refresh class="align-sub text-icon" />
-                </template>
-                <span class="ml-8px">{{ $t('common.reset') }}</span>
-              </AButton>
-              <AButton type="primary" ghost @click="search">
-                <template #icon>
-                  <icon-ic-round-search class="align-sub text-icon" />
-                </template>
-                <span class="ml-8px">{{ $t('common.search') }}</span>
-              </AButton>
-            </div>
-          </AFormItem>
-        </div>
-      </ARow>
-    </AForm>
+  <ACard 
+    :title="$t('common.search')" 
+    :bordered="false" 
+    class="card-wrapper" 
+    :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
+    :data-collapsed="collapsed"
+  >
+    <template #extra>
+      <AButton type="text" @click="toggleCollapsed">
+        <template #icon>
+          <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+          <icon-mdi:chevron-up v-else class="text-icon" />
+        </template>
+        {{ collapsed ? '展开' : '收起' }}
+      </AButton>
+    </template>
+    
+    <div v-show="!collapsed">
+      <AForm
+        ref="formRef"
+        :model="model"
+        :rules="rules"
+        :label-col="{
+          span: 5,
+          md: 7
+        }"
+      >
+        <ARow :gutter="[16, 16]" wrap>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.userName')" name="userName" class="m-0">
+              <AInput v-model:value="model.userName" :placeholder="$t('page.manage.user.form.userName')" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.userGender')" name="userGender" class="m-0">
+              <ASelect
+                v-model:value="model.userGender"
+                :placeholder="$t('page.manage.user.form.userGender')"
+                :options="translateOptions(userGenderOptions)"
+                clearable
+              />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.nickName')" name="nickName" class="m-0">
+              <AInput v-model:value="model.nickName" :placeholder="$t('page.manage.user.form.nickName')" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.userPhone')" name="phone" class="m-0">
+              <AInput v-model:value="model.phone" :placeholder="$t('page.manage.user.form.userPhone')" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.userEmail')" name="email" class="m-0">
+              <AInput v-model:value="model.email" :placeholder="$t('page.manage.user.form.userEmail')" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="6">
+            <AFormItem :label="$t('page.manage.user.userStatus')" name="status" class="m-0">
+              <ASelect
+                v-model:value="model.status"
+                :placeholder="$t('page.manage.user.form.userStatus')"
+                :options="translateOptions(enableStatusOptions)"
+                clearable
+              />
+            </AFormItem>
+          </ACol>
+          <div class="flex-1">
+            <AFormItem class="m-0">
+              <div class="w-full flex-y-center justify-end gap-12px">
+                <AButton @click="reset">
+                  <template #icon>
+                    <icon-ic-round-refresh class="align-sub text-icon" />
+                  </template>
+                  <span class="ml-8px">{{ $t('common.reset') }}</span>
+                </AButton>
+                <AButton type="primary" ghost @click="search">
+                  <template #icon>
+                    <icon-ic-round-search class="align-sub text-icon" />
+                  </template>
+                  <span class="ml-8px">{{ $t('common.search') }}</span>
+                </AButton>
+              </div>
+            </AFormItem>
+          </div>
+        </ARow>
+      </AForm>
+    </div>
   </ACard>
 </template>
 
-<style scoped></style>
+<style scoped>
+.text-icon {
+  font-size: 16px;
+}
+
+/* 折叠状态下的卡片样式优化 */
+.card-wrapper {
+  transition: all 0.3s ease;
+}
+
+/* 折叠时隐藏卡片主体，只保留标题栏 */
+.card-wrapper :deep(.ant-card-body) {
+  transition: all 0.3s ease;
+}
+
+/* 当折叠时，强制隐藏卡片主体 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 优化折叠后的卡片头部样式 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+  margin-bottom: 0 !important;
+  border-bottom: none !important;
+}
+</style>

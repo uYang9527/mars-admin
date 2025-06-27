@@ -11,3 +11,135 @@ body,
 html {
   overflow-x: hidden;
 }
+
+/* 全局滚动条样式优化 */
+* {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.6) transparent;
+}
+
+/* Webkit 浏览器 (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(156, 163, 175, 0.4), rgba(107, 114, 128, 0.4));
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(156, 163, 175, 0.7), rgba(107, 114, 128, 0.7));
+  transform: scale(1.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* 暗色模式下的滚动条 */
+.dark *::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(107, 114, 128, 0.4), rgba(75, 85, 99, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(107, 114, 128, 0.7), rgba(75, 85, 99, 0.7));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark * {
+  scrollbar-color: rgba(107, 114, 128, 0.6) transparent;
+}
+
+/* 表格专用滚动条样式 */
+.ant-table-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(99, 102, 241, 0.6));
+  transform: scale(1.1);
+}
+
+.ant-table-body::-webkit-scrollbar-track {
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 4px;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+}
+
+.dark .ant-table-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(99, 102, 241, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.7), rgba(99, 102, 241, 0.7));
+}
+
+.dark .ant-table-body::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* 页面主要内容区域滚动条 */
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(156, 163, 175, 0.5), rgba(107, 114, 128, 0.5));
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(156, 163, 175, 0.8), rgba(107, 114, 128, 0.8));
+  transform: scale(1.1);
+}
+
+.overflow-auto::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(248, 250, 252, 0.5);
+  border-radius: 4px;
+}
+
+/* 卡片内容滚动条 */
+.card-wrapper .ant-card-body::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.card-wrapper .ant-card-body::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.card-wrapper .ant-card-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.6);
+  transform: scale(1.2);
+}

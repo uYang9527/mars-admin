@@ -1,6 +1,7 @@
 package com.mars.admin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mars.admin.framework.listener.EntityChangeListener;
 import com.mybatisflex.annotation.*;
 import com.mybatisflex.core.mask.Masks;
@@ -34,6 +35,7 @@ public class SysUser extends BaseEntity {
 
     @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED)
     @Column("username")
+    @JsonProperty("userName")
     private String username;
 
     @Schema(description = "密码", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -42,6 +44,7 @@ public class SysUser extends BaseEntity {
 
     @Schema(description = "昵称")
     @Column("nickname")
+    @JsonProperty("nickName")
     private String nickname;
 
     @Schema(description = "真实姓名")
@@ -62,6 +65,7 @@ public class SysUser extends BaseEntity {
 
     @Schema(description = "性别：0-未知，1-男，2-女")
     @Column("gender")
+    @JsonProperty("userGender")
     private Integer gender;
 
     @Schema(description = "生日")

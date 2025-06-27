@@ -1,53 +1,71 @@
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
-      <AForm
-        :model="searchParams"
-        :label-col="{
-          span: 5,
-          md: 7
-        }"
-      >
-        <ARow :gutter="[16, 16]" wrap>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="部门名称" name="deptName" class="m-0">
-              <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="8">
-            <AFormItem label="状态" name="status" class="m-0">
-              <ASelect
-                v-model:value="searchParams.status"
-                placeholder="请选择状态"
-                :options="[
-                  { label: '启用', value: '1' },
-                  { label: '禁用', value: '0' }
-                ]"
-                clearable
-              />
-            </AFormItem>
-          </ACol>
-          <div class="flex-1">
-            <AFormItem class="m-0">
-              <div class="w-full flex-y-center justify-end gap-12px">
-                <AButton @click="handleReset">
-                  <template #icon>
-                    <icon-ic-round-refresh class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.reset') }}</span>
-                </AButton>
-                <AButton type="primary" ghost @click="handleSearch">
-                  <template #icon>
-                    <icon-ic-round-search class="align-sub text-icon" />
-                  </template>
-                  <span class="ml-8px">{{ $t('common.search') }}</span>
-                </AButton>
-              </div>
-            </AFormItem>
-          </div>
-        </ARow>
-      </AForm>
+    <ACard 
+      :title="$t('common.search')" 
+      :bordered="false" 
+      class="card-wrapper" 
+      :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
+      :data-collapsed="collapsed"
+    >
+      <template #extra>
+        <AButton type="text" @click="toggleCollapsed">
+          <template #icon>
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+            <icon-mdi:chevron-up v-else class="text-icon" />
+          </template>
+          {{ collapsed ? '展开' : '收起' }}
+        </AButton>
+      </template>
+      
+      <div v-show="!collapsed">
+        <AForm
+          :model="searchParams"
+          :label-col="{
+            span: 5,
+            md: 7
+          }"
+        >
+          <ARow :gutter="[16, 16]" wrap>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="部门名称" name="deptName" class="m-0">
+                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="状态" name="status" class="m-0">
+                <ASelect
+                  v-model:value="searchParams.status"
+                  placeholder="请选择状态"
+                  :options="[
+                    { label: '启用', value: '1' },
+                    { label: '禁用', value: '0' }
+                  ]"
+                  clearable
+                />
+              </AFormItem>
+            </ACol>
+            <div class="flex-1">
+              <AFormItem class="m-0">
+                <div class="w-full flex-y-center justify-end gap-12px">
+                  <AButton @click="handleReset">
+                    <template #icon>
+                      <icon-ic-round-refresh class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.reset') }}</span>
+                  </AButton>
+                  <AButton type="primary" ghost @click="handleSearch">
+                    <template #icon>
+                      <icon-ic-round-search class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.search') }}</span>
+                  </AButton>
+                </div>
+              </AFormItem>
+            </div>
+          </ARow>
+        </AForm>
+      </div>
     </ACard>
 
     <ACard title="部门管理" :bordered="false" size="small" class="sm:flex-1-hidden card-wrapper">
@@ -92,6 +110,9 @@ defineOptions({
 });
 
 const wrapperEl = ref<HTMLElement>();
+
+// 折叠状态
+const collapsed = ref(false);
 
 // 模拟数据和接口
 const mockData = ref([
@@ -242,10 +263,38 @@ function handleReset() {
   });
   getData();
 }
+
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
 </script>
 
 <style scoped>
+/* 折叠状态下的卡片样式优化 */
 .card-wrapper {
-  @apply flex-col-stretch gap-16px overflow-hidden;
+  transition: all 0.3s ease;
+}
+
+/* 折叠时隐藏卡片主体，只保留标题栏 */
+.card-wrapper :deep(.ant-card-body) {
+  transition: all 0.3s ease;
+}
+
+/* 当折叠时，强制隐藏卡片主体 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 优化折叠后的卡片头部样式 */
+.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+  margin-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
+.text-icon {
+  font-size: 16px;
 }
 </style> 
