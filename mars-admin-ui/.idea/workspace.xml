@@ -5,22 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../mars-admin/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.development.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.development.new" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.test" beforeDir="false" afterPath="$PROJECT_DIR$/.env.test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/CorsFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SaTokenConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SaTokenConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/RouteController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/RouteController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/CorsFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/SaTokenConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/SaTokenConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/AuthServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/request/shared.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/request/shared.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +59,7 @@
       <workItem from="1750853656478" duration="3121000" />
       <workItem from="1750862288304" duration="50000" />
       <workItem from="1750863090955" duration="1589000" />
-      <workItem from="1750918021731" duration="9672000" />
+      <workItem from="1750918021731" duration="9771000" />
     </task>
     <servers />
   </component>

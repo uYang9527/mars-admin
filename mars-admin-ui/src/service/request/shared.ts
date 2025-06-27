@@ -7,10 +7,10 @@ export function getAuthorization() {
   const token = localStg.get('token');
   console.log('🔐 获取到的token:', token);
   console.log('🔐 localStorage中的所有内容:', localStorage);
-  
+
   // Sa-Token 默认直接使用 token 值，不需要 Bearer 前缀
-  const Authorization = token ? `${token}` : null;
-  
+  const Authorization = token ? `Bearer ${token}` : null;
+
   console.log('🔐 最终Authorization头:', Authorization);
   return Authorization;
 }
