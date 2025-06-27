@@ -55,7 +55,14 @@ public class SqlLogController {
      */
     @GetMapping("/recent")
     @Operation(summary = "获取最近的SQL执行日志", description = "获取最近执行的SQL语句列表，便于查看和复制")
-    public Map<String, Object> getRecentSqlLogs(@RequestParam(defaultValue = "20") int limit) {
+    public Map<String, Object> getRecentSqlLogsApi(@RequestParam(defaultValue = "20") int limit) {
+        return getRecentSqlLogs(limit);
+    }
+
+    /**
+     * 获取最近的SQL执行日志（静态方法供其他控制器调用）
+     */
+    public static Map<String, Object> getRecentSqlLogs(int limit) {
         List<Map<String, Object>> logs = new ArrayList<>(sqlLogs);
         
         // 按时间倒序，取最新的记录
@@ -101,7 +108,14 @@ public class SqlLogController {
      */
     @DeleteMapping("/clear")
     @Operation(summary = "清空SQL日志", description = "清空所有SQL执行日志记录")
-    public Map<String, Object> clearSqlLogs() {
+    public Map<String, Object> clearSqlLogsApi() {
+        return clearSqlLogs();
+    }
+
+    /**
+     * 清空SQL日志（静态方法供其他控制器调用）
+     */
+    public static Map<String, Object> clearSqlLogs() {
         int count = sqlLogs.size();
         sqlLogs.clear();
         

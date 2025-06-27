@@ -107,25 +107,47 @@
             font-size: 1rem;
         }
         
-        .stats {
-            background: white;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .stat-value {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
+                 .stats {
+             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+             padding: 2rem;
+             color: white;
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 1.5rem;
+         }
+         
+         .stat-item {
+             background: rgba(255, 255, 255, 0.1);
+             padding: 1.5rem;
+             border-radius: 12px;
+             text-align: center;
+             backdrop-filter: blur(10px);
+             border: 1px solid rgba(255, 255, 255, 0.2);
+             transition: transform 0.3s ease;
+         }
+         
+         .stat-item:hover {
+             transform: translateY(-5px);
+             background: rgba(255, 255, 255, 0.15);
+         }
+         
+         .stat-icon {
+             font-size: 2.5rem;
+             margin-bottom: 1rem;
+             display: block;
+         }
+         
+         .stat-value {
+             font-weight: bold;
+             font-size: 2rem;
+             margin-bottom: 0.5rem;
+             display: block;
+         }
+         
+         .stat-label {
+             font-size: 0.9rem;
+             opacity: 0.9;
+         }
         
         .main-content {
             padding: 2rem;
@@ -210,18 +232,227 @@
             border-color: #999;
         }
         
-        .sql-content {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 5px;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            white-space: pre-wrap;
-            word-break: break-all;
-            margin-top: 0.5rem;
-            border-left: 4px solid #667eea;
-        }
+                 .sql-content {
+             background: #f8f9fa;
+             padding: 1rem;
+             border-radius: 5px;
+             font-family: 'Consolas', 'Monaco', monospace;
+             font-size: 0.9rem;
+             line-height: 1.4;
+             white-space: pre-wrap;
+             word-break: break-all;
+             margin-top: 0.5rem;
+             border-left: 4px solid #667eea;
+         }
+         
+         .sql-result {
+             margin-top: 1rem;
+             border: 1px solid #e9ecef;
+             border-radius: 8px;
+             overflow: hidden;
+             background: white;
+         }
+         
+         .result-header {
+             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+             padding: 1rem;
+             border-bottom: 1px solid #e9ecef;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             cursor: pointer;
+             transition: background-color 0.3s ease;
+         }
+         
+         .result-header:hover {
+             background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+         }
+         
+         .result-toggle {
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+         }
+         
+         .toggle-icon {
+             transition: transform 0.3s ease;
+             font-size: 0.8rem;
+         }
+         
+         .toggle-icon.collapsed {
+             transform: rotate(-90deg);
+         }
+         
+         .result-info {
+             font-size: 0.9rem;
+             color: #6c757d;
+         }
+         
+         .result-actions {
+             display: flex;
+             gap: 0.5rem;
+         }
+         
+         .result-table-container {
+             max-height: 500px;
+             overflow: auto;
+             border: 1px solid #dee2e6;
+             border-radius: 8px;
+         }
+         
+         .result-table {
+             width: 100%;
+             border-collapse: collapse;
+             font-size: 0.8rem;
+             table-layout: fixed;
+         }
+         
+         .result-table th,
+         .result-table td {
+             padding: 0.5rem;
+             text-align: left;
+             border-right: 1px solid #dee2e6;
+             border-bottom: 1px solid #dee2e6;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+             position: relative;
+         }
+         
+         .result-table th {
+             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+             font-weight: 600;
+             color: #495057;
+             position: sticky;
+             top: 0;
+             z-index: 10;
+             min-width: 80px;
+             max-width: 200px;
+             width: auto;
+         }
+         
+         .result-table td {
+             min-width: 80px;
+             max-width: 200px;
+             cursor: pointer;
+         }
+         
+         .result-table tr:hover {
+             background: #f0f8ff;
+         }
+         
+         .result-table tr:nth-child(even) {
+             background: #fafafa;
+         }
+         
+         .result-table tr:nth-child(even):hover {
+             background: #f0f8ff;
+         }
+         
+         /* 列宽度优化 */
+         .result-table th:first-child,
+         .result-table td:first-child {
+             width: 60px;
+             min-width: 60px;
+             max-width: 60px;
+         }
+         
+         .result-table th.col-id,
+         .result-table td.col-id {
+             width: 60px;
+             min-width: 60px;
+             max-width: 60px;
+         }
+         
+         .result-table th.col-name,
+         .result-table td.col-name {
+             width: 120px;
+             min-width: 120px;
+             max-width: 180px;
+         }
+         
+         .result-table th.col-time,
+         .result-table td.col-time {
+             width: 140px;
+             min-width: 140px;
+             max-width: 140px;
+         }
+         
+         .result-table th.col-text,
+         .result-table td.col-text {
+             width: 150px;
+             min-width: 100px;
+             max-width: 250px;
+         }
+         
+         /* 单元格内容展开 */
+         .cell-content {
+             position: relative;
+         }
+         
+         .cell-expanded {
+             white-space: normal !important;
+             word-break: break-all;
+             max-height: none;
+         }
+         
+         .cell-tooltip {
+             position: absolute;
+             top: 100%;
+             left: 0;
+             background: #333;
+             color: white;
+             padding: 0.5rem;
+             border-radius: 4px;
+             font-size: 0.75rem;
+             max-width: 300px;
+             word-break: break-all;
+             z-index: 1000;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+             display: none;
+         }
+         
+         .execute-loading {
+             text-align: center;
+             padding: 2rem;
+             color: #6c757d;
+         }
+         
+         .execute-error {
+             background: #f8d7da;
+             color: #721c24;
+             padding: 1rem;
+             border-radius: 5px;
+             margin: 1rem;
+         }
+         
+         .toast {
+             position: fixed;
+             top: 20px;
+             right: 20px;
+             background: #333;
+             color: white;
+             padding: 1rem 1.5rem;
+             border-radius: 8px;
+             z-index: 1000;
+             transform: translateX(100%);
+             transition: transform 0.3s ease;
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+             font-size: 0.9rem;
+             max-width: 300px;
+         }
+         
+         .toast.show {
+             transform: translateX(0);
+         }
+         
+         .toast.success {
+             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+         }
+         
+         .toast.error {
+             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+         }
         
         .no-logs {
             text-align: center;
@@ -438,24 +669,28 @@
             </select>
         </div>
         
-        <div class="stats">
-            <div class="stat-item">
-                <span>📊 总记录数:</span>
-                <span class="stat-value" id="totalCount">0</span>
-            </div>
-            <div class="stat-item">
-                <span>⚡ 快速查询:</span>
-                <span class="stat-value" id="fastCount">0</span>
-            </div>
-            <div class="stat-item">
-                <span>⚠️ 中等查询:</span>
-                <span class="stat-value" id="mediumCount">0</span>
-            </div>
-            <div class="stat-item">
-                <span>🐌 慢查询:</span>
-                <span class="stat-value" id="slowCount">0</span>
-            </div>
-        </div>
+                 <div class="stats">
+             <div class="stat-item">
+                 <div class="stat-icon">📊</div>
+                 <div class="stat-value" id="totalCount">0</div>
+                 <div class="stat-label">总记录数</div>
+             </div>
+             <div class="stat-item">
+                 <div class="stat-icon">⚡</div>
+                 <div class="stat-value" id="fastCount">0</div>
+                 <div class="stat-label">快速查询</div>
+             </div>
+             <div class="stat-item">
+                 <div class="stat-icon">⚠️</div>
+                 <div class="stat-value" id="mediumCount">0</div>
+                 <div class="stat-label">中等查询</div>
+             </div>
+             <div class="stat-item">
+                 <div class="stat-icon">🐌</div>
+                 <div class="stat-value" id="slowCount">0</div>
+                 <div class="stat-label">慢查询</div>
+             </div>
+         </div>
         
         <div class="main-content">
             <div class="sql-logs" id="sqlLogs">
@@ -544,7 +779,7 @@
         function loadSqlLogs() {
             if (!isAuthenticated) return;
             
-            fetch('/sql-log/recent?limit=100')
+                         fetch('/sqlLog/logs')
                 .then(response => response.json())
                 .then(data => {
                     allLogs = data.logs || [];
@@ -625,13 +860,15 @@
                                 <span>📅 ${time}</span>
                                 ${log.tableName ? `<span>📋 ${log.tableName}</span>` : ''}
                             </div>
-                            <div class="log-actions">
-                                <button class="btn-small" onclick="copySql(\`${log.sql.replace(/`/g, '\\`')}\`)">📋 复制</button>
-                                <button class="btn-small" onclick="formatSql(\`${log.sql.replace(/`/g, '\\`')}\`)">🎨 格式化</button>
-                            </div>
+                                                         <div class="log-actions">
+                                 <button class="btn-small" onclick="copySql(\`${log.sql.replace(/`/g, '\\`')}\`)">📋 复制</button>
+                                 <button class="btn-small" onclick="formatSql(\`${log.sql.replace(/`/g, '\\`')}\`)">🎨 格式化</button>
+                                 <button class="btn-small" onclick="executeSql(\`${log.sql.replace(/`/g, '\\`')}\`, '${log.timestamp}')">▶️ 执行查询</button>
+                             </div>
                         </div>
-                        <div class="sql-content">${escapeHtml(log.sql)}</div>
-                    </div>
+                                                 <div class="sql-content">${escapeHtml(log.sql)}</div>
+                         <div id="result-${log.timestamp}" class="sql-result" style="display: none;"></div>
+                     </div>
                 `;
             }).join('');
             
@@ -669,28 +906,244 @@
             });
         }
         
-        // 格式化SQL
-        function formatSql(sql) {
-            fetch('/sql-log/format', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ sql: sql })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.formattedSql) {
-                    navigator.clipboard.writeText(data.formattedSql).then(() => {
-                        showToast('格式化SQL已复制到剪贴板', 'success');
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('格式化失败:', error);
-                showToast('格式化失败', 'error');
-            });
-        }
+                 // 格式化SQL
+         function formatSql(sql) {
+             // 简单的SQL格式化
+             const formatted = sql
+                 .replace(/\bSELECT\b/gi, '\nSELECT')
+                 .replace(/\bFROM\b/gi, '\nFROM')
+                 .replace(/\bWHERE\b/gi, '\nWHERE')
+                 .replace(/\bAND\b/gi, '\n  AND')
+                 .replace(/\bOR\b/gi, '\n  OR')
+                 .replace(/\bORDER BY\b/gi, '\nORDER BY')
+                 .replace(/\bGROUP BY\b/gi, '\nGROUP BY')
+                 .replace(/\bHAVING\b/gi, '\nHAVING')
+                 .replace(/\bLIMIT\b/gi, '\nLIMIT')
+                 .trim();
+             
+             navigator.clipboard.writeText(formatted).then(() => {
+                 showToast('格式化SQL已复制到剪贴板', 'success');
+             }).catch(error => {
+                 console.error('复制失败:', error);
+                 showToast('复制失败', 'error');
+             });
+         }
+         
+         // 执行SQL查询
+         function executeSql(sql, timestamp) {
+             const resultContainer = document.getElementById(`result-${timestamp}`);
+             
+             // 显示加载状态
+             resultContainer.style.display = 'block';
+             resultContainer.innerHTML = '<div class="execute-loading">🔄 正在执行查询...</div>';
+             
+             fetch('/sqlLog/execute', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({ sql: sql })
+             })
+             .then(response => response.json())
+             .then(data => {
+                 if (data.success) {
+                     displayExecuteResult(resultContainer, data.data, data.executionTime);
+                     showToast('查询执行成功', 'success');
+                 } else {
+                     displayExecuteError(resultContainer, data.message);
+                     showToast('查询执行失败', 'error');
+                 }
+             })
+             .catch(error => {
+                 console.error('执行失败:', error);
+                 displayExecuteError(resultContainer, '网络错误或服务器异常');
+                 showToast('执行失败', 'error');
+             });
+         }
+         
+         // 显示执行结果
+         function displayExecuteResult(container, data, executionTime) {
+             const resultId = 'result_' + Date.now();
+             
+             if (!data || data.length === 0) {
+                 container.innerHTML = `
+                     <div class="result-header" onclick="toggleResult('${resultId}')">
+                         <div class="result-toggle">
+                             <span class="toggle-icon">🔽</span>
+                             <div class="result-info">查询成功，但没有返回数据 (${executionTime}ms)</div>
+                         </div>
+                         <div class="result-actions" onclick="event.stopPropagation()">
+                             <button class="btn-small" onclick="closeResult(this)">❌ 关闭</button>
+                         </div>
+                     </div>
+                     <div id="${resultId}" class="result-content">
+                         <div style="padding: 2rem; text-align: center; color: #6c757d;">无数据</div>
+                     </div>
+                 `;
+                 return;
+             }
+             
+             const columns = Object.keys(data[0]);
+             
+             // 智能判断列类型并设置样式类
+             const getColumnClass = (colName) => {
+                 const lowerName = colName.toLowerCase();
+                 if (lowerName === 'id' || lowerName.endsWith('_id')) return 'col-id';
+                 if (lowerName.includes('time') || lowerName.includes('date')) return 'col-time';
+                 if (lowerName.includes('name') || lowerName.includes('title')) return 'col-name';
+                 return 'col-text';
+             };
+             
+             let tableHtml = `
+                 <div class="result-header" onclick="toggleResult('${resultId}')">
+                     <div class="result-toggle">
+                         <span class="toggle-icon">🔽</span>
+                         <div class="result-info">返回 ${data.length} 行记录 (${executionTime}ms)</div>
+                     </div>
+                     <div class="result-actions" onclick="event.stopPropagation()">
+                         <button class="btn-small" onclick="exportResult(this)">📥 导出</button>
+                         <button class="btn-small" onclick="closeResult(this)">❌ 关闭</button>
+                     </div>
+                 </div>
+                 <div id="${resultId}" class="result-content">
+                     <div class="result-table-container">
+                         <table class="result-table">
+                             <thead>
+                                 <tr>
+             `;
+             
+             columns.forEach(col => {
+                 const colClass = getColumnClass(col);
+                 tableHtml += `<th class="${colClass}" title="${escapeHtml(col)}">${escapeHtml(col)}</th>`;
+             });
+             
+             tableHtml += '</tr></thead><tbody>';
+             
+             data.forEach((row, rowIndex) => {
+                 tableHtml += '<tr>';
+                 columns.forEach(col => {
+                     const colClass = getColumnClass(col);
+                     const value = row[col];
+                     const displayValue = value === null ? '<em style="color: #6c757d;">NULL</em>' :
+                         value === undefined ? '<em style="color: #6c757d;">UNDEFINED</em>' :
+                         escapeHtml(String(value));
+                     
+                     const fullValue = value === null ? 'NULL' : 
+                         value === undefined ? 'UNDEFINED' : String(value);
+                     
+                     tableHtml += `<td class="${colClass}" title="${escapeHtml(fullValue)}" 
+                                      onclick="toggleCellContent(this, '${escapeHtml(fullValue)}')"
+                                      data-full-value="${escapeHtml(fullValue)}">
+                                      ${displayValue}
+                                   </td>`;
+                 });
+                 tableHtml += '</tr>';
+             });
+             
+             tableHtml += '</tbody></table></div></div>';
+             container.innerHTML = tableHtml;
+             
+             // 保存数据用于导出
+             container.dataset.resultData = JSON.stringify(data);
+         }
+         
+         // 显示执行错误
+         function displayExecuteError(container, errorMessage) {
+             container.innerHTML = `
+                 <div class="result-header">
+                     <div class="result-info" style="color: #dc3545;">查询执行失败</div>
+                     <div class="result-actions">
+                         <button class="btn-small" onclick="closeResult(this)">❌ 关闭</button>
+                     </div>
+                 </div>
+                 <div class="execute-error">${escapeHtml(errorMessage)}</div>
+             `;
+         }
+         
+         // 切换结果展开/折叠
+         function toggleResult(resultId) {
+             const content = document.getElementById(resultId);
+             const icon = content.previousElementSibling.querySelector('.toggle-icon');
+             
+             if (content.style.display === 'none') {
+                 content.style.display = 'block';
+                 icon.textContent = '🔽';
+                 icon.classList.remove('collapsed');
+             } else {
+                 content.style.display = 'none';
+                 icon.textContent = '▶️';
+                 icon.classList.add('collapsed');
+             }
+         }
+         
+         // 切换单元格内容显示
+         function toggleCellContent(cell, fullValue) {
+             const isExpanded = cell.classList.contains('cell-expanded');
+             
+             if (isExpanded) {
+                 // 收起
+                 cell.classList.remove('cell-expanded');
+                 cell.style.whiteSpace = 'nowrap';
+                 cell.style.overflow = 'hidden';
+                 cell.style.textOverflow = 'ellipsis';
+             } else {
+                 // 展开
+                 cell.classList.add('cell-expanded');
+                 cell.style.whiteSpace = 'normal';
+                 cell.style.overflow = 'visible';
+                 cell.style.textOverflow = 'unset';
+                 cell.style.wordBreak = 'break-all';
+             }
+         }
+         
+         // 关闭结果
+         function closeResult(button) {
+             const container = button.closest('.sql-result');
+             container.style.display = 'none';
+         }
+         
+         // 导出结果
+         function exportResult(button) {
+             const container = button.closest('.sql-result');
+             const dataStr = container.dataset.resultData;
+             
+             if (!dataStr) {
+                 showToast('没有可导出的数据', 'error');
+                 return;
+             }
+             
+             try {
+                 const data = JSON.parse(dataStr);
+                 const columns = Object.keys(data[0]);
+                 let csvContent = columns.join(',') + '\n';
+                 
+                 data.forEach(row => {
+                     const values = columns.map(col => {
+                         const value = row[col];
+                         if (value === null || value === undefined) return '';
+                         const str = String(value);
+                         // 如果包含逗号或引号，需要用引号包围并转义
+                         if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                             return '"' + str.replace(/"/g, '""') + '"';
+                         }
+                         return str;
+                     });
+                     csvContent += values.join(',') + '\n';
+                 });
+                 
+                 // 创建下载链接
+                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                 const link = document.createElement('a');
+                 link.href = URL.createObjectURL(blob);
+                 link.download = `sql_results_${new Date().getTime()}.csv`;
+                 link.click();
+                 
+                 showToast('结果已导出为CSV文件', 'success');
+             } catch (error) {
+                 console.error('导出失败:', error);
+                 showToast('导出失败', 'error');
+             }
+         }
         
         // 刷新日志
         function refreshLogs() {
@@ -701,15 +1154,19 @@
         // 清空日志
         function clearLogs() {
             if (confirm('确定要清空所有SQL日志吗？')) {
-                fetch('/sql-log/clear', { method: 'DELETE' })
-                    .then(response => response.json())
-                    .then(data => {
-                        allLogs = [];
-                        filteredLogs = [];
-                        updateStats();
-                        renderLogs();
-                        showToast(data.message || '日志已清空', 'success');
-                    })
+                                                  fetch('/sqlLog/clear', { method: 'POST' })
+                     .then(response => response.text())
+                     .then(result => {
+                         if (result === 'success') {
+                             allLogs = [];
+                             filteredLogs = [];
+                             updateStats();
+                             renderLogs();
+                             showToast('日志已清空', 'success');
+                         } else {
+                             showToast('清空失败', 'error');
+                         }
+                     })
                     .catch(error => {
                         console.error('清空失败:', error);
                         showToast('清空失败', 'error');
