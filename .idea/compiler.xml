@@ -2,92 +2,17 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="snail-job-client-job-core" />
-        <module name="snail-job-kingbase-datasource" />
-        <module name="snail-job-sqlserver-datasource" />
-        <module name="snail-job-server-ui" />
-        <module name="snail-job-postgres-datasource" />
-        <module name="snail-job-server-retry-task" />
-        <module name="snail-job-server-common" />
-        <module name="snail-job-client-common" />
-        <module name="snail-job-common-log" />
-        <module name="snail-job-client-starter" />
-        <module name="snail-job-server-starter" />
-        <module name="snail-job-mysql-datasource" />
-        <module name="snail-job-oracle-datasource" />
-        <module name="snail-job-common-client-api" />
-        <module name="snail-job-server-web" />
-        <module name="mars-admin-monitor" />
-        <module name="snail-job-client-retry-core" />
-        <module name="snail-job-mariadb-datasource" />
-        <module name="snail-job-server-job-task" />
-        <module name="snail-job-common-server-api" />
-        <module name="snail-job-common-core" />
-        <module name="snail-job-datasource-template" />
-        <module name="snail-job-dm8-datasource" />
-      </profile>
-      <profile name="Annotation profile for mars-admin-server" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$PROJECT_DIR$/../../repository/com/github/therapi/therapi-runtime-javadoc-scribe/0.15.0/therapi-runtime-javadoc-scribe-0.15.0.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/com/github/therapi/therapi-runtime-javadoc/0.15.0/therapi-runtime-javadoc-0.15.0.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/springframework/boot/spring-boot-configuration-processor/3.2.5/spring-boot-configuration-processor-3.2.5.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/io/github/linpeilie/mapstruct-plus-processor/1.4.6/mapstruct-plus-processor-1.4.6.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/io/github/linpeilie/mapstruct-plus/1.4.6/mapstruct-plus-1.4.6.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/io/github/linpeilie/mapstruct-plus-object-convert/1.4.6/mapstruct-plus-object-convert-1.4.6.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/com/baidu/lbsyun/javapoet/1.9.0/javapoet-1.9.0.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/mapstruct/tools/gem/gem-api/1.0.0.Alpha3/gem-api-1.0.0.Alpha3.jar" />
-          <entry name="$PROJECT_DIR$/../../repository/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
-        </processorPath>
-        <module name="mars-admin-server" />
+        <module name="mars-admin" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="mars-admin" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="mars-admin" options="-parameters -parameters" />
-      <module name="mars-admin-monitor" options="-parameters" />
-      <module name="mars-admin-server" options="-parameters -parameters" />
-      <module name="snail-job" options="-parameters" />
-      <module name="snail-job-client" options="-parameters" />
-      <module name="snail-job-client-common" options="-parameters" />
-      <module name="snail-job-client-job-core" options="-parameters" />
-      <module name="snail-job-client-retry-core" options="-parameters" />
-      <module name="snail-job-client-starter" options="-parameters" />
-      <module name="snail-job-common" options="-parameters" />
-      <module name="snail-job-common-client-api" options="-parameters" />
-      <module name="snail-job-common-core" options="-parameters" />
-      <module name="snail-job-common-log" options="-parameters" />
-      <module name="snail-job-common-server-api" options="-parameters" />
-      <module name="snail-job-datasource" options="-parameters" />
-      <module name="snail-job-datasource-template" options="-parameters" />
-      <module name="snail-job-dm8-datasource" options="-parameters" />
-      <module name="snail-job-kingbase-datasource" options="-parameters" />
-      <module name="snail-job-mariadb-datasource" options="-parameters" />
-      <module name="snail-job-mysql-datasource" options="-parameters" />
-      <module name="snail-job-oracle-datasource" options="-parameters" />
-      <module name="snail-job-postgres-datasource" options="-parameters" />
-      <module name="snail-job-server" options="-parameters" />
-      <module name="snail-job-server-common" options="-parameters" />
-      <module name="snail-job-server-job-task" options="-parameters" />
-      <module name="snail-job-server-retry-task" options="-parameters" />
-      <module name="snail-job-server-starter" options="-parameters" />
-      <module name="snail-job-server-ui" options="-parameters" />
-      <module name="snail-job-server-web" options="-parameters" />
-      <module name="snail-job-sqlserver-datasource" options="-parameters" />
+      <module name="mars-admin" options="-parameters" />
     </option>
   </component>
 </project>
