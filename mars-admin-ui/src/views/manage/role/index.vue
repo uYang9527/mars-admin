@@ -38,25 +38,36 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         key: 'roleName',
         title: $t('page.manage.role.roleName'),
         align: 'center',
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'roleName'
       },
       {
         key: 'roleCode',
         title: $t('page.manage.role.roleCode'),
         align: 'center',
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'roleCode'
       },
       {
-        key: 'roleDesc',
+        key: 'description',
         title: $t('page.manage.role.roleDesc'),
         align: 'center',
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'description'
+      },
+      {
+        key: 'roleSort',
+        title: '显示顺序',
+        align: 'center',
+        width: 100,
+        dataIndex: 'roleSort'
       },
       {
         key: 'status',
         title: $t('page.manage.role.roleStatus'),
         align: 'center',
         width: 100,
+        dataIndex: 'status',
         customRender: ({ record }) => {
           if (record.status === null) {
             return null;
@@ -66,6 +77,13 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
 
           return <Tag color={record.status === '0' ? 'success' : 'error'}>{label}</Tag>;
         }
+      },
+      {
+        key: 'createTime',
+        title: '创建时间',
+        align: 'center',
+        width: 160,
+        dataIndex: 'createTime'
       },
       {
         key: 'operate',

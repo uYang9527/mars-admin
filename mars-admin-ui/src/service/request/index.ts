@@ -100,12 +100,7 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return null;
     },
     transformBackendResponse(response) {
-      // 输出后端返回的完整数据结构，帮助调试
-      console.log('后端响应数据结构:', response.data);
-      
-      // 保持原始数据结构，而不是直接返回data字段
-      // 这样可以让useTable的transformer函数处理多种数据结构
-      return response.data;
+      return response.data.data;
     },
     onError(error) {
       // when the request is fail, you can show error message

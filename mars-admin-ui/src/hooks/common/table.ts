@@ -34,71 +34,59 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
     apiParams,
     columns: config.columns,
     transformer: res => {
-      console.log('useTable transformer 收到的响应数据:', res);
-      
-      // 处理null或undefined情况
-      if (!res) {
-        console.warn('transformer接收到空数据');
-        return { data: [], pageNum: 1, pageSize: 10, total: 0 };
-      }
-      
-      // 首先处理响应的标准结构，提取data字段
-      // res格式: { code: 200, message: "操作成功", data: {...} }
-      const responseData = res.data;
-      
-      // 如果原始响应中没有data字段，则尝试直接使用响应
-      const dataToProcess = responseData !== undefined ? responseData : res;
-      
-      console.log('提取的数据部分:', dataToProcess);
-      
-      // 处理直接返回数组的情况（如菜单列表）
-      if (Array.isArray(dataToProcess)) {
-        console.log('处理数组类型响应');
+      // 如果返回的是数组，直接使用
+      if (Array.isArray(res)) {
         return {
-          data: dataToProcess.map((item, index) => ({ ...item, index: index + 1 })),
+          data: res,
           pageNum: 1,
-          pageSize: dataToProcess.length,
-          total: dataToProcess.length
+          pageSize: 10,
+          total: res.length
         };
       }
       
-      // 处理分页数据（检查多种可能的字段名）
-      // 日志输出详细信息，帮助调试
-      console.log('处理分页数据对象，结构:', {
-        hasRecords: Boolean(dataToProcess.records),
-        hasCurrent: Boolean(dataToProcess.pageNumber || dataToProcess.current),
-        hasSize: Boolean(dataToProcess.pageSize || dataToProcess.size),
-        hasTotal: Boolean(dataToProcess.totalRow || dataToProcess.total)
-      });
+      // 数据提取，兼容不同的后端响应格式
+      let records: any[] = [];
+      let current = 1;
+      let size = 10;
+      let total = 0;
       
-      // 处理后端响应中的不同字段命名
-      const records = dataToProcess.records || [];
-      const current = dataToProcess.pageNumber || dataToProcess.current || 1;
-      const size = dataToProcess.pageSize || dataToProcess.size || 10;
-      const total = dataToProcess.totalRow || dataToProcess.total || 0;
+      // 使用any类型断言，避免TypeScript错误
+      const anyRes = res as any;
       
-      console.log('transformer提取的字段:', { records, current, size, total });
-
-      // 确保size大于0，如果小于0会导致分页计算错误
+      if (anyRes && typeof anyRes === 'object') {
+        // 直接从响应中获取records字段
+        if (Array.isArray(anyRes.records)) {
+          records = anyRes.records;
+          current = anyRes.current || anyRes.pageNumber || 1;
+          size = anyRes.size || anyRes.pageSize || 10;
+          total = anyRes.total || anyRes.totalRow || 0;
+        } 
+        // 从res.data中获取records字段
+        else if (anyRes.data && typeof anyRes.data === 'object') {
+          if (Array.isArray(anyRes.data.records)) {
+            records = anyRes.data.records;
+            current = anyRes.data.current || anyRes.data.pageNumber || 1;
+            size = anyRes.data.size || anyRes.data.pageSize || 10;
+            total = anyRes.data.total || anyRes.data.totalRow || 0;
+          } 
+          // res.data本身就是数组
+          else if (Array.isArray(anyRes.data)) {
+            records = anyRes.data;
+          }
+        }
+      }
+      
+      // 确保pageSize大于0
       const pageSize = size <= 0 ? 10 : size;
       
-      // 如果records不是数组（可能是undefined或null），创建空数组
-      const safeRecords = Array.isArray(records) ? records : [];
-
-      const recordsWithIndex = safeRecords.map((item, index) => {
+      // 添加序号
+      const recordsWithIndex = records.map((item, index) => {
         return {
           ...item,
           index: (current - 1) * pageSize + index + 1
         };
       });
       
-      console.log('transformer处理后返回数据:', {
-        data: recordsWithIndex, 
-        pageNum: current,
-        pageSize,
-        total
-      });
-
       return {
         data: recordsWithIndex,
         pageNum: current,

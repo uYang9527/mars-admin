@@ -17,7 +17,6 @@
           @refresh="getData"
         />
       </template>
-      {{ console.log('表格渲染时的data数据:', data) }}
       <ATable
         :columns="columns"
         :data-source="data"
@@ -43,7 +42,7 @@
 </template>
 
 <script setup lang="tsx">
-import { reactive, ref, onMounted, computed } from 'vue';
+import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
 import { Button, Popconfirm, Space, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -89,33 +88,35 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
         key: 'postName',
         title: '岗位名称',
         align: 'center',
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'postName'
       },
       {
         key: 'postCode',
         title: '岗位编码',
         align: 'center',
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'postCode'
       },
       {
         key: 'postSort',
         title: '显示顺序',
         align: 'center',
-        width: 100
+        width: 100,
+        dataIndex: 'postSort'
       },
       {
         key: 'status',
         title: '状态',
         align: 'center',
         width: 100,
+        dataIndex: 'status',
         customRender: ({ record }) => {
-          if (record.status === null || record.status === undefined) {
+          if (record.status === null) {
             return null;
           }
           
           const statusStr = String(record.status);
-          console.log(`状态值类型: ${typeof record.status}, 值: ${statusStr}`);
-          
           let statusKey = statusStr;
           
           if (statusStr === '1') {
@@ -123,8 +124,6 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
           } else if (statusStr === '0') {
             statusKey = '2';
           }
-          
-          console.log(`状态key: ${statusKey}, 对应标签: ${$t(enableStatusRecord[statusKey])}`);
           
           const label = $t(enableStatusRecord[statusKey]);
           
@@ -135,14 +134,16 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
         key: 'createTime',
         title: '创建时间',
         align: 'center',
-        width: 160
+        width: 160,
+        dataIndex: 'createTime'
       },
       {
         key: 'remark',
         title: '备注',
         align: 'center',
         ellipsis: true,
-        minWidth: 120
+        minWidth: 120,
+        dataIndex: 'remark'
       },
       {
         key: 'operate',
@@ -156,11 +157,11 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
               {$t('common.edit')}
             </Button>
             <Button
-              type={String(record.status) === '1' ? 'default' : 'primary'}
+              type={record.status.toString() === '1' ? 'default' : 'primary'}
               size="small"
               onClick={() => toggleStatus(record.id, String(record.status))}
             >
-              {String(record.status) === '1' ? '禁用' : '启用'}
+              {record.status.toString() === '1' ? '禁用' : '启用'}
             </Button>
             <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
               <Button danger size="small">
@@ -200,8 +201,6 @@ async function handleDelete(id: number) {
 
 async function toggleStatus(id: number, status: string) {
   const newStatus = status === '1' ? '0' : '1';
-  console.log(`切换状态: ID=${id}, 当前状态=${status}, 新状态=${newStatus}`);
-  
   const { error } = await fetchChangePostStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');

@@ -43,7 +43,7 @@ const title = computed(() => {
   return titles[props.operateType];
 });
 
-type Model = Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'roleDesc' | 'status'>;
+type Model = Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'description' | 'status'>;
 
 const model = ref(createDefaultModel());
 
@@ -51,12 +51,12 @@ function createDefaultModel(): Model {
   return {
     roleName: '',
     roleCode: '',
-    roleDesc: '',
+    description: '',
     status: '1'
   };
 }
 
-type RuleKey = Exclude<keyof Model, 'roleDesc'>;
+type RuleKey = Exclude<keyof Model, 'description'>;
 
 const rules: Record<RuleKey, App.Global.FormRule> = {
   roleName: defaultRequiredRule,
@@ -112,8 +112,8 @@ watch(visible, () => {
           </ARadio>
         </ARadioGroup>
       </AFormItem>
-      <AFormItem :label="$t('page.manage.role.roleDesc')" name="roleDesc">
-        <AInput v-model:value="model.roleDesc" :placeholder="$t('page.manage.role.form.roleDesc')" />
+      <AFormItem :label="$t('page.manage.role.roleDesc')" name="description">
+        <AInput v-model:value="model.description" :placeholder="$t('page.manage.role.form.roleDesc')" />
       </AFormItem>
     </AForm>
     <ASpace v-if="isEdit">

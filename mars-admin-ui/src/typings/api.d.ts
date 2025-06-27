@@ -17,16 +17,7 @@ declare namespace Api {
 
     /** common params of paginating query list data */
     interface PaginatingQueryRecord<T = any> extends PaginatingCommonParams {
-      /** 后端实际字段可能是records或data中的records */
       records: T[];
-      /** 后端可能使用pageNumber代替current */
-      pageNumber?: number;
-      /** 后端可能使用pageSize代替size */
-      pageSize?: number;
-      /** 后端可能使用totalRow代替total */
-      totalRow?: number;
-      /** 总页数 */
-      totalPage?: number;
     }
 
     /** common search params of table */
@@ -35,10 +26,10 @@ declare namespace Api {
     /**
      * enable status
      *
-     * - "0"或0: 禁用
-     * - "1"或1: 启用
+     * - "0": enabled
+     * - "1": disabled
      */
-    type EnableStatus = '0' | '1' | 0 | 1 | string | number;
+    type EnableStatus = '0' | '1';
 
     /** common record */
     type CommonRecord<T = any> = {
@@ -117,7 +108,7 @@ declare namespace Api {
       /** role key */
       roleKey: string;
       /** role description */
-      roleDesc: string;
+      description: string;
       /** role sort */
       roleSort: number;
       /** data scope */
