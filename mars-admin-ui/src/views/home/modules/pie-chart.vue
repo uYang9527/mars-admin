@@ -1,109 +1,83 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
+import { onMounted, ref } from 'vue';
 import { useEcharts } from '@/hooks/common/echarts';
 
 defineOptions({
   name: 'PieChart'
 });
 
-const appStore = useAppStore();
-
 const { domRef, updateOptions } = useEcharts(() => ({
   tooltip: {
-    trigger: 'item'
+    trigger: 'item',
+    formatter: '{a} <br/>{b}: {c} ({d}%)'
   },
   legend: {
-    bottom: '1%',
+    bottom: '8%',
     left: 'center',
     itemStyle: {
       borderWidth: 0
+    },
+    textStyle: {
+      fontSize: 12
     }
   },
   series: [
     {
       color: ['#5da8ff', '#8e9dff', '#fedc69', '#26deca'],
-      name: $t('page.home.schedule'),
+      name: '模块使用情况',
       type: 'pie',
-      radius: ['45%', '75%'],
+      radius: ['40%', '70%'],
+      center: ['50%', '42%'],
       avoidLabelOverlap: false,
       itemStyle: {
-        borderRadius: 10,
+        borderRadius: 8,
         borderColor: '#fff',
-        borderWidth: 1
+        borderWidth: 2
       },
       label: {
-        show: false,
-        position: 'center'
+        show: true,
+        position: 'outside',
+        fontSize: 11,
+        formatter: '{b}\n{d}%'
       },
       emphasis: {
         label: {
           show: true,
-          fontSize: '12'
+          fontSize: 12,
+          fontWeight: 'bold'
+        },
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
         }
       },
       labelLine: {
-        show: false
+        show: true,
+        length: 10,
+        length2: 8,
+        smooth: true
       },
-      data: [] as { name: string; value: number }[]
+      data: [
+        { name: '用户管理', value: 35 },
+        { name: '权限管理', value: 25 },
+        { name: '系统配置', value: 20 },
+        { name: '数据统计', value: 20 }
+      ]
     }
   ]
 }));
 
-async function mockData() {
-  await new Promise(resolve => {
-    setTimeout(resolve, 1000);
-  });
-
-  updateOptions(opts => {
-    opts.series[0].data = [
-      { name: $t('page.home.study'), value: 20 },
-      { name: $t('page.home.entertainment'), value: 10 },
-      { name: $t('page.home.work'), value: 40 },
-      { name: $t('page.home.rest'), value: 30 }
-    ];
-
-    return opts;
-  });
-}
-
-function updateLocale() {
-  updateOptions((opts, factory) => {
-    const originOpts = factory();
-
-    opts.series[0].name = originOpts.series[0].name;
-
-    opts.series[0].data = [
-      { name: $t('page.home.study'), value: 20 },
-      { name: $t('page.home.entertainment'), value: 10 },
-      { name: $t('page.home.work'), value: 40 },
-      { name: $t('page.home.rest'), value: 30 }
-    ];
-
-    return opts;
-  });
-}
-
-async function init() {
-  mockData();
-}
-
-watch(
-  () => appStore.locale,
-  () => {
-    updateLocale();
-  }
-);
-
-// init
-init();
+onMounted(() => {
+  // 确保图表能够正确渲染
+  setTimeout(() => {
+    updateOptions(opts => opts);
+  }, 100);
+});
 </script>
 
 <template>
-  <ACard :bordered="false" class="card-wrapper">
-    <div ref="domRef" class="h-360px overflow-hidden"></div>
-  </ACard>
+  <div ref="domRef" class="w-full h-360px"></div>
 </template>
 
 <style scoped></style>

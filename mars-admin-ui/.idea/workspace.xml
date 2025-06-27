@@ -6,15 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dept/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dept/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/home/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/home/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/home/modules/creativity-banner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/home/modules/creativity-banner.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/home/modules/pie-chart.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/home/modules/pie-chart.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/home/modules/project-news.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/home/modules/project-news.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/manage/dict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-data-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-data-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/menu/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/menu/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/role/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/role/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/role/modules/role-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/role/modules/role-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysDictDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysDictDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

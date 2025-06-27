@@ -302,8 +302,8 @@ async function loadDictData() {
       current: dictDataPagination.current,
       size: dictDataPagination.pageSize,
       dictType: selectedDictType.value,
-      dictLabel: dictDataSearchParams.dictLabel,
-      dictValue: dictDataSearchParams.dictValue,
+      dictLabel: dictDataSearchParams.dictLabel || undefined,
+      dictValue: dictDataSearchParams.dictValue || undefined,
       status: dictDataSearchParams.status
     });
     
