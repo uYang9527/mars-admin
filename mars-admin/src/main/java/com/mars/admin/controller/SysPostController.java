@@ -88,4 +88,24 @@ public class SysPostController extends BaseController<SysPost, Long> {
         boolean unique = sysPostService.checkPostNameUnique(postName, postId);
         return Result.success(unique);
     }
+    
+    /**
+     * 根据ID获取岗位（使用缓存）
+     */
+    @GetMapping("/cache/{id}")
+    @Operation(summary = "根据ID获取岗位（使用缓存）", description = "根据ID获取岗位信息，优先从缓存获取")
+    public Result<SysPost> getPostByIdWithCache(@Parameter(description = "岗位ID") @PathVariable Long id) {
+        SysPost post = sysPostService.getPostById(id);
+        return Result.success(post);
+    }
+    
+    /**
+     * 修改岗位状态
+     */
+    @PutMapping("/changeStatus")
+    @Operation(summary = "修改岗位状态", description = "修改岗位状态")
+    public Result<Void> changeStatus(@RequestBody SysPost post) {
+        sysPostService.updateById(post);
+        return Result.success();
+    }
 } 

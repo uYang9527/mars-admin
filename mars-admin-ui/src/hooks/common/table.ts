@@ -34,16 +34,69 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
     apiParams,
     columns: config.columns,
     transformer: res => {
-      const { records = [], current = 1, size = 10, total = 0 } = res.data || {};
+      console.log('useTable transformer 收到的响应数据:', res);
+      
+      // 处理null或undefined情况
+      if (!res) {
+        console.warn('transformer接收到空数据');
+        return { data: [], pageNum: 1, pageSize: 10, total: 0 };
+      }
+      
+      // 首先处理响应的标准结构，提取data字段
+      // res格式: { code: 200, message: "操作成功", data: {...} }
+      const responseData = res.data;
+      
+      // 如果原始响应中没有data字段，则尝试直接使用响应
+      const dataToProcess = responseData !== undefined ? responseData : res;
+      
+      console.log('提取的数据部分:', dataToProcess);
+      
+      // 处理直接返回数组的情况（如菜单列表）
+      if (Array.isArray(dataToProcess)) {
+        console.log('处理数组类型响应');
+        return {
+          data: dataToProcess.map((item, index) => ({ ...item, index: index + 1 })),
+          pageNum: 1,
+          pageSize: dataToProcess.length,
+          total: dataToProcess.length
+        };
+      }
+      
+      // 处理分页数据（检查多种可能的字段名）
+      // 日志输出详细信息，帮助调试
+      console.log('处理分页数据对象，结构:', {
+        hasRecords: Boolean(dataToProcess.records),
+        hasCurrent: Boolean(dataToProcess.pageNumber || dataToProcess.current),
+        hasSize: Boolean(dataToProcess.pageSize || dataToProcess.size),
+        hasTotal: Boolean(dataToProcess.totalRow || dataToProcess.total)
+      });
+      
+      // 处理后端响应中的不同字段命名
+      const records = dataToProcess.records || [];
+      const current = dataToProcess.pageNumber || dataToProcess.current || 1;
+      const size = dataToProcess.pageSize || dataToProcess.size || 10;
+      const total = dataToProcess.totalRow || dataToProcess.total || 0;
+      
+      console.log('transformer提取的字段:', { records, current, size, total });
 
-      // Ensure that the size is greater than 0, If it is less than 0, it will cause paging calculation errors.
+      // 确保size大于0，如果小于0会导致分页计算错误
       const pageSize = size <= 0 ? 10 : size;
+      
+      // 如果records不是数组（可能是undefined或null），创建空数组
+      const safeRecords = Array.isArray(records) ? records : [];
 
-      const recordsWithIndex = records.map((item, index) => {
+      const recordsWithIndex = safeRecords.map((item, index) => {
         return {
           ...item,
           index: (current - 1) * pageSize + index + 1
         };
+      });
+      
+      console.log('transformer处理后返回数据:', {
+        data: recordsWithIndex, 
+        pageNum: current,
+        pageSize,
+        total
       });
 
       return {

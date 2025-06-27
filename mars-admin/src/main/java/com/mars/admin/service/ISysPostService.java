@@ -54,6 +54,14 @@ public interface ISysPostService extends BaseService<SysPost> {
     List<SysPost> selectNormalPosts();
 
     /**
+     * 根据ID查询岗位（使用缓存）
+     *
+     * @param id 岗位ID
+     * @return 岗位信息
+     */
+    SysPost getPostById(Long id);
+
+    /**
      * 新增岗位
      *
      * @param post 岗位信息

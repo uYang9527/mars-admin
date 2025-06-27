@@ -481,10 +481,21 @@ export function fetchCheckDeptNameUnique(deptName: string, deptId?: number) {
  * 分页查询岗位列表
  */
 export function fetchGetPostList(params?: Api.SystemManage.PostSearchParams) {
-  return request<Api.SystemManage.PostList>({
+  // 转换参数，确保与后端期望的参数名一致
+  const apiParams: Record<string, any> = { ...params };
+  if (params?.current !== undefined) {
+    apiParams.pageNumber = params.current;
+    delete apiParams.current;
+  }
+  if (params?.size !== undefined) {
+    apiParams.pageSize = params.size;
+    delete apiParams.size;
+  }
+  
+  return request<Api.Common.PaginatingQueryRecord<Api.SystemManage.Post>>({
     url: '/system/post/page',
     method: 'get',
-    params
+    params: apiParams
   });
 }
 
@@ -580,5 +591,16 @@ export function fetchCheckPostNameUnique(postName: string, postId?: number) {
     url: '/system/post/checkPostNameUnique',
     method: 'get',
     params: { postName, postId }
+  });
+}
+
+/**
+ * 修改岗位状态
+ */
+export function fetchChangePostStatus(postId: number, status: string) {
+  return request({
+    url: '/system/post/changeStatus',
+    method: 'put',
+    data: { id: postId, status }
   });
 }

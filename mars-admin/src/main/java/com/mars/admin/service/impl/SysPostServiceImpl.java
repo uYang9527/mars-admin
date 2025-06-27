@@ -3,10 +3,14 @@ package com.mars.admin.service.impl;
 import com.mars.admin.entity.SysPost;
 import com.mars.admin.mapper.SysPostMapper;
 import com.mars.admin.service.ISysPostService;
-import com.mars.admin.service.impl.BaseServiceImpl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,22 +22,25 @@ import static com.mars.admin.entity.table.SysPostTableDef.SYS_POST;
 
 /**
  * 系统岗位Service实现类
- * 继承 BaseServiceImpl 获得更多便捷方法
+ * 继承 CacheableServiceImpl 获得更多便捷方法和缓存功能
  *
  * @author Mars
  */
 @Service
-public class SysPostServiceImpl extends BaseServiceImpl<SysPost> implements ISysPostService {
+@CacheConfig(cacheNames = "post")
+public class SysPostServiceImpl extends CacheableServiceImpl<SysPostMapper, SysPost> implements ISysPostService {
 
     @Autowired
     private SysPostMapper sysPostMapper;
 
     @Override
+    @Cacheable(key = "'code:' + #postCode")
     public SysPost selectByPostCode(String postCode) {
         return sysPostMapper.selectByPostCode(postCode);
     }
 
     @Override
+    @Cacheable(key = "'name:' + #postName")
     public SysPost selectByPostName(String postName) {
         return sysPostMapper.selectByPostName(postName);
     }
@@ -61,29 +68,44 @@ public class SysPostServiceImpl extends BaseServiceImpl<SysPost> implements ISys
     }
 
     @Override
+    @Cacheable(key = "'user:' + #userId")
     public List<SysPost> selectPostsByUserId(Long userId) {
         return sysPostMapper.selectPostsByUserId(userId);
     }
 
     @Override
+    @Cacheable(key = "'normal'")
     public List<SysPost> selectNormalPosts() {
         return sysPostMapper.selectNormalPosts();
     }
 
     @Override
+    @Cacheable(key = "#id")
+    public SysPost getPostById(Long id) {
+        return super.getById(id);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean insertPost(SysPost post) {
         return this.save(post);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'code:' + #post.postCode", condition = "#post.postCode != null"),
+        @CacheEvict(key = "'name:' + #post.postName", condition = "#post.postName != null"),
+        @CacheEvict(key = "#post.id", condition = "#post.id != null")
+    })
     public boolean updatePost(SysPost post) {
         return this.updateById(post);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deletePosts(Long[] postIds) {
         return this.removeByIds(Arrays.asList(postIds));
     }
