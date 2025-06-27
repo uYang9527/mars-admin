@@ -93,7 +93,7 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
-  # 白名单路径配置 - 这些接口不需要Token验证
+
   exclude-paths:
     # 认证相关接口
     - /auth/**
@@ -118,3 +118,11 @@ sa-token:
     - /error
     # 测试接口
     - /test/**
+    # SQL日志页面相关
+    - /sqlLog.html
+    - /sqlLog/**
+    - /sql-log/**
+# SQL日志页面配置
+sql-log:
+  username: admin
+  password: admin

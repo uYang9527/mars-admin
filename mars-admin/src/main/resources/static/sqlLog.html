@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL日志监控面板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-primary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .controls {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-box .search-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .stats {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .sql-logs {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .log-item {
+            border-bottom: 1px solid #eee;
+            padding: 1rem;
+            transition: background-color 0.2s;
+        }
+        
+        .log-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .log-item:last-child {
+            border-bottom: none;
+        }
+        
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .log-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .sql-type {
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .sql-type.SELECT { background: #e3f2fd; color: #1976d2; }
+        .sql-type.INSERT { background: #e8f5e8; color: #388e3c; }
+        .sql-type.UPDATE { background: #fff3e0; color: #f57c00; }
+        .sql-type.DELETE { background: #ffebee; color: #d32f2f; }
+        
+        .performance {
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .performance.fast { background: #e8f5e8; color: #388e3c; }
+        .performance.medium { background: #fff3e0; color: #f57c00; }
+        .performance.slow { background: #ffebee; color: #d32f2f; }
+        
+        .log-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-small:hover {
+            background: #f8f9fa;
+            border-color: #999;
+        }
+        
+        .sql-content {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 0.5rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .no-logs {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background: #27ae60;
+        }
+        
+        .toast.error {
+            background: #e74c3c;
+        }
+        
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: auto;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            .log-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .log-meta {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录遮罩层 -->
+    <div id="loginOverlay" class="login-overlay" style="display: none;">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>🔍 SQL日志系统</h2>
+                <p>请输入登录凭据以访问SQL监控面板</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">登录</button>
+                
+                <div id="errorMessage" class="error-message">
+                    用户名或密码错误
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主页面内容 -->
+    <div id="mainContent" style="display: none;">
+        <div class="header">
+            <h1>🔍 SQL日志监控面板</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="refreshLogs()">🔄 刷新</button>
+                <button class="btn btn-primary" onclick="clearLogs()">🗑️ 清空日志</button>
+                <button class="btn btn-danger" onclick="logout()">🚪 退出</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索SQL语句、表名或SQL类型..." oninput="filterLogs()">
+                <span class="search-icon">🔍</span>
+            </div>
+            <select class="filter-select" id="typeFilter" onchange="filterLogs()">
+                <option value="">所有类型</option>
+                <option value="SELECT">SELECT</option>
+                <option value="INSERT">INSERT</option>
+                <option value="UPDATE">UPDATE</option>
+                <option value="DELETE">DELETE</option>
+            </select>
+            <select class="filter-select" id="performanceFilter" onchange="filterLogs()">
+                <option value="">所有性能</option>
+                <option value="fast">快速 (&lt;500ms)</option>
+                <option value="medium">中等 (500-1000ms)</option>
+                <option value="slow">慢查询 (&gt;1000ms)</option>
+            </select>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span>📊 总记录数:</span>
+                <span class="stat-value" id="totalCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span>⚡ 快速查询:</span>
+                <span class="stat-value" id="fastCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span>⚠️ 中等查询:</span>
+                <span class="stat-value" id="mediumCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span>🐌 慢查询:</span>
+                <span class="stat-value" id="slowCount">0</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="sql-logs" id="sqlLogs">
+                <div class="loading">
+                    正在加载SQL日志...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allLogs = [];
+        let filteredLogs = [];
+        let isAuthenticated = false;
+        
+        // 页面加载时检查认证状态
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+        });
+        
+        // 检查认证状态
+        function checkAuthStatus() {
+            fetch('/sqlLog/checkAuth')
+                .then(response => response.text())
+                .then(result => {
+                    if (result === 'authenticated') {
+                        showMainContent();
+                    } else {
+                        showLoginOverlay();
+                    }
+                })
+                .catch(error => {
+                    console.error('检查认证状态失败:', error);
+                    showLoginOverlay();
+                });
+        }
+        
+        // 显示登录遮罩
+        function showLoginOverlay() {
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+            isAuthenticated = false;
+        }
+        
+        // 显示主内容
+        function showMainContent() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            isAuthenticated = true;
+            loadSqlLogs();
+            // 每30秒自动刷新
+            setInterval(loadSqlLogs, 30000);
+        }
+        
+        // 登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            fetch('/sqlLog/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'success') {
+                    showMainContent();
+                    errorMessage.style.display = 'none';
+                } else {
+                    errorMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('登录失败:', error);
+                errorMessage.style.display = 'block';
+            });
+        });
+        
+        // 加载SQL日志
+        function loadSqlLogs() {
+            if (!isAuthenticated) return;
+            
+            fetch('/sql-log/recent?limit=100')
+                .then(response => response.json())
+                .then(data => {
+                    allLogs = data.logs || [];
+                    updateStats();
+                    filterLogs();
+                })
+                .catch(error => {
+                    console.error('加载日志失败:', error);
+                    showToast('加载日志失败', 'error');
+                });
+        }
+        
+        // 更新统计信息
+        function updateStats() {
+            const total = allLogs.length;
+            const fast = allLogs.filter(log => log.elapsedTime < 500).length;
+            const medium = allLogs.filter(log => log.elapsedTime >= 500 && log.elapsedTime < 1000).length;
+            const slow = allLogs.filter(log => log.elapsedTime >= 1000).length;
+            
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('fastCount').textContent = fast;
+            document.getElementById('mediumCount').textContent = medium;
+            document.getElementById('slowCount').textContent = slow;
+        }
+        
+        // 过滤日志
+        function filterLogs() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+            const performanceFilter = document.getElementById('performanceFilter').value;
+            
+            filteredLogs = allLogs.filter(log => {
+                // 搜索过滤
+                const matchesSearch = !searchText || 
+                    log.sql.toLowerCase().includes(searchText) ||
+                    (log.tableName && log.tableName.toLowerCase().includes(searchText)) ||
+                    log.sqlType.toLowerCase().includes(searchText);
+                
+                // 类型过滤
+                const matchesType = !typeFilter || log.sqlType === typeFilter;
+                
+                // 性能过滤
+                let matchesPerformance = true;
+                if (performanceFilter === 'fast') {
+                    matchesPerformance = log.elapsedTime < 500;
+                } else if (performanceFilter === 'medium') {
+                    matchesPerformance = log.elapsedTime >= 500 && log.elapsedTime < 1000;
+                } else if (performanceFilter === 'slow') {
+                    matchesPerformance = log.elapsedTime >= 1000;
+                }
+                
+                return matchesSearch && matchesType && matchesPerformance;
+            });
+            
+            renderLogs();
+        }
+        
+        // 渲染日志列表
+        function renderLogs() {
+            const container = document.getElementById('sqlLogs');
+            
+            if (filteredLogs.length === 0) {
+                container.innerHTML = '<div class="no-logs">暂无SQL日志记录</div>';
+                return;
+            }
+            
+            const html = filteredLogs.map(log => {
+                const time = new Date(log.timestamp).toLocaleString();
+                const performanceClass = getPerformanceClass(log.elapsedTime);
+                const performanceText = getPerformanceText(log.elapsedTime);
+                
+                return `
+                    <div class="log-item">
+                        <div class="log-header">
+                            <div class="log-meta">
+                                <span class="sql-type ${log.sqlType}">${log.sqlType}</span>
+                                <span class="performance ${performanceClass}">${performanceText}</span>
+                                <span>📅 ${time}</span>
+                                ${log.tableName ? `<span>📋 ${log.tableName}</span>` : ''}
+                            </div>
+                            <div class="log-actions">
+                                <button class="btn-small" onclick="copySql(\`${log.sql.replace(/`/g, '\\`')}\`)">📋 复制</button>
+                                <button class="btn-small" onclick="formatSql(\`${log.sql.replace(/`/g, '\\`')}\`)">🎨 格式化</button>
+                            </div>
+                        </div>
+                        <div class="sql-content">${escapeHtml(log.sql)}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = html;
+        }
+        
+        // 获取性能等级样式类
+        function getPerformanceClass(elapsedTime) {
+            if (elapsedTime < 500) return 'fast';
+            if (elapsedTime < 1000) return 'medium';
+            return 'slow';
+        }
+        
+        // 获取性能等级文本
+        function getPerformanceText(elapsedTime) {
+            if (elapsedTime < 500) return `⚡ ${elapsedTime}ms`;
+            if (elapsedTime < 1000) return `⚠️ ${elapsedTime}ms`;
+            return `🐌 ${elapsedTime}ms`;
+        }
+        
+        // 转义HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // 复制SQL
+        function copySql(sql) {
+            navigator.clipboard.writeText(sql).then(() => {
+                showToast('SQL已复制到剪贴板', 'success');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                showToast('复制失败', 'error');
+            });
+        }
+        
+        // 格式化SQL
+        function formatSql(sql) {
+            fetch('/sql-log/format', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sql: sql })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.formattedSql) {
+                    navigator.clipboard.writeText(data.formattedSql).then(() => {
+                        showToast('格式化SQL已复制到剪贴板', 'success');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('格式化失败:', error);
+                showToast('格式化失败', 'error');
+            });
+        }
+        
+        // 刷新日志
+        function refreshLogs() {
+            loadSqlLogs();
+            showToast('日志已刷新', 'success');
+        }
+        
+        // 清空日志
+        function clearLogs() {
+            if (confirm('确定要清空所有SQL日志吗？')) {
+                fetch('/sql-log/clear', { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        allLogs = [];
+                        filteredLogs = [];
+                        updateStats();
+                        renderLogs();
+                        showToast(data.message || '日志已清空', 'success');
+                    })
+                    .catch(error => {
+                        console.error('清空失败:', error);
+                        showToast('清空失败', 'error');
+                    });
+            }
+        }
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                fetch('/sqlLog/logout', { method: 'POST' })
+                    .then(() => {
+                        showLoginOverlay();
+                    })
+                    .catch(error => {
+                        console.error('退出失败:', error);
+                        showLoginOverlay();
+                    });
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

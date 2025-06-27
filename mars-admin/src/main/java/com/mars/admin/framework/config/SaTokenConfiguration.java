@@ -38,7 +38,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 获取白名单路径（优先从配置文件读取，否则使用默认值）
-        List<String> excludePaths = saTokenProperties.getExcludePaths();
+        List<String> excludePaths = getExcludePaths();
 
         // 注册 Sa-Token 拦截器
         registry.addInterceptor(new SaInterceptor(handle -> {
@@ -55,5 +55,46 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                 .order(-100);               // 设置高优先级，确保Sa-Token拦截器优先执行
 
         log.info("Sa-Token拦截器已注册，白名单路径: {}", excludePaths);
+    }
+
+    /**
+     * 获取白名单路径列表
+     * 如果配置文件中没有配置，则使用默认白名单
+     */
+    private List<String> getExcludePaths() {
+        if (saTokenProperties != null && saTokenProperties.getExcludePaths() != null && !saTokenProperties.getExcludePaths().isEmpty()) {
+            return saTokenProperties.getExcludePaths();
+        }
+        
+        // 默认白名单路径
+        return Arrays.asList(
+            // 认证相关接口
+            "/auth/**",
+            // 静态资源
+            "/static/**",
+            "/public/**",
+            "/webjars/**",
+            "/favicon.ico",
+            // API文档相关
+            "/doc.html",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/knife4j/**",
+            // 健康检查
+            "/actuator/**",
+            "/health",
+            // 错误页面
+            "/error",
+            // 测试接口
+            "/test/**",
+            // SQL日志页面相关
+            "/sqlLog.html",
+            "/sqlLog/**",
+            "/sql-log/**"
+        );
     }
 } 

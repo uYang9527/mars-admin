@@ -21,6 +21,7 @@ public class SaTokenProperties {
 
     /**
      * 白名单路径列表 - 这些路径不需要Token验证
+     * 对应配置文件中的 sa-token.exclude-paths
      */
     private List<String> excludePaths;
 } 
