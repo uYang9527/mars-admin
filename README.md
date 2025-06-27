@@ -1,4 +1,5 @@
-# 🚀 Mars-Admin 管理系统
+
+<div align="center"># 🚀 Mars-Admin 管理系统</div>
 
 <div align="center">
 
