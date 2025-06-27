@@ -1,7 +1,11 @@
 package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.User;
+import com.mars.admin.mapper.UserMapper;
 import com.mars.admin.service.IUserService;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,11 +18,17 @@ import org.springframework.stereotype.Service;
  * @date 2025-06-23 17:35:08
  */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
-    
+@CacheConfig(cacheNames = "user")
+public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User> implements IUserService {
+    @Override
+    @Cacheable(key = "#id")
+    public User getUserByUserId(Long id) {
+        return super.getById(id);
+    }
+
     // 无需编写任何代码！
     // 继承 CrudServiceImpl 后，自动拥有所有 CRUD 功能
     // 自动注入 UserMapper，通过反射获取泛型类型
     // 如果需要自定义方法，可以在这里添加
-    
+
 } 

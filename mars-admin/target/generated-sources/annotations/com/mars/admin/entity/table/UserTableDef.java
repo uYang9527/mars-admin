@@ -20,9 +20,6 @@ public class UserTableDef extends TableDef {
      */
     public final QueryColumn PHONE = new QueryColumn(this, "phone");
 
-    /**
-     * 创建人
-     */
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     /**
@@ -30,9 +27,6 @@ public class UserTableDef extends TableDef {
      */
     public final QueryColumn PASSWORD = new QueryColumn(this, "password");
 
-    /**
-     * 更新人
-     */
     public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
 
     /**
@@ -40,24 +34,12 @@ public class UserTableDef extends TableDef {
      */
     public final QueryColumn USERNAME = new QueryColumn(this, "username");
 
-    /**
-     * 是否删除：0-否，1-是
-     */
     public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
 
-    /**
-     * 创建时间
-     */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
 
-    /**
-     * 删除时间
-     */
     public final QueryColumn DELETE_TIME = new QueryColumn(this, "delete_time");
 
-    /**
-     * 更新时间
-     */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     /**

@@ -10,4 +10,14 @@ import com.mars.admin.entity.User;
  * @date 2025-06-23 17:35:08
  */
 public interface IUserService extends BaseService<User> {
+
+
+    /**
+     * 根据用户名查询用户
+     *
+     * @param id 用户id
+     * @return 用户
+     */
+    User getUserByUserId(Long id);
+
 } 

@@ -44,7 +44,7 @@ public class User extends BaseEntity {
      * 手机
      */
     @Schema(description = "手机号", example = "13800138000")
-    @Column
+    @ColumnMask(Masks.MOBILE)
     private String phone;
 
 

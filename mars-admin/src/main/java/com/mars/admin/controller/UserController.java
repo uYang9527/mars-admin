@@ -2,7 +2,13 @@ package com.mars.admin.controller;
 
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.User;
+import com.mars.admin.framework.common.Result;
+import com.mars.admin.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "用户管理", description = "用户相关的增删改查操作")
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController extends BaseController<User, Long> {
+
+    private final IUserService userService;
 
     // 继承 BaseController 后，自动拥有以下接口：
     // GET    /user/list           - 获取所有用户
@@ -34,5 +43,18 @@ public class UserController extends BaseController<User, Long> {
 
     // 如果需要自定义方法，可以在这里添加
     // 例如：根据用户名查询、修改密码等特殊业务逻辑
+
+
+    /**
+     * 自定义方法示例：根据ID获取用户换成redis
+     *
+     * @param id 主键ID
+     * @return 用户信息
+     */
+    @Operation(summary = "根据ID获取用户", description = "根据ID获取用户信息")
+    @GetMapping("/getById")
+    public Result<User> getById(Long id) {
+        return Result.success("获取用户成功", userService.getUserByUserId(id));
+    }
 
 }

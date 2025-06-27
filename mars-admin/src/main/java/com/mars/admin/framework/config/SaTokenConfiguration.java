@@ -4,9 +4,13 @@ import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * SaToken 配置类
@@ -20,6 +24,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SaTokenConfiguration implements WebMvcConfigurer {
 
+    @Autowired(required = false)
+    private SaTokenProperties saTokenProperties;
+
+
     /**
      * 注册 Sa-Token 拦截器
      * 实现Token验证机制：
@@ -29,44 +37,23 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 获取白名单路径（优先从配置文件读取，否则使用默认值）
+        List<String> excludePaths = saTokenProperties.getExcludePaths();
+
         // 注册 Sa-Token 拦截器
         registry.addInterceptor(new SaInterceptor(handle -> {
-            SaRouter.match("/**")
-                    .notMatch(
-                            // 认证相关接口（无需Token）
-                            "/auth/login",      // 登录接口
-                            "/auth/logout",     // 登出接口
-                            "/auth/register",   // 注册接口
-                            "/auth/captcha",    // 验证码接口
-                            
-                            // API文档相关（无需Token）
-                            "/doc.html",
-                            "/swagger-ui.html",
-                            "/swagger-ui/**",
-                            "/swagger-resources/**",
-                            "/webjars/**",
-                            "/v3/api-docs",
-                            "/v3/api-docs/**",
-                            "/v2/api-docs",
-                            
-                            // 测试接口（无需Token）
-                            "/token-test/public",
-                            
-                            // 静态资源（无需Token）
-                            "/favicon.ico",
-                            "/error"
-                    )
-                    .check(r -> {
-                        // 打印调试信息
-                        log.info("Sa-Token拦截器执行，开始验证Token");
-                        
-                        // 检查用户是否登录（Token是否有效）
-                        StpUtil.checkLogin();
-                        
-                        log.info("Token验证通过 - 用户ID: {}", StpUtil.getLoginId());
-                    });
-        }))
-        .addPathPatterns("/**")     // 拦截所有路径
-        .order(-100);               // 设置高优先级，确保Sa-Token拦截器优先执行
+                    SaRouter.match("/**")
+                            .notMatch(excludePaths.toArray(new String[0]))
+                            .check(r -> {
+                                // 检查用户是否登录（Token是否有效）
+                                StpUtil.checkLogin();
+
+                                log.info("Token验证通过 - 用户ID: {}，Token：{}", StpUtil.getLoginId(), StpUtil.getTokenInfo());
+                            });
+                }))
+                .addPathPatterns("/**")     // 拦截所有路径
+                .order(-100);               // 设置高优先级，确保Sa-Token拦截器优先执行
+
+        log.info("Sa-Token拦截器已注册，白名单路径: {}", excludePaths);
     }
 } 
