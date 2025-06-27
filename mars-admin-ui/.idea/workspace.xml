@@ -5,7 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/service/request/shared.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/request/shared.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysRole.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysMenuTableDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysMenuTableDef.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysRoleTableDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysRoleTableDef.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysUserTableDef.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysUserTableDef.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/AuthServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysMenuTableDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysMenuTableDef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysRoleTableDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysRoleTableDef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysUserTableDef.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysUserTableDef.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +74,7 @@
       <workItem from="1750853656478" duration="3121000" />
       <workItem from="1750862288304" duration="50000" />
       <workItem from="1750863090955" duration="1589000" />
-      <workItem from="1750918021731" duration="9771000" />
+      <workItem from="1750918021731" duration="10362000" />
     </task>
     <servers />
   </component>

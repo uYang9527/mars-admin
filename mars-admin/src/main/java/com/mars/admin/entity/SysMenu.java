@@ -1,5 +1,6 @@
 package com.mars.admin.entity;
 
+import com.mars.admin.framework.listener.EntityChangeListener;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -19,7 +20,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@Table("sys_menu")
+@Table(value = "sys_menu", onInsert = EntityChangeListener.class, onUpdate = EntityChangeListener.class)
 @Schema(description = "系统菜单")
 public class SysMenu extends BaseEntity {
 

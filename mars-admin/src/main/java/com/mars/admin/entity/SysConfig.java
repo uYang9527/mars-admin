@@ -1,5 +1,6 @@
 package com.mars.admin.entity;
 
+import com.mars.admin.framework.listener.EntityChangeListener;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -17,7 +18,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@Table("sys_config")
+@Table(value = "sys_config", onInsert = EntityChangeListener.class, onUpdate = EntityChangeListener.class)
 @Schema(description = "系统配置")
 public class SysConfig extends BaseEntity {
 

@@ -1,10 +1,9 @@
 package com.mars.admin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mars.admin.framework.listener.EntityChangeListener;
+import com.mybatisflex.annotation.*;
+import com.mybatisflex.core.mask.Masks;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@Table("sys_user")
+@Table(value = "sys_user", onInsert = EntityChangeListener.class, onUpdate = EntityChangeListener.class)
 @Schema(description = "系统用户")
 public class SysUser extends BaseEntity {
 
@@ -54,7 +53,7 @@ public class SysUser extends BaseEntity {
     private String email;
 
     @Schema(description = "手机号")
-    @Column("phone")
+    @ColumnMask(Masks.MOBILE)
     private String phone;
 
     @Schema(description = "头像URL")
