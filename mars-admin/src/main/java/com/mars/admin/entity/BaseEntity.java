@@ -46,26 +46,27 @@ public abstract class BaseEntity implements Serializable {
      */
     @Schema(description = "创建人", example = "1")
     @Column
-    private Long createUser;
+    private Long createBy;
 
     /**
      * 更新人
      */
     @Schema(description = "更新人", example = "1")
     @Column
-    private Long updateUser;
+    private Long updateBy;
 
     /**
-     * 是否删除
+     * 是否删除：0-否，1-是
      */
-    @Schema(description = "是否删除", example = "false", hidden = true)
-    @Column(isLogicDelete = true)
-    private Boolean isDelete;
+    @Schema(description = "是否删除", example = "0", hidden = true)
+    @Column(value = "is_deleted", isLogicDelete = true)
+    private Integer isDeleted;
 
     /**
      * 删除时间
      */
     @Schema(description = "删除时间", example = "2024-01-01 12:00:00", hidden = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column("delete_time")
     private LocalDateTime deleteTime;
 } 

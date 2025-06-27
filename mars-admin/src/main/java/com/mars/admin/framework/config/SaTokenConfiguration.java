@@ -33,6 +33,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                             "/auth/login",      // 登录接口
                             "/auth/logout",     // 登出接口
                             "/auth/register",   // 注册接口
+                            "/auth/captcha",    // 验证码接口
                             "/api/doc",         // API文档地址
                             "/api/info",        // 系统信息
                             "/test/**",         // 测试接口

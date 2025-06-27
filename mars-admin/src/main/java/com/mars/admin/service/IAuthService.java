@@ -2,6 +2,7 @@ package com.mars.admin.service;
 
 import com.mars.admin.common.request.LoginRequest;
 import com.mars.admin.common.response.LoginResponse;
+import com.mars.admin.entity.SysUser;
 
 /**
  * 认证服务接口
@@ -30,14 +31,14 @@ public interface IAuthService {
      *
      * @return 用户信息
      */
-    Object getCurrentUser();
+    SysUser getCurrentUser();
 
     /**
-     * 检查用户名和密码
+     * 检查密码是否正确
      *
-     * @param username 用户名
-     * @param password 密码
+     * @param inputPassword 输入的密码
+     * @param storedPassword 存储的密码
      * @return 是否验证成功
      */
-    boolean checkPassword(String username, String password);
+    boolean checkPassword(String inputPassword, String storedPassword);
 } 

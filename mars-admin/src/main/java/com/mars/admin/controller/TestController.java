@@ -2,12 +2,8 @@ package com.mars.admin.controller;
 
 import com.mars.admin.framework.common.Result;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -15,50 +11,110 @@ import java.util.Map;
 
 /**
  * 测试控制器
- * 用于验证OpenAPI文档是否正常工作
+ * 用于测试跨域配置和基本功能
  *
  * @author Mars.wq [wqexpore@163.com]
  * @version 1.0
  * @date 2025-01-27
  */
-@Tag(name = "测试接口", description = "用于测试OpenAPI文档功能")
 @RestController
 @RequestMapping("/test")
+@Tag(name = "测试接口", description = "用于测试跨域配置和基本功能")
 public class TestController {
 
-    @Operation(summary = "Hello World", description = "简单的测试接口，无需登录")
-    @GetMapping("/hello")
-    public Result<String> hello() {
-        return Result.success("Hello World! OpenAPI 3 正常工作！");
-    }
-
-    @Operation(summary = "获取当前时间", description = "获取服务器当前时间")
-    @GetMapping("/time")
-    public Result<Map<String, Object>> getCurrentTime() {
+    /**
+     * 测试GET请求
+     */
+    @GetMapping("/get")
+    @Operation(summary = "测试GET请求", description = "测试跨域GET请求")
+    public Result<Map<String, Object>> testGet() {
         Map<String, Object> data = new HashMap<>();
-        data.put("currentTime", LocalDateTime.now());
-        data.put("timestamp", System.currentTimeMillis());
-        data.put("timezone", "Asia/Shanghai");
-        return Result.success("获取时间成功", data);
+        data.put("message", "GET请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "GET");
+        return Result.success(data);
     }
 
-    @Operation(summary = "Echo测试", description = "回显输入的消息")
-    @GetMapping("/echo")
-    public Result<String> echo(
-            @Parameter(description = "要回显的消息", required = true, example = "Hello")
-            @RequestParam String message) {
-        return Result.success("Echo: " + message);
-    }
-
-    @Operation(summary = "系统状态", description = "获取系统运行状态")
-    @GetMapping("/status")
-    public Result<Map<String, Object>> getSystemStatus() {
+    /**
+     * 测试POST请求
+     */
+    @PostMapping("/post")
+    @Operation(summary = "测试POST请求", description = "测试跨域POST请求")
+    public Result<Map<String, Object>> testPost(@RequestBody(required = false) Map<String, Object> requestData) {
         Map<String, Object> data = new HashMap<>();
-        data.put("status", "running");
-        data.put("uptime", System.currentTimeMillis());
-        data.put("javaVersion", System.getProperty("java.version"));
-        data.put("springBootVersion", "3.2.0");
-        data.put("openApiVersion", "3.0.3");
-        return Result.success("系统运行正常", data);
+        data.put("message", "POST请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "POST");
+        data.put("requestData", requestData);
+        return Result.success(data);
+    }
+
+    /**
+     * 测试PUT请求
+     */
+    @PutMapping("/put")
+    @Operation(summary = "测试PUT请求", description = "测试跨域PUT请求")
+    public Result<Map<String, Object>> testPut(@RequestBody(required = false) Map<String, Object> requestData) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("message", "PUT请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "PUT");
+        data.put("requestData", requestData);
+        return Result.success(data);
+    }
+
+    /**
+     * 测试DELETE请求
+     */
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "测试DELETE请求", description = "测试跨域DELETE请求")
+    public Result<Map<String, Object>> testDelete(@PathVariable Long id) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("message", "DELETE请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "DELETE");
+        data.put("deletedId", id);
+        return Result.success(data);
+    }
+
+    /**
+     * 测试OPTIONS请求（预检请求）
+     */
+    @RequestMapping(value = "/options", method = RequestMethod.OPTIONS)
+    @Operation(summary = "测试OPTIONS请求", description = "测试跨域OPTIONS预检请求")
+    public Result<Map<String, Object>> testOptions() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("message", "OPTIONS请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "OPTIONS");
+        return Result.success(data);
+    }
+
+    /**
+     * 测试带认证的请求（需要登录）
+     */
+    @GetMapping("/auth")
+    @Operation(summary = "测试认证请求", description = "测试需要登录的跨域请求")
+    public Result<Map<String, Object>> testAuth() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("message", "认证请求成功");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("method", "GET");
+        data.put("needAuth", true);
+        return Result.success(data);
+    }
+
+    /**
+     * 健康检查
+     */
+    @GetMapping("/health")
+    @Operation(summary = "健康检查", description = "检查服务是否正常运行")
+    public Result<Map<String, Object>> health() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", "UP");
+        data.put("timestamp", LocalDateTime.now());
+        data.put("service", "Mars Admin");
+        data.put("version", "1.0.0");
+        return Result.success(data);
     }
 } 

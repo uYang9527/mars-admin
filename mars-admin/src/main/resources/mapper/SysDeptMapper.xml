@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mars.admin.mapper.SysDeptMapper">
+
+    <!-- 部门基础信息结果映射 -->
+    <resultMap id="SysDeptResult" type="com.mars.admin.entity.SysDept">
+        <id property="id" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="ancestors" column="ancestors"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="deptCode" column="dept_code"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="leader" column="leader"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="isSystem" column="is_system"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="deleteTime" column="delete_time"/>
+    </resultMap>
+
+    <!-- 分页查询部门列表 -->
+    <select id="selectDeptList" parameterType="com.mars.admin.entity.SysDept" resultMap="SysDeptResult">
+        SELECT
+            d.id as dept_id,
+            d.parent_id,
+            d.ancestors,
+            d.dept_name,
+            d.dept_code,
+            d.order_num,
+            d.leader,
+            d.phone,
+            d.email,
+            d.status,
+            d.is_system,
+            d.remark,
+            d.create_time,
+            d.update_time,
+            d.create_by,
+            d.update_by,
+            d.is_deleted,
+            d.delete_time
+        FROM sys_dept d
+        WHERE d.is_deleted = 0
+        <if test="deptName != null and deptName != ''">
+            AND d.dept_name LIKE CONCAT('%', #{deptName}, '%')
+        </if>
+        <if test="deptCode != null and deptCode != ''">
+            AND d.dept_code LIKE CONCAT('%', #{deptCode}, '%')
+        </if>
+        <if test="status != null">
+            AND d.status = #{status}
+        </if>
+        <if test="parentId != null">
+            AND d.parent_id = #{parentId}
+        </if>
+        ORDER BY d.parent_id ASC, d.order_num ASC
+    </select>
+
+    <!-- 根据用户ID查询部门列表 -->
+    <select id="selectDeptsByUserId" parameterType="Long" resultMap="SysDeptResult">
+        SELECT
+            d.id as dept_id,
+            d.parent_id,
+            d.ancestors,
+            d.dept_name,
+            d.dept_code,
+            d.order_num,
+            d.leader,
+            d.phone,
+            d.email,
+            d.status,
+            d.is_system,
+            d.remark,
+            d.create_time,
+            d.update_time,
+            d.create_by,
+            d.update_by,
+            d.is_deleted,
+            d.delete_time
+        FROM sys_dept d
+        INNER JOIN sys_user_dept ud ON d.id = ud.dept_id
+        WHERE d.is_deleted = 0 AND d.status = 1 AND ud.user_id = #{userId}
+        ORDER BY d.order_num ASC
+    </select>
+
+    <!-- 根据角色ID查询部门列表 -->
+    <select id="selectDeptsByRoleId" parameterType="Long" resultMap="SysDeptResult">
+        SELECT
+            d.id as dept_id,
+            d.parent_id,
+            d.ancestors,
+            d.dept_name,
+            d.dept_code,
+            d.order_num,
+            d.leader,
+            d.phone,
+            d.email,
+            d.status,
+            d.is_system,
+            d.remark,
+            d.create_time,
+            d.update_time,
+            d.create_by,
+            d.update_by,
+            d.is_deleted,
+            d.delete_time
+        FROM sys_dept d
+        INNER JOIN sys_role_dept rd ON d.id = rd.dept_id
+        WHERE d.is_deleted = 0 AND d.status = 1 AND rd.role_id = #{roleId}
+        ORDER BY d.order_num ASC
+    </select>
+
+    <!-- 查询部门树 -->
+    <select id="selectDeptTree" resultMap="SysDeptResult">
+        SELECT
+            d.id as dept_id,
+            d.parent_id,
+            d.ancestors,
+            d.dept_name,
+            d.dept_code,
+            d.order_num,
+            d.leader,
+            d.phone,
+            d.email,
+            d.status,
+            d.is_system,
+            d.remark,
+            d.create_time,
+            d.update_time,
+            d.create_by,
+            d.update_by,
+            d.is_deleted,
+            d.delete_time
+        FROM sys_dept d
+        WHERE d.is_deleted = 0 AND d.status = 1
+        ORDER BY d.parent_id ASC, d.order_num ASC
+    </select>
+
+</mapper> 

@@ -1,15 +1,16 @@
 <div align="center">
   <img src="./public/favicon.svg" width="160" />
-  <h1>SoybeanAdmin</h1>
+  <h1>SoybeanAdmin AntDesign</h1>
   <span>中文 | <a href="./README.en_US.md">English</a></span>
 </div>
 
 ---
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
-[![github stars](https://img.shields.io/github/stars/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
-[![github forks](https://img.shields.io/github/forks/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
-[![gitee stars](https://gitee.com/honghuangdc/soybean-admin/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin)
+[![github stars](https://img.shields.io/github/stars/soybeanjs/soybean-admin-antd)](https://github.com/soybeanjs/soybean-admin-antd)
+[![github forks](https://img.shields.io/github/forks/soybeanjs/soybean-admin-antd)](https://github.com/soybeanjs/soybean-admin-antd)
+[![gitee stars](https://gitee.com/honghuangdc/soybean-admin-antd/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin-antd)
+[![gitcode star](https://gitcode.com/soybeanjs/soybean-admin-antd/star/badge.svg)](https://gitcode.com/soybeanjs/soybean-admin-antd)
 
 <a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
@@ -41,16 +42,22 @@
   - [预览地址](https://naive.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin)
   - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin)
 - **AntDesignVue 版本:**
   - [预览地址](https://antd.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin-antd)
   - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin-antd)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin-antd)
 - **ElementPlus 版本:**
   - [预览地址](https://elp.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin-element-plus)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin-element-plus)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin-element-plus)
 - **旧版:**
   - [预览地址](https://legacy.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin/tree/legacy)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin/tree/legacy)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin/tree/legacy)
 
 
 ## 文档
@@ -86,7 +93,12 @@
 **克隆项目**
 
 ```bash
+# github
 git clone https://github.com/soybeanjs/soybean-admin.git
+# gitee
+git clone https://gitee.com/honghuangdc/soybean-admin.git
+# gitcode
+git clone https://gitcode.com/soybeanjs/soybean-admin.git
 ```
 
 **安装依赖**
@@ -160,7 +172,7 @@ pnpm build
 
   <div>
     <p>QQ交流群</p>
-    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-3.jpg" style="width:200px" />
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-4.jpg" style="width:200px" />
   </div>
   <!-- <div>
     <p>微信群</p>
@@ -181,4 +193,4 @@ pnpm build
 
 ## 开源协议
 
-项目基于 [MIT © 2021 Soybean](./LICENSE) 协议，仅供学习参考，商业使用请保留作者版权信息，作者不保证也不承担任何软件的使用风险。
+项目基于 [MIT © 2025 MarsAdmin](./LICENSE) 协议，仅供学习参考，商业使用请保留作者版权信息，作者不保证也不承担任何软件的使用风险。

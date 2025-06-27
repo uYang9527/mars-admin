@@ -21,9 +21,9 @@ public class UserTableDef extends TableDef {
     public final QueryColumn PHONE = new QueryColumn(this, "phone");
 
     /**
-     * 是否删除
+     * 创建人
      */
-    public final QueryColumn IS_DELETE = new QueryColumn(this, "is_delete");
+    public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     /**
      * 密码
@@ -31,19 +31,24 @@ public class UserTableDef extends TableDef {
     public final QueryColumn PASSWORD = new QueryColumn(this, "password");
 
     /**
+     * 更新人
+     */
+    public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
+
+    /**
      * 脱敏规则
      */
     public final QueryColumn USERNAME = new QueryColumn(this, "username");
 
     /**
+     * 是否删除：0-否，1-是
+     */
+    public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
+
+    /**
      * 创建时间
      */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
-
-    /**
-     * 创建人
-     */
-    public final QueryColumn CREATE_USER = new QueryColumn(this, "create_user");
 
     /**
      * 删除时间
@@ -56,11 +61,6 @@ public class UserTableDef extends TableDef {
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     /**
-     * 更新人
-     */
-    public final QueryColumn UPDATE_USER = new QueryColumn(this, "update_user");
-
-    /**
      * 所有字段。
      */
     public final QueryColumn ALL_COLUMNS = new QueryColumn(this, "*");
@@ -68,7 +68,7 @@ public class UserTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, EMAIL, PHONE, PASSWORD, USERNAME, CREATE_TIME, CREATE_USER, DELETE_TIME, UPDATE_TIME, UPDATE_USER};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, EMAIL, PHONE, CREATE_BY, PASSWORD, UPDATE_BY, USERNAME, CREATE_TIME, DELETE_TIME, UPDATE_TIME};
 
     public UserTableDef() {
         super("", "tb_user");

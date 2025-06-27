@@ -1,15 +1,16 @@
 <div align="center">
 	<img src="./public/favicon.svg" width="160" />
-	<h1>SoybeanAdmin</h1>
+	<h1>SoybeanAdmin AntDesign</h1>
   <span><a href="./README.md">中文</a> | English</span>
 </div>
 
 ---
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
-[![github stars](https://img.shields.io/github/stars/soybeanjs/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
-[![github forks](https://img.shields.io/github/forks/soybeanjs/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
-[![gitee stars](https://gitee.com/honghuangdc/soybean-admin/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin)
+[![github stars](https://img.shields.io/github/stars/soybeanjs/soybean-admin-antd)](https://github.com/soybeanjs/soybean-admin-antd)
+[![github forks](https://img.shields.io/github/forks/soybeanjs/soybean-admin-antd)](https://github.com/soybeanjs/soybean-admin-antd)
+[![gitee stars](https://gitee.com/honghuangdc/soybean-admin-antd/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin-antd)
+[![gitcode star](https://gitcode.com/soybeanjs/soybean-admin-antd/star/badge.svg)](https://gitcode.com/soybeanjs/soybean-admin-antd)
 
 <a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
@@ -42,19 +43,25 @@
   - [Preview Link](https://naive.soybeanjs.cn/)
   - [Github Repository](https://github.com/soybeanjs/soybean-admin)
   - [Gitee Repository](https://gitee.com/honghuangdc/soybean-admin)
+  - [Gitcode Repository](https://gitcode.com/soybeanjs/soybean-admin)
 
 - **AntDesignVue Version:**
   - [Preview Link](https://antd.soybeanjs.cn/)
   - [Github Repository](https://github.com/soybeanjs/soybean-admin-antd)
   - [Gitee Repository](https://gitee.com/honghuangdc/soybean-admin-antd)
+  - [Gitcode Repository](https://gitcode.com/soybeanjs/soybean-admin-antd)
 
 - **ElementPlus Version:**
   - [Preview Link](https://elp.soybeanjs.cn/)
   - [Github Repository](https://github.com/soybeanjs/soybean-admin-element-plus)
+  - [Gitee Repository](https://gitee.com/honghuangdc/soybean-admin-element-plus)
+  - [Gitcode Repository](https://gitcode.com/soybeanjs/soybean-admin-element-plus)
 
 - **Legacy Version:**
   - [Preview Link](https://legacy.soybeanjs.cn/)
   - [Github Repository](https://github.com/soybeanjs/soybean-admin/tree/legacy)
+  - [Gitee Repository](https://gitee.com/honghuangdc/soybean-admin/tree/legacy)
+  - [Gitcode Repository](https://gitcode.com/soybeanjs/soybean-admin/tree/legacy)
 
 
 ## Documentation
@@ -90,7 +97,12 @@ Make sure your environment meets the following requirements:
 **Clone Project**
 
 ```bash
+# github
 git clone https://github.com/soybeanjs/soybean-admin.git
+# gitee
+git clone https://gitee.com/honghuangdc/soybean-admin.git
+# gitcode
+git clone https://gitcode.com/soybeanjs/soybean-admin.git
 ```
 
 **Install Dependencies**
@@ -162,7 +174,7 @@ Thanks the following people for their contributions. If you want to contribute t
 
   <div>
   	<p>QQ Group</p>
-    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-3.jpg" style="width:200px" />
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-4.jpg" style="width:200px" />
   </div>
 	<!-- <div>
 		<p>WeChat Group</p>
@@ -183,4 +195,4 @@ Thanks the following people for their contributions. If you want to contribute t
 
 ## License
 
-This project is based on the [MIT © 2021 Soybean](./LICENSE) protocol, for learning purposes only, please retain the author's copyright information for commercial use, the author does not guarantee and is not responsible for the software.
+This project is based on the [MIT © 2025 MarsAdmin](./LICENSE) protocol, for learning purposes only, please retain the author's copyright information for commercial use, the author does not guarantee and is not responsible for the software.

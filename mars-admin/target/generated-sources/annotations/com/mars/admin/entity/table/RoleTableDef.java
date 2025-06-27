@@ -27,9 +27,9 @@ public class RoleTableDef extends TableDef {
     public final QueryColumn STATUS = new QueryColumn(this, "status");
 
     /**
-     * 是否删除
+     * 创建人
      */
-    public final QueryColumn IS_DELETE = new QueryColumn(this, "is_delete");
+    public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     /**
      * 角色代码
@@ -42,14 +42,19 @@ public class RoleTableDef extends TableDef {
     public final QueryColumn ROLE_NAME = new QueryColumn(this, "role_name");
 
     /**
+     * 更新人
+     */
+    public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
+
+    /**
+     * 是否删除：0-否，1-是
+     */
+    public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
+
+    /**
      * 创建时间
      */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
-
-    /**
-     * 创建人
-     */
-    public final QueryColumn CREATE_USER = new QueryColumn(this, "create_user");
 
     /**
      * 删除时间
@@ -60,11 +65,6 @@ public class RoleTableDef extends TableDef {
      * 更新时间
      */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
-
-    /**
-     * 更新人
-     */
-    public final QueryColumn UPDATE_USER = new QueryColumn(this, "update_user");
 
     /**
      * 角色描述
@@ -79,7 +79,7 @@ public class RoleTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, STATUS, ROLE_CODE, ROLE_NAME, CREATE_TIME, CREATE_USER, DELETE_TIME, UPDATE_TIME, UPDATE_USER, DESCRIPTION};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, STATUS, CREATE_BY, ROLE_CODE, ROLE_NAME, UPDATE_BY, CREATE_TIME, DELETE_TIME, UPDATE_TIME, DESCRIPTION};
 
     public RoleTableDef() {
         super("", "tb_role");

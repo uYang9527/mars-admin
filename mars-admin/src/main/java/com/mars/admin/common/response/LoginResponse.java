@@ -1,6 +1,6 @@
 package com.mars.admin.common.response;
 
-import com.mars.admin.entity.User;
+import com.mars.admin.entity.SysUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -25,11 +25,11 @@ public class LoginResponse {
     private Long expiresIn;
 
     @Schema(description = "用户信息")
-    private User userInfo;
+    private SysUser userInfo;
 
     public LoginResponse() {}
 
-    public LoginResponse(String token, Long expiresIn, User userInfo) {
+    public LoginResponse(String token, Long expiresIn, SysUser userInfo) {
         this.token = token;
         this.expiresIn = expiresIn;
         this.userInfo = userInfo;

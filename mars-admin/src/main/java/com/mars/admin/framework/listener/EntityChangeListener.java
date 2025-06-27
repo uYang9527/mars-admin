@@ -28,7 +28,7 @@ public class EntityChangeListener implements InsertListener, UpdateListener, Set
         // 设置创建人
         Long currentUserId = UserContext.getCurrentUserId();
         if (currentUserId != null) {
-            setPropertyIfPresent(entity, "createUser", currentUserId);
+            setPropertyIfPresent(entity, "createBy", currentUserId);
         }
         
         log.debug("Auto fill insert fields for entity: {}", entity.getClass().getSimpleName());
@@ -42,7 +42,7 @@ public class EntityChangeListener implements InsertListener, UpdateListener, Set
         // 设置更新人
         Long currentUserId = UserContext.getCurrentUserId();
         if (currentUserId != null) {
-            setPropertyIfPresent(entity, "updateUser", currentUserId);
+            setPropertyIfPresent(entity, "updateBy", currentUserId);
         }
         
         log.debug("Auto fill update fields for entity: {}", entity.getClass().getSimpleName());
