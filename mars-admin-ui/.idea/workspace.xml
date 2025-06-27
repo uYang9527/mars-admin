@@ -5,136 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/UniappTool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/MarsAdminApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/request/LoginRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/response/LoginResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/RouteController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysConfigController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysDeptController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysDictDataController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysDictTypeController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysLoginInfoController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysMenuController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysOperLogController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysPostController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysRoleController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SysUserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/TestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/TestPermissionController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/TokenTestController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/base/ApiDocController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/base/BaseController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/BaseEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysDept.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysDictData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysDictType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysLoginInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysOperLog.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysPost.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysRole.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysRoleMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/SysUserRole.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/RoleTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysConfigTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysDeptTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysDictDataTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysDictTypeTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysLoginInfoTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysMenuTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysOperLogTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysPostTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysRoleMenuTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysRoleTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysUserRoleTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/SysUserTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/entity/table/UserTableDef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/common/Result.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/common/ResultCode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/CorsConfiguration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/MyBatisFlexConfiguration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/OpenApiConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/config/SaTokenConfiguration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/context/UserContext.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/exception/BusinessException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/exception/GlobalExceptionHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/listener/EntityChangeListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/listener/EntityLogicDeleteListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/BasePlusMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysConfigMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysDeptMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysDictDataMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysDictTypeMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysLoginInfoMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysMenuMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysOperLogMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysPostMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysRoleMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/SysUserMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/mapper/UserMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/BaseService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/IAuthService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysConfigService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysDeptService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysDictDataService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysDictTypeService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysLoginInfoService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysMenuService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysOperLogService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysPostService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysRoleService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/ISysUserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/IUserService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/AuthServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/BaseServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysConfigServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysDeptServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysDictDataServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysDictTypeServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysLoginInfoServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysMenuServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysOperLogServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysPostServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysRoleServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/SysUserServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/service/impl/UserServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysConfigMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysDeptMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysDictDataMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysDictTypeMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysLoginInfoMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysMenuMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysOperLogMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysPostMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysRoleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/mapper/SysUserMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/RoleTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysConfigTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysDeptTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysDictDataTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysDictTypeTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysLoginInfoTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysMenuTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysOperLogTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysPostTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysRoleMenuTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysRoleTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysUserRoleTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/SysUserTableDef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/generated-sources/annotations/com/mars/admin/entity/table/UserTableDef.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,23 +26,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/wkwork/hx-code/mars-admin/mars-admin-ui",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "pnpm",
-    "ts.external.directory.path": "D:\\java-project\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/wkwork/hx-code/mars-admin/mars-admin-ui&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\java-project\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
