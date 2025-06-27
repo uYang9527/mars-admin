@@ -1,5 +1,55 @@
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+    <!-- 搜索区域 -->
+    <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
+      <AForm
+        :model="searchParams"
+        :label-col="{
+          span: 5,
+          md: 7
+        }"
+      >
+        <ARow :gutter="[16, 16]" wrap>
+          <ACol :span="24" :md="12" :lg="8">
+            <AFormItem label="部门名称" name="deptName" class="m-0">
+              <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="8">
+            <AFormItem label="状态" name="status" class="m-0">
+              <ASelect
+                v-model:value="searchParams.status"
+                placeholder="请选择状态"
+                :options="[
+                  { label: '启用', value: '1' },
+                  { label: '禁用', value: '0' }
+                ]"
+                clearable
+              />
+            </AFormItem>
+          </ACol>
+          <div class="flex-1">
+            <AFormItem class="m-0">
+              <div class="w-full flex-y-center justify-end gap-12px">
+                <AButton @click="handleReset">
+                  <template #icon>
+                    <icon-ic-round-refresh class="align-sub text-icon" />
+                  </template>
+                  <span class="ml-8px">{{ $t('common.reset') }}</span>
+                </AButton>
+                <AButton type="primary" ghost @click="handleSearch">
+                  <template #icon>
+                    <icon-ic-round-search class="align-sub text-icon" />
+                  </template>
+                  <span class="ml-8px">{{ $t('common.search') }}</span>
+                </AButton>
+              </div>
+            </AFormItem>
+          </div>
+        </ARow>
+      </AForm>
+    </ACard>
+
     <ACard title="部门管理" :bordered="false" size="small" class="sm:flex-1-hidden card-wrapper">
       <template #extra>
         <TableHeaderOperation
@@ -177,6 +227,20 @@ async function handleDelete(id: number) {
 
 function edit(id: number) {
   handleEdit(id);
+}
+
+function handleSearch() {
+  getData();
+}
+
+function handleReset() {
+  Object.assign(searchParams, {
+    current: 1,
+    size: 10,
+    deptName: null,
+    status: null
+  });
+  getData();
 }
 </script>
 

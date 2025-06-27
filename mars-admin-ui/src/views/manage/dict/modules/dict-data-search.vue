@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { SearchOutlined, ReloadOutlined } from '@ant-design/icons-vue';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'DictDataSearch'
@@ -62,33 +62,54 @@ function handleReset() {
 </script>
 
 <template>
-  <ACard title="查询条件" :bordered="false">
-    <AForm :model="searchModel" layout="inline">
-      <AFormItem label="字典标签">
-        <AInput v-model:value="searchModel.dictLabel" placeholder="请输入字典标签" allow-clear />
-      </AFormItem>
-      <AFormItem label="字典键值">
-        <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" allow-clear />
-      </AFormItem>
-      <AFormItem label="状态">
-        <ASelect v-model:value="searchModel.status" placeholder="请选择状态" allow-clear style="width: 120px">
-          <ASelectOption v-for="item in statusOptions" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </ASelectOption>
-        </ASelect>
-      </AFormItem>
-      <AFormItem>
-        <ASpace>
-          <AButton type="primary" @click="handleSearch">
-            <template #icon><SearchOutlined /></template>
-            查询
-          </AButton>
-          <AButton @click="handleReset">
-            <template #icon><ReloadOutlined /></template>
-            重置
-          </AButton>
-        </ASpace>
-      </AFormItem>
+  <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
+    <AForm
+      :model="searchModel"
+      :label-col="{
+        span: 5,
+        md: 7
+      }"
+    >
+      <ARow :gutter="[16, 16]" wrap>
+        <ACol :span="24" :md="12" :lg="8">
+          <AFormItem label="字典标签" name="dictLabel" class="m-0">
+            <AInput v-model:value="searchModel.dictLabel" placeholder="请输入字典标签" />
+          </AFormItem>
+        </ACol>
+        <ACol :span="24" :md="12" :lg="8">
+          <AFormItem label="字典键值" name="dictValue" class="m-0">
+            <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" />
+          </AFormItem>
+        </ACol>
+        <ACol :span="24" :md="12" :lg="8">
+          <AFormItem label="状态" name="status" class="m-0">
+            <ASelect
+              v-model:value="searchModel.status"
+              placeholder="请选择状态"
+              :options="statusOptions"
+              clearable
+            />
+          </AFormItem>
+        </ACol>
+        <div class="flex-1">
+          <AFormItem class="m-0">
+            <div class="w-full flex-y-center justify-end gap-12px">
+              <AButton @click="handleReset">
+                <template #icon>
+                  <icon-ic-round-refresh class="align-sub text-icon" />
+                </template>
+                <span class="ml-8px">{{ $t('common.reset') }}</span>
+              </AButton>
+              <AButton type="primary" ghost @click="handleSearch">
+                <template #icon>
+                  <icon-ic-round-search class="align-sub text-icon" />
+                </template>
+                <span class="ml-8px">{{ $t('common.search') }}</span>
+              </AButton>
+            </div>
+          </AFormItem>
+        </div>
+      </ARow>
     </AForm>
   </ACard>
 </template>

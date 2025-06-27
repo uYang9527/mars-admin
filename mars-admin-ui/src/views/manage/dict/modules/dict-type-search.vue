@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { SearchOutlined, ReloadOutlined } from '@ant-design/icons-vue';
+import { $t } from '@/locales';
 
 defineOptions({
   name: 'DictTypeSearch'
@@ -58,30 +58,37 @@ function handleReset() {
 </script>
 
 <template>
-  <ACard title="查询条件" :bordered="false">
-    <AForm :model="searchModel" layout="inline">
-      <AFormItem label="字典名称">
-        <AInput v-model:value="searchModel.dictName" placeholder="请输入字典名称" allow-clear />
+  <ACard :title="$t('common.search')" :bordered="false" class="card-wrapper">
+    <AForm :model="searchModel">
+      <AFormItem label="字典名称" class="mb-12px">
+        <AInput v-model:value="searchModel.dictName" placeholder="请输入字典名称" size="small" />
       </AFormItem>
-      <AFormItem label="字典类型">
-        <AInput v-model:value="searchModel.dictType" placeholder="请输入字典类型" allow-clear />
+      <AFormItem label="字典类型" class="mb-12px">
+        <AInput v-model:value="searchModel.dictType" placeholder="请输入字典类型" size="small" />
       </AFormItem>
-      <AFormItem label="状态">
-        <ASelect v-model:value="searchModel.status" placeholder="请选择状态" allow-clear style="width: 120px">
-          <ASelectOption v-for="item in statusOptions" :key="item.value" :value="item.value">
-            {{ item.label }}
-          </ASelectOption>
-        </ASelect>
+      <AFormItem label="状态" class="mb-12px">
+        <ASelect
+          v-model:value="searchModel.status"
+          placeholder="请选择状态"
+          :options="statusOptions"
+          clearable
+          size="small"
+          class="w-full"
+        />
       </AFormItem>
-      <AFormItem>
-        <ASpace>
-          <AButton type="primary" @click="handleSearch">
-            <template #icon><SearchOutlined /></template>
-            查询
+      <AFormItem class="mb-0">
+        <ASpace class="w-full" direction="vertical" size="small">
+          <AButton type="primary" ghost @click="handleSearch" size="small" block>
+            <template #icon>
+              <icon-ic-round-search class="align-sub text-icon" />
+            </template>
+            <span class="ml-8px">{{ $t('common.search') }}</span>
           </AButton>
-          <AButton @click="handleReset">
-            <template #icon><ReloadOutlined /></template>
-            重置
+          <AButton @click="handleReset" size="small" block>
+            <template #icon>
+              <icon-ic-round-refresh class="align-sub text-icon" />
+            </template>
+            <span class="ml-8px">{{ $t('common.reset') }}</span>
           </AButton>
         </ASpace>
       </AFormItem>

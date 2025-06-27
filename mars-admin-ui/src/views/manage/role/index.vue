@@ -13,6 +13,7 @@ import { enableStatusRecord } from '@/constants/business';
 import RoleOperateDrawer, { type OperateType } from './modules/role-operate-drawer.vue';
 import MenuAuthModal from './modules/menu-auth-modal.vue';
 import ButtonAuthModal from './modules/button-auth-modal.vue';
+import RoleSearch from './modules/role-search.vue';
 
 const wrapperEl = ref<HTMLElement>();
 
@@ -175,60 +176,12 @@ function edit(id: number) {
   handleEdit(id);
 }
 
-// 搜索参数
-const searchModel = reactive({
-  roleName: '',
-  roleCode: '',
-  status: null
-});
 
-function handleSearch() {
-  Object.assign(searchParams, searchModel);
-  getData();
-}
-
-function handleReset() {
-  Object.assign(searchModel, {
-    roleName: '',
-    roleCode: '',
-    status: null
-  });
-  Object.assign(searchParams, searchModel);
-  getData();
-}
 </script>
 
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <!-- 搜索区域 -->
-    <ACard title="查询条件" :bordered="false">
-      <AForm :model="searchModel" layout="inline">
-        <AFormItem label="角色名称">
-          <AInput v-model:value="searchModel.roleName" placeholder="请输入角色名称" allow-clear />
-        </AFormItem>
-        <AFormItem label="角色编码">
-          <AInput v-model:value="searchModel.roleCode" placeholder="请输入角色编码" allow-clear />
-        </AFormItem>
-        <AFormItem label="状态">
-          <ASelect v-model:value="searchModel.status" placeholder="请选择状态" allow-clear style="width: 120px">
-            <ASelectOption value="0">启用</ASelectOption>
-            <ASelectOption value="1">禁用</ASelectOption>
-          </ASelect>
-        </AFormItem>
-        <AFormItem>
-          <ASpace>
-            <AButton type="primary" @click="handleSearch">
-              <template #icon><SearchOutlined /></template>
-              查询
-            </AButton>
-            <AButton @click="handleReset">
-              <template #icon><ReloadOutlined /></template>
-              重置
-            </AButton>
-          </ASpace>
-        </AFormItem>
-      </AForm>
-    </ACard>
+    <RoleSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
     <!-- 表格区域 -->
     <ACard

@@ -4,6 +4,7 @@ import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysDictData;
 import com.mars.admin.framework.common.Result;
 import com.mars.admin.service.ISysDictDataService;
+import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,11 +30,36 @@ public class SysDictDataController extends BaseController<SysDictData, Long> {
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/dict/data/list           - 获取所有字典数据
     // GET    /system/dict/data/{id}           - 根据ID获取字典数据
-    // GET    /system/dict/data/page           - 分页查询字典数据
+    // GET    /system/dict/data/page           - 分页查询字典数据（重写以支持搜索条件）
     // POST   /system/dict/data                - 新增字典数据
     // PUT    /system/dict/data                - 更新字典数据
     // DELETE /system/dict/data/{id}           - 删除字典数据
     // DELETE /system/dict/data/batch          - 批量删除字典数据
+
+    /**
+     * 分页查询字典数据列表（重写BaseController方法以支持搜索条件）
+     */
+    @GetMapping("/pageList")
+    @Operation(summary = "分页查询字典数据列表", description = "分页查询字典数据列表，支持多条件搜索")
+    public Result<Page<SysDictData>> pageList(
+            @Parameter(description = "当前页", example = "1") @RequestParam(value = "current", defaultValue = "1") Integer current,
+            @Parameter(description = "每页大小", example = "10") @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @Parameter(description = "字典标签") @RequestParam(value = "dictLabel", required = false) String dictLabel,
+            @Parameter(description = "字典键值") @RequestParam(value = "dictValue", required = false) String dictValue,
+            @Parameter(description = "字典类型") @RequestParam(value = "dictType", required = false) String dictType,
+            @Parameter(description = "状态") @RequestParam(value = "status", required = false) Integer status) {
+        
+        // 构建查询条件
+        SysDictData queryCondition = new SysDictData();
+        queryCondition.setDictLabel(dictLabel);
+        queryCondition.setDictValue(dictValue);
+        queryCondition.setDictType(dictType);
+        queryCondition.setStatus(status);
+        
+        // 分页查询
+        Page<SysDictData> page = sysDictDataService.selectDictDataPage(Page.of(current, size), queryCondition);
+        return Result.success(page);
+    }
 
     /**
      * 根据字典类型查询字典数据

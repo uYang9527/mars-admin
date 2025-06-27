@@ -725,7 +725,7 @@ export function fetchRefreshDictCache() {
  */
 export function fetchGetDictDataList(params?: Api.SystemManage.DictDataSearchParams) {
   return request<Api.SystemManage.DictDataList>({
-    url: '/system/dict/data/page',
+    url: '/system/dict/data/pageList',
     method: 'get',
     params
   });

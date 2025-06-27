@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static com.mars.admin.entity.table.SysMenuTableDef.SYS_MENU;
 
@@ -87,7 +89,33 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
 
     @Override
     public List<SysMenu> selectMenuTree() {
-        return sysMenuMapper.selectMenuTree();
+        // 获取所有菜单数据
+        List<SysMenu> allMenus = sysMenuMapper.selectMenuTree();
+        
+        // 构建树形结构
+        return buildMenuTree(allMenus, 0L);
+    }
+    
+    /**
+     * 构建菜单树形结构
+     * 
+     * @param menus 所有菜单列表
+     * @param parentId 父菜单ID
+     * @return 树形菜单列表
+     */
+    private List<SysMenu> buildMenuTree(List<SysMenu> menus, Long parentId) {
+        List<SysMenu> treeMenus = new ArrayList<>();
+        
+        for (SysMenu menu : menus) {
+            if (menu.getParentId() != null && menu.getParentId().equals(parentId)) {
+                // 递归查找子菜单
+                List<SysMenu> children = buildMenuTree(menus, menu.getId());
+                menu.setChildren(children);
+                treeMenus.add(menu);
+            }
+        }
+        
+        return treeMenus;
     }
 
     @Override
