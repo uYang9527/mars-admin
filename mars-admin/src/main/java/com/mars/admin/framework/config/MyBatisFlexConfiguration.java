@@ -50,12 +50,10 @@ public class MyBatisFlexConfiguration {
                 icon = "✅"; level = "正常执行"; headerColor = "\u001B[92m"; // 亮绿色
             }
             
-            logBuilder.append("\n").append(headerColor).append("╔").append("═".repeat(78)).append("╗\u001B[0m\n");
-            logBuilder.append(String.format("%s║ %s %-10s │ 类型: %-8s │ 耗时: %4dms │ 表: %-15s ║\u001B[0m\n", 
+            logBuilder.append("\n");
+            logBuilder.append(String.format("%s %s %-6s │ 类型: %-8s │ 耗时: %4dms │ 表: %-15s\u001B[0m\n",
                 headerColor, icon, level, sqlType, elapsedTime, tableName.toLowerCase()));
-            logBuilder.append(headerColor).append("╠").append("═".repeat(78)).append("╣\u001B[0m\n");
-            logBuilder.append("║ SQL: ").append(coloredSql).append(" ║\n");
-            logBuilder.append(headerColor).append("╚").append("═".repeat(78)).append("╝\u001B[0m\n");
+            logBuilder.append("SQL: ").append(coloredSql).append("\n");
             
             // 记录到SQL日志控制器
             SqlLogController.addSqlLog(auditMessage.getFullSql(), sqlType, elapsedTime, tableName);
