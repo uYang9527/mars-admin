@@ -64,7 +64,12 @@ logging:
   level:
     com.mars.admin: debug
     com.mars.admin.framework.listener: debug
+    com.mars.admin.framework.config: info
+    com.mybatisflex: debug
+    org.springframework.jdbc: debug
     root: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
 
 # SaToken配置
 sa-token:

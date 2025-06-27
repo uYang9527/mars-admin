@@ -1,5 +1,6 @@
 package com.mars.admin.entity;
 
+import com.mars.admin.common.enums.EnableEnum;
 import com.mars.admin.framework.listener.EntityChangeListener;
 import com.mybatisflex.annotation.*;
 import com.mybatisflex.core.mask.Masks;
@@ -46,6 +47,12 @@ public class User extends BaseEntity {
     @Schema(description = "手机号", example = "13800138000")
     @ColumnMask(Masks.MOBILE)
     private String phone;
+
+    /**
+     * 状态
+     */
+    @Schema(description = "状态", example = "1")
+    private EnableEnum status;
 
 
 }

@@ -29,9 +29,6 @@ public class SysMenuTableDef extends TableDef {
 
     public final QueryColumn VISIBLE = new QueryColumn(this, "visible");
 
-    /**
-     * 创建人
-     */
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     public final QueryColumn IS_SYSTEM = new QueryColumn(this, "is_system");
@@ -48,37 +45,22 @@ public class SysMenuTableDef extends TableDef {
 
     public final QueryColumn REDIRECT = new QueryColumn(this, "redirect");
 
-    /**
-     * 更新人
-     */
     public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
 
     public final QueryColumn COMPONENT = new QueryColumn(this, "component");
 
-    /**
-     * 是否删除：0-否，1-是
-     */
     public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
 
     public final QueryColumn ROUTE_NAME = new QueryColumn(this, "route_name");
 
     public final QueryColumn ROUTE_PATH = new QueryColumn(this, "route_path");
 
-    /**
-     * 创建时间
-     */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
 
-    /**
-     * 删除时间
-     */
     public final QueryColumn DELETE_TIME = new QueryColumn(this, "delete_time");
 
     public final QueryColumn QUERY_PARAM = new QueryColumn(this, "query_param");
 
-    /**
-     * 更新时间
-     */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     public final QueryColumn MENU_TYPE_FLAG = new QueryColumn(this, "menu_type_flag");

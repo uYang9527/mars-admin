@@ -20,6 +20,11 @@ public class UserTableDef extends TableDef {
      */
     public final QueryColumn PHONE = new QueryColumn(this, "phone");
 
+    /**
+     * 状态
+     */
+    public final QueryColumn STATUS = new QueryColumn(this, "status");
+
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     /**
@@ -50,7 +55,7 @@ public class UserTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, EMAIL, PHONE, CREATE_BY, PASSWORD, UPDATE_BY, USERNAME, CREATE_TIME, DELETE_TIME, UPDATE_TIME};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, EMAIL, PHONE, STATUS, CREATE_BY, PASSWORD, UPDATE_BY, USERNAME, CREATE_TIME, DELETE_TIME, UPDATE_TIME};
 
     public UserTableDef() {
         super("", "tb_user");

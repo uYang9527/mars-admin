@@ -48,7 +48,7 @@ public class SaTokenConfiguration implements WebMvcConfigurer {
                                 // 检查用户是否登录（Token是否有效）
                                 StpUtil.checkLogin();
 
-                                log.info("Token验证通过 - 用户ID: {}，Token：{}", StpUtil.getLoginId(), StpUtil.getTokenInfo());
+                                log.info("Token验证通过 - 用户ID: {}，Token：{}", StpUtil.getLoginId(), StpUtil.getTokenInfo().getTokenValue());
                             });
                 }))
                 .addPathPatterns("/**")     // 拦截所有路径

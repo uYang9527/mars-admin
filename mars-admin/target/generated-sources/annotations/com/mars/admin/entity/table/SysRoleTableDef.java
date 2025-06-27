@@ -21,9 +21,6 @@ public class SysRoleTableDef extends TableDef {
 
     public final QueryColumn ROLE_KEY = new QueryColumn(this, "role_key");
 
-    /**
-     * 创建人
-     */
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     public final QueryColumn IS_SYSTEM = new QueryColumn(this, "is_system");
@@ -34,31 +31,16 @@ public class SysRoleTableDef extends TableDef {
 
     public final QueryColumn ROLE_SORT = new QueryColumn(this, "role_sort");
 
-    /**
-     * 更新人
-     */
     public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
 
     public final QueryColumn DATA_SCOPE = new QueryColumn(this, "data_scope");
 
-    /**
-     * 是否删除：0-否，1-是
-     */
     public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
 
-    /**
-     * 创建时间
-     */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
 
-    /**
-     * 删除时间
-     */
     public final QueryColumn DELETE_TIME = new QueryColumn(this, "delete_time");
 
-    /**
-     * 更新时间
-     */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     public final QueryColumn DESCRIPTION = new QueryColumn(this, "description");

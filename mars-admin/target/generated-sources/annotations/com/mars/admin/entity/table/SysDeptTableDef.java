@@ -25,9 +25,6 @@ public class SysDeptTableDef extends TableDef {
 
     public final QueryColumn STATUS = new QueryColumn(this, "status");
 
-    /**
-     * 创建人
-     */
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     public final QueryColumn DEPT_CODE = new QueryColumn(this, "dept_code");
@@ -40,31 +37,16 @@ public class SysDeptTableDef extends TableDef {
 
     public final QueryColumn PARENT_ID = new QueryColumn(this, "parent_id");
 
-    /**
-     * 更新人
-     */
     public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
 
     public final QueryColumn ANCESTORS = new QueryColumn(this, "ancestors");
 
-    /**
-     * 是否删除：0-否，1-是
-     */
     public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
 
-    /**
-     * 创建时间
-     */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
 
-    /**
-     * 删除时间
-     */
     public final QueryColumn DELETE_TIME = new QueryColumn(this, "delete_time");
 
-    /**
-     * 更新时间
-     */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     /**

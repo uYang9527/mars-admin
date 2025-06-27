@@ -29,9 +29,6 @@ public class SysUserTableDef extends TableDef {
 
     public final QueryColumn BIRTHDAY = new QueryColumn(this, "birthday");
 
-    /**
-     * 创建人
-     */
     public final QueryColumn CREATE_BY = new QueryColumn(this, "create_by");
 
     public final QueryColumn NICKNAME = new QueryColumn(this, "nickname");
@@ -40,35 +37,20 @@ public class SysUserTableDef extends TableDef {
 
     public final QueryColumn REAL_NAME = new QueryColumn(this, "real_name");
 
-    /**
-     * 更新人
-     */
     public final QueryColumn UPDATE_BY = new QueryColumn(this, "update_by");
 
     public final QueryColumn USER_TYPE = new QueryColumn(this, "user_type");
 
     public final QueryColumn USERNAME = new QueryColumn(this, "username");
 
-    /**
-     * 是否删除：0-否，1-是
-     */
     public final QueryColumn IS_DELETED = new QueryColumn(this, "is_deleted");
 
-    /**
-     * 创建时间
-     */
     public final QueryColumn CREATE_TIME = new QueryColumn(this, "create_time");
 
-    /**
-     * 删除时间
-     */
     public final QueryColumn DELETE_TIME = new QueryColumn(this, "delete_time");
 
     public final QueryColumn LOGIN_COUNT = new QueryColumn(this, "login_count");
 
-    /**
-     * 更新时间
-     */
     public final QueryColumn UPDATE_TIME = new QueryColumn(this, "update_time");
 
     public final QueryColumn LAST_LOGIN_IP = new QueryColumn(this, "last_login_ip");
