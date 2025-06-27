@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mars-admin-depends/mars-admin-depends.iml" filepath="$PROJECT_DIR$/mars-admin-depends/mars-admin-depends.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mars-admin-depends/mars-admin-monitor/mars-admin-monitor.iml" filepath="$PROJECT_DIR$/mars-admin-depends/mars-admin-monitor/mars-admin-monitor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mars-admin-server/mars-admin-server.iml" filepath="$PROJECT_DIR$/mars-admin-server/mars-admin-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mars-admin.iml" filepath="$PROJECT_DIR$/.idea/mars-admin.iml" />
     </modules>
   </component>
 </project>

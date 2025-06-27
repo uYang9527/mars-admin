@@ -10,10 +10,11 @@
         <option value="$PROJECT_DIR$/mars-job/pom.xml" />
         <option value="$PROJECT_DIR$/mars-admin-depends/snail-job/pom.xml" />
         <option value="$PROJECT_DIR$/mars-admin-depends/mars-admin-monitor/pom.xml" />
+        <option value="$PROJECT_DIR$/mars-admin/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
