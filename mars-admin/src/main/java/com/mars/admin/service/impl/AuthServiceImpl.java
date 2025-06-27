@@ -120,7 +120,6 @@ public class AuthServiceImpl implements IAuthService {
 
         // 清除敏感信息
         user.setPassword(null);
-//        response.setUserInfo(user);
 
         log.info("用户 {} 登录成功，用户ID: {}", username, user.getId());
         return response;
