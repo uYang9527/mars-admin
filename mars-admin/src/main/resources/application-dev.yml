@@ -13,13 +13,13 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-  
+
   # Redis配置
   data:
     redis:
       host: localhost
       port: 6379
-      password: 
+      password:
       database: 0
       timeout: 10000ms
       lettuce:
@@ -28,6 +28,12 @@ spring:
           max-wait: -1ms
           max-idle: 8
           min-idle: 0
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 # SpringDoc OpenAPI 3 配置 (替代Swagger 2)
 springdoc:
@@ -126,3 +132,13 @@ sa-token:
 sql-log:
   username: admin
   password: admin
+
+# 文件上传配置
+file:
+  upload:
+    path: ./upload  # 本地上传路径
+    default-config: minio  # 默认使用的配置类型
+    max-size: 10485760  # 最大文件大小(10MB)
+    allowed-types: jpg,jpeg,png,gif,bmp,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar  # 允许的文件类型
+
+# Spring文件上传配置已在主spring节点中配置
