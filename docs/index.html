@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Mars Admin - 企业级后台管理系统</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Mars Admin - 一个现代化的企业级后台管理系统，基于Spring Boot 3和Vue 3">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/prismjs@1/themes/prism.css">
+  <style>
+    :root {
+      --theme-color: #42b983;
+      --sidebar-width: 300px;
+      --header-height: 60px;
+      --primary-color: #42b983;
+      --gradient-color: linear-gradient(135deg, #42b983 0%, #3a99ff 100%);
+      --mars-color: #e74c3c;
+    }
+    .app-name-link img {
+      max-width: 80%;
+    }
+    .markdown-section {
+      max-width: 900px;
+    }
+    .sidebar-nav li > a:hover {
+      color: var(--theme-color);
+    }
+    
+    /* 顶部导航栏 */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background-color: #fff;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #34495e;
+      text-decoration: none;
+    }
+    .header-logo img {
+      height: 36px;
+      margin-right: 10px;
+      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1));
+      transition: transform 0.3s ease;
+    }
+    .header-logo:hover img {
+      transform: scale(1.05);
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+    }
+    .header-nav-item {
+      margin: 0 10px;
+      padding: 5px 10px;
+      color: #34495e;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      border-radius: 4px;
+    }
+    .header-nav-item:hover, .header-nav-item.active {
+      color: var(--primary-color);
+    }
+    .header-nav-item.primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    .header-nav-item.primary:hover {
+      opacity: 0.9;
+      color: white;
+    }
+    
+    /* 首页样式 */
+    .home-container {
+      max-width: 1200px;
+      margin: var(--header-height) auto 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .home-hero {
+      padding: 30px 0;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .home-hero-logo {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.1));
+      transition: transform 0.3s ease;
+    }
+    .home-hero-logo:hover {
+      transform: scale(1.05);
+    }
+    .home-hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      color: #34495e;
+    }
+    .home-hero p {
+      font-size: 1.2rem;
+      color: #7f8c8d;
+      margin-bottom: 30px;
+    }
+    .home-hero .button {
+      display: inline-block;
+      font-size: 1.2rem;
+      color: white;
+      background-color: var(--primary-color);
+      padding: 12px 24px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin: 0 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .home-hero .button:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .home-hero .button.github {
+      background-color: #34495e;
+    }
+    .home-hero .button.gitee {
+      background-color: #34495e;
+    }
+    .home-hero .button.start {
+      background-color: var(--primary-color);
+      font-weight: bold;
+    }
+    .home-features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0 -15px;
+    }
+    .feature-item {
+      flex: 0 0 calc(33.333% - 30px);
+      margin: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+    .feature-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    .feature-item h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #34495e;
+    }
+    .feature-item p {
+      color: #7f8c8d;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .feature-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .feature-item a:hover {
+      text-decoration: underline;
+    }
+    
+    /* 文档内容样式 */
+    .docs-content {
+      margin-top: var(--header-height);
+      display: none;
+    }
+    body.docs-page .docs-content {
+      display: block;
+    }
+    body.docs-page .home-container {
+      display: none;
+    }
+    
+    /* 响应式设计 */
+    @media screen and (max-width: 768px) {
+      .feature-item {
+        flex: 0 0 calc(100% - 30px);
+      }
+      .home-hero h1 {
+        font-size: 2.5rem;
+      }
+      .home-hero p {
+        font-size: 1.2rem;
+      }
+      .header {
+        padding: 0 10px;
+      }
+      .header-logo span {
+        display: none;
+      }
+      .header-nav-item {
+        margin: 0 5px;
+        padding: 5px;
+      }
+    }
+    
+    /* 页脚样式 */
+    .footer {
+      padding: 20px 0;
+      background-color: #f8f8f8;
+      border-top: 1px solid #eaeaea;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .footer .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .copyright {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header class="header">
+    <a href="/" class="header-logo">
+      <img src="logo.svg" alt="Logo">
+      <span>Mars Admin</span>
+    </a>
+    <nav class="header-nav">
+      <a href="/" class="header-nav-item active">首页</a>
+      <a href="#/README" class="header-nav-item" id="docs-link">文档</a>
+      <a href="https://github.com/Marsfactory/mars-admin" class="header-nav-item" target="_blank">GitHub</a>
+      <a href="https://gitee.com/Marsfactory/mars-admin" class="header-nav-item" target="_blank">码云</a>
+      <a href="#/guide/prepare" class="header-nav-item">快速开始</a>
+    </nav>
+  </header>
+
+  <!-- 首页内容 -->
+  <div class="home-container">
+    <div class="home-hero">
+      <img src="logo.svg" alt="Mars Admin Logo" class="home-hero-logo">
+      <h1>Mars Admin</h1>
+      <p>一个现代化的企业级后台管理系统，基于Spring Boot 3和Vue 3</p>
+      <a href="#/guide/prepare" class="button start">快速开始</a>
+    </div>
+    
+    <div class="home-features">
+      <div class="feature-item">
+        <h2>前后端分离</h2>
+        <p>采用前后端分离架构，后端基于Spring Boot 3和Java 17，前端基于Vue 3和TypeScript，提供高效的开发体验。</p>
+        <a href="#/backend/architecture">了解更多 →</a>
+      </div>
+      
+      <div class="feature-item">
+        <h2>权限管理</h2>
+        <p>基于RBAC的权限管理系统，提供细粒度的权限控制，支持菜单权限、按钮权限和数据权限。</p>
+        <a href="#/backend/permission">了解更多 →</a>
+      </div>
+      
+      <div class="feature-item">
+        <h2>SQL监控</h2>
+        <p>内置强大的SQL监控系统，实时监控SQL执行情况，帮助优化数据库性能。</p>
+        <a href="#/advanced/sql-monitor">了解更多 →</a>
+      </div>
+      
+      <div class="feature-item">
+        <h2>多主题</h2>
+        <p>支持多种主题切换和自定义主题，满足不同用户的审美需求。</p>
+        <a href="#/frontend/tech-stack">了解更多 →</a>
+      </div>
+      
+      <div class="feature-item">
+        <h2>国际化</h2>
+        <p>内置国际化支持，轻松实现多语言切换，满足国际化需求。</p>
+        <a href="#/frontend/tech-stack">了解更多 →</a>
+      </div>
+      
+      <div class="feature-item">
+        <h2>组件封装</h2>
+        <p>高度封装的组件库，提供丰富的业务组件，提高开发效率。</p>
+        <a href="#/frontend/tech-stack">了解更多 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚版权信息 -->
+  <footer class="footer">
+    <div class="container">
+      <p class="copyright">Copyright © <span id="currentYear"></span> 成都火星网络科技有限公司 版权所有</p>
+    </div>
+  </footer>
+
+  <script>
+    // 设置当前年份
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Docsify 内容 -->
+  <div class="docs-content">
+    <div id="app">加载中...</div>
+  </div>
+
+  <script>
+    window.$docsify = {
+      el: '#app',
+      name: 'Mars Admin',
+      repo: 'https://gitee.com/Marsfactory/mars-admin',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      coverpage: false,
+      homepage: 'README.md',
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜索',
+        noData: '未找到结果',
+        depth: 6
+      },
+      pagination: {
+        previousText: '上一章',
+        nextText: '下一章',
+        crossChapter: true
+      },
+      copyCode: {
+        buttonText: '复制',
+        errorText: '错误',
+        successText: '已复制'
+      },
+      plugins: [
+        function(hook, vm) {
+          hook.beforeEach(function(html) {
+            return html + '\n\n----\n\n' +
+              '<div style="text-align: center;">Copyright © ' + 
+              new Date().getFullYear() + ' 成都火星网络科技有限公司 版权所有</div>';
+          });
+        }
+      ]
+    };
+    
+    // 处理文档链接点击事件
+    document.addEventListener('DOMContentLoaded', function() {
+      // 检查URL是否包含hash，如果有则显示文档
+      if (window.location.hash && window.location.hash !== '#/') {
+        document.body.classList.add('docs-page');
+      }
+      
+      // 监听hash变化
+      window.addEventListener('hashchange', function() {
+        if (window.location.hash && window.location.hash !== '#/') {
+          document.body.classList.add('docs-page');
+        } else {
+          document.body.classList.remove('docs-page');
+        }
+      });
+      
+      // 更新导航栏活跃项
+      function updateNavActive() {
+        const navItems = document.querySelectorAll('.header-nav-item');
+        navItems.forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        if (!window.location.hash || window.location.hash === '#/') {
+          document.querySelector('.header-nav-item[href="/"]').classList.add('active');
+        } else if (window.location.hash.startsWith('#/guide/')) {
+          document.querySelector('.header-nav-item.primary').classList.add('active');
+        } else {
+          document.getElementById('docs-link').classList.add('active');
+        }
+      }
+      
+      window.addEventListener('hashchange', updateNavActive);
+      updateNavActive();
+    });
+  </script>
+  <!-- Docsify v4 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- Plugins -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <!-- Language highlighting -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+</body>
+</html>

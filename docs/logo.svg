@@ -1,0 +1,4 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <!-- Proper M shape -->
+    <path fill="#42b983" d="M80 412 L80 100 L160 100 L256 300 L352 100 L432 100 L432 412 L352 412 L352 200 L256 400 L160 200 L160 412 Z"/>
+</svg> 
