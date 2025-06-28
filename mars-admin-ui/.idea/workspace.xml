@@ -6,22 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants/business.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/business.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/api/system-manage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/api/system-manage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/css/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/css/global.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/typings/components.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/typings/components.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dept/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dept/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/menu/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/menu/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/post/modules/post-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/post/modules/post-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/role/modules/role-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/role/modules/role-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/user/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/user/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/user/modules/user-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/user/modules/user-operate-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/user/modules/user-search.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/user/modules/user-search.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/entity/SysUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysUserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
