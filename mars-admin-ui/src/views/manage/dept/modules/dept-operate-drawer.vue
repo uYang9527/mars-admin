@@ -230,12 +230,12 @@ watch(visible, async () => {
   <ADrawer
     v-model:open="visible"
     :title="title"
-    :width="640"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
 
-    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
       <AFormItem label="上级部门" name="parentId">
         <ATreeSelect
           v-model:value="model.parentId"

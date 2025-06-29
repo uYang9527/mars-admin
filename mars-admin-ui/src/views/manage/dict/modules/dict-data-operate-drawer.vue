@@ -60,7 +60,7 @@ watch(
   async newVisible => {
     if (newVisible) {
       resetForm();
-      
+
       if (props.operateType === 'edit' && props.rowData) {
         loading.value = true;
         try {
@@ -100,7 +100,7 @@ async function checkDictValueUnique() {
   if (!formModel.dictType || !formModel.dictValue) {
     return true;
   }
-  
+
   const { data } = await fetchCheckDictValueUnique(formModel.dictType, formModel.dictValue, formModel.id);
   return data;
 }
@@ -108,23 +108,23 @@ async function checkDictValueUnique() {
 async function handleSubmit() {
   try {
     await validate();
-    
+
     // 校验字典键值是否唯一
     const isUnique = await checkDictValueUnique();
     if (!isUnique) {
       window.$message?.error('字典键值已存在');
       return;
     }
-    
+
     loading.value = true;
-    
+
     let result;
     if (props.operateType === 'add') {
       result = await fetchAddDictData(formModel);
     } else {
       result = await fetchUpdateDictData(formModel);
     }
-    
+
     if (!result.error) {
       window.$message?.success('保存成功');
       emit('update:visible', false);
@@ -160,8 +160,8 @@ defineExpose({
         ref="formRef"
         :model="formModel"
         label-placement="left"
-        :label-col="{ span: 6 }"
-        :wrapper-col="{ span: 18 }"
+        :label-col="{ span: 4 }"
+        :wrapper-col="{ span: 20 }"
       >
         <AFormItem label="字典类型">
           <AInput v-model:value="formModel.dictType" disabled />
@@ -200,7 +200,7 @@ defineExpose({
         </AFormItem>
       </AForm>
     </ASpin>
-    
+
     <template #footer>
       <ASpace>
         <AButton @click="handleCancel">{{ $t('common.cancel') }}</AButton>
@@ -210,4 +210,4 @@ defineExpose({
   </ADrawer>
 </template>
 
-<style scoped></style> 
+<style scoped></style>

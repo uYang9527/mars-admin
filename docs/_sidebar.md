@@ -6,7 +6,6 @@
   * [部署指南](guide/deploy.md)
 * 后端指南
   * [技术架构](backend/architecture.md)
-  * [核心模块](backend/modules.md)
   * [权限系统](backend/permission.md)
   * [数据库设计](backend/database.md)
   * [API文档](backend/api.md)

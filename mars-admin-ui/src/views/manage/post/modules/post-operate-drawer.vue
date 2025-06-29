@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
-import { 
-  fetchAddPost, 
-  fetchUpdatePost, 
+import {
+  fetchAddPost,
+  fetchUpdatePost,
   fetchGetPostById,
   fetchCheckPostCodeUnique,
   fetchCheckPostNameUnique
@@ -79,7 +79,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckPostNameUnique(value, props.rowData?.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('岗位名称已存在'));
@@ -95,7 +95,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckPostCodeUnique(value, props.rowData?.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('岗位编码已存在'));
@@ -131,16 +131,16 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
-  
+
   let request;
   if (props.operateType === 'add') {
     request = fetchAddPost(model);
   } else {
     request = fetchUpdatePost({ ...model, id: props.rowData?.id });
   }
-  
+
   const { error } = await request;
-  
+
   if (!error) {
     window.$message?.success($t('common.updateSuccess'));
     closeDrawer();
@@ -160,11 +160,11 @@ watch(visible, () => {
   <ADrawer
     v-model:open="visible"
     :title="title"
-    :width="600"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
-    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
       <AFormItem label="岗位名称" name="postName">
         <AInput v-model:value="model.postName" placeholder="请输入岗位名称" />
       </AFormItem>
@@ -190,4 +190,4 @@ watch(visible, () => {
   </ADrawer>
 </template>
 
-<style scoped></style> 
+<style scoped></style>

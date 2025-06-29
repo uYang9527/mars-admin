@@ -29,7 +29,7 @@ SQL监控系统基于MyBatis-Flex的拦截器机制实现，通过以下技术�
 ### 访问监控页面
 
 1. 确保已启动Mars Admin系统
-2. 在浏览器中访问：`http://your-domain/static/sqlLog.html`
+2. 在浏览器中访问：`http://your-domain/sqlLog.html`
 3. 默认情况下，只有管理员角色可以访问此页面
 
 ### 监控面板介绍

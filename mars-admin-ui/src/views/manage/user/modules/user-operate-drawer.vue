@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, reactive, watch, ref } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
-import { 
-  fetchAddUser, 
-  fetchUpdateUser, 
+import {
+  fetchAddUser,
+  fetchUpdateUser,
   fetchCheckUsernameUnique,
   fetchCheckEmailUnique,
   fetchCheckPhoneUnique,
@@ -88,7 +88,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckUsernameUnique(value, props.rowData?.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('用户名已存在'));
@@ -104,7 +104,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckPhoneUnique(value, props.rowData?.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('手机号已存在'));
@@ -119,7 +119,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckEmailUnique(value, props.rowData?.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('邮箱已存在'));
@@ -156,7 +156,7 @@ async function loadOptions() {
     fetchGetNormalPosts(),
     fetchGetDeptTree()
   ]);
-  
+
   if (rolesRes.data) {
     roleOptions.value = rolesRes.data;
   }
@@ -182,16 +182,16 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
-  
+
   let request;
   if (props.operateType === 'add') {
     request = fetchAddUser(model);
   } else {
     request = fetchUpdateUser({ ...model, id: props.rowData?.id });
   }
-  
+
   const { error } = await request;
-  
+
   if (!error) {
     window.$message?.success($t('common.updateSuccess'));
     closeDrawer();
@@ -212,11 +212,11 @@ watch(visible, () => {
   <ADrawer
     v-model:open="visible"
     :title="title"
-    :width="640"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
-    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+    <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
       <AFormItem label="用户名" name="userName">
         <AInput v-model:value="model.userName" placeholder="请输入用户名" />
       </AFormItem>

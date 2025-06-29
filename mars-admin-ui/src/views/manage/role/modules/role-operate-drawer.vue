@@ -97,8 +97,21 @@ watch(visible, () => {
 </script>
 
 <template>
-  <ADrawer v-model:open="visible" :title="title" :width="360">
-    <AForm ref="formRef" layout="vertical" :model="model" :rules="rules">
+  <ADrawer
+    v-model:open="visible"
+    :title="title"
+    :width="500"
+    :body-style="{ paddingRight: '20px' }"
+    :footer-style="{ textAlign: 'right' }"
+  >
+    <AForm
+      ref="formRef"
+      layout="vertical"
+      :model="model"
+      :rules="rules"
+      :label-col="{ span: 4 }"
+      :wrapper-col="{ span: 20 }"
+    >
       <AFormItem :label="$t('page.manage.role.roleName')" name="roleName">
         <AInput v-model:value="model.roleName" :placeholder="$t('page.manage.role.form.roleName')" />
       </AFormItem>

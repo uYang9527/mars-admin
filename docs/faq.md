@@ -181,7 +181,7 @@ file:
 **问题描述**：如何查看和分析系统的SQL执行情况？
 
 **解决方案**：
-1. 访问SQL监控页面：`http://your-domain/static/sqlLog.html`
+1. 访问SQL监控页面：`http://your-domain/sqlLog.html`
 2. 在监控页面可以查看：
    - 实时SQL执行日志
    - SQL执行统计信息

@@ -1,15 +1,15 @@
 <script setup lang="tsx">
-import { reactive, ref, onMounted } from 'vue';
-import { Button, Popconfirm, Tag, Modal } from 'ant-design-vue';
+import { onMounted, reactive, ref } from 'vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { 
-  fetchGetDictTypeList, 
-  fetchDeleteDictType, 
-  fetchDeleteDictTypes,
-  fetchRefreshDictCache,
-  fetchGetDictDataList,
+import {
   fetchDeleteDictData,
-  fetchDeleteDictDatas
+  fetchDeleteDictDatas,
+  fetchDeleteDictType,
+  fetchDeleteDictTypes,
+  fetchGetDictDataList,
+  fetchGetDictTypeList,
+  fetchRefreshDictCache
 } from '@/service/api/system-manage';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -64,11 +64,7 @@ const {
       minWidth: 150,
       dataIndex: 'dictType',
       customRender: ({ record }) => (
-        <Button 
-          type="link" 
-          class="p-0 h-auto text-blue-600 hover:text-blue-800"
-          onClick={() => viewDictData(record)}
-        >
+        <Button type="link" class="h-auto p-0 text-blue-600 hover:text-blue-800" onClick={() => viewDictData(record)}>
           {record.dictType}
         </Button>
       )
@@ -83,11 +79,11 @@ const {
         if (record.status === null) {
           return null;
         }
-        
+
         const status = record.status;
         const label = status === 1 ? '正常' : '停用';
         const color = status === 1 ? 'success' : 'error';
-        
+
         return <Tag color={color}>{label}</Tag>;
       }
     },
@@ -220,11 +216,11 @@ const dictDataColumns = [
       if (record.status === null) {
         return null;
       }
-      
+
       const status = record.status;
       const label = status === 1 ? '正常' : '停用';
       const color = status === 1 ? 'success' : 'error';
-      
+
       return <Tag color={color}>{label}</Tag>;
     }
   },
@@ -280,7 +276,7 @@ const collapsed = ref(false);
 async function viewDictData(dictType) {
   selectedDictType.value = dictType.dictType;
   selectedDictTypeName.value = dictType.dictName;
-  
+
   // 重置分页和搜索参数
   dictDataPagination.current = 1;
   dictDataPagination.pageSize = 20;
@@ -290,7 +286,7 @@ async function viewDictData(dictType) {
     dictValue: '',
     status: null
   });
-  
+
   dictDataModalVisible.value = true;
   await loadDictData();
 }
@@ -298,7 +294,7 @@ async function viewDictData(dictType) {
 // 加载字典数据
 async function loadDictData() {
   if (!selectedDictType.value) return;
-  
+
   dictDataLoading.value = true;
   try {
     const { data, error } = await fetchGetDictDataList({
@@ -309,7 +305,7 @@ async function loadDictData() {
       dictValue: dictDataSearchParams.dictValue || undefined,
       status: dictDataSearchParams.status
     });
-    
+
     if (!error && data) {
       dictDataData.value = data.records || [];
       dictDataPagination.total = data.total;
@@ -372,7 +368,7 @@ async function handleBatchDeleteDictData() {
     window.$message?.warning('请选择要删除的数据');
     return;
   }
-  
+
   const { error } = await fetchDeleteDictDatas(dictDataCheckedRowKeys.value);
   if (!error) {
     window.$message?.success('批量删除成功');
@@ -450,10 +446,10 @@ onMounted(() => {
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <ACard 
-      :title="$t('common.search')" 
-      :bordered="false" 
-      class="card-wrapper" 
+    <ACard
+      :title="$t('common.search')"
+      :bordered="false"
+      class="card-wrapper"
       :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
       :data-collapsed="collapsed"
     >
@@ -466,7 +462,7 @@ onMounted(() => {
           {{ collapsed ? '展开' : '收起' }}
         </AButton>
       </template>
-      
+
       <div v-show="!collapsed">
         <AForm
           :model="searchForm"
@@ -527,7 +523,7 @@ onMounted(() => {
       title="字典类型列表"
       :bordered="false"
       :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
+      class="sm:flex-1-hidden card-wrapper"
     >
       <template #extra>
         <TableHeaderOperation
@@ -563,28 +559,24 @@ onMounted(() => {
       :footer="null"
       :body-style="{ padding: '16px', height: '75vh', overflow: 'hidden' }"
     >
-      <div class="flex-col-stretch gap-16px h-full">
+      <div class="h-full flex-col-stretch gap-16px">
         <!-- 字典数据搜索区域 -->
         <ACard :bordered="false" class="!mb-0">
-          <AForm
-            :model="dictDataSearchParams"
-            layout="inline"
-            class="mb-16px"
-          >
+          <AForm :model="dictDataSearchParams" layout="inline" class="mb-16px">
             <AFormItem label="字典标签">
-              <AInput 
-                v-model:value="dictDataSearchParams.dictLabel" 
-                placeholder="请输入字典标签" 
+              <AInput
+                v-model:value="dictDataSearchParams.dictLabel"
+                placeholder="请输入字典标签"
                 style="width: 150px"
-                @pressEnter="handleDictDataSearch"
+                @press-enter="handleDictDataSearch"
               />
             </AFormItem>
             <AFormItem label="字典键值">
-              <AInput 
-                v-model:value="dictDataSearchParams.dictValue" 
-                placeholder="请输入字典键值" 
+              <AInput
+                v-model:value="dictDataSearchParams.dictValue"
+                placeholder="请输入字典键值"
                 style="width: 150px"
-                @pressEnter="handleDictDataSearch"
+                @press-enter="handleDictDataSearch"
               />
             </AFormItem>
             <AFormItem label="状态">
@@ -616,7 +608,7 @@ onMounted(() => {
               </ASpace>
             </AFormItem>
           </AForm>
-          
+
           <div class="flex-y-center justify-between">
             <div class="flex-y-center gap-12px">
               <AButton type="primary" @click="handleAddDictData">
@@ -625,11 +617,7 @@ onMounted(() => {
                 </template>
                 <span class="ml-8px">新增字典数据</span>
               </AButton>
-              <AButton 
-                danger 
-                :disabled="dictDataCheckedRowKeys.length === 0" 
-                @click="handleBatchDeleteDictData"
-              >
+              <AButton danger :disabled="dictDataCheckedRowKeys.length === 0" @click="handleBatchDeleteDictData">
                 <template #icon>
                   <icon-ic-round-delete class="align-sub text-icon" />
                 </template>
@@ -643,7 +631,8 @@ onMounted(() => {
               </AButton>
             </div>
             <div class="text-gray-500">
-              字典类型：<span class="font-medium text-blue-600">{{ selectedDictType }}</span>
+              字典类型：
+              <span class="text-blue-600 font-medium">{{ selectedDictType }}</span>
             </div>
           </div>
         </ACard>
@@ -703,7 +692,7 @@ onMounted(() => {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -711,7 +700,7 @@ onMounted(() => {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
@@ -745,4 +734,3 @@ onMounted(() => {
   color: #1890ff;
 }
 </style>
-

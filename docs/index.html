@@ -305,11 +305,11 @@
   </div>
 
   <!-- 页脚版权信息 -->
-  <footer class="footer">
-    <div class="container">
-      <p class="copyright">Copyright © <span id="currentYear"></span> 成都火星网络科技有限公司 版权所有</p>
-    </div>
-  </footer>
+<!--  <footer class="footer">-->
+<!--    <div class="container">-->
+<!--      <p class="copyright">Copyright © <span id="currentYear"></span> 成都火星网络科技有限公司 版权所有</p>-->
+<!--    </div>-->
+<!--  </footer>-->
 
   <script>
     // 设置当前年份
@@ -351,9 +351,7 @@
       plugins: [
         function(hook, vm) {
           hook.beforeEach(function(html) {
-            return html + '\n\n----\n\n' +
-              '<div style="text-align: center;">Copyright © ' + 
-              new Date().getFullYear() + ' 成都火星网络科技有限公司 版权所有</div>';
+            return html + '';
           });
         }
       ]

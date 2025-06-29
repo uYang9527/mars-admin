@@ -197,7 +197,7 @@ Closes #123
    - 生产环境日志位于`logs`目录
 
 2. SQL监控
-   - 访问：http://localhost:8080/static/sqlLog.html
+   - 访问：http://localhost:8080/sqlLog.html
    - 可查看SQL执行情况和性能分析
 
 ### 前端调试

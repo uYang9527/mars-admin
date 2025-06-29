@@ -27,7 +27,6 @@ mars-admin/
 mars-admin/
 ├── sql/                        # SQL脚本
 │   ├── mars_admin.sql          # 主数据库脚本
-│   └── file_upload_ddl.sql     # 文件上传表结构
 ├── src/
 │   ├── main/
 │   │   ├── java/
@@ -134,6 +133,5 @@ mars-admin-ui/
 数据库初始化脚本位于`mars-admin/sql/`目录：
 
 - **mars_admin.sql**: 主数据库脚本，包含表结构和初始数据
-- **file_upload_ddl.sql**: 文件上传表结构
 
 下一步，请参考[本地开发](development.md)章节，了解如何启动和开发项目。 
