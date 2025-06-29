@@ -7,6 +7,7 @@ import com.mars.admin.service.ISysDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/dept")
 @Tag(name = "系统部门管理", description = "系统部门管理相关接口")
+@AllArgsConstructor
 public class SysDeptController extends BaseController<SysDept, Long> {
 
-    @Autowired
-    private ISysDeptService sysDeptService;
+    private final ISysDeptService sysDeptService;
 
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/dept/list           - 获取所有部门
@@ -36,13 +37,86 @@ public class SysDeptController extends BaseController<SysDept, Long> {
     // DELETE /system/dept/batch          - 批量删除部门
 
     /**
+     * 新增部门
+     */
+    @PostMapping
+    @Operation(summary = "新增部门", description = "新增部门")
+    public Result<Boolean> save(@Parameter(description = "部门信息", required = true) @RequestBody SysDept dept) {
+        boolean success = sysDeptService.insertDept(dept);
+        return Result.of(success, "新增成功", "新增失败");
+    }
+
+    /**
+     * 更新部门
+     */
+    @PutMapping
+    @Operation(summary = "更新部门", description = "更新部门")
+    public Result<Boolean> update(@Parameter(description = "部门信息", required = true) @RequestBody SysDept dept) {
+        boolean success = sysDeptService.updateDept(dept);
+        return Result.of(success, "更新成功", "更新失败");
+    }
+
+    /**
+     * 删除部门
+     */
+    @DeleteMapping("/removeDept/{id}")
+    @Operation(summary = "删除部门", description = "删除部门")
+    public Result<Boolean> removeDept(@Parameter(description = "部门ID") @PathVariable Long id) {
+        // 检查是否有子部门
+        if (sysDeptService.hasChildDept(id)) {
+            return Result.error("存在子部门，不能删除");
+        }
+        // 检查是否有关联用户
+        if (sysDeptService.hasAssociatedUser(id)) {
+            return Result.error("部门存在关联用户，不能删除");
+        }
+        boolean success = sysDeptService.removeById(id);
+        return Result.of(success, "删除成功", "删除失败");
+    }
+
+    /**
+     * 批量删除部门
+     */
+    @DeleteMapping("/batchRemove")
+    @Operation(summary = "批量删除部门", description = "批量删除部门")
+    public Result<Boolean> batchRemove(@Parameter(description = "部门ID数组") @RequestBody Long[] ids) {
+        // 检查每个部门是否可以删除
+        for (Long id : ids) {
+            // 检查是否有子部门
+            if (sysDeptService.hasChildDept(id)) {
+                return Result.error("部门ID:" + id + "存在子部门，不能删除");
+            }
+
+            // 检查是否有关联用户
+            if (sysDeptService.hasAssociatedUser(id)) {
+                return Result.error("部门ID:" + id + "存在关联用户，不能删除");
+            }
+        }
+
+        boolean success = sysDeptService.deleteDepts(ids);
+        return Result.of(success, "批量删除成功", "批量删除失败");
+    }
+
+    /**
      * 查询部门树结构
      */
     @GetMapping("/tree")
-    @Operation(summary = "查询部门树结构", description = "查询部门树结构")
-    public Result<List<SysDept>> tree() {
-        List<SysDept> deptTree = sysDeptService.selectDeptTree();
-        return Result.success(deptTree);
+    @Operation(summary = "查询部门树结构", description = "查询部门树结构，支持搜索")
+    public Result<List<SysDept>> tree(
+            @Parameter(description = "部门名称") @RequestParam(required = false) String deptName,
+            @Parameter(description = "状态") @RequestParam(required = false) Integer status) {
+
+        // 如果有搜索条件，返回扁平列表；否则返回树形结构
+        if (deptName != null || status != null) {
+            SysDept searchDept = new SysDept();
+            searchDept.setDeptName(deptName);
+            searchDept.setStatus(status);
+            List<SysDept> deptList = sysDeptService.selectDeptList(searchDept);
+            return Result.success(deptList);
+        } else {
+            List<SysDept> deptTree = sysDeptService.selectDeptTree();
+            return Result.success(deptTree);
+        }
     }
 
     /**
@@ -88,4 +162,4 @@ public class SysDeptController extends BaseController<SysDept, Long> {
         boolean unique = sysDeptService.checkDeptNameUnique(deptName, deptId);
         return Result.success(unique);
     }
-} 
+}

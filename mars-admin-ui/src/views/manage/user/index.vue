@@ -1,19 +1,19 @@
 <script setup lang="tsx">
-import { reactive, ref, watch, computed } from 'vue';
-import type { Ref } from 'vue';
-import { Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable } from 'ant-design-vue';
-import { useTable, useTableOperate } from '@/hooks/common/table';
-import { 
-  fetchGetUserList, 
-  fetchDeleteUser, 
+import {reactive, ref, watch, computed} from 'vue';
+import type {Ref} from 'vue';
+import {Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable} from 'ant-design-vue';
+import {useTable, useTableOperate} from '@/hooks/common/table';
+import {
+  fetchGetUserList,
+  fetchDeleteUser,
   fetchDeleteUsers,
   fetchChangeUserStatus,
   fetchResetUserPassword
 } from '@/service/api';
-import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
-import { enableStatusRecord, userGenderRecord } from '@/constants/business';
-import UserOperateDrawer, { type OperateType } from './modules/user-operate-drawer.vue';
+import {$t} from '@/locales';
+import {useAppStore} from '@/store/modules/app';
+import {enableStatusRecord, userGenderRecord} from '@/constants/business';
+import UserOperateDrawer, {type OperateType} from './modules/user-operate-drawer.vue';
 import UserSearch from './modules/user-search.vue';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
 
@@ -21,7 +21,7 @@ const appStore = useAppStore();
 
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams } =
+const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams} =
   useTable({
     apiFn: fetchGetUserList,
     apiParams: {
@@ -42,7 +42,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         title: $t('common.index'),
         width: 64,
         align: 'center',
-        customRender: ({ index }) => index + 1
+        customRender: ({index}) => index + 1
       },
       {
         key: 'userName',
@@ -63,8 +63,8 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         dataIndex: 'userGender',
         title: $t('page.manage.user.userGender'),
         align: 'center',
-        width: 80,
-        customRender: ({ record }) => {
+        minWidth: 100,
+        customRender: ({record}) => {
           if (record.userGender === null) {
             return null;
           }
@@ -79,14 +79,14 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         dataIndex: 'phone',
         title: $t('page.manage.user.userPhone'),
         align: 'center',
-        width: 120
+        minWidth: 120
       },
       {
         key: 'email',
         dataIndex: 'email',
         title: $t('page.manage.user.userEmail'),
         align: 'center',
-        minWidth: 200
+        minWidth: 100
       },
       {
         key: 'status',
@@ -94,7 +94,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         title: $t('page.manage.user.userStatus'),
         align: 'center',
         width: 100,
-        customRender: ({ record }) => {
+        customRender: ({record}) => {
           if (record.status === null) {
             return null;
           }
@@ -109,7 +109,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         title: $t('common.operate'),
         align: 'center',
         width: 260,
-        customRender: ({ record }) => (
+        customRender: ({record}) => (
           <div class="flex-center gap-8px">
             <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
               {$t('common.edit')}
@@ -148,14 +148,14 @@ const {
 } = useTableOperate(data, getData);
 
 async function handleBatchDelete() {
-  const { error } = await fetchDeleteUsers(checkedRowKeys.value);
+  const {error} = await fetchDeleteUsers(checkedRowKeys.value);
   if (!error) {
     onBatchDeleted();
   }
 }
 
 async function handleDelete(id: number) {
-  const { error } = await fetchDeleteUser(id);
+  const {error} = await fetchDeleteUser(id);
   if (!error) {
     onDeleted();
   }
@@ -163,7 +163,7 @@ async function handleDelete(id: number) {
 
 async function toggleStatus(id: number, status: string) {
   const newStatus = status === 1 ? 0 : 1;
-  const { error } = await fetchChangeUserStatus(id, newStatus);
+  const {error} = await fetchChangeUserStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
     getData();
@@ -171,7 +171,7 @@ async function toggleStatus(id: number, status: string) {
 }
 
 async function resetPassword(id: number) {
-  const { error } = await fetchResetUserPassword(id, '123456');
+  const {error} = await fetchResetUserPassword(id, '123456');
   if (!error) {
     window.$message?.success('密码重置成功，新密码为：123456');
   }
@@ -184,7 +184,7 @@ function edit(id: number) {
 
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
     <ACard
       title="用户列表"
       :bordered="false"

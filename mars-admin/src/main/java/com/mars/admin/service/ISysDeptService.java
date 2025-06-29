@@ -70,6 +70,14 @@ public interface ISysDeptService extends BaseService<SysDept> {
     List<SysDept> selectChildrenByParentId(Long parentId);
 
     /**
+     * 查询部门列表
+     *
+     * @param dept 查询条件
+     * @return 部门列表
+     */
+    List<SysDept> selectDeptList(SysDept dept);
+
+    /**
      * 查询部门树
      *
      * @return 部门树列表
@@ -117,4 +125,20 @@ public interface ISysDeptService extends BaseService<SysDept> {
      * @return 是否唯一
      */
     boolean checkDeptNameUnique(String deptName, Long deptId);
+
+    /**
+     * 检查部门是否有子部门
+     *
+     * @param deptId 部门ID
+     * @return 是否有子部门
+     */
+    boolean hasChildDept(Long deptId);
+
+    /**
+     * 检查部门是否有关联用户
+     *
+     * @param deptId 部门ID
+     * @return 是否有关联用户
+     */
+    boolean hasAssociatedUser(Long deptId);
 } 

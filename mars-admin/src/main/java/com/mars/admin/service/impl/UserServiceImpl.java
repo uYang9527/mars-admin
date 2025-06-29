@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 @CacheConfig(cacheNames = "user")
 public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User> implements IUserService {
+
+
     @Override
     @Cacheable(key = "#id")
     public User getUserByUserId(Long id) {
@@ -31,4 +33,4 @@ public class UserServiceImpl extends CacheableServiceImpl<UserMapper, User> impl
     // 自动注入 UserMapper，通过反射获取泛型类型
     // 如果需要自定义方法，可以在这里添加
 
-} 
+}

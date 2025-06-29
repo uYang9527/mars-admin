@@ -1,23 +1,224 @@
+<script setup lang="tsx">
+import {ref} from 'vue';
+import {Button, Popconfirm, Tag} from 'ant-design-vue';
+import {useAppStore} from '@/store/modules/app';
+import {useTable, useTableOperate} from '@/hooks/common/table';
+import {$t} from '@/locales';
+import {enableStatusRecord} from '@/constants/business';
+import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
+import {fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree} from '@/service/api';
+import DeptOperateDrawer from './modules/dept-operate-drawer.vue';
+
+const appStore = useAppStore();
+
+defineOptions({
+  name: 'ManageDept'
+});
+
+const wrapperEl = ref<HTMLElement>();
+
+// 折叠状态
+const collapsed = ref(false);
+
+// 使用树形数据展示部门，支持搜索
+const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
+  apiFn: params => {
+    // 使用新的tree接口，支持搜索参数
+    return fetchGetDeptTree(params);
+  },
+  apiParams: {
+    deptName: null,
+    status: null
+  },
+  columns: () => [
+    {
+      type: 'selection',
+      align: 'center'
+    },
+    {
+      key: 'index',
+      dataIndex: 'index',
+      title: $t('common.index'),
+      align: 'center'
+    },
+    {
+      key: 'deptName',
+      dataIndex: 'deptName',
+      title: '部门名称',
+      align: 'left',
+      customRender: ({record, index}) => {
+        return record.deptName;
+      }
+    },
+    {
+      key: 'deptCode',
+      dataIndex: 'deptCode',
+      title: '部门编码',
+      align: 'center'
+    },
+    {
+      key: 'orderNum',
+      dataIndex: 'orderNum',
+      title: '排序',
+      align: 'center'
+    },
+    {
+      key: 'leader',
+      dataIndex: 'leader',
+      title: '负责人',
+      align: 'center'
+    },
+    {
+      key: 'phone',
+      dataIndex: 'phone',
+      title: '联系电话',
+      align: 'center'
+    },
+    {
+      key: 'email',
+      dataIndex: 'email',
+      title: '邮箱',
+      align: 'center'
+    },
+    {
+      dataIndex: 'status',
+      title: $t('common.status'),
+      align: 'center',
+      customRender: ({record}) => {
+        if (record.status === null) {
+          return null;
+        }
+
+        const status = record.status as Api.Common.EnableStatus;
+        const label = $t(enableStatusRecord[status]);
+        const color = status === '1' ? 'success' : 'warning';
+
+        return <Tag color={color}>{label}</Tag>;
+      }
+    },
+    {
+      dataIndex: 'createTime',
+      title: $t('common.createTime'),
+      align: 'center',
+      width: 180
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      width: 130,
+      customRender: ({record}) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
+
+const {
+  drawerVisible,
+  operateType,
+  editingData,
+  handleAdd,
+  checkedRowKeys,
+  onBatchDeleted,
+  onDeleted,
+  handleDataEdit
+} = useTableOperate(data, getData);
+
+async function handleBatchDelete() {
+  if (checkedRowKeys.value.length === 0) {
+    window.$message?.warning('请选择要删除的数据');
+    return;
+  }
+
+  try {
+    const {error, message} = await fetchDeleteDepts(checkedRowKeys.value);
+    if (!error) {
+      window.$message?.success('批量删除成功');
+      onBatchDeleted();
+    } else {
+      // 显示后端返回的错误信息
+      window.$message?.error(message || '批量删除失败');
+    }
+  } catch (error) {
+    window.$message?.error('批量删除失败');
+  }
+}
+
+async function handleDelete(id: number) {
+  try {
+    const {error, message} = await fetchDeleteDept(id);
+    if (!error) {
+      onDeleted();
+    } else {
+      // 显示后端返回的错误信息
+      window.$message?.error(message || '删除失败');
+    }
+  } catch (error) {
+    window.$message?.error('删除失败');
+  }
+}
+
+async function edit(id: number) {
+  try {
+    const {data, error} = await fetchGetDeptById(id);
+    if (!error && data) {
+      handleDataEdit(data);
+    } else {
+      window.$message?.error(`获取部门信息失败: ${error || '数据为空'}`);
+    }
+  } catch (error) {
+    console.error('获取部门信息错误:', error);
+    window.$message?.error('获取部门信息失败');
+  }
+}
+
+function handleSearch() {
+  getData();
+}
+
+function handleReset() {
+  Object.assign(searchParams, {
+    deptName: null,
+    status: null
+  });
+  getData();
+}
+
+function toggleCollapsed() {
+  collapsed.value = !collapsed.value;
+}
+</script>
+
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <ACard 
-      :title="$t('common.search')" 
-      :bordered="false" 
-      class="card-wrapper" 
+    <ACard
+      :title="$t('common.search')"
+      :bordered="false"
+      class="card-wrapper"
       :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
       :data-collapsed="collapsed"
     >
       <template #extra>
         <AButton type="text" @click="toggleCollapsed">
           <template #icon>
-            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
-            <icon-mdi:chevron-up v-else class="text-icon" />
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon"/>
+            <icon-mdi:chevron-up v-else class="text-icon"/>
           </template>
           {{ collapsed ? '展开' : '收起' }}
         </AButton>
       </template>
-      
+
       <div v-show="!collapsed">
         <AForm
           :model="searchParams"
@@ -29,7 +230,7 @@
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="部门名称" name="deptName" class="m-0">
-                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" />
+                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称"/>
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
@@ -50,13 +251,13 @@
                 <div class="w-full flex-y-center justify-end gap-12px">
                   <AButton @click="handleReset">
                     <template #icon>
-                      <icon-ic-round-refresh class="align-sub text-icon" />
+                      <icon-ic-round-refresh class="align-sub text-icon"/>
                     </template>
                     <span class="ml-8px">{{ $t('common.reset') }}</span>
                   </AButton>
                   <AButton type="primary" ghost @click="handleSearch">
                     <template #icon>
-                      <icon-ic-round-search class="align-sub text-icon" />
+                      <icon-ic-round-search class="align-sub text-icon"/>
                     </template>
                     <span class="ml-8px">{{ $t('common.search') }}</span>
                   </AButton>
@@ -80,194 +281,29 @@
         />
       </template>
       <ATable
-        v-model:selectedRowKeys="checkedRowKeys"
+        v-model:selected-row-keys="checkedRowKeys"
         :columns="columns"
         :data-source="data"
         size="small"
         :scroll="{ x: 962 }"
         :loading="loading"
         :row-key="row => row.id"
-        :pagination="mobilePagination"
+        :pagination="false"
+        children-column-name="children"
+        :default-expand-all-rows="true"
         class="sm:h-full"
       />
     </ACard>
+
+    <!-- 部门操作抽屉 -->
+    <DeptOperateDrawer
+      v-model:visible="drawerVisible"
+      :operate-type="operateType"
+      :row-data="editingData"
+      @submitted="getData"
+    />
   </div>
 </template>
-
-<script setup lang="tsx">
-import { ref } from 'vue';
-import { Button, Popconfirm, Tag } from 'ant-design-vue';
-import { useAppStore } from '@/store/modules/app';
-import { useTable, useTableOperate } from '@/hooks/common/table';
-import { $t } from '@/locales';
-import { enableStatusRecord } from '@/constants/business';
-import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-
-const appStore = useAppStore();
-
-defineOptions({
-  name: 'ManageDept'
-});
-
-const wrapperEl = ref<HTMLElement>();
-
-// 折叠状态
-const collapsed = ref(false);
-
-// 模拟数据和接口
-const mockData = ref([
-  {
-    id: 1,
-    deptName: '总公司',
-    deptCode: 'HEAD_OFFICE',
-    orderNum: 0,
-    leader: 'admin',
-    phone: '15888888888',
-    email: 'admin@example.com',
-    status: '1',
-    createTime: '2024-01-01 00:00:00'
-  }
-]);
-
-const { columns, columnChecks, data, loading, getData, mobilePagination, searchParams } = useTable({
-  apiFn: async () => ({ data: mockData.value, error: null }),
-  apiParams: {
-    current: 1,
-    size: 10,
-    deptName: null,
-    status: null
-  },
-  columns: () => [
-    {
-      type: 'selection',
-      align: 'center',
-      width: 48
-    },
-    {
-      key: 'index',
-      title: $t('common.index'),
-      align: 'center',
-      width: 64
-    },
-    {
-      dataIndex: 'deptName',
-      title: '部门名称',
-      align: 'center',
-      minWidth: 100
-    },
-    {
-      dataIndex: 'deptCode',
-      title: '部门编码',
-      align: 'center',
-      minWidth: 100
-    },
-    {
-      dataIndex: 'orderNum',
-      title: '排序',
-      align: 'center',
-      width: 80
-    },
-    {
-      dataIndex: 'leader',
-      title: '负责人',
-      align: 'center',
-      width: 100
-    },
-    {
-      dataIndex: 'phone',
-      title: '联系电话',
-      align: 'center',
-      width: 120
-    },
-    {
-      dataIndex: 'status',
-      title: $t('common.status'),
-      align: 'center',
-      width: 100,
-      customRender: ({ record }) => {
-        if (record.status === null) {
-          return null;
-        }
-
-        const status = record.status as Api.Common.EnableStatus;
-        const label = $t(enableStatusRecord[status]);
-        const color = status === '1' ? 'success' : 'warning';
-
-        return <Tag color={color}>{label}</Tag>;
-      }
-    },
-    {
-      dataIndex: 'createTime',
-      title: $t('common.createTime'),
-      align: 'center',
-      width: 180
-    },
-    {
-      key: 'operate',
-      title: $t('common.operate'),
-      align: 'center',
-      width: 130,
-      customRender: ({ record }) => (
-        <div class="flex-center gap-8px">
-          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-            {$t('common.edit')}
-          </Button>
-          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-            <Button danger size="small">
-              {$t('common.delete')}
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    }
-  ]
-});
-
-const {
-  drawerVisible,
-  operateType,
-  editingData,
-  handleAdd,
-  handleEdit,
-  checkedRowKeys,
-  onBatchDeleted,
-  onDeleted
-} = useTableOperate(data, getData);
-
-async function handleBatchDelete() {
-  // TODO: 实现批量删除
-  console.log('批量删除:', checkedRowKeys.value);
-  onBatchDeleted();
-}
-
-async function handleDelete(id: number) {
-  // TODO: 实现删除
-  console.log('删除:', id);
-  onDeleted();
-}
-
-function edit(id: number) {
-  handleEdit(id);
-}
-
-function handleSearch() {
-  getData();
-}
-
-function handleReset() {
-  Object.assign(searchParams, {
-    current: 1,
-    size: 10,
-    deptName: null,
-    status: null
-  });
-  getData();
-}
-
-function toggleCollapsed() {
-  collapsed.value = !collapsed.value;
-}
-</script>
 
 <style scoped>
 /* 折叠状态下的卡片样式优化 */
@@ -281,7 +317,7 @@ function toggleCollapsed() {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -289,7 +325,7 @@ function toggleCollapsed() {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
@@ -297,4 +333,4 @@ function toggleCollapsed() {
 .text-icon {
   font-size: 16px;
 }
-</style> 
+</style>

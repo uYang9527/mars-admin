@@ -1,12 +1,12 @@
-import { computed, effectScope, onScopeDispose, reactive, ref, shallowRef, toValue, watch } from 'vue';
-import type { MaybeRef, Ref } from 'vue';
-import type { TablePaginationConfig } from 'ant-design-vue';
-import type { TableRowSelection } from 'ant-design-vue/es/table/interface';
-import { useElementSize } from '@vueuse/core';
-import { useBoolean, useHookTable } from '@sa/hooks';
-import { jsonClone } from '@sa/utils';
-import { useAppStore } from '@/store/modules/app';
-import { $t } from '@/locales';
+import {computed, effectScope, onScopeDispose, reactive, ref, shallowRef, toValue, watch} from 'vue';
+import type {MaybeRef, Ref} from 'vue';
+import type {TablePaginationConfig} from 'ant-design-vue';
+import type {TableRowSelection} from 'ant-design-vue/es/table/interface';
+import {useElementSize} from '@vueuse/core';
+import {useBoolean, useHookTable} from '@sa/hooks';
+import {jsonClone} from '@sa/utils';
+import {useAppStore} from '@/store/modules/app';
+import {$t} from '@/locales';
 
 type TableData = AntDesign.TableData;
 type GetTableData<A extends AntDesign.TableApiFn> = AntDesign.GetTableData<A>;
@@ -16,7 +16,7 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
   const scope = effectScope();
   const appStore = useAppStore();
 
-  const { apiFn, apiParams, immediate } = config;
+  const {apiFn, apiParams, immediate} = config;
 
   const {
     loading,
@@ -43,16 +43,16 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
           total: res.length
         };
       }
-      
+
       // 数据提取，兼容不同的后端响应格式
       let records: any[] = [];
       let current = 1;
       let size = 10;
       let total = 0;
-      
+
       // 使用any类型断言，避免TypeScript错误
       const anyRes = res as any;
-      
+
       if (anyRes && typeof anyRes === 'object') {
         // 直接从响应中获取records字段
         if (Array.isArray(anyRes.records)) {
@@ -60,7 +60,7 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
           current = anyRes.current || anyRes.pageNumber || 1;
           size = anyRes.size || anyRes.pageSize || 10;
           total = anyRes.total || anyRes.totalRow || 0;
-        } 
+        }
         // 从res.data中获取records字段
         else if (anyRes.data && typeof anyRes.data === 'object') {
           if (Array.isArray(anyRes.data.records)) {
@@ -68,17 +68,17 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
             current = anyRes.data.current || anyRes.data.pageNumber || 1;
             size = anyRes.data.size || anyRes.data.pageSize || 10;
             total = anyRes.data.total || anyRes.data.totalRow || 0;
-          } 
+          }
           // res.data本身就是数组
           else if (Array.isArray(anyRes.data)) {
             records = anyRes.data;
           }
         }
       }
-      
+
       // 确保pageSize大于0
       const pageSize = size <= 0 ? 10 : size;
-      
+
       // 添加序号
       const recordsWithIndex = records.map((item, index) => {
         return {
@@ -86,7 +86,7 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
           index: (current - 1) * pageSize + index + 1
         };
       });
-      
+
       return {
         data: recordsWithIndex,
         pageNum: current,
@@ -125,7 +125,7 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
       return filteredColumns;
     },
     onFetched: async transformed => {
-      const { pageNum, pageSize, total } = transformed;
+      const {pageNum, pageSize, total} = transformed;
 
       updatePagination({
         current: pageNum,
@@ -218,7 +218,7 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
 }
 
 export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>, getData: () => Promise<void>) {
-  const { bool: drawerVisible, setTrue: openDrawer, setFalse: closeDrawer } = useBoolean();
+  const {bool: drawerVisible, setTrue: openDrawer, setFalse: closeDrawer} = useBoolean();
 
   const operateType = ref<AntDesign.TableOperateType>('add');
 
@@ -232,9 +232,18 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
 
   function handleEdit(id: T['id']) {
     operateType.value = 'edit';
+    console.log("222222222222,", data.value)
     const findItem = data.value.find(item => item.id === id) || null;
+    console.log("222222222222,", findItem)
     editingData.value = jsonClone(findItem);
 
+    openDrawer();
+  }
+
+  function handleDataEdit(params: any) {
+    operateType.value = 'edit';
+    editingData.value = params;
+    console.log("2222", editingData.value)
     openDrawer();
   }
 
@@ -278,6 +287,7 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
     handleAdd,
     editingData,
     handleEdit,
+    handleDataEdit,
     checkedRowKeys,
     onSelectChange,
     rowSelection,
@@ -288,7 +298,7 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
 
 export function useTableScroll(scrollX: MaybeRef<number> = 702) {
   const tableWrapperRef = shallowRef<HTMLElement | null>(null);
-  const { height: wrapperElHeight } = useElementSize(tableWrapperRef);
+  const {height: wrapperElHeight} = useElementSize(tableWrapperRef);
 
   const scrollConfig = computed(() => {
     return {

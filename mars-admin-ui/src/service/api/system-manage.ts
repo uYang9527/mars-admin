@@ -1,4 +1,4 @@
-import { request } from '../request';
+import {request} from '../request';
 
 /** get role list */
 export function fetchGetRoleList(params?: Api.SystemManage.RoleSearchParams) {
@@ -113,7 +113,7 @@ export function fetchDeleteUsers(ids: number[]) {
   return request({
     url: '/system/user/batch',
     method: 'delete',
-    data: { ids }
+    data: {ids}
   });
 }
 
@@ -124,7 +124,7 @@ export function fetchResetUserPassword(userId: number, password: string) {
   return request({
     url: '/system/user/resetPwd',
     method: 'put',
-    data: { id: userId, password }
+    data: {id: userId, password}
   });
 }
 
@@ -135,7 +135,7 @@ export function fetchChangeUserStatus(userId: number, status: string) {
   return request({
     url: '/system/user/changeStatus',
     method: 'put',
-    data: { id: userId, status }
+    data: {id: userId, status}
   });
 }
 
@@ -146,7 +146,7 @@ export function fetchAssignUserRoles(userId: number, roleIds: number[]) {
   return request({
     url: '/system/user/authRole',
     method: 'put',
-    data: { id: userId, roleIds }
+    data: {id: userId, roleIds}
   });
 }
 
@@ -157,7 +157,7 @@ export function fetchCheckUsernameUnique(username: string, userId?: number) {
   return request<boolean>({
     url: '/system/user/checkUsernameUnique',
     method: 'get',
-    params: { username, userId }
+    params: {username, userId}
   });
 }
 
@@ -168,7 +168,7 @@ export function fetchCheckEmailUnique(email: string, userId?: number) {
   return request<boolean>({
     url: '/system/user/checkEmailUnique',
     method: 'get',
-    params: { email, userId }
+    params: {email, userId}
   });
 }
 
@@ -179,7 +179,7 @@ export function fetchCheckPhoneUnique(phone: string, userId?: number) {
   return request<boolean>({
     url: '/system/user/checkPhoneUnique',
     method: 'get',
-    params: { phone, userId }
+    params: {phone, userId}
   });
 }
 
@@ -242,7 +242,7 @@ export function fetchDeleteRoles(ids: number[]) {
   return request({
     url: '/system/role/batch',
     method: 'delete',
-    data: { ids }
+    data: {ids}
   });
 }
 
@@ -253,7 +253,7 @@ export function fetchChangeRoleStatus(roleId: number, status: string) {
   return request({
     url: '/system/role/changeStatus',
     method: 'put',
-    data: { id: roleId, status }
+    data: {id: roleId, status}
   });
 }
 
@@ -264,7 +264,7 @@ export function fetchCheckRoleCodeUnique(roleCode: string, roleId?: number) {
   return request<boolean>({
     url: '/system/role/checkRoleCodeUnique',
     method: 'get',
-    params: { roleCode, roleId }
+    params: {roleCode, roleId}
   });
 }
 
@@ -275,7 +275,7 @@ export function fetchCheckRoleKeyUnique(roleKey: string, roleId?: number) {
   return request<boolean>({
     url: '/system/role/checkRoleKeyUnique',
     method: 'get',
-    params: { roleKey, roleId }
+    params: {roleKey, roleId}
   });
 }
 
@@ -358,7 +358,7 @@ export function fetchCheckMenuCodeUnique(menuCode: string, menuId?: number) {
   return request<boolean>({
     url: '/system/menu/checkMenuCodeUnique',
     method: 'get',
-    params: { menuCode, menuId }
+    params: {menuCode, menuId}
   });
 }
 
@@ -369,7 +369,7 @@ export function fetchCheckPermsUnique(perms: string, menuId?: number) {
   return request<boolean>({
     url: '/system/menu/checkPermsUnique',
     method: 'get',
-    params: { perms, menuId }
+    params: {perms, menuId}
   });
 }
 
@@ -386,10 +386,11 @@ export function fetchGetDeptList() {
 /**
  * 查询部门树结构
  */
-export function fetchGetDeptTree() {
+export function fetchGetDeptTree(params?: { deptName?: string; status?: string }) {
   return request<Api.SystemManage.DeptTree[]>({
     url: '/system/dept/tree',
-    method: 'get'
+    method: 'get',
+    params
   });
 }
 
@@ -450,8 +451,19 @@ export function fetchUpdateDept(data: Partial<Api.SystemManage.Dept>) {
  */
 export function fetchDeleteDept(id: number) {
   return request({
-    url: `/system/dept/${id}`,
+    url: `/system/dept/removeDept/${id}`,
     method: 'delete'
+  });
+}
+
+/**
+ * 批量删除部门
+ */
+export function fetchDeleteDepts(ids: number[]) {
+  return request({
+    url: '/system/dept/batchRemove',
+    method: 'delete',
+    data: ids
   });
 }
 
@@ -462,7 +474,7 @@ export function fetchCheckDeptCodeUnique(deptCode: string, deptId?: number) {
   return request<boolean>({
     url: '/system/dept/checkDeptCodeUnique',
     method: 'get',
-    params: { deptCode, deptId }
+    params: {deptCode, deptId}
   });
 }
 
@@ -473,7 +485,7 @@ export function fetchCheckDeptNameUnique(deptName: string, deptId?: number) {
   return request<boolean>({
     url: '/system/dept/checkDeptNameUnique',
     method: 'get',
-    params: { deptName, deptId }
+    params: {deptName, deptId}
   });
 }
 
@@ -557,7 +569,7 @@ export function fetchDeletePosts(ids: number[]) {
   return request({
     url: '/system/post/batch',
     method: 'delete',
-    data: { ids }
+    data: {ids}
   });
 }
 
@@ -568,7 +580,7 @@ export function fetchCheckPostCodeUnique(postCode: string, postId?: number) {
   return request<boolean>({
     url: '/system/post/checkPostCodeUnique',
     method: 'get',
-    params: { postCode, postId }
+    params: {postCode, postId}
   });
 }
 
@@ -579,7 +591,7 @@ export function fetchCheckPostNameUnique(postName: string, postId?: number) {
   return request<boolean>({
     url: '/system/post/checkPostNameUnique',
     method: 'get',
-    params: { postName, postId }
+    params: {postName, postId}
   });
 }
 
@@ -590,7 +602,7 @@ export function fetchChangePostStatus(postId: number, status: string) {
   return request({
     url: '/system/post/changeStatus',
     method: 'put',
-    data: { id: postId, status }
+    data: {id: postId, status}
   });
 }
 
@@ -684,7 +696,7 @@ export function fetchDeleteDictTypes(ids: number[]) {
   return request({
     url: '/system/dict/type/batch',
     method: 'delete',
-    data: { ids }
+    data: {ids}
   });
 }
 
@@ -695,7 +707,7 @@ export function fetchCheckDictTypeUnique(dictType: string, dictTypeId?: number) 
   return request<boolean>({
     url: '/system/dict/type/checkDictTypeUnique',
     method: 'get',
-    params: { dictType, dictTypeId }
+    params: {dictType, dictTypeId}
   });
 }
 
@@ -706,7 +718,7 @@ export function fetchCheckDictNameUnique(dictName: string, dictTypeId?: number) 
   return request<boolean>({
     url: '/system/dict/type/checkDictNameUnique',
     method: 'get',
-    params: { dictName, dictTypeId }
+    params: {dictName, dictTypeId}
   });
 }
 
@@ -800,7 +812,7 @@ export function fetchDeleteDictDatas(ids: number[]) {
   return request({
     url: '/system/dict/data/batch',
     method: 'delete',
-    data: { ids }
+    data: {ids}
   });
 }
 
@@ -811,6 +823,6 @@ export function fetchCheckDictValueUnique(dictType: string, dictValue: string, d
   return request<boolean>({
     url: '/system/dict/data/checkDictValueUnique',
     method: 'get',
-    params: { dictType, dictValue, dictDataId }
+    params: {dictType, dictValue, dictDataId}
   });
 }
