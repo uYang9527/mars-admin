@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../docs/_sidebar.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/_sidebar.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/advanced/sql-monitor.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/advanced/sql-monitor.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/faq.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/faq.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/guide/development.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/guide/development.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/guide/structure.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/guide/structure.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-data-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-data-operate-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/modules/dict-type-operate-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/post/modules/post-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/post/modules/post-operate-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/role/modules/role-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/role/modules/role-operate-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/manage/user/modules/user-operate-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/user/modules/user-operate-drawer.vue" afterDir="false" />
-    </list>
+    <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
