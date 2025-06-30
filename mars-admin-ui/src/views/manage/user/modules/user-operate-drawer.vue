@@ -9,7 +9,8 @@ import {
   fetchCheckPhoneUnique,
   fetchGetAllRoles,
   fetchGetNormalPosts,
-  fetchGetDeptTree
+  fetchGetDeptTree,
+  fetchGetUserById
 } from '@/service/api';
 import { $t } from '@/locales';
 
@@ -57,33 +58,33 @@ const title = computed(() => {
 
 type Model = Pick<
   Api.SystemManage.User,
-  'userName' | 'nickName' | 'userGender' | 'phone' | 'email' | 'status' | 'deptId' | 'roleIds' | 'postIds' | 'remark'
+  'username' | 'nickname' | 'gender' | 'phone' | 'email' | 'status' | 'deptIds' | 'roleIds' | 'postIds' | 'remark'
 >;
 
 const model: Model = reactive(createDefaultModel());
 
 function createDefaultModel(): Model {
   return {
-    userName: '',
-    nickName: '',
-    userGender: 0,
+    username: '',
+    nickname: '',
+    gender: 0,
     phone: '',
     email: '',
     status: 1,
-    deptId: null,
+    deptIds: [],
     roleIds: [],
     postIds: [],
     remark: ''
   };
 }
 
-type RuleKey = Extract<keyof Model, 'userName' | 'nickName' | 'phone' | 'email'>;
+type RuleKey = Extract<keyof Model, 'username' | 'nickname' | 'phone' | 'email'>;
 
 const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
   const { patternRules } = useFormRules(); // inside computed to make locale reactive
 
   return {
-    userName: [
+    username: [
       formRules.userName,
       {
         validator: async (_, value) => {
@@ -98,7 +99,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
         trigger: 'blur'
       }
     ],
-    nickName: formRules.nickName,
+    nickname: formRules.nickName,
     phone: [
       patternRules.phone,
       {
@@ -151,6 +152,7 @@ const deptTreeOptions = ref<Api.SystemManage.DeptTree[]>([]);
 
 // 加载选项数据
 async function loadOptions() {
+  try {
   const [rolesRes, postsRes, deptTreeRes] = await Promise.all([
     fetchGetAllRoles(),
     fetchGetNormalPosts(),
@@ -165,14 +167,26 @@ async function loadOptions() {
   }
   if (deptTreeRes.data) {
     deptTreeOptions.value = deptTreeRes.data;
+    }
+  } catch (error) {
+    console.error('加载选项数据失败:', error);
   }
 }
 
-function handleInitModel() {
+async function handleInitModel() {
   Object.assign(model, createDefaultModel());
 
-  if (props.operateType === 'edit' && props.rowData) {
-    Object.assign(model, props.rowData);
+  if (props.operateType === 'edit' && props.rowData?.id) {
+    // 获取用户详情
+    const { data: userDetail } = await fetchGetUserById(props.rowData.id);
+    if (userDetail) {
+      console.log('获取到的用户详情数据:', userDetail);
+      // 确保将数据正确赋值到模型中
+      Object.assign(model, userDetail);
+      console.log('合并后的模型数据:', model);
+    } else {
+      console.error('获取用户详情失败');
+    }
   }
 }
 
@@ -184,16 +198,19 @@ async function handleSubmit() {
   await validate();
 
   let request;
-  if (props.operateType === 'add') {
+  const isAdd = props.operateType === 'add';
+  const userId = props.rowData?.id;
+  
+  if (isAdd) {
     request = fetchAddUser(model);
   } else {
-    request = fetchUpdateUser({ ...model, id: props.rowData?.id });
+    request = fetchUpdateUser({ ...model, id: userId });
   }
 
   const { error } = await request;
 
   if (!error) {
-    window.$message?.success($t('common.updateSuccess'));
+    window.$message?.success(isAdd ? '新增用户成功' : '编辑用户成功');
     closeDrawer();
     emit('submitted');
   }
@@ -217,14 +234,14 @@ watch(visible, () => {
     :footer-style="{ textAlign: 'right' }"
   >
     <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-      <AFormItem label="用户名" name="userName">
-        <AInput v-model:value="model.userName" placeholder="请输入用户名" />
+      <AFormItem label="用户名" name="username">
+        <AInput v-model:value="model.username" placeholder="请输入用户名" />
       </AFormItem>
-      <AFormItem label="昵称" name="nickName">
-        <AInput v-model:value="model.nickName" placeholder="请输入昵称" />
+      <AFormItem label="昵称" name="nickname">
+        <AInput v-model:value="model.nickname" placeholder="请输入昵称" />
       </AFormItem>
-      <AFormItem label="性别" name="userGender">
-        <ARadioGroup v-model:value="model.userGender" :options="genderOptions" />
+      <AFormItem label="性别" name="gender">
+        <ARadioGroup v-model:value="model.gender" :options="genderOptions" />
       </AFormItem>
       <AFormItem label="手机号" name="phone">
         <AInput v-model:value="model.phone" placeholder="请输入手机号" />
@@ -235,29 +252,34 @@ watch(visible, () => {
       <AFormItem label="状态" name="status">
         <ARadioGroup v-model:value="model.status" :options="statusOptions" />
       </AFormItem>
-      <AFormItem label="部门" name="deptId">
+      <AFormItem label="部门" name="deptIds">
         <ATreeSelect
-          v-model:value="model.deptId"
+          v-model:value="model.deptIds"
           :tree-data="deptTreeOptions"
           :field-names="{ label: 'label', value: 'id', children: 'children' }"
           placeholder="请选择部门"
           tree-default-expand-all
+          multiple
         />
       </AFormItem>
       <AFormItem label="角色" name="roleIds">
         <ASelect
           v-model:value="model.roleIds"
           mode="multiple"
+          :options="roleOptions"
+          :field-names="{ label: 'roleName', value: 'id' }"
           placeholder="请选择角色"
-          :options="roleOptions.map(item => ({ label: item.roleName, value: item.id }))"
+          :max-tag-count="3"
         />
       </AFormItem>
       <AFormItem label="岗位" name="postIds">
         <ASelect
           v-model:value="model.postIds"
           mode="multiple"
+          :options="postOptions"
+          :field-names="{ label: 'postName', value: 'id' }"
           placeholder="请选择岗位"
-          :options="postOptions.map(item => ({ label: item.postName, value: item.id }))"
+          :max-tag-count="3"
         />
       </AFormItem>
       <AFormItem label="备注" name="remark">
@@ -265,10 +287,10 @@ watch(visible, () => {
       </AFormItem>
     </AForm>
     <template #footer>
-      <ASpace>
-        <AButton @click="closeDrawer">{{ $t('common.cancel') }}</AButton>
-        <AButton type="primary" @click="handleSubmit">{{ $t('common.confirm') }}</AButton>
-      </ASpace>
+      <div class="flex-y-center justify-end gap-12px">
+        <AButton @click="closeDrawer">取消</AButton>
+        <AButton type="primary" @click="handleSubmit">确认</AButton>
+      </div>
     </template>
   </ADrawer>
 </template>

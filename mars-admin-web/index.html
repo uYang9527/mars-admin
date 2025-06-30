@@ -4,31 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mars Admin - 现代化企业级后台管理系统</title>
-    <meta name="description"
-          content="Mars Admin是一个基于Spring Boot 3和Vue 3的现代化企业级后台管理系统，提供完整的权限管理、用户管理等功能，是中小企业快速开发的理想脚手架。">
+    <meta name="description" content="Mars Admin是一个基于Spring Boot 3和Vue 3的现代化企业级后台管理系统，提供完整的权限管理、用户管理等功能，是中小企业快速开发的理想脚手架。">
     <meta name="keywords" content="Mars Admin,后台管理系统,Spring Boot,Vue 3,权限管理,企业级,开源,管理平台">
-    <link rel="icon"
-          href="data:image/svg+xml;utf8,<svg width='512' height='512' viewBox='0 0 512 512' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M352.874 201.758L433 151.818V398.308L395.733 420.17V218.953L352.874 245.666V386.969L315.606 408.831V268.894L257.803 304.922L257.305 305.723L256.912 305.478L256.52 305.723L256.021 304.922L200.079 270.055V408.831L162.812 386.969V246.827L118.091 218.953V420.17L80.8242 398.308V151.818L162.812 202.918V71.1406L257.843 126.007L352.874 71.1406V201.758ZM257.844 169.039H257.843V169.04L257.842 169.039L200.079 135.688V226.145L256.912 261.567L315.606 224.985V135.688L257.844 169.039Z' fill='%2342B983'/></svg>">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/mars-admin/assets/favicon.ico">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
+        
         /* 导航栏 */
         .navbar {
             position: fixed;
@@ -41,11 +39,11 @@
             z-index: 1000;
             transition: all 0.3s ease;
         }
-
+        
         .navbar.scrolled {
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
-
+        
         .nav-content {
             display: flex;
             justify-content: space-between;
@@ -53,7 +51,7 @@
             height: 80px;
             padding: 0 10px;
         }
-
+        
         .logo {
             display: flex;
             align-items: center;
@@ -63,30 +61,30 @@
             text-decoration: none;
             transition: all 0.3s ease;
         }
-
+        
         .logo:hover {
             transform: scale(1.05);
         }
-
+        
         .logo svg {
             width: 40px;
             height: 40px;
             margin-right: 10px;
         }
-
+        
         .nav-center {
             display: flex;
             flex: 1;
             justify-content: center;
             align-items: center;
         }
-
+        
         .nav-links {
             display: flex;
             list-style: none;
             gap: 30px;
         }
-
+        
         .nav-links a {
             color: #333;
             text-decoration: none;
@@ -95,11 +93,11 @@
             position: relative;
             padding: 5px 0;
         }
-
+        
         .nav-links a:hover {
             color: #42b983;
         }
-
+        
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -110,16 +108,16 @@
             background: #42b983;
             transition: width 0.3s ease;
         }
-
+        
         .nav-links a:hover::after {
             width: 100%;
         }
-
+        
         .nav-buttons {
             display: flex;
             gap: 15px;
         }
-
+        
         .btn {
             padding: 14px 30px;
             border-radius: 30px;
@@ -135,7 +133,7 @@
             overflow: hidden;
             z-index: 1;
         }
-
+        
         .btn::before {
             content: '';
             position: absolute;
@@ -147,30 +145,30 @@
             transition: width 0.4s ease;
             z-index: -1;
         }
-
+        
         .btn:hover::before {
             width: 100%;
         }
-
+        
         .btn-primary {
             background: #42b983;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+        
         .btn-primary:hover {
             background: #42b983;
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(66, 185, 131, 0.4);
         }
-
+        
         .btn-outline {
             border: 2px solid rgba(255, 255, 255, 0.8);
             color: white;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(5px);
         }
-
+        
         .btn-outline:hover {
             background: rgba(255, 255, 255, 0.15);
             color: white;
@@ -178,27 +176,27 @@
             box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
             border-color: white;
         }
-
+        
         .btn-sm {
             padding: 8px 16px;
             font-size: 0.9rem;
             border-radius: 20px;
             white-space: nowrap;
         }
-
+        
         .btn-outline-dark {
             border: 1px solid #333;
             color: #333;
             background: transparent;
         }
-
+        
         .btn-outline-dark:hover {
             background: rgba(0, 0, 0, 0.05);
             color: #333;
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
+        
         /* 英雄区域 - 全屏设计 */
         .hero {
             min-height: 100vh;
@@ -211,7 +209,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .hero::before {
             content: '';
             position: absolute;
@@ -223,7 +221,7 @@
             animation: float 20s infinite linear;
             opacity: 0.5;
         }
-
+        
         .hero::after {
             content: '';
             position: absolute;
@@ -235,14 +233,14 @@
             opacity: 0.6;
             z-index: 0;
         }
-
+        
         .floating-shape {
             position: absolute;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             pointer-events: none;
         }
-
+        
         .shape1 {
             width: 400px;
             height: 400px;
@@ -251,7 +249,7 @@
             background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), rgba(99, 102, 241, 0.2));
             animation: float-shape 15s infinite alternate ease-in-out;
         }
-
+        
         .shape2 {
             width: 300px;
             height: 300px;
@@ -260,25 +258,17 @@
             background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), rgba(99, 102, 241, 0.2));
             animation: float-shape 12s infinite alternate-reverse ease-in-out;
         }
-
+        
         @keyframes float-shape {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(40px) rotate(10deg);
-            }
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(40px) rotate(10deg); }
         }
-
+        
         @keyframes float {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-            }
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
         }
-
+        
         .hero-content {
             position: relative;
             z-index: 10;
@@ -289,16 +279,12 @@
             border-radius: 15px;
             /*box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);*/
         }
-
+        
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
+        
         .hero h1 {
             font-size: 4.2rem;
             font-weight: 700;
@@ -309,7 +295,7 @@
             position: relative;
             display: inline-block;
         }
-
+        
         .hero h1::after {
             content: '';
             position: absolute;
@@ -322,7 +308,7 @@
             border-radius: 3px;
             /*box-shadow: 0 0 15px rgba(66, 185, 131, 1);*/
         }
-
+        
         .hero p {
             font-size: 1.4rem;
             margin-bottom: 40px;
@@ -335,19 +321,19 @@
             color: #ffffff;
             font-weight: 500;
         }
-
+        
         .hero-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
             animation: fadeInUp 1s ease 0.4s both;
         }
-
+        
         .hero-buttons .btn {
             position: relative;
             overflow: hidden;
         }
-
+        
         .hero-buttons .btn::after {
             content: '';
             position: absolute;
@@ -361,26 +347,18 @@
             transition: width 0.6s ease, height 0.6s ease;
             z-index: -1;
         }
-
+        
         .hero-buttons .btn:hover::after {
             width: 300px;
             height: 300px;
         }
-
+        
         @keyframes float-light {
-            0% {
-                transform: translateY(0) rotate(0);
-                opacity: 0.3;
-            }
-            50% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(-20px) rotate(10deg);
-                opacity: 0.3;
-            }
+            0% { transform: translateY(0) rotate(0); opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-20px) rotate(10deg); opacity: 0.3; }
         }
-
+        
         .light-particle {
             position: absolute;
             background: rgba(255, 255, 255, 0.3);
@@ -388,7 +366,7 @@
             pointer-events: none;
             z-index: 0;
         }
-
+        
         .light-1 {
             width: 10px;
             height: 10px;
@@ -396,7 +374,7 @@
             left: 20%;
             animation: float-light 8s infinite alternate ease-in-out;
         }
-
+        
         .light-2 {
             width: 15px;
             height: 15px;
@@ -404,7 +382,7 @@
             right: 30%;
             animation: float-light 12s infinite alternate-reverse ease-in-out;
         }
-
+        
         .light-3 {
             width: 8px;
             height: 8px;
@@ -412,7 +390,7 @@
             left: 10%;
             animation: float-light 10s infinite alternate ease-in-out;
         }
-
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -423,38 +401,38 @@
                 transform: translateY(0);
             }
         }
-
+        
         /* 特性区域 */
         .features {
             padding: 100px 0;
             background: #f8f9fa;
         }
-
+        
         .section-title {
             text-align: center;
             margin-bottom: 60px;
         }
-
+        
         .section-title h2 {
             font-size: 2.5rem;
             font-weight: 700;
             color: #333;
             margin-bottom: 15px;
         }
-
+        
         .section-title p {
             font-size: 1.1rem;
             color: #666;
             max-width: 500px;
             margin: 0 auto;
         }
-
+        
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
         }
-
+        
         .feature-card {
             background: white;
             padding: 40px 30px;
@@ -464,13 +442,13 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border-top: 4px solid transparent;
         }
-
+        
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
             border-top: 4px solid #42b983;
         }
-
+        
         .feature-icon {
             width: 80px;
             height: 80px;
@@ -483,19 +461,19 @@
             font-size: 36px;
             color: white;
         }
-
+        
         .feature-card h3 {
             font-size: 1.4rem;
             font-weight: 600;
             margin-bottom: 15px;
             color: #333;
         }
-
+        
         .feature-card p {
             color: #666;
             line-height: 1.7;
         }
-
+        
         /* 技术栈区域 */
         .tech-stack {
             padding: 100px 0;
@@ -503,7 +481,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         /* 混乱标题样式 */
         .chaotic-title {
             display: inline-block;
@@ -518,30 +496,24 @@
             background-clip: text;
             animation: gradient-shift 5s ease infinite;
             transform: rotate(-1deg);
-            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.05);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.05);
         }
-
+        
         .chaotic-title::after {
             content: '技术栈';
             position: absolute;
             left: 2px;
             top: 2px;
-            color: rgba(0, 0, 0, 0.07);
+            color: rgba(0,0,0,0.07);
             z-index: -1;
         }
-
+        
         @keyframes gradient-shift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
+        
         /* 装饰元素 */
         .tech-decoration {
             position: absolute;
@@ -549,7 +521,7 @@
             opacity: 0.4;
             pointer-events: none;
         }
-
+        
         .tech-circle {
             width: 150px;
             height: 150px;
@@ -559,7 +531,7 @@
             right: 5%;
             animation: float-shape 20s infinite alternate ease-in-out;
         }
-
+        
         .tech-square {
             width: 100px;
             height: 100px;
@@ -569,7 +541,7 @@
             transform: rotate(45deg);
             animation: float-shape 15s infinite alternate-reverse ease-in-out;
         }
-
+        
         .tech-triangle {
             width: 0;
             height: 0;
@@ -580,17 +552,17 @@
             right: 15%;
             animation: float-shape 18s infinite alternate ease-in-out 2s;
         }
-
+        
         .tech-dots {
             width: 120px;
             height: 120px;
-            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 2px, transparent 2px);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.1) 2px, transparent 2px);
             background-size: 15px 15px;
             top: 30%;
             left: 10%;
             animation: float-shape 25s infinite alternate-reverse ease-in-out;
         }
-
+        
         .tech-stack::before {
             content: '';
             position: absolute;
@@ -602,7 +574,7 @@
             opacity: 0.6;
             z-index: 0;
         }
-
+        
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -611,7 +583,7 @@
             position: relative;
             z-index: 1;
         }
-
+        
         .tech-category {
             text-align: center;
             padding: 30px;
@@ -623,28 +595,28 @@
             transform: rotate(-1deg);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
+        
         /* 随机背景和边框样式 */
         .tech-category:nth-child(1) {
             background: linear-gradient(145deg, #f8f9fa, #ffffff);
             border-left: 4px solid #646CFF;
         }
-
+        
         .tech-category:nth-child(2) {
             background: linear-gradient(145deg, #f8f9fa, #f0f0f0);
             border-top: 4px solid #42b983;
         }
-
+        
         .tech-category:nth-child(3) {
             background: linear-gradient(145deg, #ffffff, #f8f9fa);
             border-right: 4px solid #FF6B6B;
         }
-
+        
         .tech-category:nth-child(4) {
             background: linear-gradient(145deg, #f0f0f0, #ffffff);
             border-bottom: 4px solid #FFD93D;
         }
-
+        
         /* 随机装饰元素 */
         .tech-category::before {
             content: '';
@@ -652,40 +624,40 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8), transparent);
+            background: radial-gradient(circle at center, rgba(255,255,255,0.8), transparent);
             opacity: 0.4;
             z-index: -1;
         }
-
+        
         .tech-category:nth-child(1)::before {
             top: -30px;
             right: -30px;
         }
-
+        
         .tech-category:nth-child(2)::before {
             bottom: -30px;
             left: -30px;
         }
-
+        
         .tech-category:nth-child(3)::before {
             top: -30px;
             left: -30px;
         }
-
+        
         .tech-category:nth-child(4)::before {
             bottom: -30px;
             right: -30px;
         }
-
+        
         .tech-category:nth-child(even) {
             transform: rotate(1deg);
         }
-
+        
         .tech-category:hover {
             box-shadow: 0 10px 30px rgba(66, 185, 131, 0.2);
             transform: translateY(-5px) rotate(0);
         }
-
+        
         .tech-category h3 {
             font-size: 1.3rem;
             font-weight: 600;
@@ -694,7 +666,7 @@
             position: relative;
             display: inline-block;
         }
-
+        
         .tech-category h3::after {
             content: '';
             position: absolute;
@@ -704,14 +676,14 @@
             height: 3px;
             background: linear-gradient(90deg, #646CFF, transparent);
         }
-
+        
         .tech-items {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px;
         }
-
+        
         .tech-item {
             background: #f8f9fa;
             padding: 8px 16px;
@@ -724,47 +696,47 @@
             transform-origin: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
-
+        
         /* 随机样式变化 */
         .tech-item:nth-child(3n) {
             background: rgba(100, 108, 255, 0.08);
             border-radius: 8px;
         }
-
+        
         .tech-item:nth-child(3n+1) {
             background: rgba(66, 185, 131, 0.08);
             border-radius: 25px;
         }
-
+        
         .tech-item:nth-child(3n+2) {
             background: rgba(255, 107, 107, 0.08);
             border-radius: 12px;
         }
-
+        
         .tech-item:nth-child(5n) {
             font-weight: bold;
         }
-
+        
         .tech-item:nth-child(7n) {
             text-decoration: underline;
         }
-
+        
         .tech-item:nth-child(odd) {
             transform: rotate(-2deg);
         }
-
+        
         .tech-item:nth-child(even) {
             transform: rotate(2deg);
         }
-
+        
         .tech-item:nth-child(3n) {
             transform: rotate(-1deg);
         }
-
+        
         .tech-item:nth-child(3n+1) {
             transform: rotate(1deg);
         }
-
+        
         .tech-item:hover {
             background: #42b983;
             color: white;
@@ -772,157 +744,157 @@
             z-index: 2;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
-
+        
         /* 统计数据区域 */
         .stats {
             padding: 80px 0;
             background: linear-gradient(135deg, #42b983 0%, #369970 100%);
             color: white;
         }
-
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 40px;
             text-align: center;
         }
-
+        
         .stat-item h3 {
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 10px;
         }
-
+        
         .stat-item p {
             font-size: 1.1rem;
             opacity: 0.9;
         }
-
+        
         /* 页脚 */
         .footer {
             background: #2c3e50;
             color: white;
             padding: 60px 0 30px;
         }
-
+        
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
         }
-
+        
         .footer-section h3 {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 20px;
             color: #bdc3c7;
         }
-
+        
         .footer-section p,
         .footer-section li {
             color: #bdc3c7;
             line-height: 1.8;
         }
-
+        
         .footer-section ul {
             list-style: none;
         }
-
+        
         .footer-section a {
             color: #bdc3c7;
             text-decoration: none;
             transition: color 0.3s ease;
         }
-
+        
         .footer-section a:hover {
             color: #42b983;
         }
-
+        
         .footer-bottom {
             border-top: 1px solid #34495e;
             padding-top: 30px;
             text-align: center;
             color: #95a5a6;
         }
-
+        
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-center {
                 display: none;
             }
-
+            
             .nav-links {
                 display: none;
             }
-
+            
             .nav-content {
                 justify-content: space-between;
             }
-
+            
             .nav-buttons {
                 display: flex;
                 gap: 10px;
             }
-
+            
             .btn-sm {
                 padding: 6px 12px;
                 font-size: 0.8rem;
             }
-
+            
             .hero h1 {
                 font-size: 2.5rem;
             }
-
+            
             .hero p {
                 font-size: 1.1rem;
             }
-
+            
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
+            
             .features-grid {
                 grid-template-columns: 1fr;
             }
-
+            
             .tech-grid {
                 grid-template-columns: 1fr;
             }
-
+            
             .showcase-content {
                 flex-direction: column;
                 text-align: center;
             }
-
+            
             .showcase-image {
                 margin-bottom: 40px;
                 padding: 0;
             }
-
+            
             .showcase-img {
                 max-width: 100%;
             }
-
+            
             .showcase-features {
                 display: inline-block;
                 text-align: left;
             }
         }
-
+        
         /* 滚动动画 */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.6s ease;
         }
-
+        
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-
+        
         /* 产品展示区域 */
         .product-showcase {
             padding: 120px 0;
@@ -930,7 +902,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .product-showcase::before {
             content: '';
             position: absolute;
@@ -942,7 +914,7 @@
             background: rgba(66, 185, 131, 0.05);
             z-index: 0;
         }
-
+        
         .product-showcase::after {
             content: '';
             position: absolute;
@@ -954,7 +926,7 @@
             background: rgba(66, 185, 131, 0.05);
             z-index: 0;
         }
-
+        
         .showcase-content {
             display: flex;
             align-items: center;
@@ -964,13 +936,13 @@
             position: relative;
             z-index: 1;
         }
-
+        
         .showcase-image {
             flex: 1.5;
             position: relative;
             padding: 20px;
         }
-
+        
         .showcase-img {
             width: 100%;
             max-width: 650px;
@@ -979,16 +951,16 @@
             transition: transform 0.3s ease;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
-
+        
         .showcase-img:hover {
             transform: translateY(-10px);
             box-shadow: 0 30px 60px rgba(66, 185, 131, 0.2);
         }
-
+        
         .showcase-text {
             flex: 1;
         }
-
+        
         .showcase-text h2 {
             font-size: 2.4rem;
             font-weight: 700;
@@ -997,7 +969,7 @@
             position: relative;
             padding-bottom: 15px;
         }
-
+        
         .showcase-text h2::after {
             content: '';
             position: absolute;
@@ -1008,19 +980,19 @@
             background: #646CFF;
             border-radius: 2px;
         }
-
+        
         .showcase-text p {
             font-size: 1.1rem;
             color: #666;
             margin-bottom: 30px;
             line-height: 1.8;
         }
-
+        
         .showcase-features {
             list-style: none;
             margin-bottom: 30px;
         }
-
+        
         .showcase-features li {
             font-size: 1.1rem;
             color: #555;
@@ -1028,7 +1000,7 @@
             display: flex;
             align-items: center;
         }
-
+        
         .showcase-features li:before {
             content: '✓';
             color: #646CFF;
@@ -1045,344 +1017,303 @@
     </style>
 </head>
 <body>
-<!-- 导航栏 -->
-<nav class="navbar" id="navbar">
-    <div class="container">
-        <div class="nav-content">
-            <svg width="220" height="74" viewBox="0 0 220 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M190.924 35.6473L189.683 45.9924H187.039L188.602 33.1875H194.373C197.545 33.1875 199.131 34.6435 199.131 37.5554C199.131 37.9079 199.108 38.2911 199.062 38.7049L198.166 45.9924H195.522L196.419 38.6359C196.449 38.3294 196.465 38.1148 196.465 37.9922C196.465 36.429 195.668 35.6473 194.074 35.6473H190.924Z"
-                      fill="black"/>
-                <path d="M198.872 37.5644C198.872 36.1544 198.489 35.142 197.766 34.4785C197.039 33.8111 195.923 33.4545 194.371 33.4545H188.83L187.33 45.7428H189.452L190.693 35.3974H194.072C194.908 35.3974 195.582 35.6025 196.046 36.0578C196.512 36.514 196.722 37.1779 196.722 38.0007C196.722 38.1377 196.705 38.364 196.674 38.6701V38.6762L195.813 45.7428H197.937L198.804 38.6853L198.855 38.1006C198.866 37.9138 198.872 37.7351 198.872 37.5644ZM199.389 37.5644C199.389 37.9278 199.365 38.3204 199.318 38.7418V38.7449L198.421 46.0326L198.393 46.2598H195.229L196.16 38.6136C196.191 38.3095 196.205 38.1083 196.205 38.0007C196.205 37.2602 196.017 36.7518 195.685 36.4264C195.352 36.1001 194.831 35.9144 194.072 35.9144H191.153L189.911 46.2598H186.746L188.345 33.1647L188.372 32.9375H194.371C195.992 32.9375 197.256 33.3092 198.115 34.0978C198.979 34.8902 199.389 36.0627 199.389 37.5644Z"
-                      fill="black"/>
-                <path d="M182.922 31.454L183.267 28.6953H186.279L185.934 31.454H182.922ZM183.98 45.9831H181.336L182.922 33.1782H185.566L183.98 45.9831Z"
-                      fill="black"/>
-                <path d="M185.855 32.92L185.818 33.2108L184.204 46.2423H181.039L181.075 45.9525L182.69 32.92H185.855ZM181.625 45.7253H183.747L185.269 33.437H183.147L181.625 45.7253ZM186.568 28.4375L186.158 31.7133H182.625L183.034 28.4375H186.568ZM183.211 31.1963H185.701L185.982 28.9545H183.491L183.211 31.1963Z"
-                      fill="black"/>
-                <path d="M171.862 35.6473L170.621 45.9924H167.977L169.241 35.6473H164.069L162.827 45.9924H160.184L161.747 33.1875H174.621C177.793 33.1875 179.38 34.6435 179.38 37.5554C179.38 37.9079 179.357 38.2911 179.311 38.7049L178.414 45.9924H175.77L176.667 38.6359C176.697 38.3294 176.713 38.1148 176.713 37.9922C176.713 36.429 175.916 35.6473 174.322 35.6473H171.862Z"
-                      fill="black"/>
-                <path d="M179.124 37.5644C179.124 36.1543 178.74 35.142 178.017 34.4785C177.29 33.8112 176.175 33.4545 174.624 33.4545H161.979L160.478 45.7428H162.601L163.842 35.3974H169.536L168.272 45.7428H170.394L171.636 35.3974H174.325C175.16 35.3974 175.835 35.6025 176.299 36.0578C176.764 36.514 176.974 37.178 176.974 38.0007C176.974 38.1377 176.957 38.3641 176.927 38.6701L176.926 38.6762L176.064 45.7428H178.188L179.057 38.6823C179.101 38.2775 179.124 37.905 179.124 37.5644ZM179.641 37.5644C179.641 37.9278 179.617 38.3204 179.571 38.7418L179.57 38.7449L178.673 46.0326L178.646 46.2598H175.481L176.412 38.6186C176.443 38.3117 176.457 38.1089 176.457 38.0007C176.457 37.2603 176.269 36.7518 175.937 36.4264C175.605 36.1 175.083 35.9144 174.325 35.9144H172.094L170.853 46.2598H167.687L167.724 45.97L168.952 35.9144H164.301L163.059 46.2598H159.895L161.493 33.1647L161.52 32.9375H174.624C176.244 32.9375 177.509 33.3092 178.368 34.0978C179.231 34.8902 179.641 36.0628 179.641 37.5644Z"
-                      fill="black"/>
-                <path d="M147.178 38.7257C147.623 35.0321 149.6 33.1853 153.109 33.1853H156.121L156.719 28.2656H159.362L157.201 45.9902H151.661C148.489 45.9902 146.902 44.5343 146.902 41.6223C146.902 41.2698 146.925 40.8867 146.971 40.4728L147.178 38.7257ZM154.857 43.5304L155.822 35.5992H152.811C151.079 35.5992 150.09 36.6183 149.845 38.6567L149.615 40.5418C149.584 40.8483 149.569 41.0706 149.569 41.2085C149.569 42.7564 150.366 43.5304 151.96 43.5304H154.857Z"
-                      fill="black"/>
-                <path d="M159.659 28L157.462 46.0149L157.435 46.2421H151.666C150.045 46.2421 148.781 45.8703 147.922 45.0818C147.058 44.2894 146.648 43.117 146.648 41.6152C146.648 41.2516 146.672 40.8584 146.719 40.4367L146.926 38.6878L146.974 38.3394C147.233 36.6236 147.841 35.291 148.823 34.3739C149.872 33.3939 151.314 32.9198 153.114 32.9198H155.896L156.467 28.2272L156.494 28H159.659ZM156.118 35.3332L155.118 43.555L155.09 43.7822H151.965C151.13 43.7822 150.455 43.5787 149.991 43.1279C149.525 42.6756 149.315 42.0167 149.315 41.2011C149.315 41.0494 149.332 40.8164 149.363 40.5094V40.5034L149.593 38.6181C149.72 37.5672 150.042 36.741 150.59 36.1764C151.143 35.6061 151.896 35.3332 152.815 35.3332H156.118ZM147.165 41.6152C147.165 43.0253 147.548 44.0376 148.271 44.7011C148.998 45.3685 150.115 45.7251 151.666 45.7251H156.977L159.075 28.517H156.952L156.382 33.2096L156.355 33.4368H153.114C151.405 33.4368 150.103 33.8859 149.175 34.7525C148.303 35.5668 147.732 36.7776 147.485 38.4161L147.439 38.7493L147.233 40.4963C147.188 40.9015 147.165 41.2743 147.165 41.6152ZM149.832 41.2011C149.832 41.9332 150.02 42.4355 150.351 42.7573C150.684 43.0803 151.206 43.2652 151.965 43.2652H154.632L155.535 35.8502H152.815C152.003 35.8502 151.396 36.0882 150.96 36.5369C150.575 36.9345 150.3 37.5215 150.159 38.3232L150.106 38.6807L149.877 40.566L149.876 40.565C149.846 40.868 149.832 41.0777 149.832 41.2011Z"
-                      fill="black"/>
-                <path d="M140.811 28.7188C141.669 28.7188 142.167 29.1326 142.305 29.9602L144.926 45.9836H142.052L141.293 40.9949H133.868L131.868 45.9836H128.902L135.523 29.7762C135.814 29.0712 136.351 28.7188 137.132 28.7188H140.811ZM137.799 31.2476L134.88 38.4661H140.903L139.799 31.2476H137.799Z"
-                      fill="black"/>
-                <path d="M140.813 28.4609C141.282 28.461 141.687 28.5741 141.995 28.8305C142.305 29.0875 142.486 29.4617 142.562 29.9181L145.183 45.9426L145.232 46.2426H141.832L141.073 41.2541H134.044L132.109 46.08L132.045 46.2426H128.52L135.286 29.6788L135.351 29.5354C135.509 29.2113 135.725 28.9514 136.004 28.7679C136.323 28.5586 136.704 28.461 137.134 28.4609H140.813ZM137.134 28.978C136.783 28.978 136.506 29.0571 136.288 29.2001C136.071 29.3427 135.894 29.5615 135.765 29.8747L129.289 45.7255H131.695L133.63 40.8997L133.695 40.7371H141.518L142.276 45.7255H144.623L142.052 30.0029C141.99 29.6322 141.854 29.3851 141.665 29.2284C141.476 29.0711 141.201 28.978 140.813 28.978H137.134ZM140.023 30.9895L140.057 31.2096L141.206 38.7256H134.498L134.642 38.3701L137.561 31.1511L137.627 30.9895H140.023ZM135.264 38.2086H140.604L139.579 31.5065H137.975L135.264 38.2086Z"
-                      fill="black"/>
-                <path d="M116.679 46.0844C115.269 46.0537 114.05 45.9924 113.023 45.9005L113.368 43.4177C114.87 43.5556 116.073 43.6399 116.978 43.6705H117.759C118.74 43.6705 119.422 43.5479 119.805 43.3027C120.204 43.0575 120.449 42.705 120.541 42.2452C120.556 42.1686 120.564 42.0613 120.564 41.9234C120.564 41.5402 120.503 41.2873 120.38 41.1647C120.273 40.9961 120.096 40.8812 119.851 40.8199C119.606 40.7586 119.139 40.6896 118.449 40.613L117.92 40.544C117.123 40.4827 116.365 40.3448 115.644 40.1302C115.077 39.9156 114.656 39.6091 114.38 39.2106C114.104 38.7968 113.966 38.2528 113.966 37.5784C113.966 37.4405 113.981 37.2029 114.012 36.8658C114.119 35.9309 114.387 35.2029 114.817 34.6818C115.246 34.1454 115.843 33.7622 116.61 33.5323C117.376 33.3024 118.365 33.1875 119.575 33.1875H120.518L123.759 33.2105L123.46 35.6473H119.276C118.602 35.6473 118.089 35.6857 117.736 35.7623C117.384 35.8236 117.123 35.9385 116.955 36.1071C116.801 36.2604 116.702 36.4903 116.656 36.7968C116.64 36.8734 116.633 36.973 116.633 37.0957C116.633 37.3409 116.702 37.5478 116.84 37.7164C116.993 37.9003 117.215 38.0305 117.506 38.1072C117.813 38.1685 118.372 38.2451 119.185 38.3371C120.15 38.429 120.939 38.5746 121.552 38.7739C122.089 38.9578 122.495 39.272 122.771 39.7164C123.062 40.1609 123.208 40.7356 123.208 41.4406C123.208 41.7778 123.192 42.0383 123.162 42.2222C122.978 43.6475 122.441 44.6437 121.552 45.2108C120.663 45.7932 119.299 46.0844 117.46 46.0844H116.679Z"
-                      fill="black"/>
-                <path d="M122.954 41.4491C122.954 40.7785 122.816 40.2574 122.56 39.8668L122.556 39.8617C122.315 39.4733 121.96 39.1941 121.477 39.0276C120.889 38.8364 120.12 38.6934 119.165 38.6025H119.16C118.348 38.5106 117.779 38.4329 117.46 38.3692L117.453 38.3672L117.445 38.3652C117.116 38.2784 116.841 38.1253 116.645 37.8906L116.644 37.8886C116.464 37.668 116.379 37.4009 116.379 37.1039C116.379 36.9728 116.387 36.8544 116.407 36.7546C116.459 36.4214 116.573 36.136 116.777 35.9326C116.996 35.7131 117.313 35.584 117.69 35.5175C118.07 35.4356 118.604 35.3974 119.281 35.3974H123.237L123.473 33.4747L120.521 33.4545H119.58C118.383 33.4545 117.422 33.5688 116.689 33.7888C115.964 34.0061 115.415 34.3631 115.024 34.8521L115.021 34.8551C114.634 35.3242 114.378 35.9965 114.273 36.8969C114.243 37.234 114.229 37.4616 114.229 37.5866C114.229 38.2255 114.36 38.7137 114.597 39.0721L114.693 39.1983C114.931 39.484 115.272 39.7178 115.731 39.893C116.255 40.0485 116.8 40.1627 117.367 40.2353L117.945 40.2949L117.958 40.2959L118.481 40.3646C119.169 40.441 119.655 40.5115 119.919 40.5777C120.207 40.6497 120.445 40.7925 120.597 41.025C120.686 41.1282 120.74 41.2577 120.773 41.3936C120.811 41.5469 120.827 41.7284 120.827 41.9318C120.827 42.076 120.819 42.2031 120.799 42.3044C120.693 42.8331 120.406 43.2454 119.948 43.5283C119.497 43.8168 118.749 43.9373 117.764 43.9373H116.974C116.112 43.9081 114.985 43.83 113.595 43.705L113.322 45.6721C114.283 45.7507 115.405 45.8068 116.689 45.8347H117.465C119.286 45.8347 120.59 45.5438 121.416 45.0026L121.418 45.0016C122.221 44.4893 122.732 43.5759 122.91 42.1974L122.911 42.1883C122.938 42.0254 122.954 41.7815 122.954 41.4491ZM116.896 37.1039C116.896 37.2965 116.949 37.443 117.043 37.5594L117.138 37.6543C117.244 37.743 117.386 37.8145 117.574 37.8643C117.872 37.9228 118.417 37.9978 119.218 38.0885C120.071 38.1699 120.796 38.2929 121.39 38.4611L121.637 38.5369L121.641 38.5379C122.226 38.7386 122.681 39.0867 122.991 39.583C123.317 40.0813 123.471 40.7099 123.471 41.4491C123.471 41.7855 123.455 42.0591 123.422 42.263C123.232 43.7342 122.671 44.8128 121.697 45.4348L121.698 45.4358C120.747 46.0592 119.322 46.3517 117.465 46.3517H116.678C115.264 46.321 114.039 46.2595 113.005 46.1669L112.734 46.1427L113.117 43.391L113.151 43.1466L113.397 43.1688C114.896 43.3065 116.094 43.3898 116.991 43.4203H117.764C118.741 43.4202 119.356 43.2948 119.671 43.0931L119.675 43.0911C120.012 42.8837 120.214 42.5927 120.292 42.2034C120.302 42.1515 120.31 42.0635 120.31 41.9318C120.31 41.7521 120.296 41.6153 120.272 41.5158C120.247 41.4141 120.217 41.3712 120.202 41.3562L120.182 41.336L120.167 41.3118C120.104 41.2129 119.991 41.1292 119.793 41.0795C119.567 41.0231 119.116 40.9554 118.425 40.8786L118.421 40.8776L117.891 40.8089C117.082 40.7458 116.31 40.6057 115.575 40.3868L115.566 40.3838L115.558 40.3808C114.954 40.1523 114.485 39.8172 114.172 39.3659L114.169 39.3629C113.857 38.8939 113.712 38.2943 113.712 37.5866C113.712 37.4357 113.729 37.1873 113.759 36.8505L113.76 36.8444C113.871 35.879 114.151 35.0978 114.622 34.5259C115.089 33.9436 115.734 33.535 116.54 33.293C117.34 33.0532 118.356 32.9375 119.58 32.9375H120.525L124.056 32.9627L123.722 35.6872L123.694 35.9144H119.281C118.612 35.9144 118.121 35.9528 117.796 36.0235L117.785 36.0255C117.461 36.0819 117.259 36.1818 117.142 36.2981C117.042 36.3986 116.957 36.569 116.916 36.8434L116.914 36.8565C116.903 36.9098 116.896 36.9904 116.896 37.1039Z"
-                      fill="black"/>
-                <path d="M112.916 35.6933C111.965 35.6627 111.352 35.6473 111.077 35.6473C110.096 35.6473 109.36 35.8849 108.87 36.36C108.379 36.8198 108.073 37.5861 107.95 38.6589L107.03 45.9924H104.387L105.283 38.7279C105.513 36.7815 106.096 35.3715 107.03 34.4979C107.981 33.6243 109.429 33.1875 111.375 33.1875C112.142 33.1875 112.793 33.2105 113.329 33.2565L112.916 35.6933Z"
-                      fill="black"/>
-                <path d="M111.379 32.9375C112.15 32.9375 112.809 32.9604 113.356 33.0072L113.635 33.0314L113.588 33.3081L113.175 35.7448L113.136 35.9679L112.911 35.9598C111.96 35.9292 111.351 35.9144 111.08 35.9144C110.137 35.9144 109.477 36.1433 109.053 36.5546L109.05 36.5566C108.624 36.9556 108.33 37.65 108.211 38.6964V38.6994L107.262 46.2598H104.098L104.134 45.969L105.031 38.7045C105.264 36.7293 105.86 35.2502 106.857 34.3179L106.859 34.3159C107.877 33.3808 109.4 32.9375 111.379 32.9375ZM111.379 33.4545C109.467 33.4545 108.093 33.8834 107.21 34.6946C106.338 35.5092 105.77 36.8506 105.544 38.7671L104.682 45.7428H106.806L107.697 38.6378C107.822 37.539 108.141 36.7005 108.696 36.18C109.252 35.643 110.063 35.3974 111.08 35.3974C111.338 35.3974 111.88 35.4109 112.702 35.4368L113.03 33.502C112.561 33.4709 112.011 33.4545 111.379 33.4545Z"
-                      fill="black"/>
-                <path d="M95.2073 45.9924C94.0578 45.9924 93.1382 45.6706 92.4486 45.0269C91.7589 44.3679 91.4141 43.5173 91.4141 42.4751C91.4141 42.2452 91.4217 42.069 91.4371 41.9464C91.575 40.9961 91.8202 40.2452 92.1727 39.6934C92.5252 39.1264 93.031 38.7202 93.69 38.475C94.3643 38.2145 95.2456 38.0842 96.3337 38.0842H100.196L100.219 37.9003C100.234 37.8236 100.242 37.7164 100.242 37.5784C100.242 36.9807 100.043 36.4979 99.6442 36.1301C99.2457 35.7623 98.625 35.5784 97.782 35.5784H97.1843C95.8203 35.5784 94.5942 35.6167 93.5061 35.6933L93.8509 33.3484L94.5176 33.3024C94.7628 33.2871 95.1919 33.2641 95.805 33.2335C96.4334 33.2028 96.9774 33.1875 97.4372 33.1875H98.0579C99.6365 33.1875 100.832 33.563 101.644 34.314C102.457 35.0649 102.863 36.0688 102.863 37.3255C102.863 37.4635 102.847 37.701 102.817 38.0382L101.874 45.9924H95.2073ZM94.0578 42.2222C94.0578 42.6667 94.1804 43.0115 94.4256 43.2567C94.6862 43.4866 95.054 43.6016 95.5291 43.6016H99.5292L99.92 40.3831L96.1038 40.3601C95.5215 40.3448 95.054 40.4597 94.7015 40.7049C94.3643 40.9348 94.1574 41.3486 94.0808 41.9464L94.0578 42.2222Z"
-                      fill="#42B983"/>
-                <path d="M102.608 37.3342C102.608 36.1388 102.225 35.2079 101.473 34.5128C100.773 33.865 99.7427 33.5014 98.3469 33.4586L98.0622 33.4545H97.4421C97.2149 33.4545 96.9659 33.458 96.6959 33.4656L95.8224 33.5C95.21 33.5306 94.7825 33.5524 94.539 33.5676L94.54 33.5686L94.0805 33.5999L93.8119 35.4246C94.8259 35.3616 95.9515 35.3287 97.1887 35.3287H97.7865C98.6597 35.3287 99.3575 35.5179 99.8243 35.9487C100.281 36.3707 100.505 36.9252 100.505 37.5866C100.505 37.7219 100.496 37.842 100.479 37.9401L100.48 37.9411L100.457 38.1249L100.429 38.3511H96.3384C95.2676 38.3511 94.4212 38.4799 93.7877 38.7247L93.7846 38.7257C93.1763 38.9521 92.7177 39.3228 92.3972 39.8385L92.3951 39.8415C92.0701 40.3503 91.8324 41.0598 91.6974 41.9863C91.6841 42.0928 91.6772 42.2568 91.6772 42.4832C91.6772 43.4607 91.9974 44.241 92.6294 44.8461C93.2612 45.4357 94.1126 45.7427 95.2115 45.7428H101.649L102.565 38.0158C102.595 37.6827 102.608 37.4582 102.608 37.3342ZM96.1142 40.1101L99.9263 40.1334L100.216 40.1344L100.182 40.4232L99.7909 43.6414L99.7627 43.8686H95.5336C95.0188 43.8686 94.5819 43.7434 94.2592 43.4586L94.2471 43.4485C93.9408 43.1422 93.8038 42.7235 93.8038 42.2307V42.2196L93.8048 42.2095L93.8291 41.9217C93.9104 41.2873 94.137 40.7892 94.5581 40.5009C94.9693 40.2149 95.4966 40.094 96.1142 40.1101ZM95.9032 40.6271C95.4549 40.6411 95.1109 40.7473 94.854 40.926L94.852 40.9271C94.6003 41.0987 94.4139 41.4278 94.342 41.9874L94.3208 42.2368C94.3219 42.6257 94.4278 42.8939 94.6076 43.0769C94.806 43.2486 95.1029 43.3516 95.5336 43.3516H99.3042L99.6324 40.6484L96.1072 40.6271H95.9032ZM103.125 37.3342C103.125 37.4851 103.109 37.7334 103.079 38.0703L103.078 38.0774L102.136 46.0316L102.108 46.2598H95.2115C94.012 46.2598 93.0244 45.9222 92.277 45.2248L92.275 45.2228C91.5293 44.5102 91.1602 43.5887 91.1602 42.4832C91.1602 42.2502 91.1681 42.0613 91.1854 41.9227V41.9177C91.3264 40.9467 91.5807 40.1564 91.9599 39.5628C92.3438 38.9467 92.8945 38.5057 93.6019 38.242L93.8785 38.1451C94.5482 37.9346 95.371 37.834 96.3384 37.834H99.9727C99.9809 37.7807 99.9878 37.7 99.9878 37.5866C99.9878 37.0531 99.8134 36.6419 99.4739 36.3284C99.1436 36.0236 98.5991 35.8457 97.7865 35.8457H97.1887C95.8295 35.8457 94.6098 35.8837 93.5292 35.9598L93.208 35.9821L93.2545 35.664L93.6301 33.1132L93.8382 33.0991L94.5046 33.0526C94.7516 33.0372 95.1842 33.0146 95.7972 32.984C96.4283 32.9532 96.977 32.9375 97.4421 32.9375H98.0622L98.3611 32.9415C99.8354 32.9867 101.002 33.3728 101.825 34.1331C102.697 34.9399 103.125 36.0164 103.125 37.3342Z"
-                      fill="#42B983"/>
-                <path d="M76.3926 28.7188L80.1859 42.8341H80.2778L87.5654 28.7188H90.5539L88.4389 45.9836H85.9561L87.4504 33.7993L81.4962 45.2709C81.251 45.746 80.8679 45.9836 80.3468 45.9836H79.4042C78.8678 45.9836 78.546 45.746 78.4387 45.2709L75.2662 33.7993L73.7719 45.9836H71.2891L73.4041 28.7188H76.3926Z"
-                      fill="black"/>
-                <path d="M76.5933 28.4609L80.2962 42.2397L87.3386 28.6013L87.4103 28.4609H90.8487L88.6988 46.0153L88.6705 46.2426H85.6664L85.7027 45.9527L87.0215 35.1923L81.7281 45.3893C81.5881 45.6606 81.4018 45.8778 81.1637 46.0254C80.9252 46.1733 80.6507 46.2425 80.3498 46.2426H79.4066C79.102 46.2425 78.8281 46.1753 78.6099 46.0143C78.3919 45.8534 78.2571 45.6198 78.1918 45.3408L75.3664 35.1246L74.0314 46.0153L74.0032 46.2426H71L73.1499 28.6881L73.1781 28.4609H76.5933ZM71.5837 45.7255H73.5467L75.0119 33.7685L75.5179 33.7311L78.6907 45.2025L78.6937 45.2146L78.7321 45.3448C78.7773 45.4621 78.8413 45.5426 78.9169 45.5983C79.0203 45.6746 79.1753 45.7255 79.4066 45.7255H80.3498C80.5696 45.7255 80.7465 45.6757 80.891 45.5862C81.036 45.4963 81.1645 45.3568 81.2697 45.153L87.2235 33.6806L87.7102 33.8311L86.251 45.7255H88.2131L90.265 28.978H87.7254L80.5103 42.9536L80.4376 43.093H79.9903L79.9388 42.9021L76.1975 28.978H73.6356L71.5837 45.7255Z"
-                      fill="black"/>
-                <path d="M45.8408 31.4912L53.9785 26.4199V51.4541L50.1934 53.6748V33.2383L45.8408 35.9502V50.3027L42.0557 52.5225V38.3096L36.1855 41.9688L36.1348 42.0508L36.0938 42.0254L36.0547 42.0508L36.0029 41.9688L30.3223 38.4277V52.5225L26.5371 50.3027V36.0684L21.9951 33.2383V53.6748L18.2109 51.4541V26.4199L26.5371 31.6084V18.2266L36.1885 23.7988L45.8408 18.2266V31.4912ZM36.1895 28.1689L30.3223 24.7822V33.9678L36.0947 37.5654L42.0557 33.8496V24.7822L36.1895 28.1689Z"
-                      fill="#42B983"/>
-            </svg>
-            <div class="nav-center">
-                <ul class="nav-links">
-                    <li><a href="#features">功能特性</a></li>
-                    <li><a href="#tech">技术栈</a></li>
-                    <li><a href="#docs">文档</a></li>
-                    <li><a href="#contact">联系我们</a></li>
-                </ul>
-            </div>
-            <div class="nav-buttons">
-                <a href="#demo" class="btn btn-primary btn-sm">立即体验</a>
-                <a href="https://gitee.com/Marsfactory/mars-admin" class="btn btn-outline-dark btn-sm" target="_blank">源码下载</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<!-- 英雄区域 - 全屏 -->
-<section class="hero">
-    <div class="floating-shape shape1"></div>
-    <div class="floating-shape shape2"></div>
-    <div class="light-particle light-1"></div>
-    <div class="light-particle light-2"></div>
-    <div class="light-particle light-3"></div>
-    <div>
-        <svg width="300" height="300" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M352.874 201.758L433 151.818V398.308L395.733 420.17V218.953L352.874 245.666V386.969L315.606 408.831V268.894L257.803 304.922L257.305 305.723L256.912 305.478L256.52 305.723L256.021 304.922L200.079 270.055V408.831L162.812 386.969V246.827L118.091 218.953V420.17L80.8242 398.308V151.818L162.812 202.918V71.1406L257.843 126.007L352.874 71.1406V201.758ZM257.844 169.039H257.843V169.04L257.842 169.039L200.079 135.688V226.145L256.912 261.567L315.606 224.985V135.688L257.844 169.039Z"
-                  fill="#42B983"/>
-        </svg>
-    </div>
-    <div class="hero-content">
-        <h1 style="color: white;">Mars Admin</h1>
-        <p style="color: white;">基于 Spring Boot 3 + Vue 3 的现代化企业级后台管理系统<br>开箱即用，助力企业快速开发</p>
-        <div class="hero-buttons">
-            <a href="#demo" class="btn btn-primary">立即体验</a>
-            <a href="https://gitee.com/Marsfactory/mars-admin" class="btn btn-outline" target="_blank">查看源码</a>
-        </div>
-    </div>
-</section>
-
-<!-- 产品展示区域 -->
-<section class="product-showcase">
-    <div class="container">
-        <div class="showcase-content">
-            <div class="showcase-image fade-in">
-                <img src="image/img.png" alt="Mars Admin 系统界面展示" class="showcase-img">
-            </div>
-            <div class="showcase-text">
-                <h2 class="fade-in">优雅的设计，强大的功能</h2>
-                <p class="fade-in">Mars Admin
-                    提供了精心设计的用户界面和丰富的功能模块，让企业管理变得简单高效。系统采用模块化设计，可根据业务需求进行灵活扩展。</p>
-                <ul class="showcase-features fade-in">
-                    <li>✓ 美观直观的仪表盘</li>
-                    <li>✓ 强大的数据可视化</li>
-                    <li>✓ 灵活的权限控制</li>
-                    <li>✓ 丰富的业务组件</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 功能特性 -->
-<section class="features" id="features">
-    <div class="container">
-        <div class="section-title fade-in">
-            <h2>核心功能特性</h2>
-            <p>为企业级应用量身定制的完整功能体系</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🔐</div>
-                <h3>完整权限系统</h3>
-                <p>基于RBAC模型的权限管理，支持用户、角色、菜单、部门等多维度权限控制，安全可靠</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🚀</div>
-                <h3>现代化技术栈</h3>
-                <p>采用Spring Boot 3 + Vue 3 + TypeScript最新技术栈，提供卓越的开发体验</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📊</div>
-                <h3>SQL监控系统</h3>
-                <p>内置强大的SQL监控功能，实时监控SQL执行情况，支持慢查询分析和性能优化</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🎨</div>
-                <h3>美观界面设计</h3>
-                <p>基于Ant Design Vue 4设计，界面美观现代，支持多主题切换和暗黑模式</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📱</div>
-                <h3>响应式布局</h3>
-                <p>完美适配PC、平板、手机等多种设备，提供一致的用户体验</p>
-            </div>
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🛠️</div>
-                <h3>开发友好</h3>
-                <p>代码规范、注释完整、文档详细，易于二次开发和定制化需求</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 技术栈 -->
-<section class="tech-stack" id="tech">
-    <div class="container">
-        <div class="section-title fade-in">
-            <h2 class="chaotic-title">技术栈</h2>
-            <p>采用业界领先的技术栈，保证系统的先进性和稳定性</p>
-        </div>
-
-        <!-- 装饰元素 -->
-        <div class="tech-decoration tech-circle"></div>
-        <div class="tech-decoration tech-square"></div>
-        <div class="tech-decoration tech-triangle"></div>
-        <div class="tech-decoration tech-dots"></div>
-
-        <div class="tech-grid">
-            <div class="tech-category fade-in">
-                <h3>后端技术</h3>
-                <div class="tech-items">
-                    <span class="tech-item">Spring Boot 3.0.5</span>
-                    <span class="tech-item">Java 17</span>
-                    <span class="tech-item">MyBatis-Flex 1.10.9</span>
-                    <span class="tech-item">Sa-Token 1.38.0</span>
-                    <span class="tech-item">MySQL 8.x</span>
-                    <span class="tech-item">Redis</span>
-                    <span class="tech-item">Knife4j 4.4.0</span>
-                    <span class="tech-item">HikariCP</span>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#42b983" d="M80 412 L80 100 L160 100 L256 300 L352 100 L432 100 L432 412 L352 412 L352 200 L256 400 L160 200 L160 412 Z"/>
+                    </svg>
+                    Mars Admin
+                </a>
+                <div class="nav-center">
+                    <ul class="nav-links">
+                        <li><a href="#features">功能特性</a></li>
+                        <li><a href="#tech">技术栈</a></li>
+                        <li><a href="#docs">文档</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                    </ul>
                 </div>
-            </div>
-            <div class="tech-category fade-in">
-                <h3>前端技术</h3>
-                <div class="tech-items">
-                    <span class="tech-item">Vue 3.5.13</span>
-                    <span class="tech-item">TypeScript 5.7.3</span>
-                    <span class="tech-item">Vite 6.1.0</span>
-                    <span class="tech-item">Ant Design Vue 4.2.6</span>
-                    <span class="tech-item">Pinia 3.0.0</span>
-                    <span class="tech-item">Vue Router 4.5.0</span>
-                    <span class="tech-item">UnoCSS</span>
-                    <span class="tech-item">ECharts 5.6.0</span>
-                </div>
-            </div>
-            <div class="tech-category fade-in">
-                <h3>开发工具</h3>
-                <div class="tech-items">
-                    <span class="tech-item">Maven 3.8+</span>
-                    <span class="tech-item">Node.js 18+</span>
-                    <span class="tech-item">pnpm 8.7+</span>
-                    <span class="tech-item">ESLint</span>
-                    <span class="tech-item">Prettier</span>
-                    <span class="tech-item">Git</span>
-                </div>
-            </div>
-            <div class="tech-category fade-in">
-                <h3>部署运维</h3>
-                <div class="tech-items">
-                    <span class="tech-item">Docker</span>
-                    <span class="tech-item">Nginx</span>
-                    <span class="tech-item">Linux</span>
-                    <span class="tech-item">Jenkins</span>
-                    <span class="tech-item">阿里云</span>
-                    <span class="tech-item">MinIO</span>
+                <div class="nav-buttons">
+                    <a href="#demo" class="btn btn-primary btn-sm">立即体验</a>
+                    <a href="https://github.com/Marsfactory/mars-admin" class="btn btn-outline-dark btn-sm" target="_blank">源码下载</a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </nav>
 
-<!-- 统计数据 -->
-<section class="stats">
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-item fade-in">
-                <h3>50+</h3>
-                <p>功能模块</p>
-            </div>
-            <div class="stat-item fade-in">
-                <h3>1000+</h3>
-                <p>代码提交</p>
-            </div>
-            <div class="stat-item fade-in">
-                <h3>100+</h3>
-                <p>企业用户</p>
-            </div>
-            <div class="stat-item fade-in">
-                <h3>99%</h3>
-                <p>系统稳定性</p>
+    <!-- 英雄区域 - 全屏 -->
+    <section class="hero">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="light-particle light-1"></div>
+        <div class="light-particle light-2"></div>
+        <div class="light-particle light-3"></div>
+        <div class="hero-content">
+            <h1 style="color: white;">Mars Admin</h1>
+            <p style="color: white;">基于 Spring Boot 3 + Vue 3 的现代化企业级后台管理系统<br>开箱即用，助力企业快速开发</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary">立即体验</a>
+                <a href="https://github.com/Marsfactory/mars-admin" class="btn btn-outline" target="_blank">查看源码</a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- 页脚 -->
-<footer class="footer" id="contact">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Mars Admin</h3>
-                <p>一个现代化的企业级后台管理系统，基于Spring Boot 3和Vue 3构建，为中小企业提供快速开发解决方案。</p>
-            </div>
-            <div class="footer-section">
-                <h3>快速链接</h3>
-                <ul>
-                    <li><a href="#features">功能特性</a></li>
-                    <li><a href="#tech">技术栈</a></li>
-                    <li><a href="../docs/index.html">在线文档</a></li>
-                    <li><a href="https://gitee.com/Marsfactory/mars-admin">Gitee</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>技术支持</h3>
-                <ul>
-                    <li><a href="../docs/guide/prepare.html">快速开始</a></li>
-                    <li><a href="../docs/guide/development.html">开发指南</a></li>
-                    <li><a href="../docs/guide/deploy.html">部署文档</a></li>
-                    <li><a href="../docs/faq.html">常见问题</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>联系我们</h3>
-                <p>作者：程序员Mars</p>
-                <p>邮箱: wqexpore@163.com</p>
-                <p>QQ群: 858020569</p>
-                <p>作者微信: Mars8377</p>
+    <!-- 产品展示区域 -->
+    <section class="product-showcase">
+        <div class="container">
+            <div class="showcase-content">
+                <div class="showcase-image fade-in">
+                    <img src="image/img.png" alt="Mars Admin 系统界面展示" class="showcase-img">
+                </div>
+                <div class="showcase-text">
+                    <h2 class="fade-in">优雅的设计，强大的功能</h2>
+                    <p class="fade-in">Mars Admin 提供了精心设计的用户界面和丰富的功能模块，让企业管理变得简单高效。系统采用模块化设计，可根据业务需求进行灵活扩展。</p>
+                    <ul class="showcase-features fade-in">
+                        <li>✓ 美观直观的仪表盘</li>
+                        <li>✓ 强大的数据可视化</li>
+                        <li>✓ 灵活的权限控制</li>
+                        <li>✓ 丰富的业务组件</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>Copyright © 2025 成都火星网络科技有限公司 版权所有 | MIT License</p>
+    </section>
+
+    <!-- 功能特性 -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>核心功能特性</h2>
+                <p>为企业级应用量身定制的完整功能体系</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔐</div>
+                    <h3>完整权限系统</h3>
+                    <p>基于RBAC模型的权限管理，支持用户、角色、菜单、部门等多维度权限控制，安全可靠</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🚀</div>
+                    <h3>现代化技术栈</h3>
+                    <p>采用Spring Boot 3 + Vue 3 + TypeScript最新技术栈，提供卓越的开发体验</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>SQL监控系统</h3>
+                    <p>内置强大的SQL监控功能，实时监控SQL执行情况，支持慢查询分析和性能优化</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3>美观界面设计</h3>
+                    <p>基于Ant Design Vue 4设计，界面美观现代，支持多主题切换和暗黑模式</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📱</div>
+                    <h3>响应式布局</h3>
+                    <p>完美适配PC、平板、手机等多种设备，提供一致的用户体验</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>开发友好</h3>
+                    <p>代码规范、注释完整、文档详细，易于二次开发和定制化需求</p>
+                </div>
+            </div>
         </div>
-    </div>
-</footer>
+    </section>
 
-<script>
-    // 导航栏滚动效果
-    window.addEventListener('scroll', function () {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    <!-- 技术栈 -->
+    <section class="tech-stack" id="tech">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2 class="chaotic-title">技术栈</h2>
+                <p>采用业界领先的技术栈，保证系统的先进性和稳定性</p>
+            </div>
+            
+            <!-- 装饰元素 -->
+            <div class="tech-decoration tech-circle"></div>
+            <div class="tech-decoration tech-square"></div>
+            <div class="tech-decoration tech-triangle"></div>
+            <div class="tech-decoration tech-dots"></div>
+            
+            <div class="tech-grid">
+                <div class="tech-category fade-in">
+                    <h3>后端技术</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Spring Boot 3.0.5</span>
+                        <span class="tech-item">Java 17</span>
+                        <span class="tech-item">MyBatis-Flex 1.10.9</span>
+                        <span class="tech-item">Sa-Token 1.38.0</span>
+                        <span class="tech-item">MySQL 8.x</span>
+                        <span class="tech-item">Redis</span>
+                        <span class="tech-item">Knife4j 4.4.0</span>
+                        <span class="tech-item">HikariCP</span>
+                    </div>
+                </div>
+                <div class="tech-category fade-in">
+                    <h3>前端技术</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Vue 3.5.13</span>
+                        <span class="tech-item">TypeScript 5.7.3</span>
+                        <span class="tech-item">Vite 6.1.0</span>
+                        <span class="tech-item">Ant Design Vue 4.2.6</span>
+                        <span class="tech-item">Pinia 3.0.0</span>
+                        <span class="tech-item">Vue Router 4.5.0</span>
+                        <span class="tech-item">UnoCSS</span>
+                        <span class="tech-item">ECharts 5.6.0</span>
+                    </div>
+                </div>
+                <div class="tech-category fade-in">
+                    <h3>开发工具</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Maven 3.8+</span>
+                        <span class="tech-item">Node.js 18+</span>
+                        <span class="tech-item">pnpm 8.7+</span>
+                        <span class="tech-item">ESLint</span>
+                        <span class="tech-item">Prettier</span>
+                        <span class="tech-item">Git</span>
+                    </div>
+                </div>
+                <div class="tech-category fade-in">
+                    <h3>部署运维</h3>
+                    <div class="tech-items">
+                        <span class="tech-item">Docker</span>
+                        <span class="tech-item">Nginx</span>
+                        <span class="tech-item">Linux</span>
+                        <span class="tech-item">Jenkins</span>
+                        <span class="tech-item">阿里云</span>
+                        <span class="tech-item">MinIO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // 技术栈随机效果
-    document.addEventListener('DOMContentLoaded', function () {
-        // 随机旋转和位置偏移
-        const techItems = document.querySelectorAll('.tech-item');
-        techItems.forEach(item => {
-            const randomRotate = Math.random() * 6 - 3; // -3 to 3 degrees
-            const randomX = Math.random() * 10 - 5; // -5px to 5px
-            const randomY = Math.random() * 10 - 5; // -5px to 5px
+    <!-- 统计数据 -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <h3>50+</h3>
+                    <p>功能模块</p>
+                </div>
+                <div class="stat-item fade-in">
+                    <h3>1000+</h3>
+                    <p>代码提交</p>
+                </div>
+                <div class="stat-item fade-in">
+                    <h3>100+</h3>
+                    <p>企业用户</p>
+                </div>
+                <div class="stat-item fade-in">
+                    <h3>99%</h3>
+                    <p>系统稳定性</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            item.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
+    <!-- 页脚 -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Mars Admin</h3>
+                    <p>一个现代化的企业级后台管理系统，基于Spring Boot 3和Vue 3构建，为中小企业提供快速开发解决方案。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#features">功能特性</a></li>
+                        <li><a href="#tech">技术栈</a></li>
+                        <li><a href="../docs/index.html">在线文档</a></li>
+                        <li><a href="https://github.com/Marsfactory/mars-admin">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>技术支持</h3>
+                    <ul>
+                        <li><a href="../docs/guide/prepare.html">快速开始</a></li>
+                        <li><a href="../docs/guide/development.html">开发指南</a></li>
+                        <li><a href="../docs/guide/deploy.html">部署文档</a></li>
+                        <li><a href="../docs/faq.html">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>作者：程序员Mars</p>
+                    <p>邮箱: wqexpore@163.com</p>
+                    <p>QQ群: 858020569</p>
+                    <p>作者微信: Mars8377</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright © 2025 成都火星网络科技有限公司 版权所有 | MIT License</p>
+            </div>
+        </div>
+    </footer>
 
-            // 随机颜色边框
-            const colors = ['#646CFF', '#42b983', '#FF6B6B', '#FFD93D', '#6C63FF'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            item.style.borderColor = randomColor;
-
-            // 鼠标悬停效果增强
-            item.addEventListener('mouseover', function () {
-                this.style.transform = 'scale(1.08) rotate(0deg)';
-                this.style.zIndex = '10';
-                this.style.boxShadow = `0 5px 15px rgba(0,0,0,0.2)`;
-            });
-
-            item.addEventListener('mouseout', function () {
-                this.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
-                this.style.zIndex = '1';
-                this.style.boxShadow = 'none';
-            });
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
 
-        // 为技术栈区域添加浮动图标背景
-        const techStack = document.querySelector('.tech-stack');
-        const iconCount = 15;
-        const icons = [
-            '⚙️', '💻', '🔧', '🚀', '🔍', '📊', '🔒', '📱', '🌐', '⚡', '🧩', '🔌', '📡'
-        ];
-
-        for (let i = 0; i < iconCount; i++) {
-            const icon = document.createElement('span');
-            icon.textContent = icons[Math.floor(Math.random() * icons.length)];
-            icon.className = 'floating-icon';
-
-            const size = Math.random() * 20 + 20; // 20-40px
-            const left = Math.random() * 100; // 0-100%
-            const top = Math.random() * 100; // 0-100%
-            const delay = Math.random() * 5; // 0-5s
-            const duration = Math.random() * 10 + 15; // 15-25s
-
-            icon.style.cssText = `
+        // 技术栈随机效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 随机旋转和位置偏移
+            const techItems = document.querySelectorAll('.tech-item');
+            techItems.forEach(item => {
+                const randomRotate = Math.random() * 6 - 3; // -3 to 3 degrees
+                const randomX = Math.random() * 10 - 5; // -5px to 5px
+                const randomY = Math.random() * 10 - 5; // -5px to 5px
+                
+                item.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
+                
+                // 随机颜色边框
+                const colors = ['#646CFF', '#42b983', '#FF6B6B', '#FFD93D', '#6C63FF'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                item.style.borderColor = randomColor;
+                
+                // 鼠标悬停效果增强
+                item.addEventListener('mouseover', function() {
+                    this.style.transform = 'scale(1.08) rotate(0deg)';
+                    this.style.zIndex = '10';
+                    this.style.boxShadow = `0 5px 15px rgba(0,0,0,0.2)`;
+                });
+                
+                item.addEventListener('mouseout', function() {
+                    this.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
+                    this.style.zIndex = '1';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // 为技术栈区域添加浮动图标背景
+            const techStack = document.querySelector('.tech-stack');
+            const iconCount = 15;
+            const icons = [
+                '⚙️', '💻', '🔧', '🚀', '🔍', '📊', '🔒', '📱', '🌐', '⚡', '🧩', '🔌', '📡'
+            ];
+            
+            for (let i = 0; i < iconCount; i++) {
+                const icon = document.createElement('span');
+                icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+                icon.className = 'floating-icon';
+                
+                const size = Math.random() * 20 + 20; // 20-40px
+                const left = Math.random() * 100; // 0-100%
+                const top = Math.random() * 100; // 0-100%
+                const delay = Math.random() * 5; // 0-5s
+                const duration = Math.random() * 10 + 15; // 15-25s
+                
+                icon.style.cssText = `
                     position: absolute;
                     font-size: ${size}px;
                     left: ${left}%;
@@ -1392,107 +1323,107 @@
                     animation: float-icon ${duration}s infinite ease-in-out ${delay}s alternate;
                     pointer-events: none;
                 `;
-
-            techStack.appendChild(icon);
-        }
-
-        // 技术类别随机倾斜
-        const techCategories = document.querySelectorAll('.tech-category');
-        techCategories.forEach((category, index) => {
-            const isEven = index % 2 === 0;
-            const randomRotate = isEven ?
-                Math.random() * 1.5 - 2 : // -2 to -0.5 degrees
-                Math.random() * 1.5 + 0.5; // 0.5 to 2 degrees
-
-            category.style.transform = `rotate(${randomRotate}deg)`;
-
-            category.addEventListener('mouseover', function () {
-                this.style.transform = 'translateY(-5px) rotate(0deg)';
-            });
-
-            category.addEventListener('mouseout', function () {
-                this.style.transform = `rotate(${randomRotate}deg)`;
+                
+                techStack.appendChild(icon);
+            }
+            
+            // 技术类别随机倾斜
+            const techCategories = document.querySelectorAll('.tech-category');
+            techCategories.forEach((category, index) => {
+                const isEven = index % 2 === 0;
+                const randomRotate = isEven ? 
+                    Math.random() * 1.5 - 2 : // -2 to -0.5 degrees
+                    Math.random() * 1.5 + 0.5; // 0.5 to 2 degrees
+                
+                category.style.transform = `rotate(${randomRotate}deg)`;
+                
+                category.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateY(-5px) rotate(0deg)';
+                });
+                
+                category.addEventListener('mouseout', function() {
+                    this.style.transform = `rotate(${randomRotate}deg)`;
+                });
             });
         });
-    });
 
-    // 添加浮动图标动画
-    const style = document.createElement('style');
-    style.textContent = `
+        // 添加浮动图标动画
+        const style = document.createElement('style');
+        style.textContent = `
             @keyframes float-icon {
                 0% { transform: translateY(0) rotate(0); opacity: 0.2; }
                 50% { opacity: 0.4; }
                 100% { transform: translateY(-20px) rotate(10deg); opacity: 0.2; }
             }
         `;
-    document.head.appendChild(style);
+        document.head.appendChild(style);
 
-    // 滚动动画
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    // 观察所有需要动画的元素
-    document.querySelectorAll('.fade-in').forEach(function (el) {
-        observer.observe(el);
-    });
-
-    // 平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // 统计数字动画
-    function animateNumbers() {
-        const stats = document.querySelectorAll('.stat-item h3');
-        stats.forEach(function (stat) {
-            const target = parseInt(stat.textContent);
-            const increment = target / 50;
-            let current = 0;
-
-            const timer = setInterval(function () {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
-                stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
-            }, 50);
-        });
-    }
+            });
+        }, observerOptions);
 
-    // 当统计区域可见时启动数字动画
-    const statsSection = document.querySelector('.stats');
-    const statsObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                animateNumbers();
-                statsObserver.unobserve(entry.target);
-            }
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
         });
-    });
 
-    if (statsSection) {
-        statsObserver.observe(statsSection);
-    }
-</script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 统计数字动画
+        function animateNumbers() {
+            const stats = document.querySelectorAll('.stat-item h3');
+            stats.forEach(function(stat) {
+                const target = parseInt(stat.textContent);
+                const increment = target / 50;
+                let current = 0;
+                
+                const timer = setInterval(function() {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : stat.textContent.includes('%') ? '%' : '');
+                }, 50);
+            });
+        }
+
+        // 当统计区域可见时启动数字动画
+        const statsSection = document.querySelector('.stats');
+        const statsObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+        
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
 </body>
 </html> 

@@ -11,7 +11,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统部门Controller
@@ -79,7 +82,11 @@ public class SysDeptController extends BaseController<SysDept, Long> {
      */
     @DeleteMapping("/batchRemove")
     @Operation(summary = "批量删除部门", description = "批量删除部门")
-    public Result<Boolean> batchRemove(@Parameter(description = "部门ID数组") @RequestBody Long[] ids) {
+    public Result<Boolean> batchRemove(@Parameter(description = "部门ID列表") @RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        
         // 检查每个部门是否可以删除
         for (Long id : ids) {
             // 检查是否有子部门
@@ -93,7 +100,7 @@ public class SysDeptController extends BaseController<SysDept, Long> {
             }
         }
 
-        boolean success = sysDeptService.deleteDepts(ids);
+        boolean success = sysDeptService.deleteDepts(ids.toArray(new Long[0]));
         return Result.of(success, "批量删除成功", "批量删除失败");
     }
 
@@ -102,21 +109,85 @@ public class SysDeptController extends BaseController<SysDept, Long> {
      */
     @GetMapping("/tree")
     @Operation(summary = "查询部门树结构", description = "查询部门树结构，支持搜索")
-    public Result<List<SysDept>> tree(
+    public Result<List<Map<String, Object>>> tree(
             @Parameter(description = "部门名称") @RequestParam(required = false) String deptName,
             @Parameter(description = "状态") @RequestParam(required = false) Integer status) {
 
         // 如果有搜索条件，返回扁平列表；否则返回树形结构
+        List<SysDept> depts;
         if (deptName != null || status != null) {
             SysDept searchDept = new SysDept();
             searchDept.setDeptName(deptName);
             searchDept.setStatus(status);
-            List<SysDept> deptList = sysDeptService.selectDeptList(searchDept);
-            return Result.success(deptList);
+            depts = sysDeptService.selectDeptList(searchDept);
         } else {
-            List<SysDept> deptTree = sysDeptService.selectDeptTree();
-            return Result.success(deptTree);
+            depts = sysDeptService.selectDeptTree();
         }
+        
+        // 转换为前端需要的格式
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (SysDept dept : depts) {
+            Map<String, Object> map = new HashMap<>();
+            // 保留所有原始属性
+            map.put("id", dept.getId());
+            map.put("label", dept.getDeptName()); // 添加label作为显示名称
+            map.put("deptName", dept.getDeptName());
+            map.put("deptCode", dept.getDeptCode());
+            map.put("parentId", dept.getParentId());
+            map.put("pId", dept.getParentId());
+            map.put("orderNum", dept.getOrderNum());
+            map.put("leader", dept.getLeader());
+            map.put("phone", dept.getPhone());
+            map.put("email", dept.getEmail());
+            map.put("status", dept.getStatus());
+            map.put("createTime", dept.getCreateTime());
+            map.put("createBy", dept.getCreateBy());
+            map.put("updateTime", dept.getUpdateTime());
+            map.put("updateBy", dept.getUpdateBy());
+            map.put("isSystem", dept.getIsSystem());
+            map.put("remark", dept.getRemark());
+            
+            if (dept.getChildren() != null && !dept.getChildren().isEmpty()) {
+                map.put("children", convertDeptTreeListToMap(dept.getChildren()));
+            }
+            result.add(map);
+        }
+        
+        return Result.success(result);
+    }
+    
+    /**
+     * 递归转换部门树为Map
+     */
+    private List<Map<String, Object>> convertDeptTreeListToMap(List<SysDept> deptList) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (SysDept dept : deptList) {
+            Map<String, Object> map = new HashMap<>();
+            // 保留所有原始属性
+            map.put("id", dept.getId());
+            map.put("label", dept.getDeptName()); // 添加label作为显示名称
+            map.put("deptName", dept.getDeptName());
+            map.put("deptCode", dept.getDeptCode());
+            map.put("parentId", dept.getParentId());
+            map.put("pId", dept.getParentId());
+            map.put("orderNum", dept.getOrderNum());
+            map.put("leader", dept.getLeader());
+            map.put("phone", dept.getPhone());
+            map.put("email", dept.getEmail());
+            map.put("status", dept.getStatus());
+            map.put("createTime", dept.getCreateTime());
+            map.put("createBy", dept.getCreateBy());
+            map.put("updateTime", dept.getUpdateTime());
+            map.put("updateBy", dept.getUpdateBy());
+            map.put("isSystem", dept.getIsSystem());
+            map.put("remark", dept.getRemark());
+            
+            if (dept.getChildren() != null && !dept.getChildren().isEmpty()) {
+                map.put("children", convertDeptTreeListToMap(dept.getChildren()));
+        }
+            result.add(map);
+        }
+        return result;
     }
 
     /**

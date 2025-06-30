@@ -47,12 +47,14 @@ public class SysRoleController extends BaseController<SysRole, Long> {
             @Parameter(description = "每页大小", example = "10") @RequestParam(value = "size", defaultValue = "10") Integer size,
             @Parameter(description = "角色名称") @RequestParam(value = "roleName", required = false) String roleName,
             @Parameter(description = "角色编码") @RequestParam(value = "roleCode", required = false) String roleCode,
+            @Parameter(description = "角色权限字符") @RequestParam(value = "roleKey", required = false) String roleKey,
             @Parameter(description = "状态") @RequestParam(value = "status", required = false) Integer status) {
         
         // 构建查询条件
         SysRole queryCondition = new SysRole();
         queryCondition.setRoleName(roleName);
         queryCondition.setRoleCode(roleCode);
+        queryCondition.setRoleKey(roleKey);
         queryCondition.setStatus(status);
         
         // 分页查询
@@ -80,6 +82,26 @@ public class SysRoleController extends BaseController<SysRole, Long> {
     public Result<Void> changeStatus(@RequestBody SysRole role) {
         boolean result = sysRoleService.changeStatus(role.getId(), role.getStatus());
         return result ? Result.success() : Result.error("修改状态失败");
+    }
+
+    /**
+     * 分配角色菜单权限
+     */
+    @PutMapping("/authMenu")
+    @Operation(summary = "分配角色菜单权限", description = "分配角色菜单权限")
+    public Result<Void> authMenu(@RequestBody SysRole role) {
+        boolean result = sysRoleService.assignMenus(role.getId(), role.getMenuIds().toArray(new Long[0]));
+        return result ? Result.success() : Result.error("分配菜单权限失败");
+    }
+
+    /**
+     * 分配角色数据权限
+     */
+    @PutMapping("/authDept")
+    @Operation(summary = "分配角色数据权限", description = "分配角色数据权限")
+    public Result<Void> authDept(@RequestBody SysRole role) {
+        boolean result = sysRoleService.assignDepts(role.getId(), role.getDeptIds().toArray(new Long[0]));
+        return result ? Result.success() : Result.error("分配数据权限失败");
     }
 
     /**
@@ -114,5 +136,30 @@ public class SysRoleController extends BaseController<SysRole, Long> {
             @Parameter(description = "角色ID") @RequestParam(required = false) Long roleId) {
         boolean unique = sysRoleService.checkRoleKeyUnique(roleKey, roleId);
         return Result.success(unique);
+    }
+
+    /**
+     * 根据ID删除角色（重写BaseController的方法）
+     */
+    @Override
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除角色", description = "根据角色ID删除角色")
+    public Result<Boolean> deleteById(@Parameter(description = "角色ID", required = true) @PathVariable Long id) {
+        boolean success = sysRoleService.deleteRoles(new Long[]{id});
+        return Result.of(success, "删除成功", "删除失败");
+    }
+
+    /**
+     * 批量删除角色（重写BaseController的方法）
+     */
+    @Override
+    @DeleteMapping("/batch")
+    @Operation(summary = "批量删除角色", description = "批量删除角色")
+    public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        boolean success = sysRoleService.deleteRoles(ids.toArray(new Long[0]));
+        return Result.of(success, "批量删除成功", "批量删除失败");
     }
 } 

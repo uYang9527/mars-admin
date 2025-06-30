@@ -38,6 +38,11 @@ export function fetchGetMenuList() {
   });
 }
 
+// 别名，为了兼容不同的调用方式
+export function fetchGetMenusList() {
+  return fetchGetMenuList();
+}
+
 /** get all pages */
 export function fetchGetAllPages() {
   return request<string[]>({
@@ -113,7 +118,7 @@ export function fetchDeleteUsers(ids: number[]) {
   return request({
     url: '/system/user/batch',
     method: 'delete',
-    data: {ids}
+    data: ids
   });
 }
 
@@ -131,7 +136,7 @@ export function fetchResetUserPassword(userId: number, password: string) {
 /**
  * 修改用户状态
  */
-export function fetchChangeUserStatus(userId: number, status: string) {
+export function fetchChangeUserStatus(userId: number, status: number) {
   return request({
     url: '/system/user/changeStatus',
     method: 'put',
@@ -147,6 +152,28 @@ export function fetchAssignUserRoles(userId: number, roleIds: number[]) {
     url: '/system/user/authRole',
     method: 'put',
     data: {id: userId, roleIds}
+  });
+}
+
+/**
+ * 分配用户部门
+ */
+export function fetchAssignUserDepts(userId: number, deptIds: number[]) {
+  return request({
+    url: '/system/user/authDept',
+    method: 'put',
+    data: {id: userId, deptIds}
+  });
+}
+
+/**
+ * 分配用户岗位
+ */
+export function fetchAssignUserPosts(userId: number, postIds: number[]) {
+  return request({
+    url: '/system/user/authPost',
+    method: 'put',
+    data: {id: userId, postIds}
   });
 }
 
@@ -242,18 +269,40 @@ export function fetchDeleteRoles(ids: number[]) {
   return request({
     url: '/system/role/batch',
     method: 'delete',
-    data: {ids}
+    data: ids
   });
 }
 
 /**
  * 修改角色状态
  */
-export function fetchChangeRoleStatus(roleId: number, status: string) {
+export function fetchChangeRoleStatus(roleId: number, status: number) {
   return request({
     url: '/system/role/changeStatus',
     method: 'put',
     data: {id: roleId, status}
+  });
+}
+
+/**
+ * 分配角色菜单权限
+ */
+export function fetchAssignRoleMenus(roleId: number, menuIds: number[]) {
+  return request({
+    url: '/system/role/authMenu',
+    method: 'put',
+    data: {id: roleId, menuIds}
+  });
+}
+
+/**
+ * 分配角色数据权限
+ */
+export function fetchAssignRoleDepts(roleId: number, deptIds: number[]) {
+  return request({
+    url: '/system/role/authDept',
+    method: 'put',
+    data: {id: roleId, deptIds}
   });
 }
 
@@ -386,7 +435,7 @@ export function fetchGetDeptList() {
 /**
  * 查询部门树结构
  */
-export function fetchGetDeptTree(params?: { deptName?: string; status?: string }) {
+export function fetchGetDeptTree(params?: { deptName?: string; status?: number }) {
   return request<Api.SystemManage.DeptTree[]>({
     url: '/system/dept/tree',
     method: 'get',
@@ -569,7 +618,7 @@ export function fetchDeletePosts(ids: number[]) {
   return request({
     url: '/system/post/batch',
     method: 'delete',
-    data: {ids}
+    data: ids
   });
 }
 
@@ -598,7 +647,7 @@ export function fetchCheckPostNameUnique(postName: string, postId?: number) {
 /**
  * 修改岗位状态
  */
-export function fetchChangePostStatus(postId: number, status: string) {
+export function fetchChangePostStatus(postId: number, status: number) {
   return request({
     url: '/system/post/changeStatus',
     method: 'put',
@@ -696,7 +745,7 @@ export function fetchDeleteDictTypes(ids: number[]) {
   return request({
     url: '/system/dict/type/batch',
     method: 'delete',
-    data: {ids}
+    data: ids
   });
 }
 
@@ -812,7 +861,7 @@ export function fetchDeleteDictDatas(ids: number[]) {
   return request({
     url: '/system/dict/data/batch',
     method: 'delete',
-    data: {ids}
+    data: ids
   });
 }
 

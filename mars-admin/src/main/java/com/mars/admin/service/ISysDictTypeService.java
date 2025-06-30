@@ -72,6 +72,14 @@ public interface ISysDictTypeService extends BaseService<SysDictType> {
     /**
      * 删除字典类型
      *
+     * @param dictTypeId 字典类型ID
+     * @return 删除结果
+     */
+    boolean deleteDictTypeById(Long dictTypeId);
+
+    /**
+     * 删除字典类型
+     *
      * @param dictTypeIds 字典类型ID数组
      * @return 删除结果
      */

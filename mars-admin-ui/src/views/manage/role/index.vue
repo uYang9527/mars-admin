@@ -1,18 +1,14 @@
 <script setup lang="tsx">
 import { reactive, ref } from 'vue';
-import { Button, Popconfirm, Tag } from 'ant-design-vue';
+import { Button, Popconfirm, Tag, Modal } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import {
-  fetchGetRoleList,
-  fetchDeleteRole,
-  fetchDeleteRoles,
-  fetchChangeRoleStatus
-} from '@/service/api';
+import { fetchChangeRoleStatus, fetchDeleteRole, fetchDeleteRoles, fetchGetRoleList } from '@/service/api';
 import { $t } from '@/locales';
 import { enableStatusRecord } from '@/constants/business';
 import RoleOperateDrawer, { type OperateType } from './modules/role-operate-drawer.vue';
 import MenuAuthModal from './modules/menu-auth-modal.vue';
 import ButtonAuthModal from './modules/button-auth-modal.vue';
+import DataAuthModal from './modules/data-auth-modal.vue';
 import RoleSearch from './modules/role-search.vue';
 
 const wrapperEl = ref<HTMLElement>();
@@ -25,9 +21,18 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       size: 10,
       status: null,
       roleName: null,
-      roleCode: null
+      roleCode: null,
+      roleKey: null
     },
     columns: () => [
+      {
+        key: 'selection',
+        title: '',
+        align: 'center',
+        type: 'selection',
+        width: 48,
+        fixed: 'left'
+      },
       {
         key: 'index',
         title: $t('common.index'),
@@ -39,35 +44,36 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         key: 'roleName',
         title: $t('page.manage.role.roleName'),
         align: 'center',
-        minWidth: 120,
         dataIndex: 'roleName'
       },
       {
         key: 'roleCode',
         title: $t('page.manage.role.roleCode'),
         align: 'center',
-        minWidth: 120,
         dataIndex: 'roleCode'
+      },
+      {
+        key: 'roleKey',
+        title: $t('page.manage.role.roleKey'),
+        align: 'center',
+        dataIndex: 'roleKey'
       },
       {
         key: 'description',
         title: $t('page.manage.role.roleDesc'),
         align: 'center',
-        minWidth: 120,
         dataIndex: 'description'
       },
       {
         key: 'roleSort',
         title: '显示顺序',
         align: 'center',
-        width: 100,
         dataIndex: 'roleSort'
       },
       {
         key: 'status',
         title: $t('page.manage.role.roleStatus'),
         align: 'center',
-        width: 100,
         dataIndex: 'status',
         customRender: ({ record }) => {
           if (record.status === null) {
@@ -76,21 +82,19 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
 
           const label = $t(enableStatusRecord[record.status]);
 
-          return <Tag color={record.status === '0' ? 'success' : 'error'}>{label}</Tag>;
+          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
         }
       },
       {
         key: 'createTime',
         title: '创建时间',
         align: 'center',
-        width: 160,
         dataIndex: 'createTime'
       },
       {
         key: 'operate',
         title: $t('common.operate'),
         align: 'center',
-        width: 280,
         customRender: ({ record }) => (
           <div class="flex-center gap-8px">
             <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
@@ -99,15 +103,18 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
             <Button size="small" onClick={() => handleMenuAuth(record)}>
               菜单权限
             </Button>
+            <Button size="small" onClick={() => handleDataAuth(record)}>
+              数据权限
+            </Button>
             <Button size="small" onClick={() => handleButtonAuth(record)}>
               按钮权限
             </Button>
             <Button
-              type={record.status === '0' ? 'default' : 'primary'}
+              type={record.status === 1 ? 'default' : 'primary'}
               size="small"
               onClick={() => toggleStatus(record.id, record.status)}
             >
-              {record.status === '0' ? '禁用' : '启用'}
+              {record.status === 1 ? '禁用' : '启用'}
             </Button>
             <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
               <Button danger size="small">
@@ -120,41 +127,74 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
     ]
   });
 
-const {
-  drawerVisible,
-  operateType,
-  editingData,
-  handleAdd,
-  handleEdit,
-  checkedRowKeys,
-  onBatchDeleted,
-  onDeleted
-} = useTableOperate(data, getData);
+const { drawerVisible, operateType, editingData, handleAdd, handleEdit, checkedRowKeys, onBatchDeleted, onDeleted, onSelectChange, rowSelection } =
+  useTableOperate(data, getData);
 
 // 菜单权限弹窗
 const menuAuthVisible = ref(false);
-const menuAuthRoleData = ref<Api.SystemManage.Role | null>(null);
+const menuAuthRoleId = ref<number | null>(null);
 
 // 按钮权限弹窗
 const buttonAuthVisible = ref(false);
-const buttonAuthRoleData = ref<Api.SystemManage.Role | null>(null);
+const buttonAuthRoleId = ref<number | null>(null);
+
+// 数据权限弹窗
+const dataAuthVisible = ref(false);
+const dataAuthRoleId = ref<number | null>(null);
 
 async function handleBatchDelete() {
-  const { error } = await fetchDeleteRoles(checkedRowKeys.value);
-  if (!error) {
-    onBatchDeleted();
+  try {
+    // 先检查是否有选择记录
+    if (checkedRowKeys.value.length === 0) {
+      window.$message?.warning('请选择要删除的角色');
+      return;
+    }
+    
+    // 使用ant-design-vue的Modal.confirm替代
+    Modal.confirm({
+      title: '批量删除角色',
+      content: `确定要删除选中的 ${checkedRowKeys.value.length} 个角色吗？删除后无法恢复！`,
+      okText: '确定',
+      cancelText: '取消',
+      async onOk() {
+        // 发送请求
+        const { error } = await fetchDeleteRoles(checkedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          onBatchDeleted();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      }
+    });
+  } catch (e) {
+    window.$message?.error('操作失败: ' + e.message);
   }
 }
 
 async function handleDelete(id: number) {
-  const { error } = await fetchDeleteRole(id);
-  if (!error) {
-    onDeleted();
+  try {
+    // 检查是否是系统内置角色
+    const role = data.value.find(item => item.id === id);
+    if (role && role.isSystem === 1) {
+      window.$message?.error('系统内置角色不能删除');
+      return;
+    }
+    
+    const { error } = await fetchDeleteRole(id);
+    if (!error) {
+      window.$message?.success('删除成功');
+      onDeleted();
+    } else {
+      window.$message?.error('删除失败: ' + error);
+    }
+  } catch (e) {
+    window.$message?.error('操作失败: ' + e.message);
   }
 }
 
-async function toggleStatus(id: number, status: string) {
-  const newStatus = status === '0' ? '1' : '0';
+async function toggleStatus(id: number, status: number) {
+  const newStatus = status === 1 ? 0 : 1;
   const { error } = await fetchChangeRoleStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
@@ -163,20 +203,23 @@ async function toggleStatus(id: number, status: string) {
 }
 
 function handleMenuAuth(record: Api.SystemManage.Role) {
-  menuAuthRoleData.value = record;
+  menuAuthRoleId.value = record.id;
   menuAuthVisible.value = true;
 }
 
 function handleButtonAuth(record: Api.SystemManage.Role) {
-  buttonAuthRoleData.value = record;
+  buttonAuthRoleId.value = record.id;
   buttonAuthVisible.value = true;
+}
+
+function handleDataAuth(record: Api.SystemManage.Role) {
+  dataAuthRoleId.value = record.id;
+  dataAuthVisible.value = true;
 }
 
 function edit(id: number) {
   handleEdit(id);
 }
-
-
 </script>
 
 <template>
@@ -184,12 +227,7 @@ function edit(id: number) {
     <RoleSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
     <!-- 表格区域 -->
-    <ACard
-      title="角色列表"
-      :bordered="false"
-      :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
-    >
+    <ACard title="角色列表" :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
       <template #extra>
         <TableHeaderOperation
           v-model:columns="columnChecks"
@@ -207,6 +245,7 @@ function edit(id: number) {
         :scroll="{ x: 'max-content' }"
         :loading="loading"
         row-key="id"
+        :row-selection="rowSelection"
         :pagination="mobilePagination"
         class="h-full"
       />
@@ -221,16 +260,13 @@ function edit(id: number) {
     />
 
     <!-- 菜单权限弹窗 -->
-    <MenuAuthModal
-      v-model:visible="menuAuthVisible"
-      :role-data="menuAuthRoleData"
-    />
+    <MenuAuthModal v-model:visible="menuAuthVisible" :role-id="menuAuthRoleId" />
 
     <!-- 按钮权限弹窗 -->
-    <ButtonAuthModal
-      v-model:visible="buttonAuthVisible"
-      :role-data="buttonAuthRoleData"
-    />
+    <ButtonAuthModal v-model:visible="buttonAuthVisible" :role-id="buttonAuthRoleId" />
+
+    <!-- 数据权限弹窗 -->
+    <DataAuthModal v-model:visible="dataAuthVisible" :role-id="dataAuthRoleId" />
   </div>
 </template>
 

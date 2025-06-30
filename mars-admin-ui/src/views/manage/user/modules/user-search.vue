@@ -50,10 +50,10 @@ function toggleCollapsed() {
 </script>
 
 <template>
-  <ACard 
-    :title="$t('common.search')" 
-    :bordered="false" 
-    class="card-wrapper" 
+  <ACard
+    :title="$t('common.search')"
+    :bordered="false"
+    class="card-wrapper"
     :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
     :data-collapsed="collapsed"
   >
@@ -66,7 +66,7 @@ function toggleCollapsed() {
         {{ collapsed ? '展开' : '收起' }}
       </AButton>
     </template>
-    
+
     <div v-show="!collapsed">
       <AForm
         ref="formRef"
@@ -78,42 +78,42 @@ function toggleCollapsed() {
         }"
       >
         <ARow :gutter="[16, 16]" wrap>
-          <ACol :span="24" :md="12" :lg="6">
-            <AFormItem :label="$t('page.manage.user.userName')" name="userName" class="m-0">
-              <AInput v-model:value="model.userName" :placeholder="$t('page.manage.user.form.userName')" />
+          <ACol :span="24" :md="12" :lg="8">
+            <AFormItem :label="$t('page.manage.user.userName')" name="username" class="m-0">
+              <AInput v-model:value="model.username" :placeholder="$t('page.manage.user.form.userName')" @pressEnter="search" />
             </AFormItem>
           </ACol>
-          <ACol :span="24" :md="12" :lg="6">
-            <AFormItem :label="$t('page.manage.user.userGender')" name="userGender" class="m-0">
-              <ASelect
-                v-model:value="model.userGender"
-                :placeholder="$t('page.manage.user.form.userGender')"
-                :options="translateOptions(userGenderOptions)"
-                clearable
-              />
+          <ACol :span="24" :md="12" :lg="8">
+            <AFormItem :label="$t('page.manage.user.nickName')" name="nickname" class="m-0">
+              <AInput v-model:value="model.nickname" :placeholder="$t('page.manage.user.form.nickName')" @pressEnter="search" />
             </AFormItem>
           </ACol>
-          <ACol :span="24" :md="12" :lg="6">
-            <AFormItem :label="$t('page.manage.user.nickName')" name="nickName" class="m-0">
-              <AInput v-model:value="model.nickName" :placeholder="$t('page.manage.user.form.nickName')" />
-            </AFormItem>
-          </ACol>
-          <ACol :span="24" :md="12" :lg="6">
+          <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.user.userPhone')" name="phone" class="m-0">
-              <AInput v-model:value="model.phone" :placeholder="$t('page.manage.user.form.userPhone')" />
+              <AInput v-model:value="model.phone" :placeholder="$t('page.manage.user.form.userPhone')" @pressEnter="search" />
             </AFormItem>
           </ACol>
-          <ACol :span="24" :md="12" :lg="6">
+          <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.user.userEmail')" name="email" class="m-0">
-              <AInput v-model:value="model.email" :placeholder="$t('page.manage.user.form.userEmail')" />
+              <AInput v-model:value="model.email" :placeholder="$t('page.manage.user.form.userEmail')" @pressEnter="search" />
             </AFormItem>
           </ACol>
-          <ACol :span="24" :md="12" :lg="6">
+          <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.user.userStatus')" name="status" class="m-0">
               <ASelect
                 v-model:value="model.status"
                 :placeholder="$t('page.manage.user.form.userStatus')"
                 :options="translateOptions(enableStatusOptions)"
+                clearable
+              />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="8">
+            <AFormItem :label="$t('page.manage.user.userGender')" name="gender" class="m-0">
+              <ASelect
+                v-model:value="model.gender"
+                :placeholder="$t('page.manage.user.form.userGender')"
+                :options="translateOptions(userGenderOptions)"
                 clearable
               />
             </AFormItem>

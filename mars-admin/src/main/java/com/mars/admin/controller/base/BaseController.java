@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -144,10 +146,12 @@ public abstract class BaseController<T, ID extends Serializable> {
     @Operation(summary = "批量删除", description = "根据ID列表批量删除记录")
     @DeleteMapping("/batch")
     public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<ID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
         boolean success = service.removeByIds(ids);
         return Result.of(success, "批量删除成功", "批量删除失败");
     }
-
 
     /**
      * 获取总记录数

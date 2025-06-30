@@ -70,6 +70,11 @@ function toggleCollapsed() {
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
+            <AFormItem :label="$t('page.manage.role.roleKey')" name="roleKey" class="m-0">
+              <AInput v-model:value="model.roleKey" :placeholder="$t('page.manage.role.form.roleKey')" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.role.roleStatus')" name="status" class="m-0">
               <ASelect v-model:value="model.status" :placeholder="$t('page.manage.role.form.roleStatus')" clearable>
                 <ASelectOption v-for="option in enableStatusOptions" :key="option.value" :value="option.value">

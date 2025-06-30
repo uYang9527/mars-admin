@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import {ref} from 'vue';
-import {Button, Popconfirm, Tag} from 'ant-design-vue';
+import {Button, Popconfirm, Tag, Modal} from 'ant-design-vue';
 import {useAppStore} from '@/store/modules/app';
 import {useTable, useTableOperate} from '@/hooks/common/table';
 import {$t} from '@/locales';
@@ -32,8 +32,12 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
   },
   columns: () => [
     {
+      key: 'selection',
+      title: '',
       type: 'selection',
-      align: 'center'
+      align: 'center',
+      width: 48,
+      fixed: 'left'
     },
     {
       key: 'index',
@@ -43,11 +47,11 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
     },
     {
       key: 'deptName',
-      dataIndex: 'deptName',
+      dataIndex: 'label',
       title: '部门名称',
       align: 'left',
       customRender: ({record, index}) => {
-        return record.deptName;
+        return record.label;
       }
     },
     {
@@ -91,7 +95,7 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
 
         const status = record.status as Api.Common.EnableStatus;
         const label = $t(enableStatusRecord[status]);
-        const color = status === '1' ? 'success' : 'warning';
+        const color = status === 1 ? 'success' : 'warning';
 
         return <Tag color={color}>{label}</Tag>;
       }
@@ -131,7 +135,8 @@ const {
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  handleDataEdit
+  handleDataEdit,
+  rowSelection
 } = useTableOperate(data, getData);
 
 async function handleBatchDelete() {
@@ -140,18 +145,27 @@ async function handleBatchDelete() {
     return;
   }
 
-  try {
-    const {error, message} = await fetchDeleteDepts(checkedRowKeys.value);
-    if (!error) {
-      window.$message?.success('批量删除成功');
-      onBatchDeleted();
-    } else {
-      // 显示后端返回的错误信息
-      window.$message?.error(message || '批量删除失败');
+  // 使用ant-design-vue的Modal.confirm替代
+  Modal.confirm({
+    title: '批量删除部门',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个部门吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const {error, message} = await fetchDeleteDepts(checkedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          onBatchDeleted();
+        } else {
+          // 显示后端返回的错误信息
+          window.$message?.error(message || '批量删除失败');
+        }
+      } catch (error) {
+        window.$message?.error('批量删除失败');
+      }
     }
-  } catch (error) {
-    window.$message?.error('批量删除失败');
-  }
+  });
 }
 
 async function handleDelete(id: number) {
@@ -239,8 +253,8 @@ function toggleCollapsed() {
                   v-model:value="searchParams.status"
                   placeholder="请选择状态"
                   :options="[
-                    { label: '启用', value: '1' },
-                    { label: '禁用', value: '0' }
+                    { label: '启用', value: 1 },
+                    { label: '禁用', value: 0 }
                   ]"
                   clearable
                 />
@@ -281,13 +295,13 @@ function toggleCollapsed() {
         />
       </template>
       <ATable
-        v-model:selected-row-keys="checkedRowKeys"
         :columns="columns"
         :data-source="data"
         size="small"
         :scroll="{ x: 962 }"
         :loading="loading"
         :row-key="row => row.id"
+        :row-selection="rowSelection"
         :pagination="false"
         children-column-name="children"
         :default-expand-all-rows="true"

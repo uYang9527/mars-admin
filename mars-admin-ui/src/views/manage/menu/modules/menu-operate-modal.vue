@@ -276,7 +276,8 @@ async function handleSubmit() {
   console.log('params: ', params);
 
   // request
-  window.$message?.success($t('common.updateSuccess'));
+  const isAdd = props.operateType === 'add' || props.operateType === 'addChild';
+  window.$message?.success(isAdd ? '新增菜单成功' : '编辑菜单成功');
   closeDrawer();
   emit('submitted');
 }

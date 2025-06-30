@@ -196,7 +196,8 @@ async function handleSubmit() {
   await validate();
 
   let request;
-  if (props.operateType === 'add') {
+  const isAdd = props.operateType === 'add';
+  if (isAdd) {
     request = fetchAddDept(model);
   } else {
     request = fetchUpdateDept({...model, id: props.rowData?.id});
@@ -205,7 +206,7 @@ async function handleSubmit() {
   const {error} = await request;
 
   if (!error) {
-    window.$message?.success($t('common.updateSuccess'));
+    window.$message?.success(isAdd ? '新增部门成功' : '编辑部门成功');
     closeDrawer();
     emit('submitted');
   }

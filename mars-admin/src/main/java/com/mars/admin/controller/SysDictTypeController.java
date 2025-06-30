@@ -122,4 +122,35 @@ public class SysDictTypeController extends BaseController<SysDictType, Long> {
         // TODO: 实现字典缓存刷新逻辑
         return Result.success();
     }
+
+    /**
+     * 批量删除字典类型（重写BaseController的方法）
+     *
+     * @param ids ID列表
+     * @return 删除结果
+     */
+    @Operation(summary = "批量删除字典类型", description = "根据ID列表批量删除字典类型及关联数据")
+    @DeleteMapping("/batch")
+    public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        Long[] dictTypeIds = ids.toArray(new Long[0]);
+        boolean success = sysDictTypeService.deleteDictTypes(dictTypeIds);
+        return Result.of(success, "批量删除成功", "批量删除失败");
+    }
+    
+    /**
+     * 根据ID删除字典类型（重写BaseController的方法）
+     *
+     * @param id 主键ID
+     * @return 是否成功
+     */
+    @Operation(summary = "根据ID删除字典类型", description = "根据主键ID删除字典类型及关联数据")
+    @DeleteMapping("/{id}")
+    @Override
+    public Result<Boolean> deleteById(@PathVariable Long id) {
+        boolean success = sysDictTypeService.deleteDictTypeById(id);
+        return Result.of(success, "删除成功", "删除失败");
+    }
 } 

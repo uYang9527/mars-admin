@@ -26,10 +26,10 @@ declare namespace Api {
     /**
      * enable status
      *
-     * - "0": enabled
-     * - "1": disabled
+     * - 0: disabled
+     * - 1: enabled
      */
-    type EnableStatus = '0' | '1';
+    type EnableStatus = 0 | 1;
 
     /** common record */
     type CommonRecord<T = any> = {
@@ -61,8 +61,8 @@ declare namespace Api {
 
     interface UserInfo {
       userId: string;
-      userName: string;
-      nickName: string;
+      username: string;
+      nickname: string;
       avatar: string;
       roles: string[];
       permissions: string[];
@@ -121,7 +121,7 @@ declare namespace Api {
 
     /** role search params */
     type RoleSearchParams = Partial<
-      Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'status'> & Common.CommonSearchParams
+      Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'roleKey' | 'status'> & Common.CommonSearchParams
     >;
 
     /** role list */
@@ -133,27 +133,28 @@ declare namespace Api {
     /**
      * user gender
      *
-     * - "0": "male"
-     * - "1": "female"
+     * - 0: male
+     * - 1: female
+     * - 2: unknown
      */
-    type UserGender = '0' | '1';
+    type UserGender = 0 | 1 | 2;
 
     /** user */
     type User = Common.CommonRecord<{
       /** user name */
-      userName: string;
+      username: string;
       /** nick name */
-      nickName: string;
+      nickname: string;
       /** user gender */
-      userGender: UserGender;
+      gender: UserGender;
       /** user phone */
       phone: string;
       /** user email */
       email: string;
       /** avatar */
       avatar: string;
-      /** dept id */
-      deptId: number;
+      /** dept ids */
+      deptIds: number[];
       /** dept name */
       deptName: string;
       /** user role ids */
@@ -166,7 +167,7 @@ declare namespace Api {
 
     /** user search params */
     type UserSearchParams = Partial<
-      Pick<Api.SystemManage.User, 'userName' | 'userGender' | 'nickName' | 'phone' | 'email' | 'status'> &
+      Pick<Api.SystemManage.User, 'username' | 'gender' | 'nickname' | 'phone' | 'email' | 'status'> &
         Common.CommonSearchParams
     >;
 
@@ -414,7 +415,7 @@ declare namespace Api {
     /** login info */
     type LoginInfo = Common.CommonRecord<{
       /** user name */
-      userName: string;
+      username: string;
       /** ipaddr */
       ipaddr: string;
       /** login location */
@@ -424,7 +425,7 @@ declare namespace Api {
       /** os */
       os: string;
       /** status */
-      status: string;
+      status: Common.EnableStatus;
       /** msg */
       msg: string;
       /** login time */
