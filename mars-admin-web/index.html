@@ -49,6 +49,7 @@
             justify-content: space-between;
             align-items: center;
             height: 80px;
+            padding: 0 10px;
         }
         
         .logo {
@@ -56,7 +57,7 @@
             align-items: center;
             font-size: 24px;
             font-weight: bold;
-            color: #646CFF;
+            color: #42b983;
             text-decoration: none;
             transition: all 0.3s ease;
         }
@@ -69,6 +70,13 @@
             width: 40px;
             height: 40px;
             margin-right: 10px;
+        }
+        
+        .nav-center {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
         }
         
         .nav-links {
@@ -87,7 +95,7 @@
         }
         
         .nav-links a:hover {
-            color: #646CFF;
+            color: #42b983;
         }
         
         .nav-links a::after {
@@ -97,7 +105,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #646CFF;
+            background: #42b983;
             transition: width 0.3s ease;
         }
         
@@ -143,15 +151,15 @@
         }
         
         .btn-primary {
-            background: #646CFF;
+            background: #42b983;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .btn-primary:hover {
-            background: #646CFF;
+            background: #42b983;
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(100, 108, 255, 0.4);
+            box-shadow: 0 10px 25px rgba(66, 185, 131, 0.4);
         }
         
         .btn-outline {
@@ -167,6 +175,26 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
             border-color: white;
+        }
+        
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        
+        .btn-outline-dark {
+            border: 1px solid #333;
+            color: #333;
+            background: transparent;
+        }
+        
+        .btn-outline-dark:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         /* 英雄区域 - 全屏设计 */
@@ -450,6 +478,101 @@
         .tech-stack {
             padding: 100px 0;
             background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 混乱标题样式 */
+        .chaotic-title {
+            display: inline-block;
+            position: relative;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #646CFF, #42b983, #FF6B6B);
+            background-size: 200% 200%;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradient-shift 5s ease infinite;
+            transform: rotate(-1deg);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+        }
+        
+        .chaotic-title::after {
+            content: '技术栈';
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            color: rgba(0,0,0,0.07);
+            z-index: -1;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 装饰元素 */
+        .tech-decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        .tech-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 15px solid rgba(100, 108, 255, 0.1);
+            top: 10%;
+            right: 5%;
+            animation: float-shape 20s infinite alternate ease-in-out;
+        }
+        
+        .tech-square {
+            width: 100px;
+            height: 100px;
+            border: 10px solid rgba(66, 185, 131, 0.1);
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(45deg);
+            animation: float-shape 15s infinite alternate-reverse ease-in-out;
+        }
+        
+        .tech-triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid rgba(255, 107, 107, 0.1);
+            top: 60%;
+            right: 15%;
+            animation: float-shape 18s infinite alternate ease-in-out 2s;
+        }
+        
+        .tech-dots {
+            width: 120px;
+            height: 120px;
+            background-image: radial-gradient(circle, rgba(0,0,0,0.1) 2px, transparent 2px);
+            background-size: 15px 15px;
+            top: 30%;
+            left: 10%;
+            animation: float-shape 25s infinite alternate-reverse ease-in-out;
+        }
+        
+        .tech-stack::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f0f0f0' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.6;
+            z-index: 0;
         }
         
         .tech-grid {
@@ -457,6 +580,8 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-top: 60px;
+            position: relative;
+            z-index: 1;
         }
         
         .tech-category {
@@ -465,11 +590,72 @@
             border-radius: 12px;
             background-color: #f8f9fa;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            transform: rotate(-1deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 随机背景和边框样式 */
+        .tech-category:nth-child(1) {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            border-left: 4px solid #646CFF;
+        }
+        
+        .tech-category:nth-child(2) {
+            background: linear-gradient(145deg, #f8f9fa, #f0f0f0);
+            border-top: 4px solid #42b983;
+        }
+        
+        .tech-category:nth-child(3) {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-right: 4px solid #FF6B6B;
+        }
+        
+        .tech-category:nth-child(4) {
+            background: linear-gradient(145deg, #f0f0f0, #ffffff);
+            border-bottom: 4px solid #FFD93D;
+        }
+        
+        /* 随机装饰元素 */
+        .tech-category::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.8), transparent);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        .tech-category:nth-child(1)::before {
+            top: -30px;
+            right: -30px;
+        }
+        
+        .tech-category:nth-child(2)::before {
+            bottom: -30px;
+            left: -30px;
+        }
+        
+        .tech-category:nth-child(3)::before {
+            top: -30px;
+            left: -30px;
+        }
+        
+        .tech-category:nth-child(4)::before {
+            bottom: -30px;
+            right: -30px;
+        }
+        
+        .tech-category:nth-child(even) {
+            transform: rotate(1deg);
         }
         
         .tech-category:hover {
-            box-shadow: 0 10px 30px rgba(66, 185, 131, 0.1);
-            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(66, 185, 131, 0.2);
+            transform: translateY(-5px) rotate(0);
         }
         
         .tech-category h3 {
@@ -477,13 +663,25 @@
             font-weight: 600;
             color: #333;
             margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tech-category h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #646CFF, transparent);
         }
         
         .tech-items {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .tech-item {
@@ -494,12 +692,57 @@
             color: #555;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            position: relative;
+            transform-origin: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 随机样式变化 */
+        .tech-item:nth-child(3n) {
+            background: rgba(100, 108, 255, 0.08);
+            border-radius: 8px;
+        }
+        
+        .tech-item:nth-child(3n+1) {
+            background: rgba(66, 185, 131, 0.08);
+            border-radius: 25px;
+        }
+        
+        .tech-item:nth-child(3n+2) {
+            background: rgba(255, 107, 107, 0.08);
+            border-radius: 12px;
+        }
+        
+        .tech-item:nth-child(5n) {
+            font-weight: bold;
+        }
+        
+        .tech-item:nth-child(7n) {
+            text-decoration: underline;
+        }
+        
+        .tech-item:nth-child(odd) {
+            transform: rotate(-2deg);
+        }
+        
+        .tech-item:nth-child(even) {
+            transform: rotate(2deg);
+        }
+        
+        .tech-item:nth-child(3n) {
+            transform: rotate(-1deg);
+        }
+        
+        .tech-item:nth-child(3n+1) {
+            transform: rotate(1deg);
         }
         
         .tech-item:hover {
             background: #42b983;
             color: white;
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(0);
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
         
         /* 统计数据区域 */
@@ -545,7 +788,7 @@
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #646CFF;
+            color: #bdc3c7;
         }
         
         .footer-section p,
@@ -565,7 +808,7 @@
         }
         
         .footer-section a:hover {
-            color: #646CFF;
+            color: #42b983;
         }
         
         .footer-bottom {
@@ -577,8 +820,26 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
+            .nav-center {
+                display: none;
+            }
+            
             .nav-links {
                 display: none;
+            }
+            
+            .nav-content {
+                justify-content: space-between;
+            }
+            
+            .nav-buttons {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .btn-sm {
+                padding: 6px 12px;
+                font-size: 0.8rem;
             }
             
             .hero h1 {
@@ -762,17 +1023,22 @@
             <div class="nav-content">
                 <a href="#" class="logo">
                     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#646CFF" d="M80 412 L80 100 L160 100 L256 300 L352 100 L432 100 L432 412 L352 412 L352 200 L256 400 L160 200 L160 412 Z"/>
+                        <path fill="#42b983" d="M80 412 L80 100 L160 100 L256 300 L352 100 L432 100 L432 412 L352 412 L352 200 L256 400 L160 200 L160 412 Z"/>
                     </svg>
                     Mars Admin
                 </a>
-                <ul class="nav-links">
-                    <li><a href="#features">功能特性</a></li>
-                    <li><a href="#tech">技术栈</a></li>
-                    <li><a href="#docs">文档</a></li>
-                    <li><a href="#contact">联系我们</a></li>
-                </ul>
-
+                <div class="nav-center">
+                    <ul class="nav-links">
+                        <li><a href="#features">功能特性</a></li>
+                        <li><a href="#tech">技术栈</a></li>
+                        <li><a href="#docs">文档</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="nav-buttons">
+                    <a href="#demo" class="btn btn-primary btn-sm">立即体验</a>
+                    <a href="https://github.com/Marsfactory/mars-admin" class="btn btn-outline-dark btn-sm" target="_blank">源码下载</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -810,7 +1076,6 @@
                         <li>✓ 灵活的权限控制</li>
                         <li>✓ 丰富的业务组件</li>
                     </ul>
-                    <a href="#demo" class="btn btn-primary fade-in">了解更多</a>
                 </div>
             </div>
         </div>
@@ -862,9 +1127,16 @@
     <section class="tech-stack" id="tech">
         <div class="container">
             <div class="section-title fade-in">
-                <h2>技术栈</h2>
+                <h2 class="chaotic-title">技术栈</h2>
                 <p>采用业界领先的技术栈，保证系统的先进性和稳定性</p>
             </div>
+            
+            <!-- 装饰元素 -->
+            <div class="tech-decoration tech-circle"></div>
+            <div class="tech-decoration tech-square"></div>
+            <div class="tech-decoration tech-triangle"></div>
+            <div class="tech-decoration tech-dots"></div>
+            
             <div class="tech-grid">
                 <div class="tech-category fade-in">
                     <h3>后端技术</h3>
@@ -992,6 +1264,99 @@
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // 技术栈随机效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 随机旋转和位置偏移
+            const techItems = document.querySelectorAll('.tech-item');
+            techItems.forEach(item => {
+                const randomRotate = Math.random() * 6 - 3; // -3 to 3 degrees
+                const randomX = Math.random() * 10 - 5; // -5px to 5px
+                const randomY = Math.random() * 10 - 5; // -5px to 5px
+                
+                item.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
+                
+                // 随机颜色边框
+                const colors = ['#646CFF', '#42b983', '#FF6B6B', '#FFD93D', '#6C63FF'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                item.style.borderColor = randomColor;
+                
+                // 鼠标悬停效果增强
+                item.addEventListener('mouseover', function() {
+                    this.style.transform = 'scale(1.08) rotate(0deg)';
+                    this.style.zIndex = '10';
+                    this.style.boxShadow = `0 5px 15px rgba(0,0,0,0.2)`;
+                });
+                
+                item.addEventListener('mouseout', function() {
+                    this.style.transform = `rotate(${randomRotate}deg) translate(${randomX}px, ${randomY}px)`;
+                    this.style.zIndex = '1';
+                    this.style.boxShadow = 'none';
+                });
+            });
+            
+            // 为技术栈区域添加浮动图标背景
+            const techStack = document.querySelector('.tech-stack');
+            const iconCount = 15;
+            const icons = [
+                '⚙️', '💻', '🔧', '🚀', '🔍', '📊', '🔒', '📱', '🌐', '⚡', '🧩', '🔌', '📡'
+            ];
+            
+            for (let i = 0; i < iconCount; i++) {
+                const icon = document.createElement('span');
+                icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+                icon.className = 'floating-icon';
+                
+                const size = Math.random() * 20 + 20; // 20-40px
+                const left = Math.random() * 100; // 0-100%
+                const top = Math.random() * 100; // 0-100%
+                const delay = Math.random() * 5; // 0-5s
+                const duration = Math.random() * 10 + 15; // 15-25s
+                
+                icon.style.cssText = `
+                    position: absolute;
+                    font-size: ${size}px;
+                    left: ${left}%;
+                    top: ${top}%;
+                    opacity: 0.2;
+                    z-index: 0;
+                    animation: float-icon ${duration}s infinite ease-in-out ${delay}s alternate;
+                    pointer-events: none;
+                `;
+                
+                techStack.appendChild(icon);
+            }
+            
+            // 技术类别随机倾斜
+            const techCategories = document.querySelectorAll('.tech-category');
+            techCategories.forEach((category, index) => {
+                const isEven = index % 2 === 0;
+                const randomRotate = isEven ? 
+                    Math.random() * 1.5 - 2 : // -2 to -0.5 degrees
+                    Math.random() * 1.5 + 0.5; // 0.5 to 2 degrees
+                
+                category.style.transform = `rotate(${randomRotate}deg)`;
+                
+                category.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateY(-5px) rotate(0deg)';
+                });
+                
+                category.addEventListener('mouseout', function() {
+                    this.style.transform = `rotate(${randomRotate}deg)`;
+                });
+            });
+        });
+
+        // 添加浮动图标动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float-icon {
+                0% { transform: translateY(0) rotate(0); opacity: 0.2; }
+                50% { opacity: 0.4; }
+                100% { transform: translateY(-20px) rotate(10deg); opacity: 0.2; }
+            }
+        `;
+        document.head.appendChild(style);
 
         // 滚动动画
         const observerOptions = {
