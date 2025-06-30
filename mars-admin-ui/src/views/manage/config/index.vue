@@ -246,12 +246,12 @@ onMounted(() => {
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="参数名称" name="configName" class="m-0">
-                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" @pressEnter="handleSearch"/>
+                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" @input="handleSearch"/>
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="参数键名" name="configKey" class="m-0">
-                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" />
+                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" @pressEnter="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
@@ -264,6 +264,7 @@ onMounted(() => {
                     { label: '否', value: 'N' }
                   ]"
                   allow-clear
+                  @change="handleSearch"
                 />
               </AFormItem>
             </ACol>

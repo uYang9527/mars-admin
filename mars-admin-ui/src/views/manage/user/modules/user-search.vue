@@ -80,7 +80,7 @@ function toggleCollapsed() {
         <ARow :gutter="[16, 16]" wrap>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.user.userName')" name="username" class="m-0">
-              <AInput v-model:value="model.username" :placeholder="$t('page.manage.user.form.userName')" @pressEnter="search" />
+              <AInput v-model:value="model.username" :placeholder="$t('page.manage.user.form.userName')" @input="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">

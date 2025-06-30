@@ -2,6 +2,7 @@ package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.SysMenu;
 import com.mars.admin.mapper.SysMenuMapper;
+import com.mars.admin.mapper.SysRoleMenuMapper;
 import com.mars.admin.service.ISysMenuService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static com.mars.admin.entity.table.SysMenuTableDef.SYS_MENU;
+import static com.mars.admin.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
 
 /**
  * 系统菜单Service实现类
@@ -28,6 +30,9 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
 
     @Autowired
     private SysMenuMapper sysMenuMapper;
+    
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
 
     @Override
     public SysMenu selectByMenuCode(String menuCode) {
@@ -137,8 +142,45 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public boolean deleteMenuById(Long menuId) {
+        // 检查是否有子菜单
+        if (hasChildMenu(menuId)) {
+            return false;
+        }
+        
+        // 删除角色-菜单关联关系
+        QueryWrapper queryRoleMenu = QueryWrapper.create()
+                .where(SYS_ROLE_MENU.MENU_ID.eq(menuId));
+        sysRoleMenuMapper.deleteByQuery(queryRoleMenu);
+        
+        // 删除菜单
+        return this.removeById(menuId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteMenus(Long[] menuIds) {
-        return this.removeByIds(Arrays.asList(menuIds));
+        if (menuIds == null || menuIds.length == 0) {
+            return false;
+        }
+        
+        // 依次删除每个菜单及其关联数据
+        for (Long menuId : menuIds) {
+            if (!deleteMenuById(menuId)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    @Override
+    public boolean hasChildMenu(Long menuId) {
+        QueryWrapper query = QueryWrapper.create()
+                .where(SYS_MENU.PARENT_ID.eq(menuId))
+                .and(SYS_MENU.IS_DELETED.eq(0));
+        
+        return this.count(query) > 0;
     }
 
     @Override

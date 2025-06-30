@@ -4,6 +4,7 @@ import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysPost;
 import com.mars.admin.framework.common.Result;
 import com.mars.admin.service.ISysPostService;
+import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +35,40 @@ public class SysPostController extends BaseController<SysPost, Long> {
     // PUT    /system/post                - 更新岗位
     // DELETE /system/post/{id}           - 删除岗位
     // DELETE /system/post/batch          - 批量删除岗位
+
+    /**
+     * 分页条件查询岗位
+     *
+     * @param pageNum  当前页码
+     * @param pageSize 每页大小
+     * @param postName 岗位名称
+     * @param postCode 岗位编码
+     * @param status   状态
+     * @return 分页结果
+     */
+    @GetMapping("/pageList")
+    @Operation(summary = "分页条件查询岗位", description = "根据条件分页查询岗位列表")
+    public Result<Page<SysPost>> pageList(
+            @Parameter(description = "页码", example = "1") @RequestParam(defaultValue = "1") Integer pageNum,
+            @Parameter(description = "每页大小", example = "10") @RequestParam(defaultValue = "10") Integer pageSize,
+            @Parameter(description = "岗位名称") @RequestParam(required = false) String postName,
+            @Parameter(description = "岗位编码") @RequestParam(required = false) String postCode,
+            @Parameter(description = "状态") @RequestParam(required = false) Integer status) {
+        
+        // 创建查询条件
+        SysPost post = new SysPost();
+        post.setPostName(postName);
+        post.setPostCode(postCode);
+        post.setStatus(status);
+        
+        // 创建分页对象
+        Page<SysPost> page = new Page<>(pageNum, pageSize);
+        
+        // 调用服务层方法进行查询
+        Page<SysPost> postPage = sysPostService.selectPostPage(page, post);
+        
+        return Result.success(postPage);
+    }
 
     /**
      * 查询所有正常状态的岗位

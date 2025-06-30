@@ -244,7 +244,7 @@ function toggleCollapsed() {
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="部门名称" name="deptName" class="m-0">
-                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称"/>
+                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" @input="handleSearch"/>
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
@@ -257,6 +257,7 @@ function toggleCollapsed() {
                     { label: '禁用', value: 0 }
                   ]"
                   clearable
+                  @change="handleSearch"
                 />
               </AFormItem>
             </ACol>

@@ -2,6 +2,7 @@ package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.SysDept;
 import com.mars.admin.mapper.SysDeptMapper;
+import com.mars.admin.mapper.SysRoleDeptMapper;
 import com.mars.admin.mapper.SysUserDeptMapper;
 import com.mars.admin.service.ISysDeptService;
 import com.mybatisflex.core.paginate.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.mars.admin.entity.table.SysDeptTableDef.SYS_DEPT;
+import static com.mars.admin.entity.table.SysRoleDeptTableDef.SYS_ROLE_DEPT;
 import static com.mars.admin.entity.table.SysUserDeptTableDef.SYS_USER_DEPT;
 
 /**
@@ -32,7 +34,9 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Autowired
     private SysUserDeptMapper sysUserDeptMapper;
-
+    
+    @Autowired
+    private SysRoleDeptMapper sysRoleDeptMapper;
 
     @Override
     public SysDept selectByDeptCode(String deptCode) {
@@ -186,8 +190,46 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public boolean deleteDeptById(Long deptId) {
+        // 检查是否有子部门
+        if (hasChildDept(deptId)) {
+            return false;
+        }
+        
+        // 检查是否有关联用户
+        if (hasAssociatedUser(deptId)) {
+            return false;
+        }
+        
+        // 删除用户-部门关联关系
+        QueryWrapper queryUserDept = QueryWrapper.create()
+                .where(SYS_USER_DEPT.DEPT_ID.eq(deptId));
+        sysUserDeptMapper.deleteByQuery(queryUserDept);
+        
+        // 删除角色-部门关联关系
+        QueryWrapper queryRoleDept = QueryWrapper.create()
+                .where(SYS_ROLE_DEPT.DEPT_ID.eq(deptId));
+        sysRoleDeptMapper.deleteByQuery(queryRoleDept);
+        
+        // 删除部门
+        return this.removeById(deptId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteDepts(Long[] deptIds) {
-        return this.removeByIds(Arrays.asList(deptIds));
+        if (deptIds == null || deptIds.length == 0) {
+            return false;
+        }
+        
+        // 依次删除每个部门及其关联数据
+        for (Long deptId : deptIds) {
+            if (!deleteDeptById(deptId)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     @Override

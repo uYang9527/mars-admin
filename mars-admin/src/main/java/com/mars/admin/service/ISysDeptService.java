@@ -101,6 +101,14 @@ public interface ISysDeptService extends BaseService<SysDept> {
     boolean updateDept(SysDept dept);
 
     /**
+     * 删除单个部门
+     *
+     * @param deptId 部门ID
+     * @return 删除结果
+     */
+    boolean deleteDeptById(Long deptId);
+
+    /**
      * 删除部门
      *
      * @param deptIds 部门ID数组
