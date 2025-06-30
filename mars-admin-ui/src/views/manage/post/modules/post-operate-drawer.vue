@@ -117,11 +117,17 @@ function handleInitModel() {
   Object.assign(model, createDefaultModel());
 
   if (props.operateType === 'edit' && props.rowData) {
-    const rowDataWithStringStatus = {
-      ...props.rowData,
-      status: props.rowData.status !== null ? String(props.rowData.status) : '1'
-    };
-    Object.assign(model, rowDataWithStringStatus);
+    fetchGetPostById(props.rowData.id).then(({ data }) => {
+      if (data) {
+        const rowDataWithStringStatus = {
+          ...data,
+          status: data.status !== null ? String(data.status) : '1'
+        };
+        Object.assign(model, rowDataWithStringStatus);
+      }
+    }).catch(error => {
+      console.error('获取岗位详情失败', error);
+    });
   }
 }
 

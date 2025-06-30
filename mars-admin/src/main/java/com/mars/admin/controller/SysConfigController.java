@@ -4,6 +4,7 @@ import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysConfig;
 import com.mars.admin.framework.common.Result;
 import com.mars.admin.service.ISysConfigService;
+import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +34,29 @@ public class SysConfigController extends BaseController<SysConfig, Long> {
     // PUT    /system/config                - 更新配置
     // DELETE /system/config/{id}           - 删除配置
     // DELETE /system/config/batch          - 批量删除配置
+
+    /**
+     * 分页查询系统配置列表（重写BaseController方法以支持搜索条件）
+     */
+    @GetMapping("/pageList")
+    @Operation(summary = "分页查询系统配置列表", description = "分页查询系统配置列表，支持多条件搜索")
+    public Result<Page<SysConfig>> pageList(
+            @Parameter(description = "当前页", example = "1") @RequestParam(value = "current", defaultValue = "1") Integer current,
+            @Parameter(description = "每页大小", example = "10") @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @Parameter(description = "参数名称") @RequestParam(value = "configName", required = false) String configName,
+            @Parameter(description = "参数键名") @RequestParam(value = "configKey", required = false) String configKey,
+            @Parameter(description = "系统内置") @RequestParam(value = "configType", required = false) String configType) {
+        
+        // 构建查询条件
+        SysConfig queryCondition = new SysConfig();
+        queryCondition.setConfigName(configName);
+        queryCondition.setConfigKey(configKey);
+        queryCondition.setConfigType(configType);
+        
+        // 分页查询
+        Page<SysConfig> page = sysConfigService.selectConfigPage(Page.of(current, size), queryCondition);
+        return Result.success(page);
+    }
 
     /**
      * 根据配置键查询配置值

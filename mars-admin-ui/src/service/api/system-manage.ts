@@ -3,7 +3,7 @@ import {request} from '../request';
 /** get role list */
 export function fetchGetRoleList(params?: Api.SystemManage.RoleSearchParams) {
   return request<Api.SystemManage.RoleList>({
-    url: '/system/role/page',
+    url: '/system/role/pageList',
     method: 'get',
     params
   });
@@ -611,7 +611,7 @@ export function fetchChangePostStatus(postId: number, status: string) {
  */
 export function fetchGetDictTypeList(params?: Api.SystemManage.DictTypeSearchParams) {
   return request<Api.SystemManage.DictTypeList>({
-    url: '/system/dict/type/page',
+    url: '/system/dict/type/pageList',
     method: 'get',
     params
   });

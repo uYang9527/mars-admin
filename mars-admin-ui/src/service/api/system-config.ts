@@ -5,7 +5,7 @@ import { request } from '../request';
 /** 分页查询配置列表 */
 export function fetchGetConfigList(params?: Api.SystemManage.ConfigSearchParams) {
   return request<Api.SystemManage.ConfigList>({
-    url: '/system/config/page',
+    url: '/system/config/pageList',
     method: 'get',
     params
   });

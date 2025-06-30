@@ -64,7 +64,7 @@ watch(
       if (props.operateType === 'edit' && props.rowData) {
         loading.value = true;
         try {
-          const { data } = await fetchGetDictDataById(props.rowData);
+          const { data } = await fetchGetDictDataById(props.rowData.id);
           if (data) {
             Object.assign(formModel, data);
           }
