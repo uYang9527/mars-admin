@@ -1,7 +1,9 @@
 package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.SysPost;
+import com.mars.admin.entity.SysUserPost;
 import com.mars.admin.mapper.SysPostMapper;
+import com.mars.admin.mapper.SysUserPostMapper;
 import com.mars.admin.service.ISysPostService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mars.admin.entity.table.SysPostTableDef.SYS_POST;
+import static com.mars.admin.entity.table.SysUserPostTableDef.SYS_USER_POST;
 
 /**
  * 系统岗位Service实现类
@@ -32,6 +35,9 @@ public class SysPostServiceImpl extends CacheableServiceImpl<SysPostMapper, SysP
 
     @Autowired
     private SysPostMapper sysPostMapper;
+    
+    @Autowired
+    private SysUserPostMapper sysUserPostMapper;
 
     @Override
     @Cacheable(key = "'code:' + #postCode")
@@ -102,12 +108,34 @@ public class SysPostServiceImpl extends CacheableServiceImpl<SysPostMapper, SysP
     public boolean updatePost(SysPost post) {
         return this.updateById(post);
     }
+    
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
+    public boolean deletePostById(Long postId) {
+        // 先删除岗位与用户的关联关系
+        QueryWrapper queryUserPost = QueryWrapper.create()
+                .where(SYS_USER_POST.POST_ID.eq(postId));
+        sysUserPostMapper.deleteByQuery(queryUserPost);
+        
+        // 再删除岗位
+        return this.removeById(postId);
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(allEntries = true)
     public boolean deletePosts(Long[] postIds) {
-        return this.removeByIds(Arrays.asList(postIds));
+        if (postIds == null || postIds.length == 0) {
+            return false;
+        }
+        
+        // 依次删除每个岗位及其关联数据
+        for (Long postId : postIds) {
+            deletePostById(postId);
+        }
+        
+        return true;
     }
 
     @Override

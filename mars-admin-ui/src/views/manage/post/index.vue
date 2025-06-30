@@ -23,10 +23,7 @@
         size="small"
         :scroll="{ x: 'max-content' }"
         :loading="loading"
-        :row-selection="{
-          selectedRowKeys: checkedRowKeys,
-          onChange: keys => (checkedRowKeys.value = keys)
-        }"
+        :row-selection="rowSelection"
         row-key="id"
         :pagination="pagination"
         class="h-full"
@@ -44,11 +41,11 @@
 <script setup lang="tsx">
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import { Button, Popconfirm, Space, Tag } from 'ant-design-vue';
+import { Button, Popconfirm, Space, Tag, Modal } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { 
-  fetchGetPostList, 
-  fetchDeletePost, 
+import {
+  fetchGetPostList,
+  fetchDeletePost,
   fetchDeletePosts,
   fetchChangePostStatus,
 } from '@/service/api/system-manage';
@@ -78,9 +75,16 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
     },
     columns: () => [
       {
+        key: 'selection',
+        title: '',
+        type: 'selection',
+        align: 'center',
+        width: 48,
+        fixed: 'left'
+      },
+      {
         key: 'index',
         title: $t('common.index'),
-        width: 64,
         align: 'center',
         customRender: ({ index }) => index + 1
       },
@@ -88,53 +92,39 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
         key: 'postName',
         title: '岗位名称',
         align: 'center',
-        minWidth: 120,
         dataIndex: 'postName'
       },
       {
         key: 'postCode',
         title: '岗位编码',
         align: 'center',
-        minWidth: 120,
         dataIndex: 'postCode'
       },
       {
         key: 'postSort',
         title: '显示顺序',
         align: 'center',
-        width: 100,
         dataIndex: 'postSort'
       },
       {
         key: 'status',
         title: '状态',
         align: 'center',
-        width: 100,
         dataIndex: 'status',
         customRender: ({ record }) => {
           if (record.status === null) {
             return null;
           }
-          
-          const statusStr = String(record.status);
-          let statusKey = statusStr;
-          
-          if (statusStr === '1') {
-            statusKey = '1';
-          } else if (statusStr === '0') {
-            statusKey = '2';
-          }
-          
-          const label = $t(enableStatusRecord[statusKey]);
-          
-          return <Tag color={statusStr === '1' ? 'success' : 'error'}>{label}</Tag>;
+
+          const label = $t(enableStatusRecord[record.status]);
+
+          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
         }
       },
       {
         key: 'createTime',
         title: '创建时间',
         align: 'center',
-        width: 160,
         dataIndex: 'createTime'
       },
       {
@@ -142,14 +132,12 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
         title: '备注',
         align: 'center',
         ellipsis: true,
-        minWidth: 120,
         dataIndex: 'remark'
       },
       {
         key: 'operate',
         title: $t('common.operate'),
         align: 'center',
-        width: 180,
         fixed: 'right',
         customRender: ({ record }) => (
           <div class="flex-center gap-8px">
@@ -157,11 +145,11 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, pagination
               {$t('common.edit')}
             </Button>
             <Button
-              type={record.status.toString() === '1' ? 'default' : 'primary'}
+              type={record.status === 1 ? 'default' : 'primary'}
               size="small"
-              onClick={() => toggleStatus(record.id, String(record.status))}
+              onClick={() => toggleStatus(record.id, record.status)}
             >
-              {record.status.toString() === '1' ? '禁用' : '启用'}
+              {record.status === 1 ? '禁用' : '启用'}
             </Button>
             <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
               <Button danger size="small">
@@ -182,14 +170,34 @@ const {
   handleEdit,
   checkedRowKeys,
   onBatchDeleted,
-  onDeleted
+  onDeleted,
+  rowSelection
 } = useTableOperate(data, getData);
 
 async function handleBatchDelete() {
-  const { error } = await fetchDeletePosts(checkedRowKeys.value);
-  if (!error) {
-    onBatchDeleted();
+  if (checkedRowKeys.value.length === 0) {
+    window.$message?.warning('请选择要删除的岗位');
+    return;
   }
+  
+  Modal.confirm({
+    title: '批量删除岗位',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个岗位吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const { error } = await fetchDeletePosts(checkedRowKeys.value);
+        if (!error) {
+          onBatchDeleted();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      } catch (e) {
+        window.$message?.error('操作失败: ' + e.message);
+      }
+    }
+  });
 }
 
 async function handleDelete(id: number) {
@@ -199,8 +207,8 @@ async function handleDelete(id: number) {
   }
 }
 
-async function toggleStatus(id: number, status: string) {
-  const newStatus = status === '1' ? '0' : '1';
+async function toggleStatus(id: number, status: number) {
+  const newStatus = status === 1 ? 0 : 1;
   const { error } = await fetchChangePostStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
@@ -217,4 +225,4 @@ function edit(id: number) {
 .card-wrapper {
   @apply flex-col-stretch gap-16px overflow-hidden;
 }
-</style> 
+</style>

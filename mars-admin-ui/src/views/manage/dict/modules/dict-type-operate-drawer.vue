@@ -114,14 +114,15 @@ async function handleSubmit() {
     loading.value = true;
 
     let result;
-    if (props.operateType === 'add') {
+    const isAdd = props.operateType === 'add';
+    if (isAdd) {
       result = await fetchAddDictType(formModel);
     } else {
       result = await fetchUpdateDictType(formModel);
     }
 
     if (!result.error) {
-      window.$message?.success('保存成功');
+      window.$message?.success(isAdd ? '新增字典类型成功' : '编辑字典类型成功');
       emit('update:visible', false);
       emit('submitted');
     }

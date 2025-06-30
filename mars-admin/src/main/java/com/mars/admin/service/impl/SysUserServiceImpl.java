@@ -1,9 +1,14 @@
 package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.SysUser;
+import com.mars.admin.entity.SysUserDept;
+import com.mars.admin.entity.SysUserPost;
 import com.mars.admin.entity.SysUserRole;
 import com.mars.admin.framework.exception.BusinessException;
+import com.mars.admin.mapper.SysUserDeptMapper;
 import com.mars.admin.mapper.SysUserMapper;
+import com.mars.admin.mapper.SysUserPostMapper;
+import com.mars.admin.mapper.SysUserRoleMapper;
 import com.mars.admin.service.ISysUserService;
 import com.mars.admin.service.impl.BaseServiceImpl;
 import com.mybatisflex.core.paginate.Page;
@@ -17,11 +22,14 @@ import org.springframework.util.StringUtils;
 import jakarta.annotation.PostConstruct;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mars.admin.entity.table.SysUserTableDef.SYS_USER;
+import static com.mars.admin.entity.table.SysUserDeptTableDef.SYS_USER_DEPT;
+import static com.mars.admin.entity.table.SysUserPostTableDef.SYS_USER_POST;
 import static com.mars.admin.entity.table.SysUserRoleTableDef.SYS_USER_ROLE;
+import static com.mars.admin.entity.table.SysUserTableDef.SYS_USER;
 
 /**
  * 系统用户Service实现类
@@ -35,6 +43,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
 
     @Autowired
     private SysUserMapper sysUserMapper;
+    
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
+    
+    @Autowired
+    private SysUserDeptMapper sysUserDeptMapper;
+    
+    @Autowired
+    private SysUserPostMapper sysUserPostMapper;
 
     @Override
     public SysUser selectByUsername(String username) {
@@ -104,12 +121,29 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
             user.setLoginCount(0);
         }
 
+        // 密码加密处理
+        if (user.getPassword() != null) {
+            user.setPassword(AuthServiceImpl.encryptPassword(user.getPassword()));
+        }
+
         // 插入用户
         boolean result = this.save(user);
 
         // 分配角色
-        if (result && user.getRoleIds() != null && user.getRoleIds().size() > 0) {
+        if (result && user.getRoleIds() != null && !user.getRoleIds().isEmpty()) {
             assignRoles(user.getId(), user.getRoleIds().toArray(new Long[0]));
+        }
+
+        // 分配部门
+        if (result && user.getDeptIds() != null && !user.getDeptIds().isEmpty()) {
+            // 默认第一个为主部门
+            Long mainDeptId = user.getDeptIds().get(0);
+            assignDepts(user.getId(), user.getDeptIds().toArray(new Long[0]), mainDeptId);
+        }
+
+        // 分配岗位
+        if (result && user.getPostIds() != null && !user.getPostIds().isEmpty()) {
+            assignPosts(user.getId(), user.getPostIds().toArray(new Long[0]));
         }
 
         return result;
@@ -121,11 +155,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
         // 更新用户
         boolean result = this.updateById(user);
 
-        // 重新分配角色
-        if (result && user.getRoleIds() != null) {
+        if (result) {
             // 重新分配角色
-            if (user.getRoleIds().size() > 0) {
+            if (user.getRoleIds() != null) {
                 assignRoles(user.getId(), user.getRoleIds().toArray(new Long[0]));
+            }
+
+            // 重新分配部门
+            if (user.getDeptIds() != null) {
+                // 默认第一个为主部门
+                Long mainDeptId = user.getDeptIds().isEmpty() ? null : user.getDeptIds().get(0);
+                assignDepts(user.getId(), user.getDeptIds().toArray(new Long[0]), mainDeptId);
+            }
+
+            // 重新分配岗位
+            if (user.getPostIds() != null) {
+                assignPosts(user.getId(), user.getPostIds().toArray(new Long[0]));
             }
         }
 
@@ -135,7 +180,49 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteUsers(Long[] userIds) {
-        return this.removeByIds(Arrays.asList(userIds));
+        if (userIds == null || userIds.length == 0) {
+            return false;
+        }
+        
+        try {
+            for (Long userId : userIds) {
+                // 先检查是否管理员账号，避免删除管理员
+                SysUser user = this.getById(userId);
+                if (user != null && "admin".equals(user.getUsername())) {
+                    throw new BusinessException("管理员账号不能删除");
+                }
+                
+                // 删除用户角色关联
+                QueryWrapper userRoleQuery = QueryWrapper.create()
+                        .where(SYS_USER_ROLE.USER_ID.eq(userId));
+                sysUserRoleMapper.deleteByQuery(userRoleQuery);
+                
+                // 删除用户部门关联
+                QueryWrapper userDeptQuery = QueryWrapper.create()
+                        .where(SYS_USER_DEPT.USER_ID.eq(userId));
+                sysUserDeptMapper.deleteByQuery(userDeptQuery);
+                
+                // 删除用户岗位关联
+                QueryWrapper userPostQuery = QueryWrapper.create()
+                        .where(SYS_USER_POST.USER_ID.eq(userId));
+                sysUserPostMapper.deleteByQuery(userPostQuery);
+                
+                // 设置删除时间
+                SysUser deleteUser = new SysUser();
+                deleteUser.setId(userId);
+                deleteUser.setDeleteTime(LocalDateTime.now());
+                this.updateById(deleteUser);
+            }
+            
+            // 批量逻辑删除用户
+            return this.removeByIds(Arrays.asList(userIds));
+        } catch (BusinessException e) {
+            log.error("删除用户失败: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("删除用户失败: {}", e.getMessage(), e);
+            throw new BusinessException("删除用户失败: " + e.getMessage());
+        }
     }
 
     @Override
@@ -158,20 +245,110 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean assignRoles(Long userId, Long[] roleIds) {
-        // TODO: 实现角色分配逻辑，需要创建SysUserRole的mapper和service
-        return true;
+        if (userId == null) {
+            throw new BusinessException("用户ID不能为空");
+        }
+
+        try {
+            // 删除用户原有角色
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .where(SYS_USER_ROLE.USER_ID.eq(userId));
+            sysUserRoleMapper.deleteByQuery(queryWrapper);
+
+            // 如果没有分配角色，直接返回
+            if (roleIds == null || roleIds.length == 0) {
+                return true;
+            }
+
+            // 批量插入新的用户角色关联
+            List<SysUserRole> userRoles = new ArrayList<>();
+            for (Long roleId : roleIds) {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                userRole.setCreateBy(userId); // 当前登录用户ID，可从上下文获取
+                userRoles.add(userRole);
+            }
+
+            return sysUserRoleMapper.insertBatch(userRoles) > 0;
+        } catch (Exception e) {
+            log.error("分配角色失败: {}", e.getMessage(), e);
+            throw new BusinessException("分配角色失败: " + e.getMessage());
+        }
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean assignDepts(Long userId, Long[] deptIds, Long mainDeptId) {
-        // TODO: 实现部门分配逻辑
-        return true;
+        if (userId == null) {
+            throw new BusinessException("用户ID不能为空");
+        }
+
+        try {
+            // 删除用户原有部门
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .where(SYS_USER_DEPT.USER_ID.eq(userId));
+            sysUserDeptMapper.deleteByQuery(queryWrapper);
+
+            // 如果没有分配部门，直接返回
+            if (deptIds == null || deptIds.length == 0) {
+                return true;
+            }
+
+            // 批量插入新的用户部门关联
+            List<SysUserDept> userDepts = new ArrayList<>();
+            for (Long deptId : deptIds) {
+                SysUserDept userDept = new SysUserDept();
+                userDept.setUserId(userId);
+                userDept.setDeptId(deptId);
+                
+                // 设置是否主部门
+                userDept.setIsMain(deptId.equals(mainDeptId) ? 1 : 0);
+                
+                userDept.setCreateBy(userId); // 当前登录用户ID，可从上下文获取
+                userDepts.add(userDept);
+            }
+
+            return sysUserDeptMapper.insertBatch(userDepts) > 0;
+        } catch (Exception e) {
+            log.error("分配部门失败: {}", e.getMessage(), e);
+            throw new BusinessException("分配部门失败: " + e.getMessage());
+        }
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean assignPosts(Long userId, Long[] postIds) {
-        // TODO: 实现岗位分配逻辑
-        return true;
+        if (userId == null) {
+            throw new BusinessException("用户ID不能为空");
+        }
+
+        try {
+            // 删除用户原有岗位
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .where(SYS_USER_POST.USER_ID.eq(userId));
+            sysUserPostMapper.deleteByQuery(queryWrapper);
+
+            // 如果没有分配岗位，直接返回
+            if (postIds == null || postIds.length == 0) {
+                return true;
+            }
+
+            // 批量插入新的用户岗位关联
+            List<SysUserPost> userPosts = new ArrayList<>();
+            for (Long postId : postIds) {
+                SysUserPost userPost = new SysUserPost();
+                userPost.setUserId(userId);
+                userPost.setPostId(postId);
+                userPost.setCreateBy(userId); // 当前登录用户ID，可从上下文获取
+                userPosts.add(userPost);
+            }
+
+            return sysUserPostMapper.insertBatch(userPosts) > 0;
+        } catch (Exception e) {
+            log.error("分配岗位失败: {}", e.getMessage(), e);
+            throw new BusinessException("分配岗位失败: " + e.getMessage());
+        }
     }
 
     @Override

@@ -58,7 +58,7 @@ export function fetchDeleteConfigs(ids: number[]) {
   return request({
     url: '/system/config/batch',
     method: 'delete',
-    data: { ids }
+    data: ids
   });
 }
 
@@ -153,7 +153,7 @@ export function fetchDeleteDictTypes(ids: number[]) {
   return request({
     url: '/system/dict/type/batch',
     method: 'delete',
-    data: { ids }
+    data: ids
   });
 }
 
@@ -257,7 +257,7 @@ export function fetchDeleteDictDatas(ids: number[]) {
   return request({
     url: '/system/dict/data/batch',
     method: 'delete',
-    data: { ids }
+    data: ids
   });
 }
 

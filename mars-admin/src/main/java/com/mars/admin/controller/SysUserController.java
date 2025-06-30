@@ -39,6 +39,33 @@ public class SysUserController extends BaseController<SysUser, Long> {
     // 基础的增删改查功能已由BaseController提供，这里重写部分方法以支持业务逻辑
 
     /**
+     * 根据用户ID获取用户详细信息（重写BaseController的方法）
+     */
+    @Override
+    @GetMapping("/{id}")
+    @Operation(summary = "获取用户详细信息", description = "根据用户ID获取用户详细信息，包含角色和岗位信息")
+    public Result<SysUser> getById(@Parameter(description = "用户ID", required = true) @PathVariable Long id) {
+        SysUser user = sysUserService.selectUserDetailById(id);
+        if (user != null) {
+            return Result.success(user);
+        } else {
+            return Result.error("用户不存在");
+        }
+    }
+
+    /**
+     * 新增用户（重写以设置默认密码）
+     */
+    @PostMapping
+    @Operation(summary = "新增用户", description = "新增用户信息，设置默认密码123456")
+    public Result<Boolean> save(@RequestBody SysUser entity) {
+        // 设置默认密码为123456
+        entity.setPassword("123456");
+        boolean success = sysUserService.insertUser(entity);
+        return Result.of(success, "新增成功", "新增失败");
+    }
+
+    /**
      * 分页查询用户（重写以支持查询条件）
      */
     @GetMapping("/pageList")
@@ -46,20 +73,20 @@ public class SysUserController extends BaseController<SysUser, Long> {
     public Result<com.mybatisflex.core.paginate.Page<SysUser>> pageList(
             @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
             @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") Integer size,
-            @Parameter(description = "用户名") @RequestParam(required = false) String userName,
-            @Parameter(description = "昵称") @RequestParam(required = false) String nickName,
+            @Parameter(description = "用户名") @RequestParam(required = false) String username,
+            @Parameter(description = "昵称") @RequestParam(required = false) String nickname,
             @Parameter(description = "手机号") @RequestParam(required = false) String phone,
             @Parameter(description = "邮箱") @RequestParam(required = false) String email,
-            @Parameter(description = "性别") @RequestParam(required = false) Integer userGender,
+            @Parameter(description = "性别") @RequestParam(required = false) Integer gender,
             @Parameter(description = "状态") @RequestParam(required = false) Integer status) {
 
         // 构造查询条件
         SysUser queryUser = new SysUser();
-        queryUser.setUsername(userName);
-        queryUser.setNickname(nickName);
+        queryUser.setUsername(username);
+        queryUser.setNickname(nickname);
         queryUser.setPhone(phone);
         queryUser.setEmail(email);
-        queryUser.setGender(userGender);
+        queryUser.setGender(gender);
         queryUser.setStatus(status);
 
         // 分页查询
@@ -101,6 +128,32 @@ public class SysUserController extends BaseController<SysUser, Long> {
         Long[] roleIds = user.getRoleIds().toArray(new Long[0]);
         boolean result = sysUserService.assignRoles(user.getId(), roleIds);
         return result ? Result.success() : Result.error("分配角色失败");
+    }
+
+    /**
+     * 分配用户部门
+     */
+    @PutMapping("/authDept")
+    @Operation(summary = "分配用户部门", description = "分配用户部门")
+    // @PreAuthorize("hasAuthority('system:user:edit')")
+    public Result<Void> authDept(@RequestBody SysUser user) {
+        Long[] deptIds = user.getDeptIds().toArray(new Long[0]);
+        // 默认第一个为主部门
+        Long mainDeptId = deptIds.length > 0 ? deptIds[0] : null;
+        boolean result = sysUserService.assignDepts(user.getId(), deptIds, mainDeptId);
+        return result ? Result.success() : Result.error("分配部门失败");
+    }
+
+    /**
+     * 分配用户岗位
+     */
+    @PutMapping("/authPost")
+    @Operation(summary = "分配用户岗位", description = "分配用户岗位")
+    // @PreAuthorize("hasAuthority('system:user:edit')")
+    public Result<Void> authPost(@RequestBody SysUser user) {
+        Long[] postIds = user.getPostIds().toArray(new Long[0]);
+        boolean result = sysUserService.assignPosts(user.getId(), postIds);
+        return result ? Result.success() : Result.error("分配岗位失败");
     }
 
     /**
@@ -161,5 +214,30 @@ public class SysUserController extends BaseController<SysUser, Long> {
             @Parameter(description = "用户ID") @RequestParam(required = false) Long userId) {
         boolean unique = sysUserService.checkPhoneUnique(phone, userId);
         return Result.success(unique);
+    }
+
+    /**
+     * 根据ID删除用户（重写BaseController的方法）
+     */
+    @Override
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除用户", description = "根据用户ID删除用户")
+    public Result<Boolean> deleteById(@Parameter(description = "用户ID", required = true) @PathVariable Long id) {
+        boolean success = sysUserService.deleteUsers(new Long[]{id});
+        return Result.of(success, "删除成功", "删除失败");
+    }
+
+    /**
+     * 批量删除用户（重写BaseController的方法）
+     */
+    @Override
+    @DeleteMapping("/batch")
+    @Operation(summary = "批量删除用户", description = "批量删除用户")
+    public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        boolean success = sysUserService.deleteUsers(ids.toArray(new Long[0]));
+        return Result.of(success, "批量删除成功", "批量删除失败");
     }
 } 

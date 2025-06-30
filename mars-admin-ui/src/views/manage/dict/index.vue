@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, computed } from 'vue';
 import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
@@ -44,9 +44,16 @@ const {
   },
   columns: () => [
     {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
+    },
+    {
       key: 'index',
       title: $t('common.index'),
-      width: 64,
       align: 'center',
       customRender: ({ index }) => index + 1
     },
@@ -54,14 +61,12 @@ const {
       key: 'dictName',
       title: '字典名称',
       align: 'center',
-      minWidth: 120,
       dataIndex: 'dictName'
     },
     {
       key: 'dictType',
       title: '字典类型',
       align: 'center',
-      minWidth: 150,
       dataIndex: 'dictType',
       customRender: ({ record }) => (
         <Button type="link" class="h-auto p-0 text-blue-600 hover:text-blue-800" onClick={() => viewDictData(record)}>
@@ -73,7 +78,6 @@ const {
       key: 'status',
       title: '状态',
       align: 'center',
-      width: 100,
       dataIndex: 'status',
       customRender: ({ record }) => {
         if (record.status === null) {
@@ -91,7 +95,6 @@ const {
       key: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 180,
       dataIndex: 'createTime'
     },
     {
@@ -99,14 +102,12 @@ const {
       title: '备注',
       align: 'center',
       ellipsis: true,
-      minWidth: 120,
       dataIndex: 'remark'
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 240,
       fixed: 'right',
       customRender: ({ record }) => (
         <div class="flex-center gap-8px">
@@ -135,7 +136,8 @@ const {
   handleEdit: handleEditDictType,
   checkedRowKeys: dictTypeCheckedRowKeys,
   onBatchDeleted: onDictTypeBatchDeleted,
-  onDeleted: onDictTypeDeleted
+  onDeleted: onDictTypeDeleted,
+  rowSelection: dictTypeRowSelection
 } = useTableOperate(dictTypeData, getDictTypeData);
 
 // 字典数据相关
@@ -148,6 +150,18 @@ const dictDataOperateDrawerVisible = ref(false);
 const dictDataOperateType = ref('add');
 const dictDataEditingData = ref(null);
 const dictDataCheckedRowKeys = ref([]);
+
+// 字典数据表格选择状态
+const dictDataRowSelection = computed(() => {
+  return {
+    columnWidth: 48,
+    type: 'checkbox',
+    selectedRowKeys: dictDataCheckedRowKeys.value,
+    onChange: (keys) => {
+      dictDataCheckedRowKeys.value = keys;
+    }
+  };
+});
 
 // 字典数据分页参数
 const dictDataPagination = reactive({
@@ -178,6 +192,14 @@ const dictDataSearchParams = reactive({
 
 // 字典数据表格列配置
 const dictDataColumns = [
+  {
+    key: 'selection',
+    title: '',
+    align: 'center',
+    type: 'selection',
+    width: 48,
+    fixed: 'left'
+  },
   {
     key: 'index',
     title: $t('common.index'),
@@ -320,10 +342,30 @@ async function loadDictData() {
 
 // 字典类型操作
 async function handleBatchDeleteDictType() {
-  const { error } = await fetchDeleteDictTypes(dictTypeCheckedRowKeys.value);
-  if (!error) {
-    onDictTypeBatchDeleted();
+  if (dictTypeCheckedRowKeys.value.length === 0) {
+    window.$message?.warning('请选择要删除的字典类型');
+    return;
   }
+  
+  Modal.confirm({
+    title: '批量删除字典类型',
+    content: `确定要删除选中的 ${dictTypeCheckedRowKeys.value.length} 个字典类型吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const { error } = await fetchDeleteDictTypes(dictTypeCheckedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          onDictTypeBatchDeleted();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      } catch (e) {
+        window.$message?.error('操作失败: ' + e.message);
+      }
+    }
+  });
 }
 
 async function handleDeleteDictType(id) {
@@ -365,16 +407,30 @@ async function handleDeleteDictData(id) {
 
 async function handleBatchDeleteDictData() {
   if (dictDataCheckedRowKeys.value.length === 0) {
-    window.$message?.warning('请选择要删除的数据');
+    window.$message?.warning('请选择要删除的字典数据');
     return;
   }
-
-  const { error } = await fetchDeleteDictDatas(dictDataCheckedRowKeys.value);
-  if (!error) {
-    window.$message?.success('批量删除成功');
-    dictDataCheckedRowKeys.value = [];
-    loadDictData();
-  }
+  
+  Modal.confirm({
+    title: '批量删除字典数据',
+    content: `确定要删除选中的 ${dictDataCheckedRowKeys.value.length} 个字典数据吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const { error } = await fetchDeleteDictDatas(dictDataCheckedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          dictDataCheckedRowKeys.value.length = 0;
+          loadDictData();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      } catch (e) {
+        window.$message?.error('操作失败: ' + e.message);
+      }
+    }
+  });
 }
 
 // 刷新字典缓存
@@ -541,10 +597,7 @@ onMounted(() => {
         size="small"
         :scroll="{ x: 'max-content' }"
         :loading="dictTypeLoading"
-        :row-selection="{
-          selectedRowKeys: dictTypeCheckedRowKeys,
-          onChange: keys => (dictTypeCheckedRowKeys.value = keys)
-        }"
+        :row-selection="dictTypeRowSelection"
         row-key="id"
         :pagination="dictTypePagination"
         class="h-full"
@@ -645,10 +698,7 @@ onMounted(() => {
             size="small"
             :scroll="{ x: 'max-content', y: 'calc(75vh - 200px)' }"
             :loading="dictDataLoading"
-            :row-selection="{
-              selectedRowKeys: dictDataCheckedRowKeys,
-              onChange: keys => (dictDataCheckedRowKeys.value = keys)
-            }"
+            :row-selection="dictDataRowSelection"
             row-key="id"
             :pagination="dictDataPagination"
             class="h-full"

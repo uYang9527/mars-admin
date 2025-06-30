@@ -78,6 +78,14 @@ public interface ISysPostService extends BaseService<SysPost> {
     boolean updatePost(SysPost post);
 
     /**
+     * 删除单个岗位及关联数据
+     *
+     * @param postId 岗位ID
+     * @return 删除结果
+     */
+    boolean deletePostById(Long postId);
+
+    /**
      * 删除岗位
      *
      * @param postIds 岗位ID数组

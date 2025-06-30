@@ -108,4 +108,35 @@ public class SysPostController extends BaseController<SysPost, Long> {
         sysPostService.updateById(post);
         return Result.success();
     }
+    
+    /**
+     * 批量删除岗位（重写BaseController的方法）
+     *
+     * @param ids ID列表
+     * @return 删除结果
+     */
+    @Operation(summary = "批量删除岗位", description = "根据ID列表批量删除岗位及关联数据")
+    @DeleteMapping("/batch")
+    public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        Long[] postIds = ids.toArray(new Long[0]);
+        boolean success = sysPostService.deletePosts(postIds);
+        return Result.of(success, "批量删除成功", "批量删除失败");
+    }
+    
+    /**
+     * 根据ID删除岗位（重写BaseController的方法）
+     *
+     * @param id 主键ID
+     * @return 是否成功
+     */
+    @Operation(summary = "根据ID删除岗位", description = "根据主键ID删除岗位及关联数据")
+    @DeleteMapping("/{id}")
+    @Override
+    public Result<Boolean> deleteById(@PathVariable Long id) {
+        boolean success = sysPostService.deletePostById(id);
+        return Result.of(success, "删除成功", "删除失败");
+    }
 } 

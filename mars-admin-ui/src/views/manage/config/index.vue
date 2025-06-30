@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { onMounted, reactive, ref } from 'vue';
-import { Button, Popconfirm, Tag } from 'ant-design-vue';
+import { Button, Popconfirm, Tag, Modal } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   fetchDeleteConfig,
@@ -22,7 +22,7 @@ const appStore = useAppStore();
 const wrapperEl = ref<HTMLElement>();
 
 // 参数配置表格配置
-const { columns, columnChecks, data, getData, loading, pagination, searchParams } = useTable({
+const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } = useTable({
   apiFn: fetchGetConfigList,
   apiParams: {
     current: 1,
@@ -33,9 +33,16 @@ const { columns, columnChecks, data, getData, loading, pagination, searchParams 
   },
   columns: () => [
     {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
+    },
+    {
       key: 'index',
       title: $t('common.index'),
-      width: 64,
       align: 'center',
       customRender: ({ index }) => index + 1
     },
@@ -43,28 +50,24 @@ const { columns, columnChecks, data, getData, loading, pagination, searchParams 
       key: 'configName',
       title: '参数名称',
       align: 'center',
-      minWidth: 150,
       dataIndex: 'configName'
     },
     {
       key: 'configKey',
       title: '参数键名',
       align: 'center',
-      minWidth: 150,
       dataIndex: 'configKey'
     },
     {
       key: 'configValue',
       title: '参数键值',
       align: 'center',
-      minWidth: 150,
       dataIndex: 'configValue'
     },
     {
       key: 'configType',
       title: '系统内置',
       align: 'center',
-      width: 100,
       dataIndex: 'configType',
       customRender: ({ record }) => {
         if (!record.configType) {
@@ -82,7 +85,6 @@ const { columns, columnChecks, data, getData, loading, pagination, searchParams 
       key: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 180,
       dataIndex: 'createTime'
     },
     {
@@ -90,14 +92,12 @@ const { columns, columnChecks, data, getData, loading, pagination, searchParams 
       title: '备注',
       align: 'center',
       ellipsis: true,
-      minWidth: 120,
       dataIndex: 'remark'
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 180,
       fixed: 'right',
       customRender: ({ record }) => (
         <div class="flex-center gap-8px">
@@ -115,8 +115,17 @@ const { columns, columnChecks, data, getData, loading, pagination, searchParams 
   ]
 });
 
-const { drawerVisible, operateType, editingData, handleAdd, handleEdit, checkedRowKeys, onBatchDeleted, onDeleted } =
-  useTableOperate(data, getData);
+const {
+  drawerVisible,
+  operateType,
+  editingData,
+  handleAdd,
+  handleEdit,
+  checkedRowKeys,
+  onBatchDeleted,
+  onDeleted,
+  rowSelection
+} = useTableOperate(data, getData);
 
 // 搜索表单
 const searchForm = reactive({
@@ -130,10 +139,30 @@ const collapsed = ref(false);
 
 // 参数配置操作
 async function handleBatchDelete() {
-  const { error } = await fetchDeleteConfigs(checkedRowKeys.value);
-  if (!error) {
-    onBatchDeleted();
+  if (checkedRowKeys.value.length === 0) {
+    window.$message?.warning('请选择要删除的配置');
+    return;
   }
+  
+  Modal.confirm({
+    title: '批量删除配置',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个配置吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const { error } = await fetchDeleteConfigs(checkedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          onBatchDeleted();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      } catch (e) {
+        window.$message?.error('操作失败: ' + e.message);
+      }
+    }
+  });
 }
 
 async function handleDelete(id) {
@@ -284,10 +313,7 @@ onMounted(() => {
         size="small"
         :scroll="{ x: 'max-content' }"
         :loading="loading"
-        :row-selection="{
-          selectedRowKeys: checkedRowKeys,
-          onChange: keys => (checkedRowKeys.value = keys)
-        }"
+        :row-selection="rowSelection"
         row-key="id"
         :pagination="pagination"
         class="h-full"

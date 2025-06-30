@@ -26,6 +26,18 @@
         <result property="updateBy" column="update_by"/>
         <result property="isDeleted" column="is_deleted"/>
         <result property="deleteTime" column="delete_time"/>
+        <!-- 添加角色ID列表属性映射 -->
+        <collection property="roleIds" ofType="java.lang.Long" javaType="java.util.ArrayList">
+            <result column="role_id"/>
+        </collection>
+        <!-- 添加岗位ID列表属性映射 -->
+        <collection property="postIds" ofType="java.lang.Long" javaType="java.util.ArrayList">
+            <result column="post_id"/>
+        </collection>
+        <!-- 添加部门ID列表属性映射 -->
+        <collection property="deptIds" ofType="java.lang.Long" javaType="java.util.ArrayList">
+            <result column="dept_id"/>
+        </collection>
     </resultMap>
 
     <!-- 查询用户详情（包含角色、部门、岗位信息） -->
@@ -52,8 +64,14 @@
             u.create_by,
             u.update_by,
             u.is_deleted,
-            u.delete_time
+            u.delete_time,
+            ur.role_id,
+            up.post_id,
+            ud.dept_id
         FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        LEFT JOIN sys_user_post up ON u.id = up.user_id
+        LEFT JOIN sys_user_dept ud ON u.id = ud.user_id
         WHERE u.id = #{userId} AND u.is_deleted = 0
     </select>
 

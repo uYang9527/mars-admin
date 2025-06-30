@@ -334,13 +334,19 @@ const local: App.I18n.Schema = {
         title: '角色列表',
         roleName: '角色名称',
         roleCode: '角色编码',
+        roleKey: '权限字符',
         roleStatus: '角色状态',
         roleDesc: '角色描述',
         menuAuth: '菜单权限',
         buttonAuth: '按钮权限',
+        dataAuth: '数据权限',
+        selectMenuTip: '请选择要分配的菜单权限',
+        selectDataTip: '请选择要分配的数据权限',
+        selectButtonTip: '请选择要分配的按钮权限',
         form: {
           roleName: '请输入角色名称',
           roleCode: '请输入角色编码',
+          roleKey: '请输入权限字符',
           roleStatus: '请选择角色状态',
           roleDesc: '请输入角色描述'
         },
@@ -369,7 +375,8 @@ const local: App.I18n.Schema = {
         editUser: '编辑用户',
         gender: {
           male: '男',
-          female: '女'
+          female: '女',
+          unknown: '未知'
         }
       },
       menu: {

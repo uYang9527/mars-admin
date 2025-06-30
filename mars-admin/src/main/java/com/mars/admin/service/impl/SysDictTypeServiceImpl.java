@@ -2,6 +2,7 @@ package com.mars.admin.service.impl;
 
 import com.mars.admin.entity.SysDictType;
 import com.mars.admin.mapper.SysDictTypeMapper;
+import com.mars.admin.service.ISysDictDataService;
 import com.mars.admin.service.ISysDictTypeService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -26,6 +27,9 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
 
     @Autowired
     private SysDictTypeMapper sysDictTypeMapper;
+
+    @Autowired
+    private ISysDictDataService sysDictDataService;
 
     @Override
     public SysDictType selectByDictType(String dictType) {
@@ -83,8 +87,33 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public boolean deleteDictTypeById(Long dictTypeId) {
+        // 查询字典类型信息
+        SysDictType dictType = this.getById(dictTypeId);
+        if (dictType == null) {
+            return false;
+        }
+        
+        // 删除关联的字典数据
+        sysDictDataService.deleteDictDataByType(dictType.getDictType());
+        
+        // 删除字典类型
+        return this.removeById(dictTypeId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteDictTypes(Long[] dictTypeIds) {
-        return this.removeByIds(Arrays.asList(dictTypeIds));
+        if (dictTypeIds == null || dictTypeIds.length == 0) {
+            return false;
+        }
+        
+        // 依次删除每个字典类型及其关联的字典数据
+        for (Long dictTypeId : dictTypeIds) {
+            deleteDictTypeById(dictTypeId);
+        }
+        
+        return true;
     }
 
     @Override

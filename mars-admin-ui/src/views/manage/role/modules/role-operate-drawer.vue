@@ -4,8 +4,10 @@ import { useBoolean } from '@sa/hooks';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import { $t } from '@/locales';
 import { enableStatusOptions } from '@/constants/business';
+import { fetchAddRole, fetchUpdateRole } from '@/service/api';
 import MenuAuthModal from './menu-auth-modal.vue';
 import ButtonAuthModal from './button-auth-modal.vue';
+import DataAuthModal from './data-auth-modal.vue';
 
 defineOptions({
   name: 'RoleOperateDrawer'
@@ -34,6 +36,7 @@ const { formRef, validate, resetFields } = useAntdForm();
 const { defaultRequiredRule } = useFormRules();
 const { bool: menuAuthVisible, setTrue: openMenuAuthModal } = useBoolean();
 const { bool: buttonAuthVisible, setTrue: openButtonAuthModal } = useBoolean();
+const { bool: dataAuthVisible, setTrue: openDataAuthModal } = useBoolean();
 
 const title = computed(() => {
   const titles: Record<AntDesign.TableOperateType, string> = {
@@ -43,7 +46,7 @@ const title = computed(() => {
   return titles[props.operateType];
 });
 
-type Model = Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'description' | 'status'>;
+type Model = Pick<Api.SystemManage.Role, 'roleName' | 'roleCode' | 'roleKey' | 'description' | 'status'>;
 
 const model = ref(createDefaultModel());
 
@@ -51,6 +54,7 @@ function createDefaultModel(): Model {
   return {
     roleName: '',
     roleCode: '',
+    roleKey: '',
     description: '',
     status: '1'
   };
@@ -61,6 +65,7 @@ type RuleKey = Exclude<keyof Model, 'description'>;
 const rules: Record<RuleKey, App.Global.FormRule> = {
   roleName: defaultRequiredRule,
   roleCode: defaultRequiredRule,
+  roleKey: defaultRequiredRule,
   status: defaultRequiredRule
 };
 
@@ -82,10 +87,25 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
-  // request
-  window.$message?.success($t('common.updateSuccess'));
-  closeDrawer();
-  emit('submitted');
+  
+  let request;
+  if (props.operateType === 'add') {
+    request = fetchAddRole(model.value);
+  } else {
+    request = fetchUpdateRole({
+      ...model.value,
+      id: props.rowData?.id
+    });
+  }
+
+  const { error } = await request;
+  
+  if (!error) {
+    // 使用直接的中文提示
+    window.$message?.success(props.operateType === 'add' ? '新增角色成功' : '编辑角色成功');
+    closeDrawer();
+    emit('submitted');
+  }
 }
 
 watch(visible, () => {
@@ -118,6 +138,9 @@ watch(visible, () => {
       <AFormItem :label="$t('page.manage.role.roleCode')" name="roleCode">
         <AInput v-model:value="model.roleCode" :placeholder="$t('page.manage.role.form.roleCode')" />
       </AFormItem>
+      <AFormItem :label="$t('page.manage.role.roleKey')" name="roleKey">
+        <AInput v-model:value="model.roleKey" :placeholder="$t('page.manage.role.form.roleKey')" />
+      </AFormItem>
       <AFormItem :label="$t('page.manage.role.roleStatus')" name="status">
         <ARadioGroup v-model:value="model.status">
           <ARadio v-for="item in enableStatusOptions" :key="item.value" :value="item.value">
@@ -131,8 +154,10 @@ watch(visible, () => {
     </AForm>
     <ASpace v-if="isEdit">
       <AButton @click="openMenuAuthModal">{{ $t('page.manage.role.menuAuth') }}</AButton>
-      <MenuAuthModal v-model:visible="menuAuthVisible" :role-id="roleId" />
+      <AButton @click="openDataAuthModal">{{ $t('page.manage.role.dataAuth') }}</AButton>
       <AButton @click="openButtonAuthModal">{{ $t('page.manage.role.buttonAuth') }}</AButton>
+      <MenuAuthModal v-model:visible="menuAuthVisible" :role-id="roleId" />
+      <DataAuthModal v-model:visible="dataAuthVisible" :role-id="roleId" />
       <ButtonAuthModal v-model:visible="buttonAuthVisible" :role-id="roleId" />
     </ASpace>
     <template #footer>

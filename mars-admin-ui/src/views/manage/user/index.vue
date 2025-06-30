@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import {reactive, ref, watch, computed} from 'vue';
 import type {Ref} from 'vue';
-import {Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable} from 'ant-design-vue';
+import {Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable, Modal} from 'ant-design-vue';
 import {useTable, useTableOperate} from '@/hooks/common/table';
 import {
   fetchGetUserList,
@@ -29,49 +29,53 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
       size: 10,
       // if you want to use the searchParams in Form, you can define the initial values
       status: null,
-      userName: null,
-      userGender: null,
-      nickName: null,
+      username: null,
+      gender: null,
+      nickname: null,
       phone: null,
       email: null
     },
     columns: () => [
       {
+        key: 'selection',
+        title: '',
+        align: 'center',
+        type: 'selection',
+        width: 48,
+        fixed: 'left'
+      },
+      {
         key: 'index',
         dataIndex: 'index',
         title: $t('common.index'),
-        width: 64,
         align: 'center',
         customRender: ({index}) => index + 1
       },
       {
-        key: 'userName',
-        dataIndex: 'userName',
+        key: 'username',
+        dataIndex: 'username',
         title: $t('page.manage.user.userName'),
         align: 'center',
-        minWidth: 100
       },
       {
-        key: 'nickName',
-        dataIndex: 'nickName',
+        key: 'nickname',
+        dataIndex: 'nickname',
         title: $t('page.manage.user.nickName'),
         align: 'center',
-        minWidth: 100
       },
       {
-        key: 'userGender',
-        dataIndex: 'userGender',
+        key: 'gender',
+        dataIndex: 'gender',
         title: $t('page.manage.user.userGender'),
         align: 'center',
-        minWidth: 100,
         customRender: ({record}) => {
-          if (record.userGender === null) {
+          if (record.gender === null) {
             return null;
           }
 
-          const label = $t(userGenderRecord[record.userGender]);
+          const label = $t(userGenderRecord[record.gender]);
 
-          return <Tag color={record.userGender === 0 ? 'blue' : 'pink'}>{label}</Tag>;
+          return <Tag color={record.gender === 0 ? 'blue' : 'pink'}>{label}</Tag>;
         }
       },
       {
@@ -79,21 +83,18 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
         dataIndex: 'phone',
         title: $t('page.manage.user.userPhone'),
         align: 'center',
-        minWidth: 120
       },
       {
         key: 'email',
         dataIndex: 'email',
         title: $t('page.manage.user.userEmail'),
         align: 'center',
-        minWidth: 100
       },
       {
         key: 'status',
         dataIndex: 'status',
         title: $t('page.manage.user.userStatus'),
         align: 'center',
-        width: 100,
         customRender: ({record}) => {
           if (record.status === null) {
             return null;
@@ -108,7 +109,6 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
         key: 'operate',
         title: $t('common.operate'),
         align: 'center',
-        width: 260,
         customRender: ({record}) => (
           <div class="flex-center gap-8px">
             <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
@@ -143,25 +143,64 @@ const {
   handleEdit,
   checkedRowKeys,
   onBatchDeleted,
-  onDeleted
-  // you can use other methods of useTableOperate
+  onDeleted,
+  onSelectChange,
+  rowSelection
 } = useTableOperate(data, getData);
 
 async function handleBatchDelete() {
-  const {error} = await fetchDeleteUsers(checkedRowKeys.value);
-  if (!error) {
-    onBatchDeleted();
+  try {
+    // 先检查是否有选择记录
+    if (checkedRowKeys.value.length === 0) {
+      window.$message?.warning('请选择要删除的用户');
+      return;
+    }
+    
+    // 使用ant-design-vue的Modal.confirm替代
+    Modal.confirm({
+      title: '批量删除用户',
+      content: `确定要删除选中的 ${checkedRowKeys.value.length} 个用户吗？删除后无法恢复！`,
+      okText: '确定',
+      cancelText: '取消',
+      async onOk() {
+        // 发送请求
+        const { error } = await fetchDeleteUsers(checkedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          onBatchDeleted();
+        } else {
+          window.$message?.error('批量删除失败: ' + error);
+        }
+      }
+    });
+  } catch (e) {
+    window.$message?.error('操作失败: ' + e.message);
   }
 }
 
 async function handleDelete(id: number) {
-  const {error} = await fetchDeleteUser(id);
-  if (!error) {
-    onDeleted();
+  try {
+    // 检查是否是管理员用户
+    const user = data.value.find(item => item.id === id);
+    if (user && user.username === 'admin') {
+      window.$message?.error('管理员用户不能删除');
+      return;
+    }
+    
+    // 发送请求
+    const { error } = await fetchDeleteUser(id);
+    if (!error) {
+      window.$message?.success('删除成功');
+      onDeleted();
+    } else {
+      window.$message?.error('删除失败: ' + error);
+    }
+  } catch (e) {
+    window.$message?.error('操作失败: ' + e.message);
   }
 }
 
-async function toggleStatus(id: number, status: string) {
+async function toggleStatus(id: number, status: number) {
   const newStatus = status === 1 ? 0 : 1;
   const {error} = await fetchChangeUserStatus(id, newStatus);
   if (!error) {
@@ -208,6 +247,7 @@ function edit(id: number) {
         :scroll="{ x: 'max-content', y: 'calc(100vh - 320px)' }"
         :loading="loading"
         row-key="id"
+        :row-selection="rowSelection"
         :pagination="mobilePagination"
         class="h-full"
       />
