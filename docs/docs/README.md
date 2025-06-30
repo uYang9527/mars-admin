@@ -74,3 +74,14 @@ Mars Admin是一个开箱即用的企业级后台管理系统，采用前后端�
 ## 开源协议
 
 Mars Admin 使用 [MIT 许可证](https://opensource.org/licenses/MIT)。
+
+
+## 启动
+
+```angular2html
+# 示例：使用 Docsify 快速搭建
+npm install -g docsify-cli
+docsify init ./docs
+docsify serve docs
+
+```
