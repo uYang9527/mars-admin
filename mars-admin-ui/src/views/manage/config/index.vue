@@ -1,129 +1,11 @@
-<template>
-  <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <!-- 搜索区域 -->
-    <ACard 
-      :title="$t('common.search')" 
-      :bordered="false" 
-      class="card-wrapper" 
-      :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
-      :data-collapsed="collapsed"
-    >
-      <template #extra>
-        <AButton type="text" @click="toggleCollapsed">
-          <template #icon>
-            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
-            <icon-mdi:chevron-up v-else class="text-icon" />
-          </template>
-          {{ collapsed ? '展开' : '收起' }}
-        </AButton>
-      </template>
-      
-      <div v-show="!collapsed">
-        <AForm
-          :model="searchForm"
-          :label-col="{
-            span: 5,
-            md: 7
-          }"
-        >
-          <ARow :gutter="[16, 16]" wrap>
-            <ACol :span="24" :md="12" :lg="8">
-              <AFormItem label="参数名称" name="configName" class="m-0">
-                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" />
-              </AFormItem>
-            </ACol>
-            <ACol :span="24" :md="12" :lg="8">
-              <AFormItem label="参数键名" name="configKey" class="m-0">
-                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" />
-              </AFormItem>
-            </ACol>
-            <ACol :span="24" :md="12" :lg="8">
-              <AFormItem label="系统内置" name="configType" class="m-0">
-                <ASelect
-                  v-model:value="searchForm.configType"
-                  placeholder="请选择系统内置"
-                  :options="[
-                    { label: '是', value: 'Y' },
-                    { label: '否', value: 'N' }
-                  ]"
-                  allowClear
-                />
-              </AFormItem>
-            </ACol>
-            <div class="flex-1">
-              <AFormItem class="m-0">
-                <div class="w-full flex-y-center justify-end gap-12px">
-                  <AButton @click="handleReset">
-                    <template #icon>
-                      <icon-ic-round-refresh class="align-sub text-icon" />
-                    </template>
-                    <span class="ml-8px">{{ $t('common.reset') }}</span>
-                  </AButton>
-                  <AButton type="primary" ghost @click="handleSearch">
-                    <template #icon>
-                      <icon-ic-round-search class="align-sub text-icon" />
-                    </template>
-                    <span class="ml-8px">{{ $t('common.search') }}</span>
-                  </AButton>
-                </div>
-              </AFormItem>
-            </div>
-          </ARow>
-        </AForm>
-      </div>
-    </ACard>
-
-    <!-- 参数配置表格区域 -->
-    <ACard
-      title="参数配置列表"
-      :bordered="false"
-      :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
-    >
-      <template #extra>
-        <TableHeaderOperation
-          v-model:columns="columnChecks"
-          :disabled-delete="checkedRowKeys.length === 0"
-          :loading="loading"
-          @add="handleAdd"
-          @delete="handleBatchDelete"
-          @refresh="getData"
-        />
-      </template>
-      <ATable
-        :columns="columns"
-        :data-source="data"
-        size="small"
-        :scroll="{ x: 'max-content' }"
-        :loading="loading"
-        :row-selection="{
-          selectedRowKeys: checkedRowKeys,
-          onChange: keys => (checkedRowKeys.value = keys)
-        }"
-        row-key="id"
-        :pagination="pagination"
-        class="h-full"
-      />
-    </ACard>
-
-    <!-- 参数配置操作抽屉 -->
-    <ConfigOperateDrawer
-      v-model:visible="drawerVisible"
-      :operate-type="operateType"
-      :row-data="editingData"
-      @submitted="getData"
-    />
-  </div>
-</template>
-
 <script setup lang="tsx">
-import { reactive, ref, onMounted } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { Button, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { 
-  fetchGetConfigList, 
-  fetchDeleteConfig, 
+import {
+  fetchDeleteConfig,
   fetchDeleteConfigs,
+  fetchGetConfigList,
   fetchRefreshConfigCache
 } from '@/service/api/system-config';
 import { $t } from '@/locales';
@@ -140,15 +22,7 @@ const appStore = useAppStore();
 const wrapperEl = ref<HTMLElement>();
 
 // 参数配置表格配置
-const {
-  columns,
-  columnChecks,
-  data,
-  getData,
-  loading,
-  pagination,
-  searchParams
-} = useTable({
+const { columns, columnChecks, data, getData, loading, pagination, searchParams } = useTable({
   apiFn: fetchGetConfigList,
   apiParams: {
     current: 1,
@@ -196,11 +70,11 @@ const {
         if (!record.configType) {
           return null;
         }
-        
+
         const configType = record.configType;
         const label = configType === 'Y' ? '是' : '否';
         const color = configType === 'Y' ? 'success' : 'default';
-        
+
         return <Tag color={color}>{label}</Tag>;
       }
     },
@@ -241,16 +115,8 @@ const {
   ]
 });
 
-const {
-  drawerVisible,
-  operateType,
-  editingData,
-  handleAdd,
-  handleEdit,
-  checkedRowKeys,
-  onBatchDeleted,
-  onDeleted
-} = useTableOperate(data, getData);
+const { drawerVisible, operateType, editingData, handleAdd, handleEdit, checkedRowKeys, onBatchDeleted, onDeleted } =
+  useTableOperate(data, getData);
 
 // 搜索表单
 const searchForm = reactive({
@@ -320,6 +186,124 @@ onMounted(() => {
 });
 </script>
 
+<template>
+  <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+    <!-- 搜索区域 -->
+    <ACard
+      :title="$t('common.search')"
+      :bordered="false"
+      class="card-wrapper"
+      :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
+      :data-collapsed="collapsed"
+    >
+      <template #extra>
+        <AButton type="text" @click="toggleCollapsed">
+          <template #icon>
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+            <icon-mdi:chevron-up v-else class="text-icon" />
+          </template>
+          {{ collapsed ? '展开' : '收起' }}
+        </AButton>
+      </template>
+
+      <div v-show="!collapsed">
+        <AForm
+          :model="searchForm"
+          :label-col="{
+            span: 5,
+            md: 7
+          }"
+        >
+          <ARow :gutter="[16, 16]" wrap>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="参数名称" name="configName" class="m-0">
+                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" @pressEnter="handleSearch"/>
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="参数键名" name="configKey" class="m-0">
+                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" />
+              </AFormItem>
+            </ACol>
+            <ACol :span="24" :md="12" :lg="8">
+              <AFormItem label="系统内置" name="configType" class="m-0">
+                <ASelect
+                  v-model:value="searchForm.configType"
+                  placeholder="请选择系统内置"
+                  :options="[
+                    { label: '是', value: 'Y' },
+                    { label: '否', value: 'N' }
+                  ]"
+                  allow-clear
+                />
+              </AFormItem>
+            </ACol>
+            <div class="flex-1">
+              <AFormItem class="m-0">
+                <div class="w-full flex-y-center justify-end gap-12px">
+                  <AButton @click="handleReset">
+                    <template #icon>
+                      <icon-ic-round-refresh class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.reset') }}</span>
+                  </AButton>
+                  <AButton type="primary" ghost @click="handleSearch">
+                    <template #icon>
+                      <icon-ic-round-search class="align-sub text-icon" />
+                    </template>
+                    <span class="ml-8px">{{ $t('common.search') }}</span>
+                  </AButton>
+                </div>
+              </AFormItem>
+            </div>
+          </ARow>
+        </AForm>
+      </div>
+    </ACard>
+
+    <!-- 参数配置表格区域 -->
+    <ACard
+      title="参数配置列表"
+      :bordered="false"
+      :body-style="{ paddingTop: '0px' }"
+      class="sm:flex-1-hidden card-wrapper"
+    >
+      <template #extra>
+        <TableHeaderOperation
+          v-model:columns="columnChecks"
+          :disabled-delete="checkedRowKeys.length === 0"
+          :loading="loading"
+          @add="handleAdd"
+          @delete="handleBatchDelete"
+          @refresh="getData"
+        />
+      </template>
+      <ATable
+        :columns="columns"
+        :data-source="data"
+        size="small"
+        :scroll="{ x: 'max-content' }"
+        :loading="loading"
+        :row-selection="{
+          selectedRowKeys: checkedRowKeys,
+          onChange: keys => (checkedRowKeys.value = keys)
+        }"
+        row-key="id"
+        :pagination="pagination"
+        class="h-full"
+      />
+    </ACard>
+
+    <!-- 参数配置操作抽屉 -->
+    <ConfigOperateDrawer
+      v-model:visible="drawerVisible"
+      :operate-type="operateType"
+      :row-data="editingData"
+      @submitted="getData"
+    />
+  </div>
+</template>
+
 <style scoped>
 .text-icon {
   font-size: 16px;
@@ -336,7 +320,7 @@ onMounted(() => {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -344,8 +328,8 @@ onMounted(() => {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
-</style> 
+</style>
