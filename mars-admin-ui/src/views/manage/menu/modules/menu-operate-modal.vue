@@ -6,7 +6,7 @@ import { $t } from '@/locales';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import { getLocalIcons } from '@/utils/icon';
-import { fetchGetAllRoles } from '@/service/api';
+import { fetchGetAllRoles, fetchAddMenu, fetchUpdateMenu } from '@/service/api';
 import {
   getLayoutAndPage,
   getPathParamFromRoutePath,
@@ -16,7 +16,7 @@ import {
 } from './shared';
 
 defineOptions({
-  name: 'MenuOperateModal'
+  name: 'MenuOperateDrawer'
 });
 
 export type OperateType = AntDesign.TableOperateType | 'addChild';
@@ -27,10 +27,12 @@ interface Props {
   /** the edit menu data or the parent menu data when adding a child menu */
   rowData?: Api.SystemManage.Menu | null;
   /** all pages */
-  allPages: string[];
+  allPages?: string[];
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  allPages: () => []
+});
 
 interface Emits {
   (e: 'submitted'): void;
@@ -273,13 +275,23 @@ async function handleSubmit() {
 
   const params = getSubmitParams();
 
-  console.log('params: ', params);
-
-  // request
+  // 根据操作类型调用不同的API
   const isAdd = props.operateType === 'add' || props.operateType === 'addChild';
-  window.$message?.success(isAdd ? '新增菜单成功' : '编辑菜单成功');
-  closeDrawer();
-  emit('submitted');
+  let request;
+  
+  if (isAdd) {
+    request = fetchAddMenu(params);
+  } else {
+    request = fetchUpdateMenu({...params, id: props.rowData?.id});
+  }
+  
+  const {error} = await request;
+  
+  if (!error) {
+    window.$message?.success(isAdd ? '新增菜单成功' : '编辑菜单成功');
+    closeDrawer();
+    emit('submitted');
+  }
 }
 
 watch(visible, () => {
@@ -300,8 +312,14 @@ watch(
 </script>
 
 <template>
-  <AModal v-model:open="visible" :title="title" width="800px">
-    <div class="h-480px">
+  <ADrawer
+    v-model:open="visible"
+    :title="title"
+    :width="800"
+    :body-style="{ paddingRight: '20px' }"
+    :footer-style="{ textAlign: 'right' }"
+  >
+    <div class="h-full overflow-auto">
       <SimpleScrollbar>
         <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ lg: 8, xs: 4 }" label-wrap class="pr-20px">
           <ARow>
@@ -561,12 +579,12 @@ watch(
       </SimpleScrollbar>
     </div>
     <template #footer>
-      <ASpace justify="end" :size="16">
+      <div class="flex-y-center justify-end gap-12px">
         <AButton @click="closeDrawer">{{ $t('common.cancel') }}</AButton>
         <AButton type="primary" @click="handleSubmit">{{ $t('common.confirm') }}</AButton>
-      </ASpace>
+      </div>
     </template>
-  </AModal>
+  </ADrawer>
 </template>
 
 <style scoped></style>

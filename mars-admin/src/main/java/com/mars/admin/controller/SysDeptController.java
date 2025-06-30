@@ -60,29 +60,15 @@ public class SysDeptController extends BaseController<SysDept, Long> {
     }
 
     /**
-     * 删除部门
+     * 批量删除部门（重写BaseController的方法）
+     *
+     * @param ids ID列表
+     * @return 删除结果
      */
-    @DeleteMapping("/removeDept/{id}")
-    @Operation(summary = "删除部门", description = "删除部门")
-    public Result<Boolean> removeDept(@Parameter(description = "部门ID") @PathVariable Long id) {
-        // 检查是否有子部门
-        if (sysDeptService.hasChildDept(id)) {
-            return Result.error("存在子部门，不能删除");
-        }
-        // 检查是否有关联用户
-        if (sysDeptService.hasAssociatedUser(id)) {
-            return Result.error("部门存在关联用户，不能删除");
-        }
-        boolean success = sysDeptService.removeById(id);
-        return Result.of(success, "删除成功", "删除失败");
-    }
-
-    /**
-     * 批量删除部门
-     */
-    @DeleteMapping("/batchRemove")
-    @Operation(summary = "批量删除部门", description = "批量删除部门")
-    public Result<Boolean> batchRemove(@Parameter(description = "部门ID列表") @RequestBody List<Long> ids) {
+    @Override
+    @Operation(summary = "批量删除部门", description = "根据ID列表批量删除部门及关联数据")
+    @DeleteMapping("/batch")
+    public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
         }
@@ -99,9 +85,32 @@ public class SysDeptController extends BaseController<SysDept, Long> {
                 return Result.error("部门ID:" + id + "存在关联用户，不能删除");
             }
         }
-
-        boolean success = sysDeptService.deleteDepts(ids.toArray(new Long[0]));
+        
+        Long[] deptIds = ids.toArray(new Long[0]);
+        boolean success = sysDeptService.deleteDepts(deptIds);
         return Result.of(success, "批量删除成功", "批量删除失败");
+    }
+
+    /**
+     * 根据ID删除部门（重写BaseController的方法）
+     *
+     * @param id 主键ID
+     * @return 是否成功
+     */
+    @Operation(summary = "根据ID删除部门", description = "根据主键ID删除部门及关联数据")
+    @DeleteMapping("/{id}")
+    @Override
+    public Result<Boolean> deleteById(@Parameter(description = "主键ID", required = true) @PathVariable Long id) {
+        // 检查是否有子部门
+        if (sysDeptService.hasChildDept(id)) {
+            return Result.error("存在子部门，不能删除");
+        }
+        // 检查是否有关联用户
+        if (sysDeptService.hasAssociatedUser(id)) {
+            return Result.error("部门存在关联用户，不能删除");
+        }
+        boolean success = sysDeptService.deleteDeptById(id);
+        return Result.of(success, "删除成功", "删除失败");
     }
 
     /**

@@ -578,6 +578,10 @@ declare namespace App {
             parentId: string;
             menuType: string;
             menuName: string;
+            menuCode: string;
+            menuCodeDirectory: string;
+            menuCodeMenu: string;
+            menuCodeButton: string;
             constant: string;
             routeName: string;
             routePath: string;
@@ -600,10 +604,23 @@ declare namespace App {
             buttonCode: string;
             buttonDesc: string;
             menuStatus: string;
+            perms: string;
+            redirect: string;
+            visible: string;
+            isFrame: string;
+            isCache: string;
+            iconType: {
+              iconify: string;
+              local: string;
+            };
             form: {
               home: string;
               menuType: string;
               menuName: string;
+              menuCode: string;
+              menuCodeDirectory: string;
+              menuCodeMenu: string;
+              menuCodeButton: string;
               routeName: string;
               routePath: string;
               pathParam: string;
@@ -626,6 +643,11 @@ declare namespace App {
               buttonCode: string;
               buttonDesc: string;
               menuStatus: string;
+              perms: string;
+              redirect: string;
+              visible: string;
+              isFrame: string;
+              isCache: string;
             };
             addMenu: string;
             editMenu: string;
@@ -633,10 +655,7 @@ declare namespace App {
             type: {
               directory: string;
               menu: string;
-            };
-            iconType: {
-              iconify: string;
-              local: string;
+              button: string;
             };
           };
         };

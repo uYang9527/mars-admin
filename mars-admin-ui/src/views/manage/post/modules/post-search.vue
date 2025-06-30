@@ -68,12 +68,12 @@ function toggleCollapsed() {
         <ARow :gutter="[16, 16]" wrap>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="岗位名称" name="postName" class="m-0">
-              <AInput v-model:value="model.postName" placeholder="请输入岗位名称" />
+              <AInput v-model:value="model.postName" placeholder="请输入岗位名称" @pressEnter="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="岗位编码" name="postCode" class="m-0">
-              <AInput v-model:value="model.postCode" placeholder="请输入岗位编码" />
+              <AInput v-model:value="model.postCode" placeholder="请输入岗位编码" @pressEnter="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">

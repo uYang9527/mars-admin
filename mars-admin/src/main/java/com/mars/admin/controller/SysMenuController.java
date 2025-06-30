@@ -98,4 +98,49 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
         boolean unique = sysMenuService.checkPermsUnique(perms, menuId);
         return Result.success(unique);
     }
+
+    /**
+     * 根据ID删除菜单（重写BaseController的方法）
+     *
+     * @param id 主键ID
+     * @return 是否成功
+     */
+    @Operation(summary = "根据ID删除菜单", description = "根据主键ID删除菜单及关联数据")
+    @DeleteMapping("/{id}")
+    @Override
+    public Result<Boolean> deleteById(@Parameter(description = "主键ID", required = true) @PathVariable Long id) {
+        // 检查是否有子菜单
+        if (sysMenuService.hasChildMenu(id)) {
+            return Result.error("存在子菜单，不能删除");
+        }
+        
+        boolean success = sysMenuService.deleteMenuById(id);
+        return Result.of(success, "删除成功", "删除失败");
+    }
+
+    /**
+     * 批量删除菜单（重写BaseController的方法）
+     *
+     * @param ids ID列表
+     * @return 删除结果
+     */
+    @Operation(summary = "批量删除菜单", description = "根据ID列表批量删除菜单及关联数据")
+    @DeleteMapping("/batch")
+    public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        
+        // 检查每个菜单是否可以删除
+        for (Long id : ids) {
+            // 检查是否有子菜单
+            if (sysMenuService.hasChildMenu(id)) {
+                return Result.error("菜单ID:" + id + "存在子菜单，不能删除");
+            }
+        }
+        
+        Long[] menuIds = ids.toArray(new Long[0]);
+        boolean success = sysMenuService.deleteMenus(menuIds);
+        return Result.of(success, "批量删除成功", "批量删除失败");
+    }
 } 

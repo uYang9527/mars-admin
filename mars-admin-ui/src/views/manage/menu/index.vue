@@ -1,24 +1,26 @@
 <script setup lang="tsx">
-import { ref, reactive } from 'vue';
-import { Button, Popconfirm, Tag, Space } from 'ant-design-vue';
+import { ref, reactive, computed } from 'vue';
+import { Button, Popconfirm, Tag, Space, Modal } from 'ant-design-vue';
 import { SearchOutlined, ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { 
   fetchGetMenuTree, 
   fetchDeleteMenu,
+  fetchDeleteMenus,
   fetchAddMenu,
   fetchUpdateMenu
 } from '@/service/api';
 import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-import MenuOperateModal from './modules/menu-operate-modal.vue';
+import MenuOperateDrawer from './modules/menu-operate-drawer.vue';
 
 const loading = ref(false);
 const menuList = ref<Api.SystemManage.Menu[]>([]);
+const checkedRowKeys = ref<number[]>([]);
 
 // 弹窗相关
 const modalVisible = ref(false);
-const operateType = ref<'add' | 'edit'>('add');
+const operateType = ref<'add' | 'edit' | 'addChild'>('add');
 const editingData = ref<Api.SystemManage.Menu | null>(null);
 
 // 获取菜单树列表
@@ -80,8 +82,15 @@ function filterMenuTree(data: Api.SystemManage.Menu[]): Api.SystemManage.Menu[] 
 
 // 新增菜单
 function handleAdd(parentId?: number) {
-  operateType.value = 'add';
-  editingData.value = parentId ? { parentId } as Api.SystemManage.Menu : null;
+  if (parentId) {
+    // 新增子菜单
+    operateType.value = 'addChild';
+    editingData.value = { id: parentId } as Api.SystemManage.Menu;
+  } else {
+    // 新增根菜单
+    operateType.value = 'add';
+    editingData.value = null;
+  }
   modalVisible.value = true;
 }
 
@@ -92,12 +101,46 @@ function handleEdit(record: Api.SystemManage.Menu) {
   modalVisible.value = true;
 }
 
+// 批量删除菜单
+async function handleBatchDelete() {
+  if (checkedRowKeys.value.length === 0) {
+    window.$message?.warning('请选择要删除的菜单');
+    return;
+  }
+
+  // 使用ant-design-vue的Modal.confirm替代
+  Modal.confirm({
+    title: '批量删除菜单',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个菜单吗？删除后无法恢复！`,
+    okText: '确定',
+    cancelText: '取消',
+    async onOk() {
+      try {
+        const { error, message } = await fetchDeleteMenus(checkedRowKeys.value);
+        if (!error) {
+          window.$message?.success('批量删除成功');
+          checkedRowKeys.value = [];
+          getMenuList();
+        } else {
+          // 显示后端返回的错误信息
+          window.$message?.error(message || '批量删除失败');
+        }
+      } catch (error) {
+        window.$message?.error('批量删除失败');
+      }
+    }
+  });
+}
+
 // 删除菜单
 async function handleDelete(id: number) {
-  const { error } = await fetchDeleteMenu(id);
+  const { error, message } = await fetchDeleteMenu(id);
   if (!error) {
     window.$message?.success('删除成功');
     getMenuList();
+  } else {
+    // 显示后端返回的错误信息
+    window.$message?.error(message || '删除失败');
   }
 }
 
@@ -230,6 +273,17 @@ const columns = [
     )
   }
 ];
+
+// 表格行选择配置
+const rowSelection = computed(() => {
+  return {
+    selectedRowKeys: checkedRowKeys.value,
+    onChange: (selectedRowKeys: number[]) => {
+      checkedRowKeys.value = selectedRowKeys;
+    },
+    columnWidth: 48
+  };
+});
 
 // 搜索表单
 const searchForm = reactive({
@@ -378,7 +432,9 @@ getMenuList();
       <template #extra>
         <TableHeaderOperation
           :loading="loading"
+          :disabled-delete="checkedRowKeys.length === 0"
           @add="handleAdd"
+          @delete="handleBatchDelete"
           @refresh="getMenuList"
         >
           <template #prefix>
@@ -398,12 +454,13 @@ getMenuList();
         size="small"
         :scroll="{ x: 'max-content' }"
         :default-expand-all-rows="true"
+        :row-selection="rowSelection"
         class="h-full"
       />
     </ACard>
 
     <!-- 菜单操作弹窗 -->
-    <MenuOperateModal
+    <MenuOperateDrawer
       v-model:visible="modalVisible"
       :operate-type="operateType"
       :row-data="editingData"

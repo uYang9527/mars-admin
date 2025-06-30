@@ -73,12 +73,12 @@ function handleReset() {
       <ARow :gutter="[16, 16]" wrap>
         <ACol :span="24" :md="12" :lg="8">
           <AFormItem label="字典标签" name="dictLabel" class="m-0">
-            <AInput v-model:value="searchModel.dictLabel" placeholder="请输入字典标签" />
+            <AInput v-model:value="searchModel.dictLabel" placeholder="请输入字典标签" @input="handleSearch" />
           </AFormItem>
         </ACol>
         <ACol :span="24" :md="12" :lg="8">
           <AFormItem label="字典键值" name="dictValue" class="m-0">
-            <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" />
+            <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" @pressEnter="handleSearch" />
           </AFormItem>
         </ACol>
         <ACol :span="24" :md="12" :lg="8">
@@ -88,6 +88,7 @@ function handleReset() {
               placeholder="请选择状态"
               :options="statusOptions"
               clearable
+              @change="handleSearch"
             />
           </AFormItem>
         </ACol>

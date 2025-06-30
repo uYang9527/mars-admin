@@ -101,6 +101,14 @@ public interface ISysMenuService extends BaseService<SysMenu> {
     boolean updateMenu(SysMenu menu);
 
     /**
+     * 删除单个菜单
+     *
+     * @param menuId 菜单ID
+     * @return 删除结果
+     */
+    boolean deleteMenuById(Long menuId);
+
+    /**
      * 删除菜单
      *
      * @param menuIds 菜单ID数组
@@ -125,4 +133,12 @@ public interface ISysMenuService extends BaseService<SysMenu> {
      * @return 是否唯一
      */
     boolean checkPermsUnique(String perms, Long menuId);
+
+    /**
+     * 检查菜单是否有子菜单
+     *
+     * @param menuId 菜单ID
+     * @return 是否有子菜单
+     */
+    boolean hasChildMenu(Long menuId);
 } 

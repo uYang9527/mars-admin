@@ -401,6 +401,17 @@ export function fetchDeleteMenu(id: number) {
 }
 
 /**
+ * 批量删除菜单
+ */
+export function fetchDeleteMenus(ids: number[]) {
+  return request({
+    url: '/system/menu/batch',
+    method: 'delete',
+    data: ids
+  });
+}
+
+/**
  * 校验菜单编码是否唯一
  */
 export function fetchCheckMenuCodeUnique(menuCode: string, menuId?: number) {
@@ -500,7 +511,7 @@ export function fetchUpdateDept(data: Partial<Api.SystemManage.Dept>) {
  */
 export function fetchDeleteDept(id: number) {
   return request({
-    url: `/system/dept/removeDept/${id}`,
+    url: `/system/dept/${id}`,
     method: 'delete'
   });
 }
@@ -510,7 +521,7 @@ export function fetchDeleteDept(id: number) {
  */
 export function fetchDeleteDepts(ids: number[]) {
   return request({
-    url: '/system/dept/batchRemove',
+    url: '/system/dept/batch',
     method: 'delete',
     data: ids
   });
@@ -543,7 +554,7 @@ export function fetchCheckDeptNameUnique(deptName: string, deptId?: number) {
  */
 export function fetchGetPostList(params?: Api.SystemManage.PostSearchParams) {
   return request<Api.SystemManage.PostList>({
-    url: '/system/post/page',
+    url: '/system/post/pageList',
     method: 'get',
     params
   });
