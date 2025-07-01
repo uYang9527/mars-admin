@@ -782,12 +782,34 @@ export function fetchCheckDictNameUnique(dictName: string, dictTypeId?: number) 
   });
 }
 
+
+
 /**
- * 刷新字典缓存
+ * 刷新所有字典缓存（统一接口）
  */
-export function fetchRefreshDictCache() {
+export function fetchRefreshAllDictCache() {
   return request({
-    url: '/system/dict/type/refreshCache',
+    url: '/system/dict/cache/refresh',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新字典类型缓存
+ */
+export function fetchRefreshDictTypeCache() {
+  return request({
+    url: '/system/dict/cache/refreshType',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新字典数据缓存
+ */
+export function fetchRefreshDictDataCache() {
+  return request({
+    url: '/system/dict/cache/refreshData',
     method: 'delete'
   });
 }

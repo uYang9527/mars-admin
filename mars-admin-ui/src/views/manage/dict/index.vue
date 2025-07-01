@@ -9,7 +9,9 @@ import {
   fetchDeleteDictTypes,
   fetchGetDictDataList,
   fetchGetDictTypeList,
-  fetchRefreshDictCache
+  fetchRefreshAllDictCache,
+  fetchRefreshDictTypeCache,
+  fetchRefreshDictDataCache
 } from '@/service/api/system-manage';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -435,9 +437,33 @@ async function handleBatchDeleteDictData() {
 
 // 刷新字典缓存
 async function refreshDictCache() {
-  const { error } = await fetchRefreshDictCache();
+  const { error } = await fetchRefreshAllDictCache();
   if (!error) {
     window.$message?.success('刷新字典缓存成功');
+  }
+}
+
+// 刷新所有字典缓存
+async function refreshAllDictCache() {
+  const { error } = await fetchRefreshAllDictCache();
+  if (!error) {
+    window.$message?.success('刷新所有字典缓存成功');
+  }
+}
+
+// 刷新字典类型缓存
+async function refreshDictTypeCache() {
+  const { error } = await fetchRefreshDictTypeCache();
+  if (!error) {
+    window.$message?.success('刷新字典类型缓存成功');
+  }
+}
+
+// 刷新字典数据缓存
+async function refreshDictDataCache() {
+  const { error } = await fetchRefreshDictDataCache();
+  if (!error) {
+    window.$message?.success('刷新字典数据缓存成功');
   }
 }
 

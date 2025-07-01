@@ -339,7 +339,7 @@ getMenuList();
 </script>
 
 <template>
-  <div class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+  <div class="flex-col-stretch gap-16px h-full overflow-hidden">
     <!-- 搜索区域 -->
     <ACard 
       :title="$t('common.search')" 
@@ -426,8 +426,8 @@ getMenuList();
     <ACard 
       title="菜单列表" 
       :bordered="false"
-      :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
+      :body-style="{ paddingTop: '0px', height: 'auto', maxHeight: 'calc(100vh - 280px)', overflow: 'hidden' }"
+      class="card-wrapper flex-1-hidden"
     >
       <template #extra>
         <TableHeaderOperation
@@ -452,10 +452,10 @@ getMenuList();
         row-key="id"
         :pagination="false"
         size="small"
-        :scroll="{ x: 'max-content' }"
+        :scroll="{ x: 'max-content', y: 'calc(100vh - 380px)' }"
         :default-expand-all-rows="true"
         :row-selection="rowSelection"
-        class="h-full"
+        class="menu-table"
       />
     </ACard>
 
@@ -507,33 +507,72 @@ getMenuList();
   vertical-align: middle;
 }
 
-/* 表格滚动条优化 */
-:deep(.ant-table-body) {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+/* 菜单表格样式优化 */
+.menu-table {
+  height: 100%;
 }
 
-:deep(.ant-table-body::-webkit-scrollbar) {
+.menu-table :deep(.ant-table-container) {
+  height: 100%;
+}
+
+.menu-table :deep(.ant-table-body) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+  max-height: calc(100vh - 380px);
+  overflow-y: auto;
+}
+
+.menu-table :deep(.ant-table-body::-webkit-scrollbar) {
   width: 8px;
   height: 8px;
 }
 
-:deep(.ant-table-body::-webkit-scrollbar-thumb) {
+.menu-table :deep(.ant-table-body::-webkit-scrollbar-thumb) {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
-:deep(.ant-table-body::-webkit-scrollbar-thumb:hover) {
+.menu-table :deep(.ant-table-body::-webkit-scrollbar-thumb:hover) {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(99, 102, 241, 0.6));
   transform: scale(1.1);
 }
 
-:deep(.ant-table-body::-webkit-scrollbar-track) {
+.menu-table :deep(.ant-table-body::-webkit-scrollbar-track) {
   background: rgba(248, 250, 252, 0.8);
   border-radius: 4px;
   border: 1px solid rgba(226, 232, 240, 0.3);
+}
+
+/* 确保表格可以正确滚动 */
+.menu-table :deep(.ant-spin-container) {
+  height: 100%;
+}
+
+.menu-table :deep(.ant-table-wrapper) {
+  height: 100%;
+}
+
+/* 响应式滚动高度 */
+@media (max-height: 800px) {
+  .menu-table :deep(.ant-table-body) {
+    max-height: calc(100vh - 320px);
+  }
+}
+
+@media (max-height: 600px) {
+  .menu-table :deep(.ant-table-body) {
+    max-height: calc(100vh - 280px);
+  }
+}
+
+/* 小屏幕设备优化 */
+@media (max-width: 768px) {
+  .menu-table :deep(.ant-table-body) {
+    max-height: calc(100vh - 250px);
+  }
 }
 
 /* 折叠状态下的卡片样式优化 */

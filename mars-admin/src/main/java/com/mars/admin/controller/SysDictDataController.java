@@ -107,6 +107,47 @@ public class SysDictDataController extends BaseController<SysDictData, Long> {
     }
 
     /**
+     * 新增字典数据（重写BaseController的方法以支持缓存）
+     */
+    @PostMapping
+    @Operation(summary = "新增字典数据", description = "新增字典数据信息")
+    @Override
+    public Result<Boolean> save(@Parameter(description = "字典数据信息", required = true) @RequestBody SysDictData dictData) {
+        boolean success = sysDictDataService.insertDictData(dictData);
+        return Result.of(success, "新增成功", "新增失败");
+    }
+
+    /**
+     * 更新字典数据（重写BaseController的方法以支持缓存）
+     */
+    @PutMapping
+    @Operation(summary = "更新字典数据", description = "更新字典数据信息")
+    @Override
+    public Result<Boolean> update(@Parameter(description = "字典数据信息", required = true) @RequestBody SysDictData dictData) {
+        boolean success = sysDictDataService.updateDictData(dictData);
+        return Result.of(success, "更新成功", "更新失败");
+    }
+
+
+
+    /**
+     * 根据ID获取字典数据（重写BaseController方法以支持缓存）
+     */
+    @GetMapping("/{id}")
+    @Operation(summary = "根据ID获取字典数据", description = "根据ID获取字典数据信息，优先从缓存获取")
+    @Override
+    public Result<SysDictData> getById(@Parameter(description = "字典数据ID") @PathVariable Long id) {
+        SysDictData dictData = sysDictDataService.getDictDataById(id);
+        if (dictData != null) {
+            return Result.success(dictData);
+        } else {
+            return Result.error("数据不存在");
+        }
+    }
+
+
+
+    /**
      * 批量删除字典数据（重写BaseController的方法）
      *
      * @param ids ID列表
@@ -114,6 +155,7 @@ public class SysDictDataController extends BaseController<SysDictData, Long> {
      */
     @Operation(summary = "批量删除字典数据", description = "根据ID列表批量删除字典数据")
     @DeleteMapping("/batch")
+    @Override
     public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");

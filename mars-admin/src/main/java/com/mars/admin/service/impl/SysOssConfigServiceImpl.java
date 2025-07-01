@@ -3,11 +3,10 @@ package com.mars.admin.service.impl;
 import com.mars.admin.entity.SysOssConfig;
 import com.mars.admin.framework.oss.factory.FileUploadStrategyFactory;
 import com.mars.admin.framework.oss.strategy.FileUploadStrategy;
-import com.mars.admin.mapper.SysOssConfigMapper;
 import com.mars.admin.service.ISysOssConfigService;
+import com.mars.admin.service.impl.BaseServiceImpl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,13 @@ import static com.mars.admin.entity.table.SysOssConfigTableDef.SYS_OSS_CONFIG;
 
 /**
  * OSS配置 服务实现类
+ * 继承 BaseServiceImpl 获得更多便捷方法
  *
  * @author Mars.wq
  */
 @Slf4j
 @Service
-public class SysOssConfigServiceImpl extends ServiceImpl<SysOssConfigMapper, SysOssConfig> implements ISysOssConfigService {
+public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> implements ISysOssConfigService {
 
     @Autowired
     private FileUploadStrategyFactory strategyFactory;
@@ -36,16 +36,19 @@ public class SysOssConfigServiceImpl extends ServiceImpl<SysOssConfigMapper, Sys
 
     @Override
     public SysOssConfig selectConfigByKey(String configKey) {
-        return this.getOne(QueryWrapper.create()
+        QueryWrapper queryWrapper = QueryWrapper.create()
                 .where(SYS_OSS_CONFIG.CONFIG_KEY.eq(configKey))
-                .and(SYS_OSS_CONFIG.IS_DELETED.eq(0)));
+                .and(SYS_OSS_CONFIG.IS_DELETED.eq(0));
+        return this.getOne(queryWrapper);
     }
 
     @Override
     public List<SysOssConfig> selectEnabledConfigs() {
-        return this.list(QueryWrapper.create()
+        QueryWrapper queryWrapper = QueryWrapper.create()
                 .where(SYS_OSS_CONFIG.STATUS.eq(1))
-                .and(SYS_OSS_CONFIG.IS_DELETED.eq(0)));
+                .and(SYS_OSS_CONFIG.IS_DELETED.eq(0))
+                .orderBy(SYS_OSS_CONFIG.CREATE_TIME.desc());
+        return this.list(queryWrapper);
     }
 
     @Override

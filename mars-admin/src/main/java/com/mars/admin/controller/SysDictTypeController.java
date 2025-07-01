@@ -114,14 +114,45 @@ public class SysDictTypeController extends BaseController<SysDictType, Long> {
     }
 
     /**
-     * 刷新字典缓存
+     * 新增字典类型（重写BaseController的方法以支持缓存）
      */
-    @DeleteMapping("/refreshCache")
-    @Operation(summary = "刷新字典缓存", description = "刷新字典缓存")
-    public Result<Void> refreshCache() {
-        // TODO: 实现字典缓存刷新逻辑
-        return Result.success();
+    @PostMapping
+    @Operation(summary = "新增字典类型", description = "新增字典类型信息")
+    @Override
+    public Result<Boolean> save(@Parameter(description = "字典类型信息", required = true) @RequestBody SysDictType dictType) {
+        boolean success = sysDictTypeService.insertDictType(dictType);
+        return Result.of(success, "新增成功", "新增失败");
     }
+
+    /**
+     * 更新字典类型（重写BaseController的方法以支持缓存）
+     */
+    @PutMapping
+    @Operation(summary = "更新字典类型", description = "更新字典类型信息")
+    @Override
+    public Result<Boolean> update(@Parameter(description = "字典类型信息", required = true) @RequestBody SysDictType dictType) {
+        boolean success = sysDictTypeService.updateDictType(dictType);
+        return Result.of(success, "更新成功", "更新失败");
+    }
+
+
+
+    /**
+     * 根据ID获取字典类型（重写BaseController方法以支持缓存）
+     */
+    @GetMapping("/{id}")
+    @Operation(summary = "根据ID获取字典类型", description = "根据ID获取字典类型信息，优先从缓存获取")
+    @Override
+    public Result<SysDictType> getById(@Parameter(description = "字典类型ID") @PathVariable Long id) {
+        SysDictType dictType = sysDictTypeService.getDictTypeById(id);
+        if (dictType != null) {
+            return Result.success(dictType);
+        } else {
+            return Result.error("数据不存在");
+        }
+    }
+
+
 
     /**
      * 批量删除字典类型（重写BaseController的方法）
@@ -131,6 +162,7 @@ public class SysDictTypeController extends BaseController<SysDictType, Long> {
      */
     @Operation(summary = "批量删除字典类型", description = "根据ID列表批量删除字典类型及关联数据")
     @DeleteMapping("/batch")
+    @Override
     public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");

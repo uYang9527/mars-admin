@@ -144,11 +144,12 @@ public class FileUploadServiceImpl extends ServiceImpl<SysOssMapper, SysOss> imp
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteByFileName(String fileName, String configKey) {
-        SysOss sysOss = this.getOne(QueryWrapper.create()
+        QueryWrapper queryWrapper = QueryWrapper.create()
                 .where(SYS_OSS.FILE_NAME.eq(fileName))
                 .and(SYS_OSS.CONFIG_KEY.eq(configKey))
-                .and(SYS_OSS.IS_DELETED.eq(0)));
+                .and(SYS_OSS.IS_DELETED.eq(0));
         
+        SysOss sysOss = this.getOne(queryWrapper);
         if (sysOss != null) {
             return delete(sysOss.getId());
         }
@@ -171,7 +172,7 @@ public class FileUploadServiceImpl extends ServiceImpl<SysOssMapper, SysOss> imp
             if (config == null) {
                 return null;
             }
-
+            
             FileUploadStrategy strategy = strategyFactory.getStrategy(configKey);
             return strategy.getPresignedUrl(fileName, config, expireTime);
         } catch (Exception e) {

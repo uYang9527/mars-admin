@@ -36,10 +36,14 @@ declare module "@elegant-router/types" {
     "iframe-page": "/iframe-page/:url";
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
     "manage": "/manage";
+    "manage_cache-list": "/manage/cache-list";
+    "manage_cache-monitor": "/manage/cache-monitor";
     "manage_config": "/manage/config";
     "manage_dept": "/manage/dept";
     "manage_dict": "/manage/dict";
+    "manage_file-manage": "/manage/file-manage";
     "manage_menu": "/manage/menu";
+    "manage_oss-config": "/manage/oss-config";
     "manage_post": "/manage/post";
     "manage_role": "/manage/role";
     "manage_user": "/manage/user";
@@ -120,10 +124,14 @@ declare module "@elegant-router/types" {
     | "iframe-page"
     | "login"
     | "home"
+    | "manage_cache-list"
+    | "manage_cache-monitor"
     | "manage_config"
     | "manage_dept"
     | "manage_dict"
+    | "manage_file-manage"
     | "manage_menu"
+    | "manage_oss-config"
     | "manage_post"
     | "manage_role"
     | "manage_user-detail"

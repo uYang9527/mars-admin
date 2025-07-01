@@ -55,6 +55,14 @@ public interface ISysDictDataService extends BaseService<SysDictData> {
     List<SysDictData> selectNormalDictDataByType(String dictType);
 
     /**
+     * 根据ID查询字典数据（使用缓存）
+     *
+     * @param id 字典数据ID
+     * @return 字典数据信息
+     */
+    SysDictData getDictDataById(Long id);
+
+    /**
      * 新增字典数据
      *
      * @param dictData 字典数据信息
@@ -95,4 +103,9 @@ public interface ISysDictDataService extends BaseService<SysDictData> {
      * @return 是否唯一
      */
     boolean checkDictValueUnique(String dictType, String dictValue, Long dictDataId);
+
+    /**
+     * 刷新字典数据缓存
+     */
+    void refreshCache();
 } 

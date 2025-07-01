@@ -88,6 +88,30 @@ export const generatedRoutes: GeneratedRoute[] = [
     },
     children: [
       {
+        name: 'manage_cache-list',
+        path: '/manage/cache-list',
+        component: 'view.manage_cache-list',
+        meta: {
+          title: 'manage_cache-list',
+          i18nKey: 'route.manage_cache-list',
+          icon: 'mdi:database-search',
+          order: 11,
+          roles: ['R_ADMIN']
+        }
+      },
+      {
+        name: 'manage_cache-monitor',
+        path: '/manage/cache-monitor',
+        component: 'view.manage_cache-monitor',
+        meta: {
+          title: 'manage_cache-monitor',
+          i18nKey: 'route.manage_cache-monitor',
+          icon: 'mdi:monitor-dashboard',
+          order: 10,
+          roles: ['R_ADMIN']
+        }
+      },
+      {
         name: 'manage_config',
         path: '/manage/config',
         component: 'view.manage_config',
@@ -115,6 +139,15 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_file-manage',
+        path: '/manage/file-manage',
+        component: 'view.manage_file-manage',
+        meta: {
+          title: 'manage_file-manage',
+          i18nKey: 'route.manage_file-manage'
+        }
+      },
+      {
         name: 'manage_menu',
         path: '/manage/menu',
         component: 'view.manage_menu',
@@ -125,6 +158,15 @@ export const generatedRoutes: GeneratedRoute[] = [
           order: 3,
           roles: ['R_ADMIN'],
           keepAlive: true
+        }
+      },
+      {
+        name: 'manage_oss-config',
+        path: '/manage/oss-config',
+        component: 'view.manage_oss-config',
+        meta: {
+          title: 'manage_oss-config',
+          i18nKey: 'route.manage_oss-config'
         }
       },
       {

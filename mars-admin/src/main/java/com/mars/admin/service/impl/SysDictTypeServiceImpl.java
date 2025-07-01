@@ -6,7 +6,12 @@ import com.mars.admin.service.ISysDictDataService;
 import com.mars.admin.service.ISysDictTypeService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,12 +23,13 @@ import static com.mars.admin.entity.table.SysDictTypeTableDef.SYS_DICT_TYPE;
 
 /**
  * 系统字典类型Service实现类
- * 继承 BaseServiceImpl 获得更多便捷方法
+ * 继承 CacheableServiceImpl 获得更多便捷方法和缓存功能
  *
  * @author Mars
  */
 @Service
-public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> implements ISysDictTypeService {
+@CacheConfig(cacheNames = "dictType")
+public class SysDictTypeServiceImpl extends CacheableServiceImpl<SysDictTypeMapper, SysDictType> implements ISysDictTypeService {
 
     @Autowired
     private SysDictTypeMapper sysDictTypeMapper;
@@ -32,11 +38,13 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     private ISysDictDataService sysDictDataService;
 
     @Override
+    @Cacheable(key = "'type:' + #dictType")
     public SysDictType selectByDictType(String dictType) {
         return sysDictTypeMapper.selectByDictType(dictType);
     }
 
     @Override
+    @Cacheable(key = "'name:' + #dictName")
     public SysDictType selectByDictName(String dictName) {
         return sysDictTypeMapper.selectByDictName(dictName);
     }
@@ -64,29 +72,46 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     }
 
     @Override
+    @Cacheable(key = "'detail:' + #dictTypeId")
     public SysDictType selectDictTypeDetailById(Long dictTypeId) {
         return sysDictTypeMapper.selectDictTypeDetailById(dictTypeId);
     }
 
     @Override
+    @Cacheable(key = "'normal'")
     public List<SysDictType> selectNormalDictTypes() {
         return sysDictTypeMapper.selectNormalDictTypes();
     }
 
     @Override
+    @Cacheable(key = "#id")
+    public SysDictType getDictTypeById(Long id) {
+        return super.getById(id);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean insertDictType(SysDictType dictType) {
         return this.save(dictType);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'type:' + #dictType.dictType", condition = "#dictType.dictType != null"),
+        @CacheEvict(key = "'name:' + #dictType.dictName", condition = "#dictType.dictName != null"),
+        @CacheEvict(key = "'detail:' + #dictType.id", condition = "#dictType.id != null"),
+        @CacheEvict(key = "#dictType.id", condition = "#dictType.id != null"),
+        @CacheEvict(key = "'normal'")
+    })
     public boolean updateDictType(SysDictType dictType) {
         return this.updateById(dictType);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteDictTypeById(Long dictTypeId) {
         // 查询字典类型信息
         SysDictType dictType = this.getById(dictTypeId);
@@ -103,6 +128,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteDictTypes(Long[] dictTypeIds) {
         if (dictTypeIds == null || dictTypeIds.length == 0) {
             return false;
@@ -140,5 +166,12 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
         }
 
         return this.count(query) == 0;
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public void refreshCache() {
+        // 清除所有字典类型缓存
+        // @CacheEvict注解会自动清除dictType缓存空间的所有数据
     }
 } 

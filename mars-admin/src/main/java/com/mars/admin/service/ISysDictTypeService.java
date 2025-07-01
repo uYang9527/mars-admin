@@ -54,6 +54,14 @@ public interface ISysDictTypeService extends BaseService<SysDictType> {
     List<SysDictType> selectNormalDictTypes();
 
     /**
+     * 根据ID查询字典类型（使用缓存）
+     *
+     * @param id 字典类型ID
+     * @return 字典类型信息
+     */
+    SysDictType getDictTypeById(Long id);
+
+    /**
      * 新增字典类型
      *
      * @param dictType 字典类型信息
@@ -102,4 +110,9 @@ public interface ISysDictTypeService extends BaseService<SysDictType> {
      * @return 是否唯一
      */
     boolean checkDictNameUnique(String dictName, Long dictTypeId);
+
+    /**
+     * 刷新字典类型缓存
+     */
+    void refreshCache();
 } 

@@ -6,7 +6,7 @@ import { $t } from '@/locales';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import { getLocalIcons } from '@/utils/icon';
-import { fetchGetAllRoles, fetchAddMenu, fetchUpdateMenu } from '@/service/api';
+import { fetchGetAllRoles, fetchAddMenu, fetchUpdateMenu, fetchGetMenuTree } from '@/service/api';
 import {
   getLayoutAndPage,
   getPathParamFromRoutePath,
@@ -197,6 +197,50 @@ async function getRoleOptions() {
   }
 }
 
+/** 父级菜单树选项 */
+const parentMenuOptions = ref<any[]>([]);
+
+/** 转换菜单数据为树形选择器需要的格式 */
+function transformMenuToTreeData(menus: Api.SystemManage.Menu[], excludeId?: number): any[] {
+  return menus
+    .filter(menu => {
+      // 排除当前编辑的菜单，避免循环引用
+      if (excludeId && menu.id === excludeId) return false;
+      // 过滤掉按钮类型的菜单，按钮不能作为父级菜单
+      if (menu.menuType === 'F') return false;
+      return true;
+    })
+    .map(menu => ({
+      id: menu.id,
+      value: menu.id,
+      label: menu.menuName,
+      title: menu.menuName,
+      children: menu.children ? transformMenuToTreeData(menu.children, excludeId) : undefined
+    }));
+}
+
+/** 加载菜单树数据 */
+async function loadMenuTree() {
+  const menuTreeRes = await fetchGetMenuTree();
+
+  if (menuTreeRes.data) {
+    // 编辑时排除当前菜单，避免选择自己作为父级
+    const excludeId = props.operateType === 'edit' ? props.rowData?.id : undefined;
+    const transformedData = transformMenuToTreeData(menuTreeRes.data, excludeId);
+    
+    // 添加一个根节点选项
+    parentMenuOptions.value = [
+      {
+        id: 0,
+        value: 0,
+        label: '根菜单',
+        title: '根菜单',
+        children: transformedData
+      }
+    ];
+  }
+}
+
 /** - add a query input */
 function addQuery(index: number) {
   model.value.query.splice(index + 1, 0, {
@@ -224,6 +268,7 @@ function removeButton(index: number) {
 }
 
 async function handleInitModel() {
+  // 先重置为默认值
   model.value = createDefaultModel();
 
   if (!props.rowData) return;
@@ -232,7 +277,6 @@ async function handleInitModel() {
 
   if (props.operateType === 'addChild') {
     const { id } = props.rowData;
-
     Object.assign(model.value, { parentId: id });
   }
 
@@ -240,9 +284,20 @@ async function handleInitModel() {
     const { component, ...rest } = props.rowData;
 
     const { layout, page } = getLayoutAndPage(component);
-    const { path, param } = getPathParamFromRoutePath(rest.routePath);
+    const { path, param } = getPathParamFromRoutePath(rest.routePath || '');
 
-    Object.assign(model.value, rest, { layout, page, routePath: path, pathParam: param });
+    // 确保parentId正确回显
+    const editData = {
+      ...rest,
+      layout,
+      page,
+      routePath: path,
+      pathParam: param,
+      parentId: rest.parentId || 0, // 确保parentId有值，默认为0（根菜单）
+      component // 保留原始component值，以备后续使用
+    };
+
+    Object.assign(model.value, editData);
   }
 
   if (!model.value.query) {
@@ -302,8 +357,13 @@ async function handleSubmit() {
         params.routePath = getRoutePathWithParam(params.routePath, params.pathParam);
       }
 
-      if (params.layout && params.page) {
+      // 处理component字段
+      if (params.layout || params.page) {
+        // 如果有layout或page信息，则重新组合component
         params.component = transformLayoutAndPageToComponent(params.layout, params.page);
+      } else if (props.operateType === 'edit' && props.rowData?.component) {
+        // 编辑模式下，如果没有layout/page信息，保留原始component值
+        params.component = props.rowData.component;
       }
     } else if (params.menuType === 'F') {
       // 按钮类型不需要路由信息
@@ -344,8 +404,9 @@ async function handleSubmit() {
   }
 }
 
-watch(visible, () => {
+watch(visible, async () => {
   if (visible.value) {
+    await loadMenuTree();
     handleInitModel();
     resetFields();
     getRoleOptions();
@@ -385,6 +446,17 @@ const isButton = computed(() => model.value.menuType === 'F');
                     {{ $t(item.label) }}
                   </ARadio>
                 </ARadioGroup>
+              </AFormItem>
+            </ACol>
+            <ACol :lg="12" :xs="24">
+              <AFormItem label="上级菜单" name="parentId">
+                <ATreeSelect
+                  v-model:value="model.parentId"
+                  :tree-data="parentMenuOptions"
+                  :field-names="{ label: 'label', value: 'value', children: 'children' }"
+                  placeholder="请选择上级菜单"
+                  tree-default-expand-all
+                />
               </AFormItem>
             </ACol>
             <ACol :lg="12" :xs="24">

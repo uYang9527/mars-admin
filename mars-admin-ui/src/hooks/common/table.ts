@@ -206,14 +206,14 @@ export function useTable<A extends AntDesign.TableApiFn>(config: AntDesign.AntDe
     columns,
     columnChecks,
     reloadColumns,
+    getData,
+    searchParams,
+    updateSearchParams,
+    resetSearchParams,
     pagination,
     mobilePagination,
     updatePagination,
-    getData,
-    getDataByPage,
-    searchParams,
-    updateSearchParams,
-    resetSearchParams
+    getDataByPage
   };
 }
 
@@ -227,56 +227,46 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
     openDrawer();
   }
 
-  /** the editing row data */
+  /** the edit row data */
   const editingData: Ref<T | null> = ref(null);
 
   function handleEdit(id: T['id']) {
-    operateType.value = 'edit';
-    console.log("222222222222,", data.value)
     const findItem = data.value.find(item => item.id === id) || null;
-    console.log("222222222222,", findItem)
     editingData.value = jsonClone(findItem);
 
-    openDrawer();
-  }
-
-  function handleDataEdit(params: any) {
     operateType.value = 'edit';
-    editingData.value = params;
-    console.log("2222", editingData.value)
     openDrawer();
   }
 
   /** the checked row keys of table */
-  const checkedRowKeys: Ref<T['id'][]> = ref([]);
+  const checkedRowKeys = ref<string[]>([]);
 
-  function onSelectChange(keys: (string | number)[]) {
-    checkedRowKeys.value = keys as T['id'][];
-  }
-
-  const rowSelection = computed<TableRowSelection<T>>(() => {
-    return {
-      columnWidth: 48,
-      type: 'checkbox',
-      selectedRowKeys: checkedRowKeys.value,
-      onChange: onSelectChange
-    };
+  /** the hook of table selection */
+  const rowSelection: TableRowSelection = reactive({
+    type: 'checkbox',
+    selectedRowKeys: checkedRowKeys,
+    onChange: onSelectChange
   });
 
-  /** the hook after the batch delete operation is completed */
-  async function onBatchDeleted() {
-    window.$message?.success($t('common.deleteSuccess'));
-
-    checkedRowKeys.value = [];
-
-    await getData();
+  function onSelectChange(keys: (string | number)[]) {
+    checkedRowKeys.value = keys as string[];
   }
 
-  /** the hook after the delete operation is completed */
-  async function onDeleted() {
-    window.$message?.success($t('common.deleteSuccess'));
+  // return true to close the drawer
+  function handleSubmit() {
+    closeDrawer();
+  }
 
-    await getData();
+  function onDeleted() {
+    closeDrawer();
+
+    getData();
+  }
+
+  async function onBatchDeleted() {
+    getData();
+
+    checkedRowKeys.value = [];
   }
 
   return {
@@ -287,28 +277,70 @@ export function useTableOperate<T extends TableData = TableData>(data: Ref<T[]>,
     handleAdd,
     editingData,
     handleEdit,
-    handleDataEdit,
     checkedRowKeys,
-    onSelectChange,
     rowSelection,
-    onBatchDeleted,
-    onDeleted
+    onSelectChange,
+    handleSubmit,
+    onDeleted,
+    onBatchDeleted
   };
 }
 
 export function useTableScroll(scrollX: MaybeRef<number> = 702) {
-  const tableWrapperRef = shallowRef<HTMLElement | null>(null);
-  const {height: wrapperElHeight} = useElementSize(tableWrapperRef);
+  const el = shallowRef<HTMLElement>();
+
+  const {width} = useElementSize(el);
 
   const scrollConfig = computed(() => {
+    const scroll = toValue(scrollX);
+
     return {
-      y: wrapperElHeight.value - 72,
-      x: toValue(scrollX)
+      x: scroll
     };
   });
 
   return {
-    tableWrapperRef,
+    el,
     scrollConfig
+  };
+}
+
+/**
+ * 简单的分页Hook
+ * 用于兼容现有的文件管理页面
+ */
+export function usePagination(getData: () => void) {
+  const pagination = reactive({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    showTotal: (total: number, range: [number, number]) => `共 ${total} 条记录`
+  });
+
+  const mobilePagination = computed(() => {
+    const appStore = useAppStore();
+    return {
+      ...pagination,
+      simple: appStore.isMobile
+    };
+  });
+
+  const searchParams = reactive({});
+
+  function resetSearchParams() {
+    Object.keys(searchParams).forEach(key => {
+      (searchParams as any)[key] = '';
+    });
+    pagination.current = 1;
+    getData();
+  }
+
+  return {
+    pagination,
+    mobilePagination,
+    searchParams,
+    resetSearchParams
   };
 }

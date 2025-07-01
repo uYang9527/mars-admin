@@ -432,4 +432,193 @@ declare namespace Api {
       loginTime: string;
     }>;
   }
+
+  /**
+   * namespace CacheManage
+   *
+   * backend api module: "cacheManage"
+   */
+  namespace CacheManage {
+    /** Redis信息 */
+    type RedisInfo = {
+      redis_version: string;
+      redis_mode: string;
+      tcp_port: string;
+      uptime_in_seconds: string;
+      uptime_in_days: string;
+      connected_clients: string;
+      used_memory_human: string;
+      used_memory_peak_human: string;
+      maxmemory_human: string;
+      mem_fragmentation_ratio: string;
+      keyspace_hits: string;
+      keyspace_misses: string;
+      total_commands_processed: string;
+      instantaneous_ops_per_sec: string;
+      hit_rate: string;
+    };
+
+    /** JVM信息 */
+    type JvmInfo = {
+      heap_used: string;
+      heap_committed: string;
+      heap_max: string;
+      non_heap_used: string;
+      non_heap_committed: string;
+      heap_usage: string;
+    };
+
+    /** 缓存统计信息 */
+    type CacheInfo = {
+      total_keys: number;
+      cache_spaces: Record<string, number>;
+    };
+
+    /** 服务器信息 */
+    type ServerInfo = {
+      server_time: string;
+      java_version: string;
+      os_name: string;
+      os_arch: string;
+    };
+
+    /** 缓存监控信息 */
+    type MonitorInfo = {
+      redis: RedisInfo;
+      jvm: JvmInfo;
+      cache: CacheInfo;
+      server: ServerInfo;
+    };
+
+    /** 缓存项 */
+    type CacheItem = {
+      key: string;
+      ttl: number;
+      ttl_text: string;
+      type: string;
+      size: string;
+      cache_space: string;
+      cache_space_name: string;
+    };
+
+    /** 缓存详情 */
+    type CacheDetail = CacheItem & {
+      value: any;
+    };
+
+    /** 缓存列表响应 */
+    type CacheListResponse = {
+      records: CacheItem[];
+      total: number;
+      current: number;
+      size: number;
+      pages: number;
+    };
+
+    /** 缓存空间统计 */
+    type CacheSpaceStat = {
+      space: string;
+      name: string;
+      count: number;
+      color: string;
+    };
+
+    /** 缓存统计 */
+    type CacheStats = {
+      spaces: CacheSpaceStat[];
+      total: number;
+    };
+  }
+
+  /** 文件管理模块 */
+  namespace FileManage {
+    /** 文件信息 */
+    interface FileInfo {
+      id: number;
+      fileName: string;
+      originalName: string;
+      fileSuffix: string;
+      url: string;
+      size: number;
+      configKey: string;
+      filePath: string;
+      contentType: string;
+      uploadId?: string;
+      uploadStatus: number;
+      remark?: string;
+      createTime: string;
+      updateTime: string;
+      createBy?: number;
+      updateBy?: number;
+    }
+
+    /** 文件上传结果 */
+    interface FileUploadResult {
+      id: number;
+      fileName: string;
+      originalName: string;
+      fileSuffix: string;
+      url: string;
+      size: number;
+      configKey: string;
+      filePath: string;
+      contentType: string;
+      uploadStatus: number;
+    }
+
+    /** 文件搜索参数 */
+    interface FileSearchParams {
+      current: number;
+      size: number;
+      fileName?: string;
+      configKey?: string;
+      contentType?: string;
+    }
+
+    /** 文件列表 */
+    interface FileList {
+      current: number;
+      size: number;
+      total: number;
+      records: FileInfo[];
+    }
+
+    /** OSS配置信息 */
+    interface OssConfig {
+      id: number;
+      configKey: string;
+      accessKey?: string;
+      secretKey?: string;
+      bucketName?: string;
+      prefix?: string;
+      endpoint?: string;
+      domain?: string;
+      isHttps?: number;
+      region?: string;
+      accessPolicy?: number;
+      status: number;
+      ext1?: string;
+      remark?: string;
+      createTime: string;
+      updateTime: string;
+      createBy?: number;
+      updateBy?: number;
+    }
+
+    /** OSS配置搜索参数 */
+    interface OssConfigSearchParams {
+      current: number;
+      size: number;
+      configKey?: string;
+      status?: number;
+    }
+
+    /** OSS配置列表 */
+    interface OssConfigList {
+      current: number;
+      size: number;
+      total: number;
+      records: OssConfig[];
+    }
+  }
 }
