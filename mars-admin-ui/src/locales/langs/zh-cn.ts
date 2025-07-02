@@ -192,7 +192,7 @@ const local: App.I18n.Schema = {
     'manage_cache-list': '缓存列表',
     'file-manage': '文件管理',
     'manage_file-manage': '文件列表',
-    'manage_oss-config': 'OSS配置',
+    'manage_oss-config': '存储配置',
     'multi-menu': '多级菜单',
     'multi-menu_first': '菜单一',
     'multi-menu_first_child': '菜单一子菜单',

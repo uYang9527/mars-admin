@@ -143,8 +143,17 @@ export function fetchUpdateOssConfigStatus(id: number, status: number) {
   });
 }
 
+/** 切换OSS配置状态 */
+export function fetchChangeOssConfigStatus(id: number, status: number) {
+  return request({
+    url: `/system/oss-config/${id}/status`,
+    method: 'put',
+    data: { status }
+  });
+}
+
 /** 测试OSS配置连接 */
-export function fetchTestOssConnection(data: Api.FileManage.OssConfig) {
+export function fetchTestOssConnection(data: Partial<Api.FileManage.OssConfig>) {
   return request({
     url: '/system/oss-config/test',
     method: 'post',

@@ -1,66 +1,27 @@
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <Card title="文件管理" :bordered="false" class="card-wrapper">
-      <Form class="search-form">
-        <Row :gutter="[16, 16]">
-          <Col :span="8">
-            <Form.Item label="文件名">
-              <Input v-model:value="searchParams.fileName" placeholder="请输入文件名" />
-            </Form.Item>
-          </Col>
-          <Col :span="8">
-            <Form.Item label="存储配置">
-              <Input v-model:value="searchParams.configKey" placeholder="请输入存储配置" />
-            </Form.Item>
-          </Col>
-          <Col :span="8">
-            <div class="flex justify-end gap-12px">
-              <Button @click="() => { searchParams.fileName = ''; searchParams.configKey = ''; getData(); }">
-                重置
-              </Button>
-              <Button type="primary" @click="getData">查询</Button>
-            </div>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
+    <FileSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
-    <!-- 文件上传和操作区域 -->
-    <Card title="文件上传" :bordered="false" class="card-wrapper">
-      <div class="flex flex-wrap gap-16px items-center">
-        <Upload
-          name="file"
-          :multiple="true"
-          :action="uploadAction"
-          :data="uploadData"
-          :headers="uploadHeaders"
-          :show-upload-list="false"
-          @change="handleUploadChange"
-        >
-          <Button type="primary" size="large">选择文件上传</Button>
-        </Upload>
-
+    <!-- 操作按钮 -->
+    <ACard :bordered="false" class="card-wrapper">
+      <div class="flex gap-12px">
+        <Button type="primary" @click="showUploadDrawer">
+          上传文件
+        </Button>
         <Button
           type="primary"
-          size="large"
           ghost
           :disabled="checkedRowKeys.length === 0"
           @click="handleBatchDelete"
         >
           批量删除
         </Button>
-
-        <Select v-model:value="selectedConfigKey" placeholder="选择存储配置" style="width: 200px" size="large">
-          <Select.Option v-for="config in ossConfigs" :key="config.configKey" :value="config.configKey">
-            {{ config.configKey }}
-          </Select.Option>
-        </Select>
       </div>
-    </Card>
+    </ACard>
 
     <!-- 文件列表 -->
-    <Card title="文件列表" :bordered="false" class="card-wrapper flex-1-hidden">
+    <ACard title="文件列表" :bordered="false" class="card-wrapper flex-1-hidden">
       <ATable
         :columns="columns"
         :data-source="data"
@@ -71,7 +32,13 @@
         :scroll="{ x: 1200 }"
         @change="getDataByPage"
       />
-    </Card>
+    </ACard>
+
+    <!-- 文件上传抽屉 -->
+    <FileUploadDrawer
+      v-model:visible="uploadVisible"
+      @uploaded="getData"
+    />
 
     <!-- 文件预览模态框 -->
     <Modal
@@ -86,6 +53,7 @@
           <img :src="previewFile.url" :alt="previewFile.originalName" class="max-w-full max-h-500px" />
         </div>
         <div v-else class="text-center py-40px">
+          <div class="text-6xl mb-4">📄</div>
           <div class="text-lg">{{ previewFile.originalName }}</div>
           <div class="text-gray-500 mt-8px">此文件类型不支持预览</div>
           <Button type="primary" class="mt-16px" @click="handleDownload(previewFile)">
@@ -94,31 +62,40 @@
         </div>
       </div>
     </Modal>
+
+    <!-- 文件详情抽屉 -->
+    <FileOperateDrawer
+      v-model:visible="detailVisible"
+      :file-data="detailFile"
+      @download="handleDownload"
+      @preview="handlePreview"
+    />
   </div>
 </template>
 
 <script setup lang="tsx">
-import { reactive, ref, onMounted, computed } from 'vue';
-import { Button, Popconfirm, Tag, Modal, Upload, Select, message, Card, Form, Input, Row, Col } from 'ant-design-vue';
+import { reactive, ref } from 'vue';
+import { Button, Popconfirm, Tag, Modal, Card as ACard, Table as ATable } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   fetchGetFileList,
   fetchDeleteFile,
-  fetchDeleteFiles,
-  fetchGetEnabledOssConfigs
+  fetchDeleteFiles
 } from '@/service/api/file-manage';
 import { $t } from '@/locales';
 import dayjs from 'dayjs';
+import FileSearch from './modules/file-search.vue';
+import FileOperateDrawer from './modules/file-operate-drawer.vue';
+import FileUploadDrawer from './modules/file-upload-drawer.vue';
 
 defineOptions({
   name: 'FileManage'
 });
 
 const wrapperEl = ref<HTMLElement>();
-const ossConfigs = ref<Api.FileManage.OssConfig[]>([]);
-const selectedConfigKey = ref('local');
-const previewVisible = ref(false);
-const previewFile = ref<Api.FileManage.FileInfo | null>(null);
+
+// 上传抽屉相关
+const uploadVisible = ref(false);
 
 const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } =
   useTable({
@@ -140,45 +117,79 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       },
       {
         key: 'index',
+        dataIndex: 'index',
         title: $t('common.index'),
-        width: 64,
         align: 'center',
+        width: 60,
         customRender: ({ index }) => index + 1
+      },
+      {
+        key: 'thumbnail',
+        title: '缩略图',
+        align: 'center',
+        width: 80,
+        customRender: ({ record }) => {
+          if (isImageFile(record.contentType)) {
+            return (
+              <img 
+                src={record.url} 
+                alt={record.originalName}
+                class="w-12 h-12 object-cover rounded cursor-pointer"
+                onClick={() => handlePreview(record)}
+              />
+            );
+          } else {
+            return (
+              <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">
+                {getFileIcon(record.contentType)}
+              </div>
+            );
+          }
+        }
       },
       {
         key: 'originalName',
         title: '文件名',
         dataIndex: 'originalName',
         align: 'center',
-        ellipsis: true
+        ellipsis: true,
+        customRender: ({ record }) => (
+          <div class="cursor-pointer text-blue-600" onClick={() => handleShowDetail(record)}>
+            {record.originalName}
+          </div>
+        )
       },
       {
         key: 'size',
-        title: '文件大小',
         dataIndex: 'size',
+        title: '文件大小',
         align: 'center',
         width: 100,
-        customRender: ({ record }) => formatFileSize(record.size)
+        customRender: ({ record }) => {
+          return formatFileSize(record.size);
+        }
       },
       {
         key: 'contentType',
-        title: '文件类型',
         dataIndex: 'contentType',
+        title: '文件类型',
         align: 'center',
         width: 120,
-        ellipsis: true
       },
       {
         key: 'configKey',
-        title: '存储配置',
         dataIndex: 'configKey',
+        title: '存储配置',
         align: 'center',
-        width: 100
+        width: 100,
+        customRender: ({ record }) => (
+          <Tag color={getConfigColor(record.configKey)}>{record.configKey}</Tag>
+        )
       },
       {
         key: 'createTime',
-        title: '上传时间',
         dataIndex: 'createTime',
+        title: '上传时间',
         align: 'center',
         width: 150,
         customRender: ({ record }) => {
@@ -192,6 +203,9 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
         width: 200,
         customRender: ({ record }) => (
           <div class="flex-center gap-8px">
+            <Button type="primary" ghost size="small" onClick={() => handleShowDetail(record)}>
+              详情
+            </Button>
             <Button size="small" onClick={() => handlePreview(record)}>
               预览
             </Button>
@@ -222,20 +236,15 @@ const {
   rowSelection
 } = useTableOperate(data, getData);
 
-// 获取OSS配置
-async function loadOssConfigs() {
-  try {
-    const { data: configs, error } = await fetchGetEnabledOssConfigs();
-    if (!error && configs) {
-      ossConfigs.value = configs;
-      if (configs.length > 0) {
-        selectedConfigKey.value = configs[0].configKey;
-      }
-    }
-  } catch (error) {
-    message.error('获取OSS配置失败');
-  }
-}
+// 预览相关
+const previewVisible = ref(false);
+const previewFile = ref<any>(null);
+
+// 详情相关
+const detailVisible = ref(false);
+const detailFile = ref<any>(null);
+
+
 
 // 文件大小格式化
 function formatFileSize(bytes: number): string {
@@ -251,14 +260,43 @@ function isImageFile(contentType: string): boolean {
   return contentType && contentType.startsWith('image/');
 }
 
+// 获取文件图标
+function getFileIcon(contentType: string): string {
+  if (contentType.includes('pdf')) return 'PDF';
+  if (contentType.includes('word') || contentType.includes('document')) return 'DOC';
+  if (contentType.includes('excel') || contentType.includes('sheet')) return 'XLS';
+  if (contentType.includes('powerpoint') || contentType.includes('presentation')) return 'PPT';
+  if (contentType.includes('zip') || contentType.includes('rar')) return 'ZIP';
+  if (contentType.includes('video')) return 'MP4';
+  if (contentType.includes('audio')) return 'MP3';
+  return 'FILE';
+}
+
+// 获取配置颜色
+function getConfigColor(configKey: string): string {
+  const colors = {
+    'local': 'blue',
+    'minio': 'green',
+    'aliyun': 'orange',
+    'qiniu': 'purple'
+  };
+  return colors[configKey] || 'default';
+}
+
 // 文件预览
-function handlePreview(file: Api.FileManage.FileInfo) {
+function handlePreview(file: any) {
   previewFile.value = file;
   previewVisible.value = true;
 }
 
+// 文件详情
+function handleShowDetail(file: any) {
+  detailFile.value = file;
+  detailVisible.value = true;
+}
+
 // 文件下载
-function handleDownload(file: Api.FileManage.FileInfo) {
+function handleDownload(file: any) {
   const link = document.createElement('a');
   link.href = file.url;
   link.download = file.originalName;
@@ -268,30 +306,15 @@ function handleDownload(file: Api.FileManage.FileInfo) {
   document.body.removeChild(link);
 }
 
-// 上传配置
-const uploadAction = `/api/file/upload`;
-
-const uploadData = computed(() => ({ configKey: selectedConfigKey.value }));
-const uploadHeaders = computed(() => {
-  const token = localStorage.getItem('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-});
-
-// 处理文件上传
-function handleUploadChange(info: any) {
-  const { status } = info.file;
-  if (status === 'done') {
-    message.success(`${info.file.name} 文件上传成功`);
-    getData();
-  } else if (status === 'error') {
-    message.error(`${info.file.name} 文件上传失败`);
-  }
+// 显示文件上传抽屉
+function showUploadDrawer() {
+  uploadVisible.value = true;
 }
 
 // 批量删除
 async function handleBatchDelete() {
   if (checkedRowKeys.value.length === 0) {
-    message.warning('请选择要删除的文件');
+    window.$message?.warning('请选择要删除的文件');
     return;
   }
 
@@ -303,7 +326,7 @@ async function handleBatchDelete() {
     async onOk() {
       const { error } = await fetchDeleteFiles(checkedRowKeys.value);
       if (!error) {
-        message.success('批量删除成功');
+        window.$message?.success('批量删除成功');
         onBatchDeleted();
       }
     }
@@ -314,14 +337,12 @@ async function handleBatchDelete() {
 async function handleDelete(id: number) {
   const { error } = await fetchDeleteFile(id);
   if (!error) {
-    message.success('删除成功');
+    window.$message?.success('删除成功');
     onDeleted();
   }
 }
 
-onMounted(() => {
-  loadOssConfigs();
-});
+
 </script>
 
 <style scoped>
@@ -337,5 +358,9 @@ onMounted(() => {
   max-width: 100%;
   max-height: 500px;
   object-fit: contain;
+}
+
+.upload-content {
+  padding: 16px 0;
 }
 </style> 
