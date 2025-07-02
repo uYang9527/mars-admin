@@ -1,14 +1,14 @@
 <script setup lang="tsx">
-import { onMounted, ref, reactive } from 'vue';
-import { Button, Popconfirm, Tag, Modal, Drawer, Input, Select, Space } from 'ant-design-vue';
+import { onMounted, reactive, ref } from 'vue';
+import { Button, Drawer, Input, Modal, Popconfirm, Select, Space, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { 
-  fetchCacheList, 
-  fetchCacheDetail, 
-  fetchDeleteCache, 
-  fetchDeleteCacheBatch, 
+import {
+  fetchCacheDetail,
+  fetchCacheList,
+  fetchClearAllCache,
   fetchClearCacheSpace,
-  fetchClearAllCache
+  fetchDeleteCache,
+  fetchDeleteCacheBatch
 } from '@/service/api';
 import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
@@ -38,126 +38,120 @@ const cacheSpaceOptions = [
 ];
 
 // 表格配置
-const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } = useTable({
-  apiFn: fetchCacheList,
-  apiParams: {
-    current: 1,
-    size: 20,
-    pattern: '',
-    cacheSpace: ''
-  },
-  columns: () => [
-    {
-      key: 'selection',
-      title: '',
-      align: 'center',
-      type: 'selection',
-      width: 48,
-      fixed: 'left'
+const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } =
+  useTable({
+    apiFn: fetchCacheList,
+    apiParams: {
+      current: 1,
+      size: 20,
+      pattern: '',
+      cacheSpace: ''
     },
-    {
-      key: 'index',
-      title: $t('common.index'),
-      align: 'center',
-      width: 64,
-      customRender: ({ index }) => index + 1
-    },
-    {
-      key: 'cache_space',
-      title: '缓存空间',
-      align: 'center',
-      width: 120,
-      dataIndex: 'cache_space_name',
-      customRender: ({ record }) => {
-        const colors = ['blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'volcano', 'gold'];
-        const colorIndex = Math.abs(record.cache_space.charCodeAt(0)) % colors.length;
-        return <Tag color={colors[colorIndex]}>{record.cache_space_name}</Tag>;
-      }
-    },
-    {
-      key: 'key',
-      title: '缓存键',
-      align: 'left',
-      dataIndex: 'key',
-      ellipsis: true,
-      width: 300,
-      customRender: ({ record }) => (
-        <div class="font-mono text-12px">
-          <div class="text-gray-800 dark:text-gray-200 truncate">{record.key}</div>
-        </div>
-      )
-    },
-    {
-      key: 'type',
-      title: '数据类型',
-      align: 'center',
-      width: 100,
-      dataIndex: 'type',
-      customRender: ({ record }) => {
-        const typeColors = {
-          'string': 'green',
-          'hash': 'blue',
-          'list': 'orange',
-          'set': 'purple',
-          'zset': 'cyan'
-        };
-        return <Tag color={typeColors[record.type] || 'default'}>{record.type.toUpperCase()}</Tag>;
-      }
-    },
-    {
-      key: 'size',
-      title: '大小',
-      align: 'center',
-      width: 100,
-      dataIndex: 'size',
-      customRender: ({ record }) => (
-        <span class="font-mono text-12px">{record.size}</span>
-      )
-    },
-    {
-      key: 'ttl_text',
-      title: '过期时间',
-      align: 'center',
-      width: 120,
-      dataIndex: 'ttl_text',
-      customRender: ({ record }) => {
-        let color = 'default';
-        if (record.ttl === -1) color = 'green';
-        else if (record.ttl < 300) color = 'red';
-        else if (record.ttl < 3600) color = 'orange';
-        else color = 'blue';
-        
-        return <Tag color={color}>{record.ttl_text}</Tag>;
-      }
-    },
-    {
-      key: 'operate',
-      title: $t('common.operate'),
-      align: 'center',
-      width: 200,
-      fixed: 'right',
-      customRender: ({ record }) => (
-        <div class="flex-center gap-8px">
-          <Button type="link" size="small" onClick={() => handleViewDetail(record.key)}>
-            查看详情
-          </Button>
-          <Popconfirm title="确定要删除此缓存吗？" onConfirm={() => handleDelete(record.key)}>
-            <Button danger size="small">
-              删除
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    }
-  ]
-});
+    columns: () => [
+      {
+        key: 'selection',
+        title: '',
+        align: 'center',
+        type: 'selection',
+        width: 48,
+        fixed: 'left'
+      },
+      {
+        key: 'index',
+        title: $t('common.index'),
+        align: 'center',
+        width: 64,
+        customRender: ({ index }) => index + 1
+      },
+      {
+        key: 'cache_space',
+        title: '缓存空间',
+        align: 'center',
+        width: 120,
+        dataIndex: 'cache_space_name',
+        customRender: ({ record }) => {
+          const colors = ['blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'volcano', 'gold'];
+          const colorIndex = Math.abs(record.cache_space.charCodeAt(0)) % colors.length;
+          return <Tag color={colors[colorIndex]}>{record.cache_space_name}</Tag>;
+        }
+      },
+      {
+        key: 'key',
+        title: '缓存键',
+        align: 'left',
+        dataIndex: 'key',
+        ellipsis: true,
+        width: 300,
+        customRender: ({ record }) => (
+          <div class="text-12px font-mono">
+            <div class="truncate text-gray-800 dark:text-gray-200">{record.key}</div>
+          </div>
+        )
+      },
+      {
+        key: 'type',
+        title: '数据类型',
+        align: 'center',
+        width: 100,
+        dataIndex: 'type',
+        customRender: ({ record }) => {
+          const typeColors = {
+            string: 'green',
+            hash: 'blue',
+            list: 'orange',
+            set: 'purple',
+            zset: 'cyan'
+          };
+          return <Tag color={typeColors[record.type] || 'default'}>{record.type.toUpperCase()}</Tag>;
+        }
+      },
+      {
+        key: 'size',
+        title: '大小',
+        align: 'center',
+        width: 100,
+        dataIndex: 'size',
+        customRender: ({ record }) => <span class="text-12px font-mono">{record.size}</span>
+      },
+      {
+        key: 'ttl_text',
+        title: '过期时间',
+        align: 'center',
+        width: 120,
+        dataIndex: 'ttl_text',
+        customRender: ({ record }) => {
+          let color = 'default';
+          if (record.ttl === -1) color = 'green';
+          else if (record.ttl < 300) color = 'red';
+          else if (record.ttl < 3600) color = 'orange';
+          else color = 'blue';
 
-const {
-  checkedRowKeys,
-  onBatchDeleted,
-  onDeleted,
-  rowSelection
-} = useTableOperate(data, getData);
+          return <Tag color={color}>{record.ttl_text}</Tag>;
+        }
+      },
+      {
+        key: 'operate',
+        title: $t('common.operate'),
+        align: 'center',
+        width: 200,
+        fixed: 'right',
+        customRender: ({ record }) => (
+          <div class="flex-center gap-8px">
+            <Button type="link" size="small" onClick={() => handleViewDetail(record.key)}>
+              查看详情
+            </Button>
+            <Popconfirm title="确定要删除此缓存吗？" onConfirm={() => handleDelete(record.key)}>
+              <Button danger size="small">
+                删除
+              </Button>
+            </Popconfirm>
+          </div>
+        )
+      }
+    ]
+  });
+
+const { checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(data, getData);
 
 // 搜索表单
 const searchForm = reactive({
@@ -170,7 +164,7 @@ async function handleViewDetail(key: string) {
   detailLoading.value = true;
   detailVisible.value = true;
   currentCacheDetail.value = null;
-  
+
   try {
     const { data: detail, error } = await fetchCacheDetail(key);
     if (!error && detail) {
@@ -223,7 +217,7 @@ async function handleBatchDelete() {
     window.$message?.warning('请选择要删除的缓存');
     return;
   }
-  
+
   Modal.confirm({
     title: '批量删除缓存',
     content: `确定要删除选中的 ${checkedRowKeys.value.length} 个缓存吗？删除后无法恢复！`,
@@ -235,7 +229,7 @@ async function handleBatchDelete() {
         const selectedKeys = data.value
           .filter((_, index) => checkedRowKeys.value.includes(index))
           .map(item => item.key);
-          
+
         const { error } = await fetchDeleteCacheBatch(selectedKeys);
         if (!error) {
           onBatchDeleted(); // 使用统一的批量删除成功处理
@@ -255,9 +249,9 @@ async function handleClearSpace(space: string) {
     window.$message?.warning('请先选择缓存空间');
     return;
   }
-  
+
   const spaceName = cacheSpaceOptions.find(opt => opt.value === space)?.label || space;
-  
+
   Modal.confirm({
     title: '清空缓存空间',
     content: `确定要清空"${spaceName}"缓存空间的所有数据吗？此操作不可恢复！`,
@@ -284,7 +278,7 @@ async function handleFixCache() {
   Modal.confirm({
     title: '修复缓存序列化问题',
     content: `检测到缓存数据序列化格式不一致，这会导致缓存详情无法正常显示。
-    
+
 是否要清除所有缓存数据并重新生成？
 • 清除后需要重新访问各功能模块以生成新的缓存
 • 这将修复"¬"字符导致的详情查看问题
@@ -359,18 +353,13 @@ onMounted(() => {
             </div>
           </div>
         </template>
-        
+
         <!-- 简化搜索区域布局 -->
         <div class="flex-col gap-16px">
           <div class="flex flex-wrap items-center gap-12px">
             <div class="flex-y-center gap-8px">
               <span class="whitespace-nowrap text-gray-700 dark:text-gray-300">缓存键:</span>
-              <AInput
-                v-model:value="searchForm.pattern"
-                placeholder="请输入缓存键关键词"
-                class="w-200px"
-                allow-clear
-              />
+              <AInput v-model:value="searchForm.pattern" placeholder="请输入缓存键关键词" class="w-200px" allow-clear />
             </div>
             <div class="flex-y-center gap-8px">
               <span class="whitespace-nowrap text-gray-700 dark:text-gray-300">缓存空间:</span>
@@ -383,29 +372,24 @@ onMounted(() => {
               />
             </div>
             <div class="flex-y-center gap-12px">
-              <AButton type="primary" @click="handleSearch" class="flex-y-center gap-4px">
+              <AButton type="primary" class="flex-y-center gap-4px" @click="handleSearch">
                 <SvgIcon icon="mdi:magnify" class="text-14px" />
                 搜索
               </AButton>
-              <AButton @click="handleReset" class="flex-y-center gap-4px">
+              <AButton class="flex-y-center gap-4px" @click="handleReset">
                 <SvgIcon icon="mdi:refresh" class="text-14px" />
                 重置
               </AButton>
-              <AButton 
-                v-if="searchForm.cacheSpace" 
-                danger 
-                @click="handleClearSpace(searchForm.cacheSpace)"
+              <AButton
+                v-if="searchForm.cacheSpace"
+                danger
                 class="flex-y-center gap-4px"
+                @click="handleClearSpace(searchForm.cacheSpace)"
               >
                 <SvgIcon icon="mdi:delete-sweep" class="text-14px" />
                 清空空间
               </AButton>
-              <AButton 
-                type="primary" 
-                ghost 
-                @click="handleFixCache"
-                class="flex-y-center gap-4px"
-              >
+              <AButton type="primary" ghost class="flex-y-center gap-4px" @click="handleFixCache">
                 <SvgIcon icon="mdi:auto-fix" class="text-14px" />
                 修复缓存
               </AButton>
@@ -415,7 +399,7 @@ onMounted(() => {
       </ACard>
 
       <!-- 表格区域 -->
-      <ACard :bordered="false" size="small" class="card-wrapper flex-1-hidden">
+      <ACard :bordered="false" size="small" class="flex-1-hidden card-wrapper">
         <template #title>
           <div class="flex-y-center gap-8px">
             <SvgIcon icon="mdi:table" class="text-blue-500" />
@@ -430,18 +414,13 @@ onMounted(() => {
               v-if="checkedRowKeys.length > 0"
               danger
               size="small"
-              @click="handleBatchDelete"
               class="flex-y-center gap-4px"
+              @click="handleBatchDelete"
             >
               <SvgIcon icon="mdi:delete" class="text-12px" />
               批量删除
             </Button>
-            <Button 
-              size="small" 
-              @click="getData" 
-              :loading="loading"
-              class="flex-y-center gap-4px"
-            >
+            <Button size="small" :loading="loading" class="flex-y-center gap-4px" @click="getData">
               <SvgIcon icon="mdi:refresh" class="text-12px" />
               刷新
             </Button>
@@ -463,23 +442,18 @@ onMounted(() => {
     </div>
 
     <!-- 缓存详情抽屉 - 优化显示 -->
-    <Drawer
-      v-model:open="detailVisible"
-      title="缓存详情"
-      placement="right"
-      :width="600"
-    >
+    <Drawer v-model:open="detailVisible" title="缓存详情" placement="right" :width="600">
       <div v-if="currentCacheDetail" class="space-y-16px">
         <!-- 基本信息 -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-8px p-16px">
-          <h3 class="text-14px font-medium mb-12px flex-y-center gap-8px">
+        <div class="rounded-8px bg-gray-50 p-16px dark:bg-gray-800">
+          <h3 class="mb-12px flex-y-center gap-8px text-14px font-medium">
             <SvgIcon icon="mdi:information" class="text-blue-500" />
             基本信息
           </h3>
-          <div class="space-y-8px text-12px">
+          <div class="text-12px space-y-8px">
             <div class="flex justify-between">
               <span class="text-gray-600 dark:text-gray-400">缓存键:</span>
-              <span class="font-mono break-all text-right max-w-400px">{{ currentCacheDetail.key }}</span>
+              <span class="max-w-400px break-all text-right font-mono">{{ currentCacheDetail.key }}</span>
             </div>
             <div class="flex justify-between">
               <span class="text-gray-600 dark:text-gray-400">缓存空间:</span>
@@ -505,34 +479,30 @@ onMounted(() => {
         </div>
 
         <!-- 缓存值 -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-8px p-16px">
-          <h3 class="text-14px font-medium mb-12px flex-y-center gap-8px">
+        <div class="rounded-8px bg-gray-50 p-16px dark:bg-gray-800">
+          <h3 class="mb-12px flex-y-center gap-8px text-14px font-medium">
             <SvgIcon icon="mdi:code-json" class="text-green-500" />
             缓存值
           </h3>
-          <div class="bg-white dark:bg-gray-900 rounded-4px p-12px border">
-            <pre class="text-12px max-h-400px overflow-auto whitespace-pre-wrap break-words">{{ formatJsonValue(currentCacheDetail.value) }}</pre>
+          <div class="border rounded-4px bg-white p-12px dark:bg-gray-900">
+            <pre class="max-h-400px overflow-auto whitespace-pre-wrap break-words text-12px">{{
+              formatJsonValue(currentCacheDetail.value)
+            }}</pre>
           </div>
         </div>
 
         <!-- 操作按钮 -->
-        <div class="flex gap-12px pt-16px border-t">
-          <Button type="primary" @click="detailVisible = false">
-            关闭
-          </Button>
-          <Button danger @click="handleDeleteInDetail(currentCacheDetail.key)">
-            删除此缓存
-          </Button>
+        <div class="flex gap-12px border-t pt-16px">
+          <Button type="primary" @click="detailVisible = false">关闭</Button>
+          <Button danger @click="handleDeleteInDetail(currentCacheDetail.key)">删除此缓存</Button>
         </div>
       </div>
-      
-      <div v-else-if="detailLoading" class="flex-center h-200px">
+
+      <div v-else-if="detailLoading" class="h-200px flex-center">
         <ASpin size="large" />
       </div>
-      
-      <div v-else class="flex-center h-200px text-gray-500">
-        暂无数据
-      </div>
+
+      <div v-else class="h-200px flex-center text-gray-500">暂无数据</div>
     </Drawer>
   </div>
 </template>
@@ -549,4 +519,4 @@ onMounted(() => {
 .card-wrapper :deep(.ant-card-head-title) {
   @apply text-14px font-medium;
 }
-</style> 
+</style>

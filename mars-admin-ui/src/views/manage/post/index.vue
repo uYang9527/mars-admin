@@ -1,53 +1,12 @@
-<template>
-  <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <PostSearch v-model:model="searchParams" @reset="getData" @search="getData" />
-    <ACard
-      title="岗位列表"
-      :bordered="false"
-      :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
-    >
-      <template #extra>
-        <TableHeaderOperation
-          v-model:columns="columnChecks"
-          :disabled-delete="checkedRowKeys.length === 0"
-          :loading="loading"
-          @add="handleAdd"
-          @delete="handleBatchDelete"
-          @refresh="getData"
-        />
-      </template>
-      <ATable
-        :columns="columns"
-        :data-source="data"
-        size="small"
-        :scroll="{ x: 'max-content' }"
-        :loading="loading"
-        :row-selection="rowSelection"
-        row-key="id"
-        :pagination="pagination"
-        class="h-full"
-      />
-    </ACard>
-    <PostOperateDrawer
-      v-model:visible="drawerVisible"
-      :operate-type="operateType"
-      :row-data="editingData"
-      @submitted="getData"
-    />
-  </div>
-</template>
-
 <script setup lang="tsx">
-import { reactive, ref } from 'vue';
-import type { Ref } from 'vue';
-import { Button, Popconfirm, Space, Tag, Modal } from 'ant-design-vue';
+import { ref } from 'vue';
+import { Button, Modal, Popconfirm, Space, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
-  fetchGetPostList,
+  fetchChangePostStatus,
   fetchDeletePost,
   fetchDeletePosts,
-  fetchChangePostStatus,
+  fetchGetPostList
 } from '@/service/api/system-manage';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -179,7 +138,7 @@ async function handleBatchDelete() {
     window.$message?.warning('请选择要删除的岗位');
     return;
   }
-  
+
   Modal.confirm({
     title: '批量删除岗位',
     content: `确定要删除选中的 ${checkedRowKeys.value.length} 个岗位吗？删除后无法恢复！`,
@@ -191,10 +150,10 @@ async function handleBatchDelete() {
         if (!error) {
           onBatchDeleted();
         } else {
-          window.$message?.error('批量删除失败: ' + error);
+          window.$message?.error(`批量删除失败: ${error}`);
         }
       } catch (e) {
-        window.$message?.error('操作失败: ' + e.message);
+        window.$message?.error(`操作失败: ${e.message}`);
       }
     }
   });
@@ -220,6 +179,41 @@ function edit(id: number) {
   handleEdit(id);
 }
 </script>
+
+<template>
+  <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+    <PostSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <ACard title="岗位列表" :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
+      <template #extra>
+        <TableHeaderOperation
+          v-model:columns="columnChecks"
+          :disabled-delete="checkedRowKeys.length === 0"
+          :loading="loading"
+          @add="handleAdd"
+          @delete="handleBatchDelete"
+          @refresh="getData"
+        />
+      </template>
+      <ATable
+        :columns="columns"
+        :data-source="data"
+        size="small"
+        :scroll="{ x: 'max-content' }"
+        :loading="loading"
+        :row-selection="rowSelection"
+        row-key="id"
+        :pagination="pagination"
+        class="h-full"
+      />
+    </ACard>
+    <PostOperateDrawer
+      v-model:visible="drawerVisible"
+      :operate-type="operateType"
+      :row-data="editingData"
+      @submitted="getData"
+    />
+  </div>
+</template>
 
 <style scoped>
 .card-wrapper {

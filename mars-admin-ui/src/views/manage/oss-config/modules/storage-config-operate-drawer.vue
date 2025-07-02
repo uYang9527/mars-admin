@@ -1,22 +1,12 @@
 <script setup lang="ts">
-import { computed, reactive, watch, ref } from 'vue';
-import { 
-  Drawer, 
-  Form, 
-  FormItem, 
-  Input, 
-  Radio, 
-  RadioGroup, 
-  Button, 
-  Spin,
-  Space
-} from 'ant-design-vue';
+import { computed, reactive, ref, watch } from 'vue';
+import { Button, Drawer, Form, FormItem, Input, Radio, RadioGroup, Spin } from 'ant-design-vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import {
   fetchAddOssConfig,
-  fetchUpdateOssConfig,
+  fetchGetOssConfigById,
   fetchTestOssConnection,
-  fetchGetOssConfigById
+  fetchUpdateOssConfig
 } from '@/service/api/file-manage';
 
 defineOptions({
@@ -63,7 +53,17 @@ const title = computed(() => {
 
 type Model = Pick<
   Api.FileManage.OssConfig,
-  'configKey' | 'accessKey' | 'secretKey' | 'bucketName' | 'prefix' | 'endpoint' | 'domain' | 'isHttps' | 'region' | 'remark' | 'status'
+  | 'configKey'
+  | 'accessKey'
+  | 'secretKey'
+  | 'bucketName'
+  | 'prefix'
+  | 'endpoint'
+  | 'domain'
+  | 'isHttps'
+  | 'region'
+  | 'remark'
+  | 'status'
 >;
 
 const model: Model = reactive(createDefaultModel());
@@ -88,15 +88,9 @@ type RuleKey = Extract<keyof Model, 'configKey' | 'bucketName' | 'endpoint'>;
 
 const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
   return {
-    configKey: [
-      { required: true, message: '请输入配置标识', trigger: 'blur' }
-    ],
-    bucketName: [
-      { required: true, message: '请输入存储桶名称', trigger: 'blur' }
-    ],
-    endpoint: [
-      { required: true, message: '请输入端点地址', trigger: 'blur' }
-    ]
+    configKey: [{ required: true, message: '请输入配置标识', trigger: 'blur' }],
+    bucketName: [{ required: true, message: '请输入存储桶名称', trigger: 'blur' }],
+    endpoint: [{ required: true, message: '请输入端点地址', trigger: 'blur' }]
   };
 });
 
@@ -113,7 +107,7 @@ const dataLoading = ref(false);
 
 async function testConnection() {
   await validate();
-  
+
   testLoading.value = true;
   try {
     const { error } = await fetchTestOssConnection(model);
@@ -158,7 +152,7 @@ async function handleSubmit() {
 
   let request;
   const isAdd = props.operateType === 'add';
-  
+
   if (isAdd) {
     request = fetchAddOssConfig(model);
   } else {
@@ -188,26 +182,26 @@ watch(visible, () => {
   <Drawer
     v-model:open="visible"
     :title="title"
-    :width="600"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
     <!-- 数据加载中 -->
-    <div v-if="dataLoading" class="flex justify-center items-center h-200px">
+    <div v-if="dataLoading" class="h-200px flex items-center justify-center">
       <Spin size="large" />
       <span class="ml-12px">正在加载配置详情...</span>
     </div>
-    
+
     <!-- 表单内容 -->
     <Form v-else ref="formRef" :model="model" :rules="rules" :label-col="{ span: 5 }" :wrapper-col="{ span: 19 }">
       <FormItem label="配置标识" name="configKey">
-        <Input 
-          v-model:value="model.configKey" 
+        <Input
+          v-model:value="model.configKey"
           placeholder="请输入配置标识（如：local、minio、aliyun等）"
           :disabled="operateType === 'edit'"
         />
       </FormItem>
-      
+
       <FormItem label="Access Key">
         <Input v-model:value="model.accessKey" placeholder="请输入Access Key" />
       </FormItem>
@@ -232,11 +226,11 @@ watch(visible, () => {
           <Radio :value="0">禁用</Radio>
         </RadioGroup>
       </FormItem>
-      
+
       <FormItem v-if="model.configKey === 'aliyun'" label="地域">
         <Input v-model:value="model.region" placeholder="请输入地域" />
       </FormItem>
-      
+
       <FormItem label="状态">
         <RadioGroup v-model:value="model.status" :options="statusOptions" />
       </FormItem>
@@ -244,12 +238,12 @@ watch(visible, () => {
         <Input.TextArea v-model:value="model.remark" placeholder="请输入备注" :rows="3" />
       </FormItem>
     </Form>
-    
+
     <template #footer>
       <div class="flex-y-center justify-between">
-        <Button 
-          v-if="model.configKey && model.configKey !== 'local'" 
-          :loading="testLoading" 
+        <Button
+          v-if="model.configKey && model.configKey !== 'local'"
+          :loading="testLoading"
           :disabled="dataLoading"
           @click="testConnection"
         >
@@ -264,4 +258,4 @@ watch(visible, () => {
   </Drawer>
 </template>
 
-<style scoped></style> 
+<style scoped></style>

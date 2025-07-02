@@ -1,8 +1,47 @@
+<script setup lang="ts">
+import { Card as ACard, Drawer as ADrawer, Tag as ATag } from 'ant-design-vue';
+
+defineOptions({
+  name: 'LoginLogDetailDrawer'
+});
+
+interface Props {
+  /** the edit row data or null */
+  rowData?: {
+    id?: number;
+    userName?: string;
+    ipaddr?: string;
+    loginLocation?: string;
+    browser?: string;
+    os?: string;
+    status?: string;
+    msg?: string;
+    loginTime?: string;
+  } | null;
+  /** whether the drawer is visible */
+  visible: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  rowData: null
+});
+
+interface Emits {
+  (e: 'update:visible', visible: boolean): void;
+}
+
+const emit = defineEmits<Emits>();
+
+function handleClose() {
+  emit('update:visible', false);
+}
+</script>
+
 <template>
   <ADrawer
     :open="visible"
     title="登录日志详情"
-    width="600"
+    width="500"
     :closable="true"
     :destroy-on-close="true"
     @close="handleClose"
@@ -63,50 +102,6 @@
   </ADrawer>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue';
-import { 
-  Drawer as ADrawer,
-  Card as ACard,
-  Tag as ATag
-} from 'ant-design-vue';
-
-defineOptions({
-  name: 'LoginLogDetailDrawer'
-});
-
-interface Props {
-  /** the edit row data or null */
-  rowData?: {
-    id?: number;
-    userName?: string;
-    ipaddr?: string;
-    loginLocation?: string;
-    browser?: string;
-    os?: string;
-    status?: string;
-    msg?: string;
-    loginTime?: string;
-  } | null;
-  /** whether the drawer is visible */
-  visible: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  rowData: null
-});
-
-interface Emits {
-  (e: 'update:visible', visible: boolean): void;
-}
-
-const emit = defineEmits<Emits>();
-
-function handleClose() {
-  emit('update:visible', false);
-}
-</script>
-
 <style scoped>
 .label {
   @apply text-sm font-medium text-gray-600 w-100px flex-shrink-0;
@@ -115,4 +110,4 @@ function handleClose() {
 .value {
   @apply text-sm text-gray-900 flex-1;
 }
-</style> 
+</style>

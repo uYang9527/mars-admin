@@ -1,11 +1,62 @@
+<script setup lang="ts">
+import { computed } from 'vue';
+import { Card as ACard, Drawer as ADrawer, Tag as ATag } from 'ant-design-vue';
+
+defineOptions({
+  name: 'OperLogDetailDrawer'
+});
+
+interface Props {
+  /** the edit row data or null */
+  rowData?: Api.LogManage.OperLog | null;
+  /** whether the drawer is visible */
+  visible: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  rowData: null
+});
+
+interface Emits {
+  (e: 'update:visible', visible: boolean): void;
+}
+
+const emit = defineEmits<Emits>();
+
+const visible = computed({
+  get() {
+    return props.visible;
+  },
+  set(value: boolean) {
+    emit('update:visible', value);
+  }
+});
+
+// 获取业务类型颜色
+function getBusinessTypeColor(type?: number): string {
+  const colors = {
+    0: 'default', // 其它
+    1: 'green', // 新增
+    2: 'blue', // 修改
+    3: 'red' // 删除
+  };
+  return colors[type || 0] || 'default';
+}
+
+// 获取业务类型文本
+function getBusinessTypeText(type?: number): string {
+  const texts = {
+    0: '其它',
+    1: '新增',
+    2: '修改',
+    3: '删除'
+  };
+  return texts[type || 0] || '未知';
+}
+</script>
+
 <template>
-  <ADrawer
-    v-model:open="visible"
-    title="操作日志详情"
-    width="600"
-    :closable="true"
-    :destroy-on-close="true"
-  >
+  <ADrawer v-model:open="visible" title="操作日志详情" width="500" :closable="true" :destroy-on-close="true">
     <div v-if="rowData" class="space-y-16px">
       <!-- 基本信息 -->
       <ACard title="基本信息" size="small">
@@ -74,87 +125,26 @@
       <!-- 请求参数 -->
       <ACard title="请求参数" size="small">
         <div class="max-h-200px overflow-auto">
-          <pre class="text-xs whitespace-pre-wrap break-words">{{ rowData.operParam || '无' }}</pre>
+          <pre class="whitespace-pre-wrap break-words text-xs">{{ rowData.operParam || '无' }}</pre>
         </div>
       </ACard>
 
       <!-- 返回参数 -->
       <ACard title="返回参数" size="small">
         <div class="max-h-200px overflow-auto">
-          <pre class="text-xs whitespace-pre-wrap break-words">{{ rowData.jsonResult || '无' }}</pre>
+          <pre class="whitespace-pre-wrap break-words text-xs">{{ rowData.jsonResult || '无' }}</pre>
         </div>
       </ACard>
 
       <!-- 错误信息 -->
       <ACard v-if="rowData.status === 1" title="错误信息" size="small">
         <div class="max-h-200px overflow-auto">
-          <pre class="text-xs whitespace-pre-wrap break-words text-red-500">{{ rowData.errorMsg || '无' }}</pre>
+          <pre class="whitespace-pre-wrap break-words text-xs text-red-500">{{ rowData.errorMsg || '无' }}</pre>
         </div>
       </ACard>
     </div>
   </ADrawer>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue';
-import { 
-  Drawer as ADrawer,
-  Card as ACard,
-  Tag as ATag
-} from 'ant-design-vue';
-
-defineOptions({
-  name: 'OperLogDetailDrawer'
-});
-
-interface Props {
-  /** the edit row data or null */
-  rowData?: Api.LogManage.OperLog | null;
-  /** whether the drawer is visible */
-  visible: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  rowData: null
-});
-
-interface Emits {
-  (e: 'update:visible', visible: boolean): void;
-}
-
-const emit = defineEmits<Emits>();
-
-const visible = computed({
-  get() {
-    return props.visible;
-  },
-  set(value: boolean) {
-    emit('update:visible', value);
-  }
-});
-
-// 获取业务类型颜色
-function getBusinessTypeColor(type?: number): string {
-  const colors = {
-    0: 'default',  // 其它
-    1: 'green',    // 新增
-    2: 'blue',     // 修改
-    3: 'red'       // 删除
-  };
-  return colors[type || 0] || 'default';
-}
-
-// 获取业务类型文本
-function getBusinessTypeText(type?: number): string {
-  const texts = {
-    0: '其它',
-    1: '新增',
-    2: '修改',
-    3: '删除'
-  };
-  return texts[type || 0] || '未知';
-}
-</script>
 
 <style scoped>
 .label {
@@ -168,4 +158,4 @@ function getBusinessTypeText(type?: number): string {
 .text-break {
   word-break: break-all;
 }
-</style> 
+</style>

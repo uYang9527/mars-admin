@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { InboxOutlined } from '@ant-design/icons-vue';
 import { fetchGetEnabledOssConfigs } from '@/service/api/file-manage';
 
@@ -44,10 +44,10 @@ async function loadOssConfigs() {
 // 获取配置颜色
 function getConfigColor(configKey: string): string {
   const colors = {
-    'local': 'blue',
-    'minio': 'green',
-    'aliyun': 'orange',
-    'qiniu': 'purple'
+    local: 'blue',
+    minio: 'green',
+    aliyun: 'orange',
+    qiniu: 'purple'
   };
   return colors[configKey] || 'default';
 }
@@ -55,10 +55,10 @@ function getConfigColor(configKey: string): string {
 // 获取配置名称
 function getConfigName(configKey: string): string {
   const names = {
-    'local': '本地存储',
-    'minio': 'MinIO',
-    'aliyun': '阿里云OSS',
-    'qiniu': '七牛云'
+    local: '本地存储',
+    minio: 'MinIO',
+    aliyun: '阿里云OSS',
+    qiniu: '七牛云'
   };
   return names[configKey] || configKey;
 }
@@ -86,23 +86,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <ADrawer
-    :open="visible"
-    title="文件上传"
-    :width="600"
-    :footer="null"
-    placement="right"
-    @close="closeDrawer"
-  >
+  <ADrawer :open="visible" title="文件上传" :width="500" :footer="null" placement="right" @close="closeDrawer">
     <div class="upload-content">
       <!-- 存储方式选择 -->
       <div class="mb-4">
-        <div class="text-sm mb-2">存储方式</div>
-        <ASelect 
-          v-model:value="selectedConfigKey" 
-          placeholder="请选择存储配置" 
-          class="w-full"
-        >
+        <div class="mb-2 text-sm">存储方式</div>
+        <ASelect v-model:value="selectedConfigKey" placeholder="请选择存储配置" class="w-full">
           <ASelectOption v-for="config in ossConfigs" :key="config.configKey" :value="config.configKey">
             <div class="flex items-center gap-2">
               <span>{{ config.configKey }}</span>
@@ -113,23 +102,23 @@ onMounted(() => {
           </ASelectOption>
         </ASelect>
       </div>
-      
+
       <!-- 文件上传区域 -->
-      <a-upload-dragger
+      <AUploadDragger
         name="file"
         :multiple="true"
         action="/proxy-default/file/upload"
         :data="{ configKey: selectedConfigKey }"
         :headers="uploadHeaders"
-        @change="handleUploadChange"
         class="upload-dragger"
+        @change="handleUploadChange"
       >
         <p class="ant-upload-drag-icon">
           <InboxOutlined style="font-size: 48px; color: #bfbfbf" />
         </p>
         <p class="ant-upload-text">点击或拖拽文件到此区域上传</p>
         <p class="ant-upload-hint">支持单个或批量上传</p>
-      </a-upload-dragger>
+      </AUploadDragger>
     </div>
   </ADrawer>
 </template>
@@ -142,4 +131,4 @@ onMounted(() => {
 .upload-dragger {
   margin-top: 16px;
 }
-</style> 
+</style>

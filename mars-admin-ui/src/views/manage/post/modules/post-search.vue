@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { $t } from '@/locales';
-import { useAntdForm, useFormRules } from '@/hooks/common/form';
+import { useAntdForm } from '@/hooks/common/form';
 import { enableStatusOptions } from '@/constants/business';
 import { translateOptions } from '@/utils/common';
 
@@ -39,10 +39,10 @@ function toggleCollapsed() {
 </script>
 
 <template>
-  <ACard 
-    :title="$t('common.search')" 
-    :bordered="false" 
-    class="card-wrapper" 
+  <ACard
+    :title="$t('common.search')"
+    :bordered="false"
+    class="card-wrapper"
     :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
     :data-collapsed="collapsed"
   >
@@ -55,7 +55,7 @@ function toggleCollapsed() {
         {{ collapsed ? '展开' : '收起' }}
       </AButton>
     </template>
-    
+
     <div v-show="!collapsed">
       <AForm
         ref="formRef"
@@ -68,12 +68,12 @@ function toggleCollapsed() {
         <ARow :gutter="[16, 16]" wrap>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="岗位名称" name="postName" class="m-0">
-              <AInput v-model:value="model.postName" placeholder="请输入岗位名称" @pressEnter="search" />
+              <AInput v-model:value="model.postName" placeholder="请输入岗位名称" @press-enter="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="岗位编码" name="postCode" class="m-0">
-              <AInput v-model:value="model.postCode" placeholder="请输入岗位编码" @pressEnter="search" />
+              <AInput v-model:value="model.postCode" placeholder="请输入岗位编码" @press-enter="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
@@ -126,7 +126,7 @@ function toggleCollapsed() {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -134,8 +134,8 @@ function toggleCollapsed() {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
-</style> 
+</style>

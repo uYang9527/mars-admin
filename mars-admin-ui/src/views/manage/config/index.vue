@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { onMounted, reactive, ref } from 'vue';
-import { Button, Popconfirm, Tag, Modal } from 'ant-design-vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   fetchDeleteConfig,
@@ -22,98 +22,99 @@ const appStore = useAppStore();
 const wrapperEl = ref<HTMLElement>();
 
 // 参数配置表格配置
-const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } = useTable({
-  apiFn: fetchGetConfigList,
-  apiParams: {
-    current: 1,
-    size: 10,
-    configName: '',
-    configKey: '',
-    configType: null
-  },
-  columns: () => [
-    {
-      key: 'selection',
-      title: '',
-      align: 'center',
-      type: 'selection',
-      width: 48,
-      fixed: 'left'
+const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } =
+  useTable({
+    apiFn: fetchGetConfigList,
+    apiParams: {
+      current: 1,
+      size: 10,
+      configName: '',
+      configKey: '',
+      configType: null
     },
-    {
-      key: 'index',
-      title: $t('common.index'),
-      align: 'center',
-      customRender: ({ index }) => index + 1
-    },
-    {
-      key: 'configName',
-      title: '参数名称',
-      align: 'center',
-      dataIndex: 'configName'
-    },
-    {
-      key: 'configKey',
-      title: '参数键名',
-      align: 'center',
-      dataIndex: 'configKey'
-    },
-    {
-      key: 'configValue',
-      title: '参数键值',
-      align: 'center',
-      dataIndex: 'configValue'
-    },
-    {
-      key: 'configType',
-      title: '系统内置',
-      align: 'center',
-      dataIndex: 'configType',
-      customRender: ({ record }) => {
-        if (!record.configType) {
-          return null;
+    columns: () => [
+      {
+        key: 'selection',
+        title: '',
+        align: 'center',
+        type: 'selection',
+        width: 48,
+        fixed: 'left'
+      },
+      {
+        key: 'index',
+        title: $t('common.index'),
+        align: 'center',
+        customRender: ({ index }) => index + 1
+      },
+      {
+        key: 'configName',
+        title: '参数名称',
+        align: 'center',
+        dataIndex: 'configName'
+      },
+      {
+        key: 'configKey',
+        title: '参数键名',
+        align: 'center',
+        dataIndex: 'configKey'
+      },
+      {
+        key: 'configValue',
+        title: '参数键值',
+        align: 'center',
+        dataIndex: 'configValue'
+      },
+      {
+        key: 'configType',
+        title: '系统内置',
+        align: 'center',
+        dataIndex: 'configType',
+        customRender: ({ record }) => {
+          if (!record.configType) {
+            return null;
+          }
+
+          const configType = record.configType;
+          const label = configType === 'Y' ? '是' : '否';
+          const color = configType === 'Y' ? 'success' : 'default';
+
+          return <Tag color={color}>{label}</Tag>;
         }
-
-        const configType = record.configType;
-        const label = configType === 'Y' ? '是' : '否';
-        const color = configType === 'Y' ? 'success' : 'default';
-
-        return <Tag color={color}>{label}</Tag>;
-      }
-    },
-    {
-      key: 'createTime',
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime'
-    },
-    {
-      key: 'remark',
-      title: '备注',
-      align: 'center',
-      ellipsis: true,
-      dataIndex: 'remark'
-    },
-    {
-      key: 'operate',
-      title: $t('common.operate'),
-      align: 'center',
-      fixed: 'right',
-      customRender: ({ record }) => (
-        <div class="flex-center gap-8px">
-          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-            {$t('common.edit')}
-          </Button>
-          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-            <Button danger size="small">
-              {$t('common.delete')}
+      },
+      {
+        key: 'createTime',
+        title: '创建时间',
+        align: 'center',
+        dataIndex: 'createTime'
+      },
+      {
+        key: 'remark',
+        title: '备注',
+        align: 'center',
+        ellipsis: true,
+        dataIndex: 'remark'
+      },
+      {
+        key: 'operate',
+        title: $t('common.operate'),
+        align: 'center',
+        fixed: 'right',
+        customRender: ({ record }) => (
+          <div class="flex-center gap-8px">
+            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+              {$t('common.edit')}
             </Button>
-          </Popconfirm>
-        </div>
-      )
-    }
-  ]
-});
+            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+              <Button danger size="small">
+                {$t('common.delete')}
+              </Button>
+            </Popconfirm>
+          </div>
+        )
+      }
+    ]
+  });
 
 const {
   drawerVisible,
@@ -143,7 +144,7 @@ async function handleBatchDelete() {
     window.$message?.warning('请选择要删除的配置');
     return;
   }
-  
+
   Modal.confirm({
     title: '批量删除配置',
     content: `确定要删除选中的 ${checkedRowKeys.value.length} 个配置吗？删除后无法恢复！`,
@@ -156,10 +157,10 @@ async function handleBatchDelete() {
           window.$message?.success('批量删除成功');
           onBatchDeleted();
         } else {
-          window.$message?.error('批量删除失败: ' + error);
+          window.$message?.error(`批量删除失败: ${error}`);
         }
       } catch (e) {
-        window.$message?.error('操作失败: ' + e.message);
+        window.$message?.error(`操作失败: ${e.message}`);
       }
     }
   });
@@ -246,12 +247,12 @@ onMounted(() => {
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="参数名称" name="configName" class="m-0">
-                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" @input="handleSearch"/>
+                <AInput v-model:value="searchForm.configName" placeholder="请输入参数名称" @input="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="参数键名" name="configKey" class="m-0">
-                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" @pressEnter="handleSearch" />
+                <AInput v-model:value="searchForm.configKey" placeholder="请输入参数键名" @press-enter="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">

@@ -56,17 +56,17 @@ const dataScopeOptions = [
 ];
 
 type Model = Pick<
-  Api.SystemManage.Role, 
-  'roleName' | 
-  'roleCode' | 
-  'roleKey' | 
-  'roleSort' | 
-  'dataScope' | 
-  'menuCheckStrictly' | 
-  'deptCheckStrictly' | 
-  'description' | 
-  'status' |
-  'remark'
+  Api.SystemManage.Role,
+  | 'roleName'
+  | 'roleCode'
+  | 'roleKey'
+  | 'roleSort'
+  | 'dataScope'
+  | 'menuCheckStrictly'
+  | 'deptCheckStrictly'
+  | 'description'
+  | 'status'
+  | 'remark'
 >;
 
 const model = ref(createDefaultModel());
@@ -125,18 +125,20 @@ function closeDrawer() {
 
 async function handleSubmit() {
   await validate();
-  
+
   // 确保提交的数据类型正确
   const submitData = {
     ...model.value,
-    menuCheckStrictly: typeof model.value.menuCheckStrictly === 'boolean' 
-      ? boolToInt(model.value.menuCheckStrictly) 
-      : model.value.menuCheckStrictly,
-    deptCheckStrictly: typeof model.value.deptCheckStrictly === 'boolean' 
-      ? boolToInt(model.value.deptCheckStrictly) 
-      : model.value.deptCheckStrictly
+    menuCheckStrictly:
+      typeof model.value.menuCheckStrictly === 'boolean'
+        ? boolToInt(model.value.menuCheckStrictly)
+        : model.value.menuCheckStrictly,
+    deptCheckStrictly:
+      typeof model.value.deptCheckStrictly === 'boolean'
+        ? boolToInt(model.value.deptCheckStrictly)
+        : model.value.deptCheckStrictly
   };
-  
+
   let request;
   if (props.operateType === 'add') {
     request = fetchAddRole(submitData);
@@ -148,7 +150,7 @@ async function handleSubmit() {
   }
 
   const { error } = await request;
-  
+
   if (!error) {
     // 使用直接的中文提示
     window.$message?.success(props.operateType === 'add' ? '新增角色成功' : '编辑角色成功');
@@ -169,7 +171,7 @@ watch(visible, () => {
   <ADrawer
     v-model:open="visible"
     :title="title"
-    :width="600"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
@@ -189,10 +191,10 @@ watch(visible, () => {
         </ACol>
         <ACol :span="12">
           <AFormItem :label="$t('page.manage.role.roleCode')" name="roleCode">
-            <AInput 
-              v-model:value="model.roleCode" 
-              :placeholder="$t('page.manage.role.form.roleCode')" 
-              :disabled="isEdit && isSystem" 
+            <AInput
+              v-model:value="model.roleCode"
+              :placeholder="$t('page.manage.role.form.roleCode')"
+              :disabled="isEdit && isSystem"
             />
           </AFormItem>
         </ACol>
@@ -201,19 +203,19 @@ watch(visible, () => {
       <ARow :gutter="16">
         <ACol :span="12">
           <AFormItem :label="$t('page.manage.role.roleKey')" name="roleKey">
-            <AInput 
-              v-model:value="model.roleKey" 
-              :placeholder="$t('page.manage.role.form.roleKey')" 
-              :disabled="isEdit && isSystem" 
+            <AInput
+              v-model:value="model.roleKey"
+              :placeholder="$t('page.manage.role.form.roleKey')"
+              :disabled="isEdit && isSystem"
             />
           </AFormItem>
         </ACol>
         <ACol :span="12">
           <AFormItem label="显示顺序" name="roleSort">
-            <AInputNumber 
-              v-model:value="model.roleSort" 
-              :min="0" 
-              :max="9999" 
+            <AInputNumber
+              v-model:value="model.roleSort"
+              :min="0"
+              :max="9999"
               style="width: 100%"
               placeholder="请输入显示顺序"
             />
@@ -231,11 +233,7 @@ watch(visible, () => {
 
       <AFormItem label="数据范围" name="dataScope">
         <ASelect v-model:value="model.dataScope" style="width: 100%">
-          <ASelectOption 
-            v-for="item in dataScopeOptions" 
-            :key="item.value" 
-            :value="item.value"
-          >
+          <ASelectOption v-for="item in dataScopeOptions" :key="item.value" :value="item.value">
             {{ item.label }}
           </ASelectOption>
         </ASelect>
@@ -244,43 +242,35 @@ watch(visible, () => {
       <ARow :gutter="16">
         <ACol :span="12">
           <AFormItem label="菜单树选择项关联显示" name="menuCheckStrictly">
-            <ASwitch 
+            <ASwitch
               :checked="model.menuCheckStrictly === 1"
-              @change="value => model.menuCheckStrictly = value ? 1 : 0" 
-              :checked-children="'是'" 
-              :un-checked-children="'否'" 
+              checked-children="是"
+              un-checked-children="否"
+              @change="value => (model.menuCheckStrictly = value ? 1 : 0)"
             />
           </AFormItem>
         </ACol>
         <ACol :span="12">
           <AFormItem label="部门树选择项关联显示" name="deptCheckStrictly">
-            <ASwitch 
+            <ASwitch
               :checked="model.deptCheckStrictly === 1"
-              @change="value => model.deptCheckStrictly = value ? 1 : 0" 
-              :checked-children="'是'" 
-              :un-checked-children="'否'" 
+              checked-children="是"
+              un-checked-children="否"
+              @change="value => (model.deptCheckStrictly = value ? 1 : 0)"
             />
           </AFormItem>
         </ACol>
       </ARow>
 
       <AFormItem :label="$t('page.manage.role.roleDesc')" name="description">
-        <ATextarea 
-          v-model:value="model.description" 
-          :placeholder="$t('page.manage.role.form.roleDesc')"
-          :rows="2" 
-        />
+        <ATextarea v-model:value="model.description" :placeholder="$t('page.manage.role.form.roleDesc')" :rows="2" />
       </AFormItem>
 
       <AFormItem label="备注" name="remark">
-        <ATextarea 
-          v-model:value="model.remark" 
-          placeholder="请输入备注"
-          :rows="2" 
-        />
+        <ATextarea v-model:value="model.remark" placeholder="请输入备注" :rows="2" />
       </AFormItem>
     </AForm>
-    
+
     <div v-if="isEdit" class="mt-4">
       <ADivider orientation="left">权限分配</ADivider>
       <ASpace>
@@ -292,7 +282,7 @@ watch(visible, () => {
       <DataAuthModal v-model:visible="dataAuthVisible" :role-id="roleId" />
       <ButtonAuthModal v-model:visible="buttonAuthVisible" :role-id="roleId" />
     </div>
-    
+
     <template #footer>
       <div class="flex-y-center justify-end gap-12px">
         <AButton @click="closeDrawer">{{ $t('common.cancel') }}</AButton>

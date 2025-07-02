@@ -33,10 +33,10 @@ function toggleCollapsed() {
 </script>
 
 <template>
-  <ACard 
-    :title="$t('common.search')" 
-    :bordered="false" 
-    class="card-wrapper" 
+  <ACard
+    :title="$t('common.search')"
+    :bordered="false"
+    class="card-wrapper"
     :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
     :data-collapsed="collapsed"
   >
@@ -49,7 +49,7 @@ function toggleCollapsed() {
         {{ collapsed ? '展开' : '收起' }}
       </AButton>
     </template>
-    
+
     <div v-show="!collapsed">
       <AForm
         :model="model"
@@ -61,22 +61,39 @@ function toggleCollapsed() {
         <ARow :gutter="[16, 16]" wrap>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.role.roleName')" name="roleName" class="m-0">
-              <AInput v-model:value="model.roleName" :placeholder="$t('page.manage.role.form.roleName')" @input="search" />
+              <AInput
+                v-model:value="model.roleName"
+                :placeholder="$t('page.manage.role.form.roleName')"
+                @input="search"
+              />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.role.roleCode')" name="roleCode" class="m-0">
-              <AInput v-model:value="model.roleCode" :placeholder="$t('page.manage.role.form.roleCode')" @pressEnter="search"/>
+              <AInput
+                v-model:value="model.roleCode"
+                :placeholder="$t('page.manage.role.form.roleCode')"
+                @press-enter="search"
+              />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.role.roleKey')" name="roleKey" class="m-0">
-              <AInput v-model:value="model.roleKey" :placeholder="$t('page.manage.role.form.roleKey')" @pressEnter="search" />
+              <AInput
+                v-model:value="model.roleKey"
+                :placeholder="$t('page.manage.role.form.roleKey')"
+                @press-enter="search"
+              />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem :label="$t('page.manage.role.roleStatus')" name="status" class="m-0">
-              <ASelect v-model:value="model.status" :placeholder="$t('page.manage.role.form.roleStatus')" clearable @change="search">
+              <ASelect
+                v-model:value="model.status"
+                :placeholder="$t('page.manage.role.form.roleStatus')"
+                clearable
+                @change="search"
+              >
                 <ASelectOption v-for="option in enableStatusOptions" :key="option.value" :value="option.value">
                   {{ $t(option.label) }}
                 </ASelectOption>
@@ -123,7 +140,7 @@ function toggleCollapsed() {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -131,7 +148,7 @@ function toggleCollapsed() {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }

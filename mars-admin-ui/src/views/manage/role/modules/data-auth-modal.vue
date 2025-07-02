@@ -2,7 +2,7 @@
 import { computed, shallowRef, watch } from 'vue';
 import type { DataNode } from 'ant-design-vue/es/tree';
 import { $t } from '@/locales';
-import { fetchGetDeptTree, fetchGetDeptsByRoleId, fetchAssignRoleDepts } from '@/service/api';
+import { fetchAssignRoleDepts, fetchGetDeptTree, fetchGetDeptsByRoleId } from '@/service/api';
 
 defineOptions({
   name: 'DataAuthModal'
@@ -61,9 +61,9 @@ const checks = shallowRef<number[]>([]);
 // 获取角色已分配的部门
 async function getChecks() {
   if (!props.roleId) return;
-  
+
   const { error, data } = await fetchGetDeptsByRoleId(props.roleId);
-  
+
   if (!error && data) {
     // 提取部门ID作为选中项
     checks.value = data.map(item => item.id);
@@ -73,7 +73,7 @@ async function getChecks() {
 // 提交数据权限
 async function handleSubmit() {
   if (!props.roleId) return;
-  
+
   // 提交授权请求
   const { error } = await fetchAssignRoleDepts(props.roleId, checks.value);
 
@@ -112,4 +112,4 @@ watch(visible, val => {
   </AModal>
 </template>
 
-<style scoped></style> 
+<style scoped></style>

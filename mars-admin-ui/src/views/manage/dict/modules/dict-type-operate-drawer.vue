@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
-import { fetchAddDictType, fetchUpdateDictType, fetchGetDictTypeById, fetchCheckDictTypeUnique, fetchCheckDictNameUnique } from '@/service/api/system-manage';
-import { $t } from '@/locales';
 import { Form } from 'ant-design-vue';
+import {
+  fetchAddDictType,
+  fetchCheckDictNameUnique,
+  fetchCheckDictTypeUnique,
+  fetchGetDictTypeById,
+  fetchUpdateDictType
+} from '@/service/api/system-manage';
+import { $t } from '@/locales';
 
 export type OperateType = 'add' | 'edit';
 

@@ -1,89 +1,10 @@
-<template>
-  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <!-- 搜索区域 -->
-    <FileSearch v-model:model="searchParams" @reset="getData" @search="getData" />
-
-    <!-- 操作按钮 -->
-    <ACard :bordered="false" class="card-wrapper">
-      <div class="flex gap-12px">
-        <Button type="primary" @click="showUploadDrawer">
-          上传文件
-        </Button>
-        <Button
-          type="primary"
-          ghost
-          :disabled="checkedRowKeys.length === 0"
-          @click="handleBatchDelete"
-        >
-          批量删除
-        </Button>
-      </div>
-    </ACard>
-
-    <!-- 文件列表 -->
-    <ACard title="文件列表" :bordered="false" class="card-wrapper flex-1-hidden">
-      <ATable
-        :columns="columns"
-        :data-source="data"
-        :row-key="record => record.id"
-        :pagination="mobilePagination"
-        :loading="loading"
-        :row-selection="rowSelection"
-        :scroll="{ x: 1200 }"
-        @change="getDataByPage"
-      />
-    </ACard>
-
-    <!-- 文件上传抽屉 -->
-    <FileUploadDrawer
-      v-model:visible="uploadVisible"
-      @uploaded="getData"
-    />
-
-    <!-- 文件预览模态框 -->
-    <Modal
-      v-model:open="previewVisible"
-      title="文件预览"
-      :width="800"
-      :footer="null"
-      centered
-    >
-      <div v-if="previewFile" class="preview-content">
-        <div v-if="isImageFile(previewFile.contentType)" class="text-center">
-          <img :src="previewFile.url" :alt="previewFile.originalName" class="max-w-full max-h-500px" />
-        </div>
-        <div v-else class="text-center py-40px">
-          <div class="text-6xl mb-4">📄</div>
-          <div class="text-lg">{{ previewFile.originalName }}</div>
-          <div class="text-gray-500 mt-8px">此文件类型不支持预览</div>
-          <Button type="primary" class="mt-16px" @click="handleDownload(previewFile)">
-            下载文件
-          </Button>
-        </div>
-      </div>
-    </Modal>
-
-    <!-- 文件详情抽屉 -->
-    <FileOperateDrawer
-      v-model:visible="detailVisible"
-      :file-data="detailFile"
-      @download="handleDownload"
-      @preview="handlePreview"
-    />
-  </div>
-</template>
-
 <script setup lang="tsx">
 import { reactive, ref } from 'vue';
-import { Button, Popconfirm, Tag, Modal, Card as ACard, Table as ATable } from 'ant-design-vue';
-import { useTable, useTableOperate } from '@/hooks/common/table';
-import {
-  fetchGetFileList,
-  fetchDeleteFile,
-  fetchDeleteFiles
-} from '@/service/api/file-manage';
-import { $t } from '@/locales';
+import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
+import { useTable, useTableOperate } from '@/hooks/common/table';
+import { fetchDeleteFile, fetchDeleteFiles, fetchGetFileList } from '@/service/api/file-manage';
+import { $t } from '@/locales';
 import FileSearch from './modules/file-search.vue';
 import FileOperateDrawer from './modules/file-operate-drawer.vue';
 import FileUploadDrawer from './modules/file-upload-drawer.vue';
@@ -97,142 +18,128 @@ const wrapperEl = ref<HTMLElement>();
 // 上传抽屉相关
 const uploadVisible = ref(false);
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } =
-  useTable({
-    apiFn: fetchGetFileList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      fileName: '',
-      configKey: ''
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+  apiFn: fetchGetFileList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    fileName: '',
+    configKey: ''
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        dataIndex: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        width: 60,
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'thumbnail',
-        title: '缩略图',
-        align: 'center',
-        width: 80,
-        customRender: ({ record }) => {
-          if (isImageFile(record.contentType)) {
-            return (
-              <img 
-                src={record.url} 
-                alt={record.originalName}
-                class="w-12 h-12 object-cover rounded cursor-pointer"
-                onClick={() => handlePreview(record)}
-              />
-            );
-          } else {
-            return (
-              <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-500">
-                {getFileIcon(record.contentType)}
-              </div>
-            );
-          }
+    {
+      key: 'index',
+      dataIndex: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'thumbnail',
+      title: '缩略图',
+      align: 'center',
+      customRender: ({ record }) => {
+        if (isImageFile(record.contentType)) {
+          return (
+            <img
+              src={record.url}
+              alt={record.originalName}
+              class="h-12 w-12 cursor-pointer rounded object-cover"
+              onClick={() => handlePreview(record)}
+            />
+          );
         }
-      },
-      {
-        key: 'originalName',
-        title: '文件名',
-        dataIndex: 'originalName',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => (
-          <div class="cursor-pointer text-blue-600" onClick={() => handleShowDetail(record)}>
-            {record.originalName}
+        return (
+          <div class="h-12 w-12 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-500">
+            {getFileIcon(record.contentType)}
           </div>
-        )
-      },
-      {
-        key: 'size',
-        dataIndex: 'size',
-        title: '文件大小',
-        align: 'center',
-        width: 100,
-        customRender: ({ record }) => {
-          return formatFileSize(record.size);
-        }
-      },
-      {
-        key: 'contentType',
-        dataIndex: 'contentType',
-        title: '文件类型',
-        align: 'center',
-        width: 120,
-      },
-      {
-        key: 'configKey',
-        dataIndex: 'configKey',
-        title: '存储配置',
-        align: 'center',
-        width: 100,
-        customRender: ({ record }) => (
-          <Tag color={getConfigColor(record.configKey)}>{record.configKey}</Tag>
-        )
-      },
-      {
-        key: 'createTime',
-        dataIndex: 'createTime',
-        title: '上传时间',
-        align: 'center',
-        width: 150,
-        customRender: ({ record }) => {
-          return record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') : '';
-        }
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        width: 200,
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => handleShowDetail(record)}>
-              详情
-            </Button>
-            <Button size="small" onClick={() => handlePreview(record)}>
-              预览
-            </Button>
-            <Button size="small" onClick={() => handleDownload(record)}>
-              下载
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
+        );
       }
-    ]
-  });
+    },
+    {
+      key: 'originalName',
+      title: '文件名',
+      dataIndex: 'originalName',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => (
+        <div class="cursor-pointer text-blue-600" onClick={() => handleShowDetail(record)}>
+          {record.originalName}
+        </div>
+      )
+    },
+    {
+      key: 'size',
+      dataIndex: 'size',
+      title: '文件大小',
+      align: 'center',
+      customRender: ({ record }) => {
+        return formatFileSize(record.size);
+      }
+    },
+    {
+      key: 'contentType',
+      dataIndex: 'contentType',
+      title: '文件类型',
+      align: 'center',
+    },
+    {
+      key: 'configKey',
+      dataIndex: 'configKey',
+      title: '存储配置',
+      align: 'center',
+      customRender: ({ record }) => <Tag color={getConfigColor(record.configKey)}>{record.configKey}</Tag>
+    },
+    {
+      key: 'createTime',
+      dataIndex: 'createTime',
+      title: '上传时间',
+      align: 'center',
+      customRender: ({ record }) => {
+        return record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') : '';
+      }
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => handleShowDetail(record)}>
+            详情
+          </Button>
+          <Button size="small" onClick={() => handlePreview(record)}>
+            预览
+          </Button>
+          <Button size="small" onClick={() => handleDownload(record)}>
+            下载
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const {
   drawerVisible,
   operateType,
   editingData,
-  handleAdd,
-  handleEdit,
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  onSelectChange,
   rowSelection
 } = useTableOperate(data, getData);
 
@@ -244,15 +151,13 @@ const previewFile = ref<any>(null);
 const detailVisible = ref(false);
 const detailFile = ref<any>(null);
 
-
-
 // 文件大小格式化
 function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 }
 
 // 判断是否为图片文件
@@ -275,10 +180,10 @@ function getFileIcon(contentType: string): string {
 // 获取配置颜色
 function getConfigColor(configKey: string): string {
   const colors = {
-    'local': 'blue',
-    'minio': 'green',
-    'aliyun': 'orange',
-    'qiniu': 'purple'
+    local: 'blue',
+    minio: 'green',
+    aliyun: 'orange',
+    qiniu: 'purple'
   };
   return colors[configKey] || 'default';
 }
@@ -341,9 +246,64 @@ async function handleDelete(id: number) {
     onDeleted();
   }
 }
-
-
 </script>
+
+<template>
+  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+    <!-- 搜索区域 -->
+    <FileSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+
+    <!-- 操作按钮 -->
+    <ACard :bordered="false" class="card-wrapper">
+      <div class="flex gap-12px">
+        <Button type="primary" @click="showUploadDrawer">上传文件</Button>
+        <Button type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+          批量删除
+        </Button>
+      </div>
+    </ACard>
+
+    <!-- 文件列表 -->
+    <ACard title="文件列表" :bordered="false" class="flex-1-hidden card-wrapper">
+      <ATable
+        :columns="columns"
+        :data-source="data"
+        :row-key="record => record.id"
+        :pagination="mobilePagination"
+        :loading="loading"
+        :row-selection="rowSelection"
+        :scroll="{ x: 1200 }"
+        @change="getDataByPage"
+      />
+    </ACard>
+
+    <!-- 文件上传抽屉 -->
+    <FileUploadDrawer v-model:visible="uploadVisible" @uploaded="getData" />
+
+    <!-- 文件预览模态框 -->
+    <Modal v-model:open="previewVisible" title="文件预览" :width="800" :footer="null" centered>
+      <div v-if="previewFile" class="preview-content">
+        <div v-if="isImageFile(previewFile.contentType)" class="text-center">
+          <img :src="previewFile.url" :alt="previewFile.originalName" class="max-h-500px max-w-full" />
+        </div>
+        <div v-else class="py-40px text-center">
+          <div class="mb-4 text-6xl">📄</div>
+          <div class="text-lg">{{ previewFile.originalName }}</div>
+          <div class="mt-8px text-gray-500">此文件类型不支持预览</div>
+          <Button type="primary" class="mt-16px" @click="handleDownload(previewFile)">下载文件</Button>
+        </div>
+      </div>
+    </Modal>
+
+    <!-- 文件详情抽屉 -->
+    <FileOperateDrawer
+      v-model:visible="detailVisible"
+      :file-data="detailFile"
+      @download="handleDownload"
+      @preview="handlePreview"
+    />
+  </div>
+</template>
 
 <style scoped>
 .card-wrapper {
@@ -363,4 +323,4 @@ async function handleDelete(id: number) {
 .upload-content {
   padding: 16px 0;
 }
-</style> 
+</style>

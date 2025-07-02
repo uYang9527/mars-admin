@@ -6,7 +6,7 @@ import { $t } from '@/locales';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import { getLocalIcons } from '@/utils/icon';
-import { fetchGetAllRoles, fetchAddMenu, fetchUpdateMenu, fetchGetMenuTree } from '@/service/api';
+import { fetchAddMenu, fetchGetAllRoles, fetchGetMenuTree, fetchUpdateMenu } from '@/service/api';
 import {
   getLayoutAndPage,
   getPathParamFromRoutePath,
@@ -227,7 +227,7 @@ async function loadMenuTree() {
     // 编辑时排除当前菜单，避免选择自己作为父级
     const excludeId = props.operateType === 'edit' ? props.rowData?.id : undefined;
     const transformedData = transformMenuToTreeData(menuTreeRes.data, excludeId);
-    
+
     // 添加一个根节点选项
     parentMenuOptions.value = [
       {
@@ -466,37 +466,39 @@ const isButton = computed(() => model.value.menuType === 'F');
             </ACol>
             <ACol :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.menuCode')" name="menuCode">
-                <AInput 
-                  v-model:value="model.menuCode" 
+                <AInput
+                  v-model:value="model.menuCode"
                   :placeholder="
-                    isDirectory ? $t('page.manage.menu.form.menuCodeDirectory') : 
-                    isMenu ? $t('page.manage.menu.form.menuCodeMenu') : 
-                    $t('page.manage.menu.form.menuCodeButton')
-                  " 
+                    isDirectory
+                      ? $t('page.manage.menu.form.menuCodeDirectory')
+                      : isMenu
+                        ? $t('page.manage.menu.form.menuCodeMenu')
+                        : $t('page.manage.menu.form.menuCodeButton')
+                  "
                 />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.routeName')" name="routeName">
                 <AInput v-model:value="model.routeName" :placeholder="$t('page.manage.menu.form.routeName')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.routePath')" name="routePath">
                 <AInput v-model:value="model.routePath" disabled :placeholder="$t('page.manage.menu.form.routePath')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isButton">
+            <ACol v-if="isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.perms')" name="perms">
                 <AInput v-model:value="model.perms" :placeholder="$t('page.manage.menu.form.perms')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu">
+            <ACol v-if="isMenu" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.pathParam')" name="pathParam">
                 <AInput v-model:value="model.pathParam" :placeholder="$t('page.manage.menu.form.pathParam')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isDirectory && showLayout">
+            <ACol v-if="isDirectory && showLayout" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.layout')" name="layout">
                 <ASelect
                   v-model:value="model.layout"
@@ -514,7 +516,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.i18nKey')" name="i18nKey">
                 <AInput v-model:value="model.i18nKey as string" :placeholder="$t('page.manage.menu.form.i18nKey')" />
               </AFormItem>
@@ -528,7 +530,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.iconTypeTitle')" name="iconType">
                 <ARadioGroup v-model:value="model.iconType">
                   <ARadio v-for="item in menuIconTypeOptions" :key="item.value" :value="item.value">
@@ -538,7 +540,7 @@ const isButton = computed(() => model.value.menuType === 'F');
               </AFormItem>
             </ACol>
 
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.icon')" name="icon">
                 <template v-if="model.iconType === '1'">
                   <AInput v-model:value="model.icon" :placeholder="$t('page.manage.menu.form.icon')" class="flex-1">
@@ -565,7 +567,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu">
+            <ACol v-if="isMenu" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.keepAlive')" name="keepAlive">
                 <ARadioGroup v-model:value="model.keepAlive">
                   <ARadio :value="true">{{ $t('common.yesOrNo.yes') }}</ARadio>
@@ -573,7 +575,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.constant')" name="constant">
                 <ARadioGroup v-model:value="model.constant">
                   <ARadio value>
@@ -585,12 +587,12 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu">
+            <ACol v-if="isMenu" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.href')" name="href">
                 <AInput v-model:value="model.href as string" :placeholder="$t('page.manage.menu.form.href')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.hideInMenu')" name="hideInMenu">
                 <ARadioGroup v-model:value="model.hideInMenu">
                   <ARadio :value="true">{{ $t('common.yesOrNo.yes') }}</ARadio>
@@ -608,7 +610,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu">
+            <ACol v-if="isMenu" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.multiTab')" name="multiTab">
                 <ARadioGroup v-model:value="model.multiTab">
                   <ARadio value :label="$t('common.yesOrNo.yes')" />
@@ -616,7 +618,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu && model.multiTab">
+            <ACol v-if="isMenu && model.multiTab" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.fixedIndexInTab')" name="fixedIndexInTab">
                 <AInputNumber
                   v-model:value="model.fixedIndexInTab as number"
@@ -626,7 +628,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 />
               </AFormItem>
             </ACol>
-            <ACol :span="24" v-if="isMenu">
+            <ACol v-if="isMenu" :span="24">
               <AFormItem :label-col="{ span: 4 }" :label="$t('page.manage.menu.query')" name="query">
                 <AButton v-if="model.query.length === 0" type="dashed" block @click="addQuery(-1)">
                   <template #icon>
@@ -718,12 +720,12 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </template>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.redirect')" name="redirect">
                 <AInput v-model:value="model.redirect" :placeholder="$t('page.manage.menu.form.redirect')" />
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.visible')" name="visible">
                 <ARadioGroup v-model:value="model.visible">
                   <ARadio :value="1">{{ $t('common.yesOrNo.yes') }}</ARadio>
@@ -731,7 +733,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="!isButton">
+            <ACol v-if="!isButton" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.isFrame')" name="isFrame">
                 <ARadioGroup v-model:value="model.isFrame">
                   <ARadio :value="0">{{ $t('common.yesOrNo.yes') }}</ARadio>
@@ -739,7 +741,7 @@ const isButton = computed(() => model.value.menuType === 'F');
                 </ARadioGroup>
               </AFormItem>
             </ACol>
-            <ACol :lg="12" :xs="24" v-if="isMenu">
+            <ACol v-if="isMenu" :lg="12" :xs="24">
               <AFormItem :label="$t('page.manage.menu.isCache')" name="isCache">
                 <ARadioGroup v-model:value="model.isCache">
                   <ARadio :value="0">{{ $t('common.yesOrNo.yes') }}</ARadio>

@@ -666,26 +666,19 @@ export function fetchChangePostStatus(postId: number, status: number) {
   });
 }
 
-/**
- * 分页查询字典类型列表
- */
-export function fetchGetDictTypeList(params?: Api.SystemManage.DictTypeSearchParams) {
-  return request<Api.SystemManage.DictTypeList>({
-    url: '/system/dict/type/pageList',
-    method: 'get',
-    params
-  });
-}
+// ==================== 字典管理 ====================
 
 /**
- * 查询所有正常状态的字典类型
+ * 获取字典树形数据
  */
-export function fetchGetNormalDictTypes() {
-  return request<Api.SystemManage.DictType[]>({
-    url: '/system/dict/type/optionselect',
+export function fetchGetDictTree() {
+  return request<any[]>({
+    url: '/system/dict/tree',
     method: 'get'
   });
 }
+
+// ==================== 字典类型管理 ====================
 
 /**
  * 根据ID获取字典类型详情
@@ -693,26 +686,6 @@ export function fetchGetNormalDictTypes() {
 export function fetchGetDictTypeById(id: number) {
   return request<Api.SystemManage.DictType>({
     url: `/system/dict/type/${id}`,
-    method: 'get'
-  });
-}
-
-/**
- * 根据字典类型查询字典类型信息
- */
-export function fetchGetDictTypeByType(dictType: string) {
-  return request<Api.SystemManage.DictType>({
-    url: `/system/dict/type/type/${dictType}`,
-    method: 'get'
-  });
-}
-
-/**
- * 查询字典类型详情（包含字典数据）
- */
-export function fetchGetDictTypeDetail(dictTypeId: number) {
-  return request<Api.SystemManage.DictType>({
-    url: `/system/dict/type/detail/${dictTypeId}`,
     method: 'get'
   });
 }
@@ -750,22 +723,11 @@ export function fetchDeleteDictType(id: number) {
 }
 
 /**
- * 批量删除字典类型
- */
-export function fetchDeleteDictTypes(ids: number[]) {
-  return request({
-    url: '/system/dict/type/batch',
-    method: 'delete',
-    data: ids
-  });
-}
-
-/**
  * 校验字典类型是否唯一
  */
 export function fetchCheckDictTypeUnique(dictType: string, dictTypeId?: number) {
   return request<boolean>({
-    url: '/system/dict/type/checkDictTypeUnique',
+    url: '/system/dict/type/check-unique',
     method: 'get',
     params: {dictType, dictTypeId}
   });
@@ -776,74 +738,13 @@ export function fetchCheckDictTypeUnique(dictType: string, dictTypeId?: number) 
  */
 export function fetchCheckDictNameUnique(dictName: string, dictTypeId?: number) {
   return request<boolean>({
-    url: '/system/dict/type/checkDictNameUnique',
+    url: '/system/dict/type/check-name-unique',
     method: 'get',
     params: {dictName, dictTypeId}
   });
 }
 
-
-
-/**
- * 刷新所有字典缓存（统一接口）
- */
-export function fetchRefreshAllDictCache() {
-  return request({
-    url: '/system/dict/cache/refresh',
-    method: 'delete'
-  });
-}
-
-/**
- * 刷新字典类型缓存
- */
-export function fetchRefreshDictTypeCache() {
-  return request({
-    url: '/system/dict/cache/refreshType',
-    method: 'delete'
-  });
-}
-
-/**
- * 刷新字典数据缓存
- */
-export function fetchRefreshDictDataCache() {
-  return request({
-    url: '/system/dict/cache/refreshData',
-    method: 'delete'
-  });
-}
-
-/**
- * 分页查询字典数据列表
- */
-export function fetchGetDictDataList(params?: Api.SystemManage.DictDataSearchParams) {
-  return request<Api.SystemManage.DictDataList>({
-    url: '/system/dict/data/pageList',
-    method: 'get',
-    params
-  });
-}
-
-/**
- * 根据字典类型查询字典数据
- */
-export function fetchGetDictDataByType(dictType: string) {
-  return request<Api.SystemManage.DictData[]>({
-    url: `/system/dict/data/type/${dictType}`,
-    method: 'get'
-  });
-}
-
-/**
- * 根据字典类型查询正常状态的字典数据
- */
-export function fetchGetNormalDictDataByType(dictType: string) {
-  return request<Api.SystemManage.DictData[]>({
-    url: `/system/dict/data/type/${dictType}/normal`,
-    method: 'get'
-  });
-}
+// ==================== 字典数据管理 ====================
 
 /**
  * 根据ID获取字典数据详情
@@ -888,23 +789,44 @@ export function fetchDeleteDictData(id: number) {
 }
 
 /**
- * 批量删除字典数据
- */
-export function fetchDeleteDictDatas(ids: number[]) {
-  return request({
-    url: '/system/dict/data/batch',
-    method: 'delete',
-    data: ids
-  });
-}
-
-/**
  * 校验字典值是否唯一
  */
 export function fetchCheckDictValueUnique(dictType: string, dictValue: string, dictDataId?: number) {
   return request<boolean>({
-    url: '/system/dict/data/checkDictValueUnique',
+    url: '/system/dict/data/check-value-unique',
     method: 'get',
     params: {dictType, dictValue, dictDataId}
+  });
+}
+
+// ==================== 字典缓存管理 ====================
+
+/**
+ * 刷新所有字典缓存
+ */
+export function fetchRefreshAllDictCache() {
+  return request({
+    url: '/system/dict/cache/refresh',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新字典类型缓存
+ */
+export function fetchRefreshDictTypeCache() {
+  return request({
+    url: '/system/dict/cache/refreshType',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新字典数据缓存
+ */
+export function fetchRefreshDictDataCache() {
+  return request({
+    url: '/system/dict/cache/refreshData',
+    method: 'delete'
   });
 }

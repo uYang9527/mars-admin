@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {computed, nextTick, reactive, ref, watch} from 'vue';
-import {useAntdForm, useFormRules} from '@/hooks/common/form';
+import { computed, nextTick, reactive, ref, watch } from 'vue';
+import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import {
   fetchAddDept,
   fetchCheckDeptCodeUnique,
@@ -8,8 +8,6 @@ import {
   fetchGetDeptTree,
   fetchUpdateDept
 } from '@/service/api';
-import {$t} from '@/locales';
-
 defineOptions({
   name: 'DeptOperateDrawer'
 });
@@ -41,8 +39,8 @@ const visible = defineModel<boolean>('visible', {
   default: false
 });
 
-const {formRef, validate, resetFields} = useAntdForm();
-const {formRules} = useFormRules();
+const { formRef, validate, resetFields } = useAntdForm();
+const { formRules } = useFormRules();
 
 const title = computed(() => {
   const titles: Record<OperateType, string> = {
@@ -76,11 +74,11 @@ function createDefaultModel(): Model {
 type RuleKey = Extract<keyof Model, 'deptName' | 'deptCode' | 'phone' | 'email'>;
 
 const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
-  const {patternRules} = useFormRules(); // inside computed to make locale reactive
+  const { patternRules } = useFormRules(); // inside computed to make locale reactive
 
   return {
     deptName: [
-      formRules.deptName || {required: true, message: '请输入部门名称'},
+      formRules.deptName || { required: true, message: '请输入部门名称' },
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
@@ -95,7 +93,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
       }
     ],
     deptCode: [
-      {required: true, message: '请输入部门编码'},
+      { required: true, message: '请输入部门编码' },
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
@@ -115,8 +113,8 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
 });
 
 const statusOptions = [
-  {label: '启用', value: '1'},
-  {label: '禁用', value: '0'}
+  { label: '启用', value: '1' },
+  { label: '禁用', value: '0' }
 ];
 
 // 父部门树选项
@@ -160,7 +158,6 @@ function handleInitModel() {
   });
 
   if (props.operateType === 'edit' && props.rowData) {
-
     // 逐个设置属性以确保响应性
     if (props.rowData.parentId !== undefined) model.parentId = props.rowData.parentId;
     if (props.rowData.deptName) model.deptName = props.rowData.deptName;
@@ -171,9 +168,7 @@ function handleInitModel() {
     if (props.rowData.email) model.email = props.rowData.email;
     // 确保status为字符串类型
     if (props.rowData.status !== undefined) {
-      model.status = typeof props.rowData.status === 'number'
-        ? String(props.rowData.status)
-        : props.rowData.status;
+      model.status = typeof props.rowData.status === 'number' ? String(props.rowData.status) : props.rowData.status;
     }
     if (props.rowData.remark) model.remark = props.rowData.remark;
 
@@ -200,10 +195,10 @@ async function handleSubmit() {
   if (isAdd) {
     request = fetchAddDept(model);
   } else {
-    request = fetchUpdateDept({...model, id: props.rowData?.id});
+    request = fetchUpdateDept({ ...model, id: props.rowData?.id });
   }
 
-  const {error} = await request;
+  const { error } = await request;
 
   if (!error) {
     window.$message?.success(isAdd ? '新增部门成功' : '编辑部门成功');
@@ -235,7 +230,6 @@ watch(visible, async () => {
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
-
     <AForm ref="formRef" :model="model" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
       <AFormItem label="上级部门" name="parentId">
         <ATreeSelect
@@ -247,28 +241,28 @@ watch(visible, async () => {
         />
       </AFormItem>
       <AFormItem label="部门名称" name="deptName">
-        <AInput v-model:value="model.deptName" placeholder="请输入部门名称"/>
+        <AInput v-model:value="model.deptName" placeholder="请输入部门名称" />
       </AFormItem>
       <AFormItem label="部门编码" name="deptCode">
-        <AInput v-model:value="model.deptCode" placeholder="请输入部门编码"/>
+        <AInput v-model:value="model.deptCode" placeholder="请输入部门编码" />
       </AFormItem>
       <AFormItem label="显示顺序" name="orderNum">
-        <AInputNumber v-model:value="model.orderNum" :min="0" placeholder="请输入显示顺序" class="w-full"/>
+        <AInputNumber v-model:value="model.orderNum" :min="0" placeholder="请输入显示顺序" class="w-full" />
       </AFormItem>
       <AFormItem label="负责人" name="leader">
-        <AInput v-model:value="model.leader" placeholder="请输入负责人"/>
+        <AInput v-model:value="model.leader" placeholder="请输入负责人" />
       </AFormItem>
       <AFormItem label="联系电话" name="phone">
-        <AInput v-model:value="model.phone" placeholder="请输入联系电话"/>
+        <AInput v-model:value="model.phone" placeholder="请输入联系电话" />
       </AFormItem>
       <AFormItem label="邮箱" name="email">
-        <AInput v-model:value="model.email" placeholder="请输入邮箱"/>
+        <AInput v-model:value="model.email" placeholder="请输入邮箱" />
       </AFormItem>
       <AFormItem label="状态" name="status">
-        <ARadioGroup v-model:value="model.status" :options="statusOptions"/>
+        <ARadioGroup v-model:value="model.status" :options="statusOptions" />
       </AFormItem>
       <AFormItem label="备注" name="remark">
-        <ATextarea v-model:value="model.remark" placeholder="请输入备注" :rows="4"/>
+        <ATextarea v-model:value="model.remark" placeholder="请输入备注" :rows="4" />
       </AFormItem>
     </AForm>
 

@@ -7,8 +7,6 @@ import {
   fetchGetConfigById,
   fetchUpdateConfig
 } from '@/service/api/system-config';
-import { $t } from '@/locales';
-
 defineOptions({
   name: 'ConfigOperateDrawer'
 });

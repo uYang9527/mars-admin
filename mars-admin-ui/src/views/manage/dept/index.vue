@@ -1,12 +1,12 @@
 <script setup lang="tsx">
-import {ref} from 'vue';
-import {Button, Popconfirm, Tag, Modal} from 'ant-design-vue';
-import {useAppStore} from '@/store/modules/app';
-import {useTable, useTableOperate} from '@/hooks/common/table';
-import {$t} from '@/locales';
-import {enableStatusRecord} from '@/constants/business';
+import { ref } from 'vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
+import { useAppStore } from '@/store/modules/app';
+import { useTable, useTableOperate } from '@/hooks/common/table';
+import { $t } from '@/locales';
+import { enableStatusRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-import {fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree} from '@/service/api';
+import { fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree } from '@/service/api';
 import DeptOperateDrawer from './modules/dept-operate-drawer.vue';
 
 const appStore = useAppStore();
@@ -21,7 +21,7 @@ const wrapperEl = ref<HTMLElement>();
 const collapsed = ref(false);
 
 // 使用树形数据展示部门，支持搜索
-const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
+const { columns, columnChecks, data, loading, getData, searchParams } = useTable({
   apiFn: params => {
     // 使用新的tree接口，支持搜索参数
     return fetchGetDeptTree(params);
@@ -50,7 +50,7 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
       dataIndex: 'label',
       title: '部门名称',
       align: 'left',
-      customRender: ({record, index}) => {
+      customRender: ({ record, index }) => {
         return record.label;
       }
     },
@@ -88,7 +88,7 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
       dataIndex: 'status',
       title: $t('common.status'),
       align: 'center',
-      customRender: ({record}) => {
+      customRender: ({ record }) => {
         if (record.status === null) {
           return null;
         }
@@ -104,14 +104,12 @@ const {columns, columnChecks, data, loading, getData, searchParams} = useTable({
       dataIndex: 'createTime',
       title: $t('common.createTime'),
       align: 'center',
-      width: 180
     },
     {
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      width: 130,
-      customRender: ({record}) => (
+      customRender: ({ record }) => (
         <div class="flex-center gap-8px">
           <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
             {$t('common.edit')}
@@ -153,7 +151,7 @@ async function handleBatchDelete() {
     cancelText: '取消',
     async onOk() {
       try {
-        const {error, message} = await fetchDeleteDepts(checkedRowKeys.value);
+        const { error, message } = await fetchDeleteDepts(checkedRowKeys.value);
         if (!error) {
           window.$message?.success('批量删除成功');
           onBatchDeleted();
@@ -170,7 +168,7 @@ async function handleBatchDelete() {
 
 async function handleDelete(id: number) {
   try {
-    const {error, message} = await fetchDeleteDept(id);
+    const { error, message } = await fetchDeleteDept(id);
     if (!error) {
       onDeleted();
     } else {
@@ -184,7 +182,7 @@ async function handleDelete(id: number) {
 
 async function edit(id: number) {
   try {
-    const {data, error} = await fetchGetDeptById(id);
+    const { data, error } = await fetchGetDeptById(id);
     if (!error && data) {
       handleDataEdit(data);
     } else {
@@ -226,8 +224,8 @@ function toggleCollapsed() {
       <template #extra>
         <AButton type="text" @click="toggleCollapsed">
           <template #icon>
-            <icon-mdi:chevron-down v-if="collapsed" class="text-icon"/>
-            <icon-mdi:chevron-up v-else class="text-icon"/>
+            <icon-mdi:chevron-down v-if="collapsed" class="text-icon" />
+            <icon-mdi:chevron-up v-else class="text-icon" />
           </template>
           {{ collapsed ? '展开' : '收起' }}
         </AButton>
@@ -244,7 +242,7 @@ function toggleCollapsed() {
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="部门名称" name="deptName" class="m-0">
-                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" @input="handleSearch"/>
+                <AInput v-model:value="searchParams.deptName" placeholder="请输入部门名称" @input="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
@@ -266,13 +264,13 @@ function toggleCollapsed() {
                 <div class="w-full flex-y-center justify-end gap-12px">
                   <AButton @click="handleReset">
                     <template #icon>
-                      <icon-ic-round-refresh class="align-sub text-icon"/>
+                      <icon-ic-round-refresh class="align-sub text-icon" />
                     </template>
                     <span class="ml-8px">{{ $t('common.reset') }}</span>
                   </AButton>
                   <AButton type="primary" ghost @click="handleSearch">
                     <template #icon>
-                      <icon-ic-round-search class="align-sub text-icon"/>
+                      <icon-ic-round-search class="align-sub text-icon" />
                     </template>
                     <span class="ml-8px">{{ $t('common.search') }}</span>
                   </AButton>

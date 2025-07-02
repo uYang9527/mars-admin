@@ -48,7 +48,7 @@ public class SysDictDataServiceImpl extends CacheableServiceImpl<SysDictDataMapp
     @Override
     public Page<SysDictData> selectDictDataPage(Page<SysDictData> page, SysDictData dictData) {
         QueryWrapper query = QueryWrapper.create()
-                .select()
+                .select(SYS_DICT_DATA.ALL_COLUMNS)
                 .from(SYS_DICT_DATA)
                 .where(SYS_DICT_DATA.IS_DELETED.eq(0));
 

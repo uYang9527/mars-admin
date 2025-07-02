@@ -52,7 +52,7 @@ public class SysDictTypeServiceImpl extends CacheableServiceImpl<SysDictTypeMapp
     @Override
     public Page<SysDictType> selectDictTypePage(Page<SysDictType> page, SysDictType dictType) {
         QueryWrapper query = QueryWrapper.create()
-                .select()
+                .select(SYS_DICT_TYPE.ALL_COLUMNS)
                 .from(SYS_DICT_TYPE)
                 .where(SYS_DICT_TYPE.IS_DELETED.eq(0));
 

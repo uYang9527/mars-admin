@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import dayjs from 'dayjs';
 
 defineOptions({
@@ -47,16 +46,16 @@ function formatFileSize(bytes: number): string {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 }
 
 // 获取配置颜色
 function getConfigColor(configKey: string): string {
   const colors = {
-    'local': 'blue',
-    'minio': 'green',
-    'aliyun': 'orange',
-    'qiniu': 'purple'
+    local: 'blue',
+    minio: 'green',
+    aliyun: 'orange',
+    qiniu: 'purple'
   };
   return colors[configKey] || 'default';
 }
@@ -89,86 +88,75 @@ function copyUrl() {
   <ADrawer
     v-model:open="visible"
     title="文件详情"
-    :width="480"
+    :width="500"
     placement="right"
     :body-style="{ paddingRight: '20px' }"
   >
     <div v-if="fileData" class="detail-content">
       <!-- 文件预览区域 -->
       <div v-if="isImageFile(fileData.contentType)" class="mb-6 text-center">
-        <div class="border rounded-lg p-4 bg-gray-50">
-          <img 
-            :src="fileData.url" 
-            :alt="fileData.originalName" 
-            class="max-w-full max-h-60 object-contain cursor-pointer hover:opacity-80 transition-opacity"
+        <div class="border rounded-lg bg-gray-50 p-4">
+          <img
+            :src="fileData.url"
+            :alt="fileData.originalName"
+            class="max-h-60 max-w-full cursor-pointer object-contain transition-opacity hover:opacity-80"
             @click="handlePreview"
           />
         </div>
       </div>
-      
+
       <!-- 文件类型图标展示（非图片文件） -->
       <div v-else class="mb-6 text-center">
-        <div class="w-20 h-20 mx-auto bg-gray-100 rounded-lg flex items-center justify-center text-3xl mb-3">
+        <div class="mx-auto mb-3 h-20 w-20 flex items-center justify-center rounded-lg bg-gray-100 text-3xl">
           {{ getFileIcon(fileData.contentType) }}
         </div>
         <div class="text-sm text-gray-600 font-medium">{{ fileData.originalName }}</div>
       </div>
-      
+
       <!-- 文件信息 -->
       <div class="space-y-4">
         <div class="detail-item">
           <div class="detail-label">📄 文件名</div>
           <div class="detail-value">{{ fileData.originalName }}</div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">📏 文件大小</div>
           <div class="detail-value">{{ formatFileSize(fileData.size) }}</div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">🏷️ 文件类型</div>
           <div class="detail-value">
             <ATag color="blue">{{ fileData.contentType }}</ATag>
           </div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">🗂️ 存储配置</div>
           <div class="detail-value">
             <ATag :color="getConfigColor(fileData.configKey)">{{ fileData.configKey }}</ATag>
           </div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">📂 文件路径</div>
-          <div class="detail-value text-xs text-gray-500 break-all">
+          <div class="detail-value break-all text-xs text-gray-500">
             {{ fileData.filePath || '-' }}
           </div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">🔗 访问URL</div>
           <div class="detail-value">
-            <AInput 
-              :value="fileData.url" 
-              readonly 
-              size="small"
-              class="text-xs"
-            >
+            <AInput :value="fileData.url" readonly size="small" class="text-xs">
               <template #suffix>
-                <AButton 
-                  size="small" 
-                  type="text" 
-                  @click="copyUrl"
-                >
-                  复制
-                </AButton>
+                <AButton size="small" type="text" @click="copyUrl">复制</AButton>
               </template>
             </AInput>
           </div>
         </div>
-        
+
         <div class="detail-item">
           <div class="detail-label">⏰ 上传时间</div>
           <div class="detail-value">
@@ -176,15 +164,11 @@ function copyUrl() {
           </div>
         </div>
       </div>
-      
+
       <!-- 操作按钮 -->
-      <div class="grid grid-cols-2 gap-3 mt-8 pt-4 border-t">
-        <AButton type="primary" @click="handleDownload">
-          📥 下载文件
-        </AButton>
-        <AButton @click="handlePreview">
-          👁️ 预览文件
-        </AButton>
+      <div class="grid grid-cols-2 mt-8 gap-3 border-t pt-4">
+        <AButton type="primary" @click="handleDownload">📥 下载文件</AButton>
+        <AButton @click="handlePreview">👁️ 预览文件</AButton>
       </div>
     </div>
   </ADrawer>
@@ -222,4 +206,4 @@ function copyUrl() {
   border-color: #1890ff;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
-</style> 
+</style>

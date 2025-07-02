@@ -78,7 +78,7 @@ function handleReset() {
         </ACol>
         <ACol :span="24" :md="12" :lg="8">
           <AFormItem label="字典键值" name="dictValue" class="m-0">
-            <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" @pressEnter="handleSearch" />
+            <AInput v-model:value="searchModel.dictValue" placeholder="请输入字典键值" @press-enter="handleSearch" />
           </AFormItem>
         </ACol>
         <ACol :span="24" :md="12" :lg="8">
@@ -115,4 +115,4 @@ function handleReset() {
   </ACard>
 </template>
 
-<style scoped></style> 
+<style scoped></style>

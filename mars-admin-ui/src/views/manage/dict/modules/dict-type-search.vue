@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { $t } from '@/locales';
 
 defineOptions({
@@ -65,10 +65,10 @@ function toggleCollapsed() {
 </script>
 
 <template>
-  <ACard 
-    :title="$t('common.search')" 
-    :bordered="false" 
-    class="card-wrapper" 
+  <ACard
+    :title="$t('common.search')"
+    :bordered="false"
+    class="card-wrapper"
     :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
     :data-collapsed="collapsed"
   >
@@ -81,7 +81,7 @@ function toggleCollapsed() {
         {{ collapsed ? '展开' : '收起' }}
       </AButton>
     </template>
-    
+
     <div v-show="!collapsed">
       <AForm :model="searchModel">
         <AFormItem label="字典名称" class="mb-12px">
@@ -102,13 +102,13 @@ function toggleCollapsed() {
         </AFormItem>
         <AFormItem class="mb-0">
           <ASpace class="w-full" direction="vertical" size="small">
-            <AButton type="primary" ghost @click="handleSearch" size="small" block>
+            <AButton type="primary" ghost size="small" block @click="handleSearch">
               <template #icon>
                 <icon-ic-round-search class="align-sub text-icon" />
               </template>
               <span class="ml-8px">{{ $t('common.search') }}</span>
             </AButton>
-            <AButton @click="handleReset" size="small" block>
+            <AButton size="small" block @click="handleReset">
               <template #icon>
                 <icon-ic-round-refresh class="align-sub text-icon" />
               </template>
@@ -137,7 +137,7 @@ function toggleCollapsed() {
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -145,8 +145,8 @@ function toggleCollapsed() {
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
-</style> 
+</style>

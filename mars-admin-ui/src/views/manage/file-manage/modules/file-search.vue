@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { fetchGetEnabledOssConfigs } from '@/service/api/file-manage';
 
 defineOptions({
@@ -80,21 +80,12 @@ loadOssConfigs();
         <ARow :gutter="[16, 16]" wrap>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="文件名" name="fileName" class="m-0">
-              <AInput 
-                v-model:value="model.fileName" 
-                placeholder="请输入文件名" 
-                @pressEnter="search" 
-              />
+              <AInput v-model:value="model.fileName" placeholder="请输入文件名" @press-enter="search" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :md="12" :lg="8">
             <AFormItem label="存储配置" name="configKey" class="m-0">
-              <ASelect
-                v-model:value="model.configKey"
-                placeholder="请选择存储配置"
-                clearable
-                @change="search"
-              >
+              <ASelect v-model:value="model.configKey" placeholder="请选择存储配置" clearable @change="search">
                 <ASelectOption v-for="config in ossConfigs" :key="config.configKey" :value="config.configKey">
                   {{ config.configKey }}
                 </ASelectOption>
@@ -141,7 +132,7 @@ loadOssConfigs();
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -149,8 +140,8 @@ loadOssConfigs();
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
-</style> 
+</style>

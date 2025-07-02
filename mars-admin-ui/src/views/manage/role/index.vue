@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { reactive, ref } from 'vue';
-import { Button, Popconfirm, Tag, Modal } from 'ant-design-vue';
+import { ref } from 'vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { fetchChangeRoleStatus, fetchDeleteRole, fetchDeleteRoles, fetchGetRoleList } from '@/service/api';
 import { $t } from '@/locales';
@@ -13,122 +13,131 @@ import RoleSearch from './modules/role-search.vue';
 
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } =
-  useTable({
-    apiFn: fetchGetRoleList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      status: null,
-      roleName: null,
-      roleCode: null,
-      roleKey: null
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+  apiFn: fetchGetRoleList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    status: null,
+    roleName: null,
+    roleCode: null,
+    roleKey: null
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        width: 64,
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'roleName',
-        title: $t('page.manage.role.roleName'),
-        align: 'center',
-        dataIndex: 'roleName'
-      },
-      {
-        key: 'roleCode',
-        title: $t('page.manage.role.roleCode'),
-        align: 'center',
-        dataIndex: 'roleCode'
-      },
-      {
-        key: 'roleKey',
-        title: $t('page.manage.role.roleKey'),
-        align: 'center',
-        dataIndex: 'roleKey'
-      },
-      {
-        key: 'description',
-        title: $t('page.manage.role.roleDesc'),
-        align: 'center',
-        dataIndex: 'description'
-      },
-      {
-        key: 'roleSort',
-        title: '显示顺序',
-        align: 'center',
-        dataIndex: 'roleSort'
-      },
-      {
-        key: 'status',
-        title: $t('page.manage.role.roleStatus'),
-        align: 'center',
-        dataIndex: 'status',
-        customRender: ({ record }) => {
-          if (record.status === null) {
-            return null;
-          }
-
-          const label = $t(enableStatusRecord[record.status]);
-
-          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
+    {
+      key: 'index',
+      title: $t('common.index'),
+      width: 64,
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'roleName',
+      title: $t('page.manage.role.roleName'),
+      align: 'center',
+      dataIndex: 'roleName'
+    },
+    {
+      key: 'roleCode',
+      title: $t('page.manage.role.roleCode'),
+      align: 'center',
+      dataIndex: 'roleCode'
+    },
+    {
+      key: 'roleKey',
+      title: $t('page.manage.role.roleKey'),
+      align: 'center',
+      dataIndex: 'roleKey'
+    },
+    {
+      key: 'description',
+      title: $t('page.manage.role.roleDesc'),
+      align: 'center',
+      dataIndex: 'description'
+    },
+    {
+      key: 'roleSort',
+      title: '显示顺序',
+      align: 'center',
+      dataIndex: 'roleSort'
+    },
+    {
+      key: 'status',
+      title: $t('page.manage.role.roleStatus'),
+      align: 'center',
+      dataIndex: 'status',
+      customRender: ({ record }) => {
+        if (record.status === null) {
+          return null;
         }
-      },
-      {
-        key: 'createTime',
-        title: '创建时间',
-        align: 'center',
-        dataIndex: 'createTime'
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-              {$t('common.edit')}
-            </Button>
-            <Button size="small" onClick={() => handleMenuAuth(record)}>
-              菜单权限
-            </Button>
-            <Button size="small" onClick={() => handleDataAuth(record)}>
-              数据权限
-            </Button>
-            <Button size="small" onClick={() => handleButtonAuth(record)}>
-              按钮权限
-            </Button>
-            <Button
-              type={record.status === 1 ? 'default' : 'primary'}
-              size="small"
-              onClick={() => toggleStatus(record.id, record.status)}
-            >
-              {record.status === 1 ? '禁用' : '启用'}
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
-      }
-    ]
-  });
 
-const { drawerVisible, operateType, editingData, handleAdd, handleEdit, checkedRowKeys, onBatchDeleted, onDeleted, onSelectChange, rowSelection } =
-  useTableOperate(data, getData);
+        const label = $t(enableStatusRecord[record.status]);
+
+        return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
+      }
+    },
+    {
+      key: 'createTime',
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime'
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Button size="small" onClick={() => handleMenuAuth(record)}>
+            菜单权限
+          </Button>
+          <Button size="small" onClick={() => handleDataAuth(record)}>
+            数据权限
+          </Button>
+          <Button size="small" onClick={() => handleButtonAuth(record)}>
+            按钮权限
+          </Button>
+          <Button
+            type={record.status === 1 ? 'default' : 'primary'}
+            size="small"
+            onClick={() => toggleStatus(record.id, record.status)}
+          >
+            {record.status === 1 ? '禁用' : '启用'}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
+
+const {
+  drawerVisible,
+  operateType,
+  editingData,
+  handleAdd,
+  handleEdit,
+  checkedRowKeys,
+  onBatchDeleted,
+  onDeleted,
+  onSelectChange,
+  rowSelection
+} = useTableOperate(data, getData);
 
 // 菜单权限弹窗
 const menuAuthVisible = ref(false);
@@ -149,7 +158,7 @@ async function handleBatchDelete() {
       window.$message?.warning('请选择要删除的角色');
       return;
     }
-    
+
     // 使用ant-design-vue的Modal.confirm替代
     Modal.confirm({
       title: '批量删除角色',
@@ -163,12 +172,12 @@ async function handleBatchDelete() {
           window.$message?.success('批量删除成功');
           onBatchDeleted();
         } else {
-          window.$message?.error('批量删除失败: ' + error);
+          window.$message?.error(`批量删除失败: ${error}`);
         }
       }
     });
   } catch (e) {
-    window.$message?.error('操作失败: ' + e.message);
+    window.$message?.error(`操作失败: ${e.message}`);
   }
 }
 
@@ -180,16 +189,16 @@ async function handleDelete(id: number) {
       window.$message?.error('系统内置角色不能删除');
       return;
     }
-    
+
     const { error } = await fetchDeleteRole(id);
     if (!error) {
       window.$message?.success('删除成功');
       onDeleted();
     } else {
-      window.$message?.error('删除失败: ' + error);
+      window.$message?.error(`删除失败: ${error}`);
     }
   } catch (e) {
-    window.$message?.error('操作失败: ' + e.message);
+    window.$message?.error(`操作失败: ${e.message}`);
   }
 }
 

@@ -6,7 +6,7 @@ import { $t } from '@/locales';
 import { enableStatusOptions, menuIconTypeOptions, menuTypeOptions } from '@/constants/business';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import { getLocalIcons } from '@/utils/icon';
-import { fetchGetAllRoles, fetchAddMenu, fetchUpdateMenu } from '@/service/api';
+import { fetchAddMenu, fetchGetAllRoles, fetchUpdateMenu } from '@/service/api';
 import {
   getLayoutAndPage,
   getPathParamFromRoutePath,
@@ -278,15 +278,15 @@ async function handleSubmit() {
   // 根据操作类型调用不同的API
   const isAdd = props.operateType === 'add' || props.operateType === 'addChild';
   let request;
-  
+
   if (isAdd) {
     request = fetchAddMenu(params);
   } else {
-    request = fetchUpdateMenu({...params, id: props.rowData?.id});
+    request = fetchUpdateMenu({ ...params, id: props.rowData?.id });
   }
-  
-  const {error} = await request;
-  
+
+  const { error } = await request;
+
   if (!error) {
     window.$message?.success(isAdd ? '新增菜单成功' : '编辑菜单成功');
     closeDrawer();

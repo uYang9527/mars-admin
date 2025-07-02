@@ -1,14 +1,7 @@
 <script setup lang="tsx">
-import { ref, reactive, computed } from 'vue';
-import { Button, Popconfirm, Tag, Space, Modal } from 'ant-design-vue';
-import { SearchOutlined, ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue';
-import { 
-  fetchGetMenuTree, 
-  fetchDeleteMenu,
-  fetchDeleteMenus,
-  fetchAddMenu,
-  fetchUpdateMenu
-} from '@/service/api';
+import { computed, reactive, ref } from 'vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
+import { fetchDeleteMenu, fetchDeleteMenus, fetchGetMenuTree } from '@/service/api';
 import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
@@ -50,23 +43,20 @@ function applySearch() {
 // 递归过滤菜单树
 function filterMenuTree(data: Api.SystemManage.Menu[]): Api.SystemManage.Menu[] {
   const result: Api.SystemManage.Menu[] = [];
-  
+
   data.forEach(menu => {
     // 检查当前菜单是否匹配
-    const nameMatch = !searchForm.menuName || 
-      menu.menuName?.toLowerCase().includes(searchForm.menuName.toLowerCase());
-    
-    const codeMatch = !searchForm.menuCode || 
-      menu.menuCode?.toLowerCase().includes(searchForm.menuCode.toLowerCase());
-    
-    const statusMatch = searchForm.status === null || 
-      menu.status?.toString() === searchForm.status;
-    
+    const nameMatch = !searchForm.menuName || menu.menuName?.toLowerCase().includes(searchForm.menuName.toLowerCase());
+
+    const codeMatch = !searchForm.menuCode || menu.menuCode?.toLowerCase().includes(searchForm.menuCode.toLowerCase());
+
+    const statusMatch = searchForm.status === null || menu.status?.toString() === searchForm.status;
+
     const currentMatch = nameMatch && codeMatch && statusMatch;
-    
+
     // 递归过滤子菜单
     const filteredChildren = menu.children ? filterMenuTree(menu.children) : [];
-    
+
     // 如果当前菜单匹配或有匹配的子菜单，则包含此菜单
     if (currentMatch || filteredChildren.length > 0) {
       const filteredMenu = { ...menu };
@@ -76,7 +66,7 @@ function filterMenuTree(data: Api.SystemManage.Menu[]): Api.SystemManage.Menu[] 
       result.push(filteredMenu);
     }
   });
-  
+
   return result;
 }
 
@@ -147,12 +137,12 @@ async function handleDelete(id: number) {
 // 渲染图标
 function renderIcon(icon: string) {
   if (!icon) return '-';
-  
+
   // 如果包含冒号，说明是 iconify 格式的图标 (如: mdi:home)
   if (icon.includes(':')) {
     return <SvgIcon icon={icon} class="text-16px" />;
   }
-  
+
   // 否则尝试作为 mdi 图标处理
   return <SvgIcon icon={`mdi:${icon}`} class="text-16px" />;
 }
@@ -183,9 +173,9 @@ const columns = [
     align: 'center',
     customRender: ({ record }: { record: Api.SystemManage.Menu }) => {
       const typeMap = {
-        'M': { label: '目录', color: 'blue' },
-        'C': { label: '菜单', color: 'green' },
-        'F': { label: '按钮', color: 'orange' }
+        M: { label: '目录', color: 'blue' },
+        C: { label: '菜单', color: 'green' },
+        F: { label: '按钮', color: 'orange' }
       };
       const type = typeMap[record.menuType];
       return <Tag color={type.color}>{type.label}</Tag>;
@@ -226,9 +216,7 @@ const columns = [
     width: 80,
     align: 'center',
     customRender: ({ record }: { record: Api.SystemManage.Menu }) => {
-      return <Tag color={record.visible === 0 ? 'warning' : 'success'}>
-        {record.visible === 0 ? '是' : '否'}
-      </Tag>;
+      return <Tag color={record.visible === 0 ? 'warning' : 'success'}>{record.visible === 0 ? '是' : '否'}</Tag>;
     }
   },
   {
@@ -245,9 +233,7 @@ const columns = [
     width: 80,
     align: 'center',
     customRender: ({ record }: { record: Api.SystemManage.Menu }) => {
-      return <Tag color={record.status === 1 ? 'success' : 'error'}>
-        {record.status === 1 ? '启用' : '禁用'}
-      </Tag>;
+      return <Tag color={record.status === 1 ? 'success' : 'error'}>{record.status === 1 ? '启用' : '禁用'}</Tag>;
     }
   },
   {
@@ -339,12 +325,12 @@ getMenuList();
 </script>
 
 <template>
-  <div class="flex-col-stretch gap-16px h-full overflow-hidden">
+  <div class="h-full flex-col-stretch gap-16px overflow-hidden">
     <!-- 搜索区域 -->
-    <ACard 
-      :title="$t('common.search')" 
-      :bordered="false" 
-      class="card-wrapper" 
+    <ACard
+      :title="$t('common.search')"
+      :bordered="false"
+      class="card-wrapper"
       :body-style="collapsed ? { padding: '0', display: 'none' } : {}"
       :data-collapsed="collapsed"
     >
@@ -357,7 +343,7 @@ getMenuList();
           {{ collapsed ? '展开' : '收起' }}
         </AButton>
       </template>
-      
+
       <div v-show="!collapsed">
         <AForm
           :model="searchForm"
@@ -369,20 +355,12 @@ getMenuList();
           <ARow :gutter="[16, 16]" wrap>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="菜单名称" name="menuName" class="m-0">
-                <AInput 
-                  v-model:value="searchForm.menuName" 
-                  placeholder="请输入菜单名称" 
-                  @input="handleSearch"
-                />
+                <AInput v-model:value="searchForm.menuName" placeholder="请输入菜单名称" @input="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
               <AFormItem label="菜单编码" name="menuCode" class="m-0">
-                <AInput 
-                  v-model:value="searchForm.menuCode" 
-                  placeholder="请输入菜单编码" 
-                  @input="handleSearch"
-                />
+                <AInput v-model:value="searchForm.menuCode" placeholder="请输入菜单编码" @input="handleSearch" />
               </AFormItem>
             </ACol>
             <ACol :span="24" :md="12" :lg="8">
@@ -423,11 +401,11 @@ getMenuList();
     </ACard>
 
     <!-- 表格区域 -->
-    <ACard 
-      title="菜单列表" 
+    <ACard
+      title="菜单列表"
       :bordered="false"
       :body-style="{ paddingTop: '0px', height: 'auto', maxHeight: 'calc(100vh - 280px)', overflow: 'hidden' }"
-      class="card-wrapper flex-1-hidden"
+      class="flex-1-hidden card-wrapper"
     >
       <template #extra>
         <TableHeaderOperation
@@ -438,13 +416,16 @@ getMenuList();
           @refresh="getMenuList"
         >
           <template #prefix>
-            <span v-if="searchForm.menuName || searchForm.menuCode || searchForm.status !== null" class="text-gray-500 mr-12px">
+            <span
+              v-if="searchForm.menuName || searchForm.menuCode || searchForm.status !== null"
+              class="mr-12px text-gray-500"
+            >
               找到 {{ countMenus(menuList) }} 条记录
             </span>
           </template>
         </TableHeaderOperation>
       </template>
-      
+
       <ATable
         :columns="columns"
         :data-source="menuList"
@@ -586,7 +567,7 @@ getMenuList();
 }
 
 /* 当折叠时，强制隐藏卡片主体 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-body) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-body) {
   display: none !important;
   height: 0 !important;
   padding: 0 !important;
@@ -594,7 +575,7 @@ getMenuList();
 }
 
 /* 优化折叠后的卡片头部样式 */
-.card-wrapper[data-collapsed="true"] :deep(.ant-card-head) {
+.card-wrapper[data-collapsed='true'] :deep(.ant-card-head) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }

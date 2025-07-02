@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed, reactive, watch, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import {
   fetchAddUser,
-  fetchUpdateUser,
-  fetchCheckUsernameUnique,
   fetchCheckEmailUnique,
   fetchCheckPhoneUnique,
+  fetchCheckUsernameUnique,
   fetchGetAllRoles,
-  fetchGetNormalPosts,
   fetchGetDeptTree,
-  fetchGetUserById
+  fetchGetNormalPosts,
+  fetchGetUserById,
+  fetchUpdateUser
 } from '@/service/api';
 import { $t } from '@/locales';
 
@@ -153,20 +153,20 @@ const deptTreeOptions = ref<Api.SystemManage.DeptTree[]>([]);
 // 加载选项数据
 async function loadOptions() {
   try {
-  const [rolesRes, postsRes, deptTreeRes] = await Promise.all([
-    fetchGetAllRoles(),
-    fetchGetNormalPosts(),
-    fetchGetDeptTree()
-  ]);
+    const [rolesRes, postsRes, deptTreeRes] = await Promise.all([
+      fetchGetAllRoles(),
+      fetchGetNormalPosts(),
+      fetchGetDeptTree()
+    ]);
 
-  if (rolesRes.data) {
-    roleOptions.value = rolesRes.data;
-  }
-  if (postsRes.data) {
-    postOptions.value = postsRes.data;
-  }
-  if (deptTreeRes.data) {
-    deptTreeOptions.value = deptTreeRes.data;
+    if (rolesRes.data) {
+      roleOptions.value = rolesRes.data;
+    }
+    if (postsRes.data) {
+      postOptions.value = postsRes.data;
+    }
+    if (deptTreeRes.data) {
+      deptTreeOptions.value = deptTreeRes.data;
     }
   } catch (error) {
     console.error('加载选项数据失败:', error);
@@ -200,7 +200,7 @@ async function handleSubmit() {
   let request;
   const isAdd = props.operateType === 'add';
   const userId = props.rowData?.id;
-  
+
   if (isAdd) {
     request = fetchAddUser(model);
   } else {

@@ -1,27 +1,26 @@
 <script setup lang="tsx">
-import {reactive, ref, watch, computed} from 'vue';
-import type {Ref} from 'vue';
-import {Button, Popconfirm, Space, Tag, Card as ACard, Table as ATable, Modal} from 'ant-design-vue';
-import {useTable, useTableOperate} from '@/hooks/common/table';
+import { ref } from 'vue';
+import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Space, Tag } from 'ant-design-vue';
+import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
-  fetchGetUserList,
+  fetchChangeUserStatus,
   fetchDeleteUser,
   fetchDeleteUsers,
-  fetchChangeUserStatus,
+  fetchGetUserList,
   fetchResetUserPassword
 } from '@/service/api';
-import {$t} from '@/locales';
-import {useAppStore} from '@/store/modules/app';
-import {enableStatusRecord, userGenderRecord} from '@/constants/business';
-import UserOperateDrawer, {type OperateType} from './modules/user-operate-drawer.vue';
-import UserSearch from './modules/user-search.vue';
+import { $t } from '@/locales';
+import { useAppStore } from '@/store/modules/app';
+import { enableStatusRecord, userGenderRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
+import UserOperateDrawer, { type OperateType } from './modules/user-operate-drawer.vue';
+import UserSearch from './modules/user-search.vue';
 
 const appStore = useAppStore();
 
 const wrapperEl = ref<HTMLElement>();
 
-const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams} =
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams } =
   useTable({
     apiFn: fetchGetUserList,
     apiParams: {
@@ -49,26 +48,26 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
         dataIndex: 'index',
         title: $t('common.index'),
         align: 'center',
-        customRender: ({index}) => index + 1
+        customRender: ({ index }) => index + 1
       },
       {
         key: 'username',
         dataIndex: 'username',
         title: $t('page.manage.user.userName'),
-        align: 'center',
+        align: 'center'
       },
       {
         key: 'nickname',
         dataIndex: 'nickname',
         title: $t('page.manage.user.nickName'),
-        align: 'center',
+        align: 'center'
       },
       {
         key: 'gender',
         dataIndex: 'gender',
         title: $t('page.manage.user.userGender'),
         align: 'center',
-        customRender: ({record}) => {
+        customRender: ({ record }) => {
           if (record.gender === null) {
             return null;
           }
@@ -82,20 +81,20 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
         key: 'phone',
         dataIndex: 'phone',
         title: $t('page.manage.user.userPhone'),
-        align: 'center',
+        align: 'center'
       },
       {
         key: 'email',
         dataIndex: 'email',
         title: $t('page.manage.user.userEmail'),
-        align: 'center',
+        align: 'center'
       },
       {
         key: 'status',
         dataIndex: 'status',
         title: $t('page.manage.user.userStatus'),
         align: 'center',
-        customRender: ({record}) => {
+        customRender: ({ record }) => {
           if (record.status === null) {
             return null;
           }
@@ -109,7 +108,7 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
         key: 'operate',
         title: $t('common.operate'),
         align: 'center',
-        customRender: ({record}) => (
+        customRender: ({ record }) => (
           <div class="flex-center gap-8px">
             <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
               {$t('common.edit')}
@@ -134,7 +133,6 @@ const {columns, columnChecks, data, getData, getDataByPage, loading, mobilePagin
       }
     ]
   });
-
 const {
   drawerVisible,
   operateType,
@@ -144,7 +142,6 @@ const {
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  onSelectChange,
   rowSelection
 } = useTableOperate(data, getData);
 
@@ -155,7 +152,7 @@ async function handleBatchDelete() {
       window.$message?.warning('请选择要删除的用户');
       return;
     }
-    
+
     // 使用ant-design-vue的Modal.confirm替代
     Modal.confirm({
       title: '批量删除用户',
@@ -169,12 +166,12 @@ async function handleBatchDelete() {
           window.$message?.success('批量删除成功');
           onBatchDeleted();
         } else {
-          window.$message?.error('批量删除失败: ' + error);
+          window.$message?.error(`批量删除失败: ${error}`);
         }
       }
     });
   } catch (e) {
-    window.$message?.error('操作失败: ' + e.message);
+    window.$message?.error(`操作失败: ${e.message}`);
   }
 }
 
@@ -186,23 +183,23 @@ async function handleDelete(id: number) {
       window.$message?.error('管理员用户不能删除');
       return;
     }
-    
+
     // 发送请求
     const { error } = await fetchDeleteUser(id);
     if (!error) {
       window.$message?.success('删除成功');
       onDeleted();
     } else {
-      window.$message?.error('删除失败: ' + error);
+      window.$message?.error(`删除失败: ${error}`);
     }
   } catch (e) {
-    window.$message?.error('操作失败: ' + e.message);
+    window.$message?.error(`操作失败: ${e.message}`);
   }
 }
 
 async function toggleStatus(id: number, status: number) {
   const newStatus = status === 1 ? 0 : 1;
-  const {error} = await fetchChangeUserStatus(id, newStatus);
+  const { error } = await fetchChangeUserStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
     getData();
@@ -210,7 +207,7 @@ async function toggleStatus(id: number, status: number) {
 }
 
 async function resetPassword(id: number) {
-  const {error} = await fetchResetUserPassword(id, '123456');
+  const { error } = await fetchResetUserPassword(id, '123456');
   if (!error) {
     window.$message?.success('密码重置成功，新密码为：123456');
   }
@@ -223,13 +220,8 @@ function edit(id: number) {
 
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
-    <ACard
-      title="用户列表"
-      :bordered="false"
-      :body-style="{ paddingTop: '0px' }"
-      class="card-wrapper sm:flex-1-hidden"
-    >
+    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <ACard title="用户列表" :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
       <template #extra>
         <TableHeaderOperation
           v-model:columns="columnChecks"

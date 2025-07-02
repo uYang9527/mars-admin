@@ -3,12 +3,11 @@ import { computed, reactive, watch } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import {
   fetchAddPost,
-  fetchUpdatePost,
-  fetchGetPostById,
   fetchCheckPostCodeUnique,
-  fetchCheckPostNameUnique
+  fetchCheckPostNameUnique,
+  fetchGetPostById,
+  fetchUpdatePost
 } from '@/service/api/system-manage';
-import { $t } from '@/locales';
 
 defineOptions({
   name: 'PostOperateDrawer'
@@ -52,10 +51,7 @@ const title = computed(() => {
   return titles[props.operateType];
 });
 
-type Model = Pick<
-  Api.SystemManage.Post,
-  'postName' | 'postCode' | 'postSort' | 'status' | 'remark'
->;
+type Model = Pick<Api.SystemManage.Post, 'postName' | 'postCode' | 'postSort' | 'status' | 'remark'>;
 
 const model: Model = reactive(createDefaultModel());
 
@@ -117,17 +113,19 @@ function handleInitModel() {
   Object.assign(model, createDefaultModel());
 
   if (props.operateType === 'edit' && props.rowData) {
-    fetchGetPostById(props.rowData.id).then(({ data }) => {
-      if (data) {
-        const rowDataWithStringStatus = {
-          ...data,
-          status: data.status !== null ? String(data.status) : '1'
-        };
-        Object.assign(model, rowDataWithStringStatus);
-      }
-    }).catch(error => {
-      console.error('获取岗位详情失败', error);
-    });
+    fetchGetPostById(props.rowData.id)
+      .then(({ data }) => {
+        if (data) {
+          const rowDataWithStringStatus = {
+            ...data,
+            status: data.status !== null ? String(data.status) : '1'
+          };
+          Object.assign(model, rowDataWithStringStatus);
+        }
+      })
+      .catch(error => {
+        console.error('获取岗位详情失败', error);
+      });
   }
 }
 

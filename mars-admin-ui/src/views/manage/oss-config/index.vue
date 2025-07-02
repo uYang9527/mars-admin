@@ -1,59 +1,12 @@
-<template>
-  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <!-- 搜索区域 -->
-    <StorageConfigSearch v-model:model="searchParams" @reset="getData" @search="getData" />
-
-    <!-- 操作按钮 -->
-    <ACard :bordered="false" class="card-wrapper">
-      <div class="flex gap-12px">
-        <AButton type="primary" @click="handleAdd">
-          新增存储配置
-        </AButton>
-        <AButton
-          type="primary"
-          ghost
-          :disabled="checkedRowKeys.length === 0"
-          @click="handleBatchDelete"
-        >
-          批量删除
-        </AButton>
-      </div>
-    </ACard>
-
-    <!-- 存储配置列表 -->
-    <ACard title="存储配置列表" :bordered="false" class="card-wrapper flex-1-hidden">
-      <ATable
-        :columns="columns"
-        :data-source="data"
-        :row-key="record => record.id"
-        :pagination="mobilePagination"
-        :loading="loading"
-        :row-selection="rowSelection"
-        :scroll="{ x: 1400 }"
-        @change="getDataByPage"
-      />
-    </ACard>
-
-    <!-- 配置操作抽屉 -->
-    <StorageConfigOperateDrawer
-      v-model:visible="drawerVisible"
-      :operate-type="operateType"
-      :row-data="editingData"
-      @submitted="getData"
-    />
-
-  </div>
-</template>
-
 <script setup lang="tsx">
-import { reactive, ref, computed } from 'vue';
-import { Button, Popconfirm, Tag, Card as ACard, Table as ATable, Modal } from 'ant-design-vue';
+import { ref } from 'vue';
+import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
-  fetchGetOssConfigList,
+  fetchChangeOssConfigStatus,
   fetchDeleteOssConfig,
   fetchDeleteOssConfigs,
-  fetchChangeOssConfigStatus
+  fetchGetOssConfigList
 } from '@/service/api/file-manage';
 import { $t } from '@/locales';
 import StorageConfigSearch from './modules/storage-config-search.vue';
@@ -65,106 +18,96 @@ defineOptions({
 
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } =
-  useTable({
-    apiFn: fetchGetOssConfigList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      configKey: '',
-      status: null
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+  apiFn: fetchGetOssConfigList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    configKey: '',
+    status: null
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        width: 64,
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'configKey',
-        dataIndex: 'configKey',
-        title: '配置标识',
-        align: 'center',
-        width: 120,
-        customRender: ({ record }) => (
-          <Tag color={getConfigColor(record.configKey)}>
-            {getConfigName(record.configKey)}
-          </Tag>
-        )
-      },
-      {
-        key: 'bucketName',
-        dataIndex: 'bucketName',
-        title: '存储桶',
-        align: 'center',
-        width: 150,
-        customRender: ({ record }) => record.bucketName || '-'
-      },
-      {
-        key: 'endpoint',
-        dataIndex: 'endpoint',
-        title: '端点地址',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.endpoint || '-'
-      },
-      {
-        key: 'domain',
-        dataIndex: 'domain',
-        title: '自定义域名',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.domain || '-'
-      },
-      {
-        key: 'status',
-        dataIndex: 'status',
-        title: '状态',
-        align: 'center',
-        width: 100,
-        customRender: ({ record }) => (
-          <Tag color={record.status === 1 ? 'success' : 'error'}>
-            {record.status === 1 ? '启用' : '停用'}
-          </Tag>
-        )
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        width: 180,
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-              {$t('common.edit')}
+    {
+      key: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'configKey',
+      dataIndex: 'configKey',
+      title: '配置标识',
+      align: 'center',
+      customRender: ({ record }) => (
+        <Tag color={getConfigColor(record.configKey)}>{getConfigName(record.configKey)}</Tag>
+      )
+    },
+    {
+      key: 'bucketName',
+      dataIndex: 'bucketName',
+      title: '存储桶',
+      align: 'center',
+      customRender: ({ record }) => record.bucketName || '-'
+    },
+    {
+      key: 'endpoint',
+      dataIndex: 'endpoint',
+      title: '端点地址',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.endpoint || '-'
+    },
+    {
+      key: 'domain',
+      dataIndex: 'domain',
+      title: '自定义域名',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.domain || '-'
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: '状态',
+      align: 'center',
+      customRender: ({ record }) => (
+        <Tag color={record.status === 1 ? 'success' : 'error'}>{record.status === 1 ? '启用' : '停用'}</Tag>
+      )
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Button
+            type={record.status === 1 ? 'default' : 'primary'}
+            size="small"
+            onClick={() => toggleStatus(record.id, record.status)}
+          >
+            {record.status === 1 ? '停用' : '启用'}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
             </Button>
-            <Button
-              type={record.status === 1 ? 'default' : 'primary'}
-              size="small"
-              onClick={() => toggleStatus(record.id, record.status)}
-            >
-              {record.status === 1 ? '停用' : '启用'}
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
-      }
-    ]
-  });
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const {
   drawerVisible,
@@ -187,9 +130,9 @@ function edit(id: number) {
 // 获取配置颜色
 function getConfigColor(configKey: string): string {
   const colors = {
-    'local': 'blue',
-    'minio': 'green',
-    'aliyun': 'orange'
+    local: 'blue',
+    minio: 'green',
+    aliyun: 'orange'
   };
   return colors[configKey] || 'default';
 }
@@ -197,9 +140,9 @@ function getConfigColor(configKey: string): string {
 // 获取配置名称
 function getConfigName(configKey: string): string {
   const names = {
-    'local': '本地存储',
-    'minio': 'MinIO',
-    'aliyun': '阿里云OSS'
+    local: '本地存储',
+    minio: 'MinIO',
+    aliyun: '阿里云OSS'
   };
   return names[configKey] || configKey;
 }
@@ -246,6 +189,45 @@ async function handleDelete(id: number) {
 }
 </script>
 
+<template>
+  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+    <!-- 搜索区域 -->
+    <StorageConfigSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+
+    <!-- 操作按钮 -->
+    <ACard :bordered="false" class="card-wrapper">
+      <div class="flex gap-12px">
+        <AButton type="primary" @click="handleAdd">新增存储配置</AButton>
+        <AButton type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+          批量删除
+        </AButton>
+      </div>
+    </ACard>
+
+    <!-- 存储配置列表 -->
+    <ACard title="存储配置列表" :bordered="false" class="flex-1-hidden card-wrapper">
+      <ATable
+        :columns="columns"
+        :data-source="data"
+        :row-key="record => record.id"
+        :pagination="mobilePagination"
+        :loading="loading"
+        :row-selection="rowSelection"
+        :scroll="{ x: 1400 }"
+        @change="getDataByPage"
+      />
+    </ACard>
+
+    <!-- 配置操作抽屉 -->
+    <StorageConfigOperateDrawer
+      v-model:visible="drawerVisible"
+      :operate-type="operateType"
+      :row-data="editingData"
+      @submitted="getData"
+    />
+  </div>
+</template>
+
 <style scoped>
 .card-wrapper {
   background: #fff;
@@ -258,4 +240,4 @@ async function handleDelete(id: number) {
 .detail-content .ant-descriptions-item-label {
   width: 120px;
 }
-</style> 
+</style>

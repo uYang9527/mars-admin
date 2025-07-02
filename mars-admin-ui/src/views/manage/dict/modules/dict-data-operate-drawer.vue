@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
-import { fetchAddDictData, fetchUpdateDictData, fetchGetDictDataById, fetchCheckDictValueUnique } from '@/service/api/system-manage';
-import { $t } from '@/locales';
 import { Form } from 'ant-design-vue';
+import {
+  fetchAddDictData,
+  fetchCheckDictValueUnique,
+  fetchGetDictDataById,
+  fetchUpdateDictData
+} from '@/service/api/system-manage';
+import { $t } from '@/locales';
 
 export type OperateType = 'add' | 'edit';
 
