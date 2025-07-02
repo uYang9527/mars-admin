@@ -193,6 +193,9 @@ const local: App.I18n.Schema = {
     'file-manage': '文件管理',
     'manage_file-manage': '文件列表',
     'manage_oss-config': '存储配置',
+    'log-manage': '日志管理',
+    'manage_login-log': '登录日志',
+    'manage_operation-log': '操作日志',
     'multi-menu': '多级菜单',
     'multi-menu_first': '菜单一',
     'multi-menu_first_child': '菜单一子菜单',
@@ -471,6 +474,71 @@ const local: App.I18n.Schema = {
         iconType: {
           iconify: 'iconify图标',
           local: '本地图标'
+        }
+      },
+      loginLog: {
+        title: '登录日志',
+        batchDelete: '批量删除',
+        cleanAll: '清空日志',
+        exportLog: '导出日志',
+        userName: '用户账号',
+        ipaddr: '登录IP',
+        loginLocation: '登录地点',
+        browser: '浏览器',
+        os: '操作系统',
+        status: '登录状态',
+        msg: '提示消息',
+        loginTime: '登录时间',
+        detail: '详情',
+        statusSuccess: '成功',
+        statusFailed: '失败',
+        confirmDeleteBatch: '确定要删除选中的登录日志吗？',
+        confirmCleanAll: '确定要清空所有登录日志吗？',
+        confirmDelete: '确定要删除这条登录日志吗？',
+        search: {
+          userName: '请输入用户账号',
+          ipaddr: '请输入登录IP',
+          status: '请选择登录状态',
+          loginLocation: '请输入登录地点'
+        }
+      },
+      operationLog: {
+        title: '操作日志',
+        batchDelete: '批量删除',
+        cleanAll: '清空日志',
+        exportLog: '导出日志',
+        moduleTitle: '模块标题',
+        businessType: '业务类型',
+        operName: '操作人员',
+        operIp: '主机地址',
+        operLocation: '操作地点',
+        status: '操作状态',
+        operTime: '操作时间',
+        costTime: '消耗时间(ms)',
+        detail: '详情',
+        statusNormal: '正常',
+        statusError: '异常',
+        confirmDeleteBatch: '确定要删除选中的操作日志吗？',
+        confirmCleanAll: '确定要清空所有操作日志吗？',
+        confirmDelete: '确定要删除这条操作日志吗？',
+        businessTypes: {
+          insert: '新增',
+          update: '修改',
+          delete: '删除',
+          grant: '授权',
+          export: '导出',
+          import: '导入',
+          force: '强退',
+          gencode: '生成代码',
+          clean: '清空数据',
+          other: '其他'
+        },
+        search: {
+          title: '请输入模块标题',
+          operName: '请输入操作人员',
+          businessType: '请选择业务类型',
+          status: '请选择操作状态',
+          operIp: '请输入主机地址'
         }
       }
     }

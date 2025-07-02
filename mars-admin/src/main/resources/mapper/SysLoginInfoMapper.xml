@@ -43,7 +43,7 @@
 
     <!-- 清空登录日志 -->
     <delete id="cleanLoginInfo">
-        DELETE FROM sys_logininfor
+        DELETE FROM sys_logininfor WHERE 1=1
     </delete>
 
 </mapper> 

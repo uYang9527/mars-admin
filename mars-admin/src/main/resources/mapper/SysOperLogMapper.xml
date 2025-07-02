@@ -60,4 +60,9 @@
         ORDER BY ol.oper_time DESC
     </select>
 
+    <!-- 清空操作日志 -->
+    <delete id="cleanOperLog">
+        DELETE FROM sys_oper_log WHERE 1=1
+    </delete>
+
 </mapper> 

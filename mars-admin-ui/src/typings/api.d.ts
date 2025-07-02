@@ -621,4 +621,117 @@ declare namespace Api {
       records: OssConfig[];
     }
   }
+
+  /** 日志管理 */
+  namespace LogManage {
+    /** 操作日志 */
+    interface OperLog {
+      /** 日志主键 */
+      id?: number;
+      /** 模块标题 */
+      title?: string;
+      /** 业务类型：0-其它，1-新增，2-修改，3-删除 */
+      businessType?: number;
+      /** 方法名称 */
+      method?: string;
+      /** 请求方式 */
+      requestMethod?: string;
+      /** 操作类别：0-其它，1-后台用户，2-手机端用户 */
+      operatorType?: number;
+      /** 操作人员 */
+      operName?: string;
+      /** 部门名称 */
+      deptName?: string;
+      /** 请求URL */
+      operUrl?: string;
+      /** 主机地址 */
+      operIp?: string;
+      /** 操作地点 */
+      operLocation?: string;
+      /** 请求参数 */
+      operParam?: string;
+      /** 返回参数 */
+      jsonResult?: string;
+      /** 操作状态：0-正常，1-异常 */
+      status?: number;
+      /** 错误消息 */
+      errorMsg?: string;
+      /** 操作时间 */
+      operTime?: string;
+      /** 消耗时间 */
+      costTime?: number;
+    }
+
+    /** 操作日志搜索参数 */
+    interface OperLogSearchParams {
+      /** 当前页码 */
+      current?: number;
+      /** 页面大小 */
+      size?: number;
+      /** 模块标题 */
+      title?: string;
+      /** 操作人员 */
+      operName?: string;
+      /** 业务类型 */
+      businessType?: number;
+      /** 状态 */
+      status?: number;
+      /** 操作IP */
+      operIp?: string;
+    }
+
+    /** 操作日志列表 */
+    interface OperLogList {
+      current: number;
+      size: number;
+      total: number;
+      records: OperLog[];
+    }
+
+    /** 登录日志 */
+    interface LoginLog {
+      /** 访问ID */
+      id?: number;
+      /** 用户账号 */
+      userName?: string;
+      /** 登录IP地址 */
+      ipaddr?: string;
+      /** 登录地点 */
+      loginLocation?: string;
+      /** 浏览器类型 */
+      browser?: string;
+      /** 操作系统 */
+      os?: string;
+      /** 登录状态：0-成功，1-失败 */
+      status?: string;
+      /** 提示消息 */
+      msg?: string;
+      /** 访问时间 */
+      loginTime?: string;
+    }
+
+    /** 登录日志搜索参数 */
+    interface LoginLogSearchParams {
+      /** 当前页码 */
+      current?: number;
+      /** 页面大小 */
+      size?: number;
+      /** 用户账号 */
+      userName?: string;
+      /** 登录IP地址 */
+      ipaddr?: string;
+      /** 登录状态 */
+      status?: string;
+      /** 登录地点 */
+      loginLocation?: string;
+    }
+
+    /** 登录日志列表 */
+    interface LoginLogList {
+      current: number;
+      size: number;
+      total: number;
+      records: LoginLog[];
+    }
+  }
 }

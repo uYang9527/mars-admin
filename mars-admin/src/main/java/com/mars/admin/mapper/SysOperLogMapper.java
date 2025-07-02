@@ -55,8 +55,10 @@ public interface SysOperLogMapper extends BasePlusMapper<SysOperLog> {
 
     /**
      * 清空操作日志
+     * 
+     * @return 删除的记录数
      */
-    void cleanOperLog();
+    int cleanOperLog();
 
     /**
      * 根据操作IP查询操作日志

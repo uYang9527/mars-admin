@@ -190,6 +190,9 @@ const local: App.I18n.Schema = {
     'multi-menu_second_child': 'Menu Two Child',
     'manage_cache-monitor': 'Cache Monitor',
     'manage_cache-list': 'Cache List',
+    'log-manage': 'Log Manage',
+    'manage_login-log': 'Login Log',
+    'manage_operation-log': 'Operation Log',
     'multi-menu_second_child_home': 'Menu Two Child Home',
     exception: 'Exception',
     exception_403: '403',
@@ -437,6 +440,71 @@ const local: App.I18n.Schema = {
         iconType: {
           iconify: 'Iconify Icon',
           local: 'Local Icon'
+        }
+      },
+      loginLog: {
+        title: 'Login Log',
+        batchDelete: 'Batch Delete',
+        cleanAll: 'Clean All',
+        exportLog: 'Export Log',
+        userName: 'User Name',
+        ipaddr: 'Login IP',
+        loginLocation: 'Login Location',
+        browser: 'Browser',
+        os: 'Operating System',
+        status: 'Login Status',
+        msg: 'Message',
+        loginTime: 'Login Time',
+        detail: 'Detail',
+        statusSuccess: 'Success',
+        statusFailed: 'Failed',
+        confirmDeleteBatch: 'Are you sure to delete the selected login logs?',
+        confirmCleanAll: 'Are you sure to clean all login logs?',
+        confirmDelete: 'Are you sure to delete this login log?',
+        search: {
+          userName: 'Please enter user name',
+          ipaddr: 'Please enter login IP',
+          status: 'Please select login status',
+          loginLocation: 'Please enter login location'
+        }
+      },
+      operationLog: {
+        title: 'Operation Log',
+        batchDelete: 'Batch Delete',
+        cleanAll: 'Clean All',
+        exportLog: 'Export Log',
+        moduleTitle: 'Module Title',
+        businessType: 'Business Type',
+        operName: 'Operator',
+        operIp: 'Host Address',
+        operLocation: 'Operation Location',
+        status: 'Operation Status',
+        operTime: 'Operation Time',
+        costTime: 'Cost Time(ms)',
+        detail: 'Detail',
+        statusNormal: 'Normal',
+        statusError: 'Error',
+        confirmDeleteBatch: 'Are you sure to delete the selected operation logs?',
+        confirmCleanAll: 'Are you sure to clean all operation logs?',
+        confirmDelete: 'Are you sure to delete this operation log?',
+        businessTypes: {
+          insert: 'Insert',
+          update: 'Update',
+          delete: 'Delete',
+          grant: 'Grant',
+          export: 'Export',
+          import: 'Import',
+          force: 'Force',
+          gencode: 'Generate Code',
+          clean: 'Clean Data',
+          other: 'Other'
+        },
+        search: {
+          title: 'Please enter module title',
+          operName: 'Please enter operator',
+          businessType: 'Please select business type',
+          status: 'Please select operation status',
+          operIp: 'Please enter host address'
         }
       }
     }

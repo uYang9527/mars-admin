@@ -89,7 +89,8 @@ public class SysOperLogServiceImpl extends BaseServiceImpl<SysOperLog> implement
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean cleanOperLog() {
-        return this.remove(QueryWrapper.create());
+        // 使用原生SQL来执行清空操作，避免MyBatis-Flex的全表操作限制
+        return sysOperLogMapper.cleanOperLog() > 0;
     }
 
     @Override
@@ -98,6 +99,9 @@ public class SysOperLogServiceImpl extends BaseServiceImpl<SysOperLog> implement
                 .select()
                 .from(SYS_OPER_LOG);
 
+        if (StringUtils.hasText(operLog.getTitle())) {
+            query.and(SYS_OPER_LOG.TITLE.like(operLog.getTitle()));
+        }
         if (StringUtils.hasText(operLog.getOperName())) {
             query.and(SYS_OPER_LOG.OPER_NAME.like(operLog.getOperName()));
         }
@@ -106,6 +110,9 @@ public class SysOperLogServiceImpl extends BaseServiceImpl<SysOperLog> implement
         }
         if (operLog.getStatus() != null) {
             query.and(SYS_OPER_LOG.STATUS.eq(operLog.getStatus()));
+        }
+        if (StringUtils.hasText(operLog.getOperIp())) {
+            query.and(SYS_OPER_LOG.OPER_IP.like(operLog.getOperIp()));
         }
 
         query.orderBy(SYS_OPER_LOG.OPER_TIME.desc());

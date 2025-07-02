@@ -55,8 +55,10 @@ public interface SysLoginInfoMapper extends BasePlusMapper<SysLoginInfo> {
 
     /**
      * 清空登录日志
+     * 
+     * @return 删除的记录数
      */
-    void cleanLoginInfo();
+    int cleanLoginInfo();
 
     /**
      * 根据登录地点查询登录日志

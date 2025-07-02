@@ -3,6 +3,8 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysPost;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.BusinessType;
+import com.mars.admin.framework.util.OperLogUtils;
 import com.mars.admin.service.ISysPostService;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +28,9 @@ public class SysPostController extends BaseController<SysPost, Long> {
 
     @Autowired
     private ISysPostService sysPostService;
+
+    @Autowired
+    private OperLogUtils operLogUtils;
 
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/post/list           - 获取所有岗位
@@ -135,13 +140,68 @@ public class SysPostController extends BaseController<SysPost, Long> {
     }
     
     /**
+     * 新增岗位（重写BaseController的方法）
+     *
+     * @param entity 岗位信息
+     * @return 是否成功
+     */
+    @Operation(summary = "新增岗位", description = "新增岗位信息")
+    @PostMapping
+    @Override
+    public Result<Boolean> save(@RequestBody SysPost entity) {
+        try {
+            // 记录操作日志
+            operLogUtils.recordLog("岗位管理", BusinessType.INSERT, "新增岗位：" + entity.getPostName(), entity);
+            
+            boolean success = sysPostService.save(entity);
+            return Result.of(success, "新增成功", "新增失败");
+        } catch (Exception e) {
+            // 记录异常日志
+            operLogUtils.recordErrorLog("岗位管理", BusinessType.INSERT, "新增岗位失败：" + entity.getPostName(), e);
+            throw e;
+        }
+    }
+
+    /**
+     * 修改岗位（重写BaseController的方法）
+     *
+     * @param entity 岗位信息
+     * @return 是否成功
+     */
+    @Operation(summary = "修改岗位", description = "修改岗位信息")
+    @PutMapping
+    @Override
+    public Result<Boolean> update(@RequestBody SysPost entity) {
+        try {
+            // 记录操作日志
+            operLogUtils.recordLog("岗位管理", BusinessType.UPDATE, "修改岗位：" + entity.getPostName(), entity);
+            
+            boolean success = sysPostService.updateById(entity);
+            return Result.of(success, "修改成功", "修改失败");
+        } catch (Exception e) {
+            // 记录异常日志
+            operLogUtils.recordErrorLog("岗位管理", BusinessType.UPDATE, "修改岗位失败：" + entity.getPostName(), e);
+            throw e;
+        }
+    }
+    
+    /**
      * 修改岗位状态
      */
     @PutMapping("/changeStatus")
     @Operation(summary = "修改岗位状态", description = "修改岗位状态")
     public Result<Void> changeStatus(@RequestBody SysPost post) {
+        try {
+            // 记录操作日志
+            operLogUtils.recordLog("岗位管理", BusinessType.UPDATE, "修改岗位状态，ID：" + post.getId(), post);
+            
         sysPostService.updateById(post);
         return Result.success();
+        } catch (Exception e) {
+            // 记录异常日志
+            operLogUtils.recordErrorLog("岗位管理", BusinessType.UPDATE, "修改岗位状态失败，ID：" + post.getId(), e);
+            throw e;
+        }
     }
     
     /**
@@ -156,9 +216,18 @@ public class SysPostController extends BaseController<SysPost, Long> {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
         }
+        try {
+            // 记录操作日志
+            operLogUtils.recordLog("岗位管理", BusinessType.DELETE, "批量删除岗位，IDs：" + ids.toString(), ids);
+            
         Long[] postIds = ids.toArray(new Long[0]);
         boolean success = sysPostService.deletePosts(postIds);
         return Result.of(success, "批量删除成功", "批量删除失败");
+        } catch (Exception e) {
+            // 记录异常日志
+            operLogUtils.recordErrorLog("岗位管理", BusinessType.DELETE, "批量删除岗位失败，IDs：" + ids.toString(), e);
+            throw e;
+        }
     }
     
     /**
@@ -171,7 +240,16 @@ public class SysPostController extends BaseController<SysPost, Long> {
     @DeleteMapping("/{id}")
     @Override
     public Result<Boolean> deleteById(@PathVariable Long id) {
+        try {
+            // 记录操作日志
+            operLogUtils.recordLog("岗位管理", BusinessType.DELETE, "删除岗位，ID：" + id);
+            
         boolean success = sysPostService.deletePostById(id);
         return Result.of(success, "删除成功", "删除失败");
+        } catch (Exception e) {
+            // 记录异常日志
+            operLogUtils.recordErrorLog("岗位管理", BusinessType.DELETE, "删除岗位失败，ID：" + id, e);
+            throw e;
+        }
     }
 } 

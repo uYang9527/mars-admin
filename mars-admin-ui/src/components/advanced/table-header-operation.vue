@@ -8,9 +8,12 @@ defineOptions({
 interface Props {
   disabledDelete?: boolean;
   loading?: boolean;
+  showAdd?: boolean;
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  showAdd: true
+});
 
 interface Emits {
   (e: 'add'): void;
@@ -41,7 +44,7 @@ function refresh() {
   <div class="flex flex-wrap justify-end gap-x-12px gap-y-8px lt-sm:(w-200px py-12px)">
     <slot name="prefix"></slot>
     <slot name="default">
-      <AButton size="small" ghost type="primary" @click="add">
+      <AButton v-if="props.showAdd" size="small" ghost type="primary" @click="add">
         <template #icon>
           <icon-ic-round-plus class="align-sub text-icon" />
         </template>

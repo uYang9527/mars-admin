@@ -90,7 +90,7 @@ public class AuthServiceImpl implements IAuthService {
         updateUserLoginInfo(user);
 
         // 9. 记录登录成功日志
-        recordLoginInfo(username, "1", "登录成功");
+        recordLoginInfo(username, "0", "登录成功");
 
         // 10. 构建返回结果
         LoginResponse response = new LoginResponse();

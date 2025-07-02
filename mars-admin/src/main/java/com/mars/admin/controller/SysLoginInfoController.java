@@ -3,13 +3,16 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysLoginInfo;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.util.ExcelUtils;
 import com.mars.admin.service.ISysLoginInfoService;
+import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -19,7 +22,7 @@ import java.util.List;
  * @author Mars
  */
 @RestController
-@RequestMapping("/system/logininfo")
+@RequestMapping("/system/logininfor")
 @Tag(name = "系统登录日志管理", description = "系统登录日志管理相关接口")
 public class SysLoginInfoController extends BaseController<SysLoginInfo, Long> {
 
@@ -27,13 +30,39 @@ public class SysLoginInfoController extends BaseController<SysLoginInfo, Long> {
     private ISysLoginInfoService sysLoginInfoService;
 
     // 继承BaseController后自动拥有基础的增删改查功能：
-    // GET    /system/logininfo/list           - 获取所有登录日志
-    // GET    /system/logininfo/{id}           - 根据ID获取登录日志
-    // GET    /system/logininfo/page           - 分页查询登录日志
-    // POST   /system/logininfo                - 新增登录日志
-    // PUT    /system/logininfo                - 更新登录日志
-    // DELETE /system/logininfo/{id}           - 删除登录日志
-    // DELETE /system/logininfo/batch          - 批量删除登录日志
+    // GET    /system/logininfor/list           - 获取所有登录日志
+    // GET    /system/logininfor/{id}           - 根据ID获取登录日志
+    // GET    /system/logininfor/page           - 分页查询登录日志（基础功能，无条件查询）
+    // GET    /system/logininfor/pageList       - 分页查询登录日志（支持条件搜索）
+    // POST   /system/logininfor                - 新增登录日志
+    // PUT    /system/logininfor                - 更新登录日志
+    // DELETE /system/logininfor/{id}           - 删除登录日志
+    // DELETE /system/logininfor/batch          - 批量删除登录日志
+
+    /**
+     * 分页查询登录日志列表（支持搜索条件）
+     */
+    @GetMapping("/pageList")
+    @Operation(summary = "分页查询登录日志列表", description = "分页查询登录日志列表，支持多条件搜索")
+    public Result<Page<SysLoginInfo>> pageList(
+            @Parameter(description = "当前页", example = "1") @RequestParam(value = "current", defaultValue = "1") Integer current,
+            @Parameter(description = "每页大小", example = "10") @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @Parameter(description = "用户账号") @RequestParam(value = "userName", required = false) String userName,
+            @Parameter(description = "登录IP") @RequestParam(value = "ipaddr", required = false) String ipaddr,
+            @Parameter(description = "登录状态") @RequestParam(value = "status", required = false) String status,
+            @Parameter(description = "登录地点") @RequestParam(value = "loginLocation", required = false) String loginLocation) {
+        
+        // 构建查询条件
+        SysLoginInfo queryCondition = new SysLoginInfo();
+        queryCondition.setUserName(userName);
+        queryCondition.setIpaddr(ipaddr);
+        queryCondition.setStatus(status);
+        queryCondition.setLoginLocation(loginLocation);
+        
+        // 分页查询
+        Page<SysLoginInfo> page = sysLoginInfoService.selectLoginInfoPage(Page.of(current, size), queryCondition);
+        return Result.success(page);
+    }
 
     /**
      * 根据用户名查询登录日志
@@ -79,9 +108,29 @@ public class SysLoginInfoController extends BaseController<SysLoginInfo, Long> {
      * 导出登录日志
      */
     @PostMapping("/export")
-    @Operation(summary = "导出登录日志", description = "导出登录日志")
-    public Result<List<SysLoginInfo>> export(@RequestBody SysLoginInfo loginInfo) {
+    @Operation(summary = "导出登录日志", description = "根据条件导出登录日志")
+    public Result<List<SysLoginInfo>> exportByPost(@RequestBody(required = false) SysLoginInfo loginInfo) {
+        if (loginInfo == null) {
+            loginInfo = new SysLoginInfo();
+        }
         List<SysLoginInfo> list = sysLoginInfoService.exportLoginInfo(loginInfo);
         return Result.success(list);
+    }
+
+    /**
+     * 导出登录日志为Excel文件
+     */
+    @PostMapping("/exportExcel")
+    @Operation(summary = "导出登录日志为Excel文件", description = "根据条件导出登录日志为Excel文件")
+    public void exportExcel(@RequestBody(required = false) SysLoginInfo loginInfo, HttpServletResponse response) {
+        try {
+            if (loginInfo == null) {
+                loginInfo = new SysLoginInfo();
+            }
+            List<SysLoginInfo> list = sysLoginInfoService.exportLoginInfo(loginInfo);
+            ExcelUtils.exportLoginLogToExcel(response, list);
+        } catch (Exception e) {
+            throw new RuntimeException("导出Excel失败: " + e.getMessage());
+        }
     }
 } 

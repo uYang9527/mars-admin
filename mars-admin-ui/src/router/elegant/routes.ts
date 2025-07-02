@@ -148,6 +148,15 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_login-log',
+        path: '/manage/login-log',
+        component: 'view.manage_login-log',
+        meta: {
+          title: 'manage_login-log',
+          i18nKey: 'route.manage_login-log'
+        }
+      },
+      {
         name: 'manage_menu',
         path: '/manage/menu',
         component: 'view.manage_menu',
@@ -158,6 +167,15 @@ export const generatedRoutes: GeneratedRoute[] = [
           order: 3,
           roles: ['R_ADMIN'],
           keepAlive: true
+        }
+      },
+      {
+        name: 'manage_operation-log',
+        path: '/manage/operation-log',
+        component: 'view.manage_operation-log',
+        meta: {
+          title: 'manage_operation-log',
+          i18nKey: 'route.manage_operation-log'
         }
       },
       {
