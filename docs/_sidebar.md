@@ -26,6 +26,8 @@
   * [文件上传](features/upload.md)
 * 高级特性
   * [SQL监控](advanced/sql-monitor.md)
+  * [Druid监控](advanced/druid-monitor.md)
+  * [操作日志注解](advanced/operation-log-annotation.md)
   * [缓存管理](advanced/cache.md)
   * [国际化](advanced/i18n.md)
   * [主题定制](advanced/theme.md)
