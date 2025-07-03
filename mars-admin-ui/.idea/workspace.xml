@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/favicon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/proxy-test.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/svg-icon/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/svg-icon/logo.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/system-logo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/system-logo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plugins/loading.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugins/loading.ts" afterDir="false" />
-    </list>
+    <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +71,7 @@
       <workItem from="1751009799022" duration="23000" />
       <workItem from="1751079527133" duration="11915000" />
       <workItem from="1751291243095" duration="1621000" />
-      <workItem from="1751448910106" duration="4176000" />
+      <workItem from="1751448910106" duration="4495000" />
     </task>
     <servers />
   </component>

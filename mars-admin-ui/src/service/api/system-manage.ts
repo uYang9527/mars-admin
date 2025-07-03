@@ -873,12 +873,3 @@ export function fetchRefreshPostCache() {
   });
 }
 
-/**
- * 刷新OSS配置缓存
- */
-export function fetchRefreshOssConfigCache() {
-  return request({
-    url: '/system/oss-config/refreshCache',
-    method: 'delete'
-  });
-}
