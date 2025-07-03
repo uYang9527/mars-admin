@@ -3,12 +3,17 @@ package com.mars.admin.service.impl;
 import com.mars.admin.entity.SysOssConfig;
 import com.mars.admin.framework.oss.factory.FileUploadStrategyFactory;
 import com.mars.admin.framework.oss.strategy.FileUploadStrategy;
+import com.mars.admin.mapper.SysOssConfigMapper;
 import com.mars.admin.service.ISysOssConfigService;
-import com.mars.admin.service.impl.BaseServiceImpl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +23,14 @@ import static com.mars.admin.entity.table.SysOssConfigTableDef.SYS_OSS_CONFIG;
 
 /**
  * OSS配置 服务实现类
- * 继承 BaseServiceImpl 获得更多便捷方法
+ * 继承 CacheableServiceImpl 获得更多便捷方法和缓存功能
  *
  * @author Mars.wq
  */
 @Slf4j
 @Service
-public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> implements ISysOssConfigService {
+@CacheConfig(cacheNames = "sysOssConfig")
+public class SysOssConfigServiceImpl extends CacheableServiceImpl<SysOssConfigMapper, SysOssConfig> implements ISysOssConfigService {
 
     @Autowired
     private FileUploadStrategyFactory strategyFactory;
@@ -35,6 +41,7 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
     }
 
     @Override
+    @Cacheable(key = "'key:' + #configKey")
     public SysOssConfig selectConfigByKey(String configKey) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .where(SYS_OSS_CONFIG.CONFIG_KEY.eq(configKey))
@@ -43,6 +50,7 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
     }
 
     @Override
+    @Cacheable(key = "'enabled'")
     public List<SysOssConfig> selectEnabledConfigs() {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .where(SYS_OSS_CONFIG.STATUS.eq(1))
@@ -53,6 +61,7 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean saveConfig(SysOssConfig config) {
         // 检查配置key是否重复
         SysOssConfig existing = selectConfigByKey(config.getConfigKey());
@@ -64,6 +73,11 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'key:' + #config.configKey", condition = "#config.configKey != null"),
+        @CacheEvict(key = "#config.id", condition = "#config.id != null"),
+        @CacheEvict(key = "'enabled'")
+    })
     public boolean updateConfig(SysOssConfig config) {
         // 检查配置key是否重复（排除自己）
         QueryWrapper queryWrapper = QueryWrapper.create()
@@ -81,18 +95,24 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteConfig(Long id) {
         return this.removeById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteConfigs(List<Long> ids) {
         return this.removeByIds(ids);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "#id"),
+        @CacheEvict(key = "'enabled'")
+    })
     public boolean updateStatus(Long id, Integer status) {
         SysOssConfig config = new SysOssConfig();
         config.setId(id);
@@ -116,5 +136,12 @@ public class SysOssConfigServiceImpl extends BaseServiceImpl<SysOssConfig> imple
             log.error("测试OSS配置连接失败: {}", config.getConfigKey(), e);
             return false;
         }
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public void refreshCache() {
+        log.info("清空OSS配置缓存");
+        // @CacheEvict注解会自动清除sysOssConfig缓存空间的所有数据
     }
 } 

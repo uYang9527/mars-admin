@@ -3,6 +3,8 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysConfig;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.service.ISysConfigService;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 系统配置Controller
@@ -85,8 +89,86 @@ public class SysConfigController extends BaseController<SysConfig, Long> {
      */
     @DeleteMapping("/refreshCache")
     @Operation(summary = "刷新配置缓存", description = "刷新配置缓存")
+    @OperationLog(title = "参数设置", businessType = BusinessType.CLEAN, description = "刷新参数缓存")
     public Result<Void> refreshCache() {
-        // TODO: 实现配置缓存刷新逻辑
+        sysConfigService.refreshCache();
         return Result.success();
+    }
+
+    /**
+     * 新增配置（重写BaseController的方法）
+     */
+    @PostMapping
+    @Operation(summary = "新增配置", description = "新增配置信息")
+    @OperationLog(title = "参数设置", businessType = BusinessType.INSERT, 
+                  description = "新增参数：#{#entity.configName}")
+    @Override
+    public Result<Boolean> save(@RequestBody SysConfig entity) {
+        // 校验配置键是否唯一
+        if (!sysConfigService.checkConfigKeyUnique(entity.getConfigKey(), null)) {
+            return Result.error("配置键已存在，请重新输入");
+        }
+        boolean success = sysConfigService.insertConfig(entity);
+        return Result.of(success, "新增成功", "新增失败");
+    }
+
+    /**
+     * 修改配置（重写BaseController的方法）
+     */
+    @PutMapping
+    @Operation(summary = "修改配置", description = "修改配置信息")
+    @OperationLog(title = "参数设置", businessType = BusinessType.UPDATE, 
+                  description = "修改参数：#{#entity.configName}")
+    @Override
+    public Result<Boolean> update(@RequestBody SysConfig entity) {
+        // 校验配置键是否唯一
+        if (!sysConfigService.checkConfigKeyUnique(entity.getConfigKey(), entity.getId())) {
+            return Result.error("配置键已存在，请重新输入");
+        }
+        boolean success = sysConfigService.updateConfig(entity);
+        return Result.of(success, "修改成功", "修改失败");
+    }
+
+    /**
+     * 根据ID删除配置（重写BaseController的方法）
+     */
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除配置", description = "根据ID删除配置")
+    @OperationLog(title = "参数设置", businessType = BusinessType.DELETE, 
+                  description = "删除参数配置，ID：#{#id}")
+    @Override
+    public Result<Boolean> deleteById(@PathVariable Long id) {
+        // 检查是否为系统内置配置
+        SysConfig config = sysConfigService.getById(id);
+        if (config != null && "Y".equals(config.getConfigType())) {
+            return Result.error("系统内置配置不能删除");
+        }
+        boolean success = sysConfigService.deleteConfigs(new Long[]{id});
+        return Result.of(success, "删除成功", "删除失败");
+    }
+
+    /**
+     * 批量删除配置（重写BaseController的方法）
+     */
+    @DeleteMapping("/batch")
+    @Operation(summary = "批量删除配置", description = "批量删除配置")
+    @OperationLog(title = "参数设置", businessType = BusinessType.DELETE, 
+                  description = "批量删除参数配置，ID列表：#{#ids}")
+    @Override
+    public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Result.error("ID列表不能为空");
+        }
+        
+        // 检查是否包含系统内置配置
+        for (Long id : ids) {
+            SysConfig config = sysConfigService.getById(id);
+            if (config != null && "Y".equals(config.getConfigType())) {
+                return Result.error("包含系统内置配置，不能删除");
+            }
+        }
+        
+        boolean success = sysConfigService.deleteConfigs(ids.toArray(new Long[0]));
+        return Result.of(success, "批量删除成功", "批量删除失败");
     }
 } 

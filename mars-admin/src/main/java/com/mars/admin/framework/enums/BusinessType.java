@@ -1,4 +1,4 @@
-package com.mars.admin.framework.common.annotation;
+package com.mars.admin.framework.enums;
 
 /**
  * 业务操作类型
@@ -55,4 +55,9 @@ public enum BusinessType {
      * 清空数据
      */
     CLEAN,
+
+    /**
+     * 文件上传
+     */
+    UPLOAD,
 } 

@@ -3,6 +3,8 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysRole;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.service.ISysRoleService;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,6 +81,8 @@ public class SysRoleController extends BaseController<SysRole, Long> {
      */
     @PutMapping("/changeStatus")
     @Operation(summary = "修改角色状态", description = "修改角色状态")
+    @OperationLog(title = "角色管理", businessType = BusinessType.UPDATE, 
+                  description = "修改角色状态，角色ID：#{#role.id}，状态：#{#role.status}")
     public Result<Void> changeStatus(@RequestBody SysRole role) {
         boolean result = sysRoleService.changeStatus(role.getId(), role.getStatus());
         return result ? Result.success() : Result.error("修改状态失败");
@@ -89,6 +93,8 @@ public class SysRoleController extends BaseController<SysRole, Long> {
      */
     @PutMapping("/authMenu")
     @Operation(summary = "分配角色菜单权限", description = "分配角色菜单权限")
+    @OperationLog(title = "角色管理", businessType = BusinessType.GRANT, 
+                  description = "分配角色菜单权限，角色ID：#{#role.id}")
     public Result<Void> authMenu(@RequestBody SysRole role) {
         boolean result = sysRoleService.assignMenus(role.getId(), role.getMenuIds().toArray(new Long[0]));
         return result ? Result.success() : Result.error("分配菜单权限失败");
@@ -99,6 +105,8 @@ public class SysRoleController extends BaseController<SysRole, Long> {
      */
     @PutMapping("/authDept")
     @Operation(summary = "分配角色数据权限", description = "分配角色数据权限")
+    @OperationLog(title = "角色管理", businessType = BusinessType.GRANT, 
+                  description = "分配角色数据权限，角色ID：#{#role.id}")
     public Result<Void> authDept(@RequestBody SysRole role) {
         boolean result = sysRoleService.assignDepts(role.getId(), role.getDeptIds().toArray(new Long[0]));
         return result ? Result.success() : Result.error("分配数据权限失败");
@@ -109,6 +117,7 @@ public class SysRoleController extends BaseController<SysRole, Long> {
      */
     @PostMapping("/export")
     @Operation(summary = "导出角色数据", description = "导出角色数据")
+    @OperationLog(title = "角色管理", businessType = BusinessType.EXPORT, description = "导出角色数据")
     public Result<List<SysRole>> export(@RequestBody SysRole role) {
         List<SysRole> list = sysRoleService.exportRole(role);
         return Result.success(list);
@@ -144,6 +153,8 @@ public class SysRoleController extends BaseController<SysRole, Long> {
     @Override
     @DeleteMapping("/{id}")
     @Operation(summary = "删除角色", description = "根据角色ID删除角色")
+    @OperationLog(title = "角色管理", businessType = BusinessType.DELETE, 
+                  description = "删除角色，角色ID：#{#id}")
     public Result<Boolean> deleteById(@Parameter(description = "角色ID", required = true) @PathVariable Long id) {
         boolean success = sysRoleService.deleteRoles(new Long[]{id});
         return Result.of(success, "删除成功", "删除失败");
@@ -155,11 +166,66 @@ public class SysRoleController extends BaseController<SysRole, Long> {
     @Override
     @DeleteMapping("/batch")
     @Operation(summary = "批量删除角色", description = "批量删除角色")
+    @OperationLog(title = "角色管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除角色，ID列表：#{#ids}")
     public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
         }
         boolean success = sysRoleService.deleteRoles(ids.toArray(new Long[0]));
         return Result.of(success, "批量删除成功", "批量删除失败");
+    }
+
+    /**
+     * 新增角色（重写BaseController的方法）
+     */
+    @PostMapping
+    @Operation(summary = "新增角色", description = "新增角色")
+    @OperationLog(title = "角色管理", businessType = BusinessType.INSERT, 
+                  description = "新增角色：#{#entity.roleName}")
+    @Override
+    public Result<Boolean> save(@Parameter(description = "角色信息", required = true) @Validated @RequestBody SysRole entity) {
+        // 校验角色编码是否唯一
+        if (!sysRoleService.checkRoleCodeUnique(entity.getRoleCode(), null)) {
+            return Result.error("角色编码已存在，请重新输入");
+        }
+        // 校验角色权限字符串是否唯一
+        if (!sysRoleService.checkRoleKeyUnique(entity.getRoleKey(), null)) {
+            return Result.error("角色权限字符串已存在，请重新输入");
+        }
+        boolean success = sysRoleService.insertRole(entity);
+        return Result.of(success, "新增成功", "新增失败");
+    }
+
+    /**
+     * 修改角色（重写BaseController的方法）
+     */
+    @PutMapping
+    @Operation(summary = "修改角色", description = "修改角色")
+    @OperationLog(title = "角色管理", businessType = BusinessType.UPDATE, 
+                  description = "修改角色：#{#entity.roleName}")
+    @Override
+    public Result<Boolean> update(@Parameter(description = "角色信息", required = true) @Validated @RequestBody SysRole entity) {
+        // 校验角色编码是否唯一
+        if (!sysRoleService.checkRoleCodeUnique(entity.getRoleCode(), entity.getId())) {
+            return Result.error("角色编码已存在，请重新输入");
+        }
+        // 校验角色权限字符串是否唯一
+        if (!sysRoleService.checkRoleKeyUnique(entity.getRoleKey(), entity.getId())) {
+            return Result.error("角色权限字符串已存在，请重新输入");
+        }
+        boolean success = sysRoleService.updateRole(entity);
+        return Result.of(success, "修改成功", "修改失败");
+    }
+
+    /**
+     * 刷新角色缓存
+     */
+    @DeleteMapping("/refreshCache")
+    @Operation(summary = "刷新角色缓存", description = "刷新角色缓存")
+    @OperationLog(title = "角色管理", businessType = BusinessType.CLEAN, description = "刷新角色缓存")
+    public Result<Void> refreshCache() {
+        sysRoleService.refreshCache();
+        return Result.success();
     }
 } 

@@ -6,7 +6,7 @@ import { useTable, useTableOperate } from '@/hooks/common/table';
 import { $t } from '@/locales';
 import { enableStatusRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-import { fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree } from '@/service/api';
+import { fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree, fetchRefreshDeptCache } from '@/service/api';
 import DeptOperateDrawer from './modules/dept-operate-drawer.vue';
 
 const appStore = useAppStore();
@@ -198,6 +198,19 @@ function handleSearch() {
   getData();
 }
 
+// 刷新部门缓存
+async function refreshDeptCache() {
+  try {
+    const { error } = await fetchRefreshDeptCache();
+    if (!error) {
+      window.$message?.success('刷新部门缓存成功');
+    }
+  } catch (err) {
+    console.error('刷新部门缓存失败:', err);
+    window.$message?.error('刷新缓存失败，请重试');
+  }
+}
+
 function handleReset() {
   Object.assign(searchParams, {
     deptName: null,
@@ -291,7 +304,16 @@ function toggleCollapsed() {
           @add="handleAdd"
           @delete="handleBatchDelete"
           @refresh="getData"
-        />
+        >
+          <template #suffix>
+            <AButton size="small" type="primary" ghost @click="refreshDeptCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
+          </template>
+        </TableHeaderOperation>
       </template>
       <ATable
         :columns="columns"

@@ -1,6 +1,8 @@
 package com.mars.admin.controller;
 
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.entity.SysDictData;
 import com.mars.admin.entity.SysDictType;
 import com.mars.admin.service.ISysDictDataService;
@@ -133,6 +135,8 @@ public class SysDictController {
      */
     @PostMapping("/type")
     @Operation(summary = "新增字典类型", description = "新增字典类型信息")
+    @OperationLog(title = "字典管理", businessType = BusinessType.INSERT, 
+                  description = "新增字典类型：#{#dictType.dictName}")
     public Result<Boolean> addDictType(@Parameter(description = "字典类型信息", required = true) @RequestBody SysDictType dictType) {
         boolean success = sysDictTypeService.insertDictType(dictType);
         return Result.of(success, "新增成功", "新增失败");
@@ -143,6 +147,8 @@ public class SysDictController {
      */
     @PutMapping("/type")
     @Operation(summary = "更新字典类型", description = "更新字典类型信息")
+    @OperationLog(title = "字典管理", businessType = BusinessType.UPDATE, 
+                  description = "更新字典类型：#{#dictType.dictName}")
     public Result<Boolean> updateDictType(@Parameter(description = "字典类型信息", required = true) @RequestBody SysDictType dictType) {
         boolean success = sysDictTypeService.updateDictType(dictType);
         return Result.of(success, "更新成功", "更新失败");
@@ -153,6 +159,8 @@ public class SysDictController {
      */
     @DeleteMapping("/type/{id}")
     @Operation(summary = "删除字典类型", description = "根据ID删除字典类型及关联数据")
+    @OperationLog(title = "字典管理", businessType = BusinessType.DELETE, 
+                  description = "删除字典类型，ID：#{#id}")
     public Result<Boolean> deleteDictType(@Parameter(description = "字典类型ID") @PathVariable Long id) {
         boolean success = sysDictTypeService.deleteDictTypeById(id);
         return Result.of(success, "删除成功", "删除失败");
@@ -163,6 +171,8 @@ public class SysDictController {
      */
     @DeleteMapping("/type/batch")
     @Operation(summary = "批量删除字典类型", description = "根据ID列表批量删除字典类型及关联数据")
+    @OperationLog(title = "字典管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除字典类型，ID列表：#{#ids}")
     public Result<Boolean> deleteDictTypes(@RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
@@ -260,6 +270,8 @@ public class SysDictController {
      */
     @PostMapping("/data")
     @Operation(summary = "新增字典数据", description = "新增字典数据信息")
+    @OperationLog(title = "字典管理", businessType = BusinessType.INSERT, 
+                  description = "新增字典数据：#{#dictData.dictLabel}")
     public Result<Boolean> addDictData(@Parameter(description = "字典数据信息", required = true) @RequestBody SysDictData dictData) {
         boolean success = sysDictDataService.insertDictData(dictData);
         return Result.of(success, "新增成功", "新增失败");
@@ -270,6 +282,8 @@ public class SysDictController {
      */
     @PutMapping("/data")
     @Operation(summary = "更新字典数据", description = "更新字典数据信息")
+    @OperationLog(title = "字典管理", businessType = BusinessType.UPDATE, 
+                  description = "更新字典数据：#{#dictData.dictLabel}")
     public Result<Boolean> updateDictData(@Parameter(description = "字典数据信息", required = true) @RequestBody SysDictData dictData) {
         boolean success = sysDictDataService.updateDictData(dictData);
         return Result.of(success, "更新成功", "更新失败");
@@ -280,6 +294,8 @@ public class SysDictController {
      */
     @DeleteMapping("/data/{id}")
     @Operation(summary = "删除字典数据", description = "根据ID删除字典数据")
+    @OperationLog(title = "字典管理", businessType = BusinessType.DELETE, 
+                  description = "删除字典数据，ID：#{#id}")
     public Result<Boolean> deleteDictData(@Parameter(description = "字典数据ID") @PathVariable Long id) {
         Long[] dictDataIds = {id};
         boolean success = sysDictDataService.deleteDictData(dictDataIds);
@@ -291,6 +307,8 @@ public class SysDictController {
      */
     @DeleteMapping("/data/batch")
     @Operation(summary = "批量删除字典数据", description = "根据ID列表批量删除字典数据")
+    @OperationLog(title = "字典管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除字典数据，ID列表：#{#ids}")
     public Result<Boolean> deleteDictDatas(@RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");

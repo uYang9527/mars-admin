@@ -94,4 +94,16 @@ public interface ISysConfigService extends BaseService<SysConfig> {
      * @return 更新结果
      */
     boolean updateConfigValueByKey(String configKey, String configValue);
-} 
+
+    /**
+     * 刷新参数缓存
+     */
+    void refreshCache();
+
+    /**
+     *  批量删除
+     * @param ids 删除的ID列表
+     * @return 删除结果
+     */
+    boolean removeBatchByIds(List<Long> ids);
+}

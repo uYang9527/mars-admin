@@ -7,7 +7,13 @@ import com.mars.admin.mapper.SysUserDeptMapper;
 import com.mars.admin.service.ISysDeptService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,12 +28,14 @@ import static com.mars.admin.entity.table.SysUserDeptTableDef.SYS_USER_DEPT;
 
 /**
  * 系统部门Service实现类
- * 继承 BaseServiceImpl 获得更多便捷方法
+ * 继承 CacheableServiceImpl 获得更多便捷方法和缓存功能
  *
  * @author Mars
  */
+@Slf4j
 @Service
-public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISysDeptService {
+@CacheConfig(cacheNames = "sysDept")
+public class SysDeptServiceImpl extends CacheableServiceImpl<SysDeptMapper, SysDept> implements ISysDeptService {
 
     @Autowired
     private SysDeptMapper sysDeptMapper;
@@ -39,11 +47,13 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
     private SysRoleDeptMapper sysRoleDeptMapper;
 
     @Override
+    @Cacheable(key = "'code:' + #deptCode")
     public SysDept selectByDeptCode(String deptCode) {
         return sysDeptMapper.selectByDeptCode(deptCode);
     }
 
     @Override
+    @Cacheable(key = "'name:' + #deptName")
     public SysDept selectByDeptName(String deptName) {
         return sysDeptMapper.selectByDeptName(deptName);
     }
@@ -71,31 +81,37 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
     }
 
     @Override
+    @Cacheable(key = "'user:' + #userId")
     public List<SysDept> selectDeptsByUserId(Long userId) {
         return sysDeptMapper.selectDeptsByUserId(userId);
     }
 
     @Override
+    @Cacheable(key = "'role:' + #roleId")
     public List<SysDept> selectDeptsByRoleId(Long roleId) {
         return sysDeptMapper.selectDeptsByRoleId(roleId);
     }
 
     @Override
+    @Cacheable(key = "'normal'")
     public List<SysDept> selectNormalDepts() {
         return sysDeptMapper.selectNormalDepts();
     }
 
     @Override
+    @Cacheable(key = "'children:' + #parentId")
     public List<SysDept> selectChildrenByParentId(Long parentId) {
         return sysDeptMapper.selectChildrenByParentId(parentId);
     }
 
     @Override
+    @Cacheable(key = "'list'")
     public List<SysDept> selectDeptList(SysDept dept) {
         return sysDeptMapper.selectDeptList(dept);
     }
 
     @Override
+    @Cacheable(key = "'tree'")
     public List<SysDept> selectDeptTree() {
         // 查询所有部门数据
         List<SysDept> allDepts = sysDeptMapper.selectDeptTree();
@@ -121,6 +137,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean insertDept(SysDept dept) {
         // 设置祖级列表
         if (dept.getParentId() != null && dept.getParentId() != 0) {
@@ -140,6 +157,15 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'code:' + #dept.deptCode", condition = "#dept.deptCode != null"),
+        @CacheEvict(key = "'name:' + #dept.deptName", condition = "#dept.deptName != null"),
+        @CacheEvict(key = "'children:' + #dept.parentId", condition = "#dept.parentId != null"),
+        @CacheEvict(key = "#dept.id", condition = "#dept.id != null"),
+        @CacheEvict(key = "'tree'"),
+        @CacheEvict(key = "'list'"),
+        @CacheEvict(key = "'normal'")
+    })
     public boolean updateDept(SysDept dept) {
         // 获取原部门信息
         SysDept oldDept = this.getById(dept.getId());
@@ -190,6 +216,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteDeptById(Long deptId) {
         // 检查是否有子部门
         if (hasChildDept(deptId)) {
@@ -217,6 +244,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteDepts(Long[] deptIds) {
         if (deptIds == null || deptIds.length == 0) {
             return false;
@@ -265,6 +293,12 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements ISys
     public boolean hasAssociatedUser(Long deptId) {
         QueryWrapper wrapper = QueryWrapper.create().where(SYS_USER_DEPT.DEPT_ID.eq(deptId));
         return sysUserDeptMapper.selectCountByQuery(wrapper) > 0;
+    }
 
+    @Override
+    @CacheEvict(allEntries = true)
+    public void refreshCache() {
+        log.info("清空系统部门缓存");
+        // @CacheEvict注解会自动清除sysDept缓存空间的所有数据
     }
 }

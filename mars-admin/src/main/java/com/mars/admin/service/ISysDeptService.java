@@ -149,4 +149,9 @@ public interface ISysDeptService extends BaseService<SysDept> {
      * @return 是否有关联用户
      */
     boolean hasAssociatedUser(Long deptId);
+
+    /**
+     * 刷新部门缓存
+     */
+    void refreshCache();
 } 

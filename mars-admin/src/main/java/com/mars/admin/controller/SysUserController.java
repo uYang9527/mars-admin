@@ -3,12 +3,13 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysUser;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.enums.BusinessType;
+import com.mars.admin.framework.common.annotation.OperationLog;
 import com.mars.admin.service.ISysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +59,8 @@ public class SysUserController extends BaseController<SysUser, Long> {
      */
     @PostMapping
     @Operation(summary = "新增用户", description = "新增用户信息，设置默认密码123456")
+    @OperationLog(title = "用户管理", businessType = BusinessType.INSERT, 
+                  description = "新增用户：#{#entity.username}")
     public Result<Boolean> save(@RequestBody SysUser entity) {
         // 设置默认密码为123456
         entity.setPassword("123456");
@@ -101,6 +104,8 @@ public class SysUserController extends BaseController<SysUser, Long> {
      */
     @PutMapping("/resetPwd")
     @Operation(summary = "重置用户密码", description = "重置用户密码")
+    @OperationLog(title = "用户管理", businessType = BusinessType.UPDATE,
+                  description = "重置用户密码，用户ID：#{#user.id}")
     // @PreAuthorize("hasAuthority('system:user:resetPwd')")
     public Result<Void> resetPwd(@RequestBody SysUser user) {
         boolean result = sysUserService.resetPassword(user.getId(), user.getPassword());
@@ -222,6 +227,8 @@ public class SysUserController extends BaseController<SysUser, Long> {
     @Override
     @DeleteMapping("/{id}")
     @Operation(summary = "删除用户", description = "根据用户ID删除用户")
+    @OperationLog(title = "用户管理", businessType = BusinessType.DELETE,
+                  description = "删除用户，用户ID：#{#id}")
     public Result<Boolean> deleteById(@Parameter(description = "用户ID", required = true) @PathVariable Long id) {
         boolean success = sysUserService.deleteUsers(new Long[]{id});
         return Result.of(success, "删除成功", "删除失败");

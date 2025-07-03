@@ -6,7 +6,8 @@ import {
   fetchChangePostStatus,
   fetchDeletePost,
   fetchDeletePosts,
-  fetchGetPostList
+  fetchGetPostList,
+  fetchRefreshPostCache
 } from '@/service/api/system-manage';
 import { $t } from '@/locales';
 import { useAppStore } from '@/store/modules/app';
@@ -178,6 +179,19 @@ async function toggleStatus(id: number, status: number) {
 function edit(id: number) {
   handleEdit(id);
 }
+
+// 刷新岗位缓存
+async function refreshPostCache() {
+  try {
+    const { error } = await fetchRefreshPostCache();
+    if (!error) {
+      window.$message?.success('刷新岗位缓存成功');
+    }
+  } catch (err) {
+    console.error('刷新岗位缓存失败:', err);
+    window.$message?.error('刷新缓存失败，请重试');
+  }
+}
 </script>
 
 <template>
@@ -192,7 +206,16 @@ function edit(id: number) {
           @add="handleAdd"
           @delete="handleBatchDelete"
           @refresh="getData"
-        />
+        >
+          <template #suffix>
+            <AButton size="small" type="primary" ghost @click="refreshPostCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
+          </template>
+        </TableHeaderOperation>
       </template>
       <ATable
         :columns="columns"

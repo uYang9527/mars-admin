@@ -141,4 +141,9 @@ public interface ISysMenuService extends BaseService<SysMenu> {
      * @return 是否有子菜单
      */
     boolean hasChildMenu(Long menuId);
+
+    /**
+     * 刷新菜单缓存
+     */
+    void refreshCache();
 } 

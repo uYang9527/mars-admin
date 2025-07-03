@@ -3,8 +3,8 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysPost;
 import com.mars.admin.framework.common.Result;
-import com.mars.admin.framework.common.annotation.BusinessType;
-import com.mars.admin.framework.util.OperLogUtils;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.service.ISysPostService;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +28,6 @@ public class SysPostController extends BaseController<SysPost, Long> {
 
     @Autowired
     private ISysPostService sysPostService;
-
-    @Autowired
-    private OperLogUtils operLogUtils;
 
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/post/list           - 获取所有岗位
@@ -100,6 +97,7 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @PostMapping("/export")
     @Operation(summary = "导出岗位数据", description = "导出岗位数据")
+    @OperationLog(title = "岗位管理", businessType = BusinessType.EXPORT, description = "导出岗位数据")
     public Result<List<SysPost>> export(@RequestBody SysPost post) {
         List<SysPost> list = sysPostService.exportPost(post);
         return Result.success(list);
@@ -147,19 +145,12 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @Operation(summary = "新增岗位", description = "新增岗位信息")
     @PostMapping
+    @OperationLog(title = "岗位管理", businessType = BusinessType.INSERT, 
+                  description = "新增岗位：#{#entity.postName}")
     @Override
     public Result<Boolean> save(@RequestBody SysPost entity) {
-        try {
-            // 记录操作日志
-            operLogUtils.recordLog("岗位管理", BusinessType.INSERT, "新增岗位：" + entity.getPostName(), entity);
-            
-            boolean success = sysPostService.save(entity);
-            return Result.of(success, "新增成功", "新增失败");
-        } catch (Exception e) {
-            // 记录异常日志
-            operLogUtils.recordErrorLog("岗位管理", BusinessType.INSERT, "新增岗位失败：" + entity.getPostName(), e);
-            throw e;
-        }
+        boolean success = sysPostService.save(entity);
+        return Result.of(success, "新增成功", "新增失败");
     }
 
     /**
@@ -170,19 +161,12 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @Operation(summary = "修改岗位", description = "修改岗位信息")
     @PutMapping
+    @OperationLog(title = "岗位管理", businessType = BusinessType.UPDATE, 
+                  description = "修改岗位：#{#entity.postName}")
     @Override
     public Result<Boolean> update(@RequestBody SysPost entity) {
-        try {
-            // 记录操作日志
-            operLogUtils.recordLog("岗位管理", BusinessType.UPDATE, "修改岗位：" + entity.getPostName(), entity);
-            
-            boolean success = sysPostService.updateById(entity);
-            return Result.of(success, "修改成功", "修改失败");
-        } catch (Exception e) {
-            // 记录异常日志
-            operLogUtils.recordErrorLog("岗位管理", BusinessType.UPDATE, "修改岗位失败：" + entity.getPostName(), e);
-            throw e;
-        }
+        boolean success = sysPostService.updateById(entity);
+        return Result.of(success, "修改成功", "修改失败");
     }
     
     /**
@@ -190,18 +174,11 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @PutMapping("/changeStatus")
     @Operation(summary = "修改岗位状态", description = "修改岗位状态")
+    @OperationLog(title = "岗位管理", businessType = BusinessType.UPDATE, 
+                  description = "修改岗位状态，ID：#{#post.id}，状态：#{#post.status}")
     public Result<Void> changeStatus(@RequestBody SysPost post) {
-        try {
-            // 记录操作日志
-            operLogUtils.recordLog("岗位管理", BusinessType.UPDATE, "修改岗位状态，ID：" + post.getId(), post);
-            
         sysPostService.updateById(post);
         return Result.success();
-        } catch (Exception e) {
-            // 记录异常日志
-            operLogUtils.recordErrorLog("岗位管理", BusinessType.UPDATE, "修改岗位状态失败，ID：" + post.getId(), e);
-            throw e;
-        }
     }
     
     /**
@@ -212,22 +189,15 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @Operation(summary = "批量删除岗位", description = "根据ID列表批量删除岗位及关联数据")
     @DeleteMapping("/batch")
+    @OperationLog(title = "岗位管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除岗位，ID列表：#{#ids}")
     public Result<Boolean> deleteBatch(@RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
         }
-        try {
-            // 记录操作日志
-            operLogUtils.recordLog("岗位管理", BusinessType.DELETE, "批量删除岗位，IDs：" + ids.toString(), ids);
-            
         Long[] postIds = ids.toArray(new Long[0]);
         boolean success = sysPostService.deletePosts(postIds);
         return Result.of(success, "批量删除成功", "批量删除失败");
-        } catch (Exception e) {
-            // 记录异常日志
-            operLogUtils.recordErrorLog("岗位管理", BusinessType.DELETE, "批量删除岗位失败，IDs：" + ids.toString(), e);
-            throw e;
-        }
     }
     
     /**
@@ -238,18 +208,11 @@ public class SysPostController extends BaseController<SysPost, Long> {
      */
     @Operation(summary = "根据ID删除岗位", description = "根据主键ID删除岗位及关联数据")
     @DeleteMapping("/{id}")
+    @OperationLog(title = "岗位管理", businessType = BusinessType.DELETE, 
+                  description = "删除岗位，ID：#{#id}")
     @Override
     public Result<Boolean> deleteById(@PathVariable Long id) {
-        try {
-            // 记录操作日志
-            operLogUtils.recordLog("岗位管理", BusinessType.DELETE, "删除岗位，ID：" + id);
-            
         boolean success = sysPostService.deletePostById(id);
         return Result.of(success, "删除成功", "删除失败");
-        } catch (Exception e) {
-            // 记录异常日志
-            operLogUtils.recordErrorLog("岗位管理", BusinessType.DELETE, "删除岗位失败，ID：" + id, e);
-            throw e;
-        }
     }
 } 

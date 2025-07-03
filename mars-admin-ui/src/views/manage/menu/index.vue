@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { computed, reactive, ref } from 'vue';
 import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
-import { fetchDeleteMenu, fetchDeleteMenus, fetchGetMenuTree } from '@/service/api';
+import { fetchDeleteMenu, fetchDeleteMenus, fetchGetMenuTree, fetchRefreshMenuCache } from '@/service/api';
 import { $t } from '@/locales';
 import SvgIcon from '@/components/custom/svg-icon.vue';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
@@ -131,6 +131,19 @@ async function handleDelete(id: number) {
   } else {
     // 显示后端返回的错误信息
     window.$message?.error(message || '删除失败');
+  }
+}
+
+// 刷新菜单缓存
+async function refreshMenuCache() {
+  try {
+    const { error } = await fetchRefreshMenuCache();
+    if (!error) {
+      window.$message?.success('刷新菜单缓存成功');
+    }
+  } catch (err) {
+    console.error('刷新菜单缓存失败:', err);
+    window.$message?.error('刷新缓存失败，请重试');
   }
 }
 
@@ -422,6 +435,14 @@ getMenuList();
             >
               找到 {{ countMenus(menuList) }} 条记录
             </span>
+          </template>
+          <template #suffix>
+            <AButton size="small" type="primary" ghost @click="refreshMenuCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
           </template>
         </TableHeaderOperation>
       </template>

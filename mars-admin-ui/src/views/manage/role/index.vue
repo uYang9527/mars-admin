@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { fetchChangeRoleStatus, fetchDeleteRole, fetchDeleteRoles, fetchGetRoleList } from '@/service/api';
+import { fetchChangeRoleStatus, fetchDeleteRole, fetchDeleteRoles, fetchGetRoleList, fetchRefreshRoleCache } from '@/service/api';
 import { $t } from '@/locales';
 import { enableStatusRecord } from '@/constants/business';
 import RoleOperateDrawer, { type OperateType } from './modules/role-operate-drawer.vue';
@@ -229,6 +229,19 @@ function handleDataAuth(record: Api.SystemManage.Role) {
 function edit(id: number) {
   handleEdit(id);
 }
+
+// 刷新角色缓存
+async function refreshRoleCache() {
+  try {
+    const { error } = await fetchRefreshRoleCache();
+    if (!error) {
+      window.$message?.success('刷新角色缓存成功');
+    }
+  } catch (err) {
+    console.error('刷新角色缓存失败:', err);
+    window.$message?.error('刷新缓存失败，请重试');
+  }
+}
 </script>
 
 <template>
@@ -245,7 +258,16 @@ function edit(id: number) {
           @add="handleAdd"
           @delete="handleBatchDelete"
           @refresh="getData"
-        />
+        >
+          <template #suffix>
+            <AButton size="small" type="primary" ghost @click="refreshRoleCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
+          </template>
+        </TableHeaderOperation>
       </template>
       <ATable
         :columns="columns"

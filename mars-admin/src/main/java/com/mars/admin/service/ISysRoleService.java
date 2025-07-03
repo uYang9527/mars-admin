@@ -145,4 +145,9 @@ public interface ISysRoleService extends BaseService<SysRole> {
      * @return 角色列表
      */
     List<SysRole> selectRolesByMenuId(Long menuId);
+
+    /**
+     * 刷新角色缓存
+     */
+    void refreshCache();
 } 

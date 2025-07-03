@@ -86,4 +86,9 @@ public interface ISysOssConfigService extends BaseService<SysOssConfig> {
      * @return 测试结果
      */
     boolean testConnection(SysOssConfig config);
+
+    /**
+     * 刷新OSS配置缓存
+     */
+    void refreshCache();
 } 

@@ -3,6 +3,8 @@ package com.mars.admin.controller;
 import com.mars.admin.controller.base.BaseController;
 import com.mars.admin.entity.SysDept;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.service.ISysDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,23 +42,45 @@ public class SysDeptController extends BaseController<SysDept, Long> {
     // DELETE /system/dept/batch          - 批量删除部门
 
     /**
-     * 新增部门
+     * 新增部门（重写BaseController的方法）
      */
     @PostMapping
     @Operation(summary = "新增部门", description = "新增部门")
-    public Result<Boolean> save(@Parameter(description = "部门信息", required = true) @RequestBody SysDept dept) {
-        boolean success = sysDeptService.insertDept(dept);
+    @OperationLog(title = "部门管理", businessType = BusinessType.INSERT, 
+                  description = "新增部门：#{#entity.deptName}")
+    @Override
+    public Result<Boolean> save(@Parameter(description = "部门信息", required = true) @RequestBody SysDept entity) {
+        // 校验部门编码是否唯一
+        if (!sysDeptService.checkDeptCodeUnique(entity.getDeptCode(), null)) {
+            return Result.error("部门编码已存在，请重新输入");
+        }
+        // 校验部门名称是否唯一
+        if (!sysDeptService.checkDeptNameUnique(entity.getDeptName(), null)) {
+            return Result.error("部门名称已存在，请重新输入");
+        }
+        boolean success = sysDeptService.insertDept(entity);
         return Result.of(success, "新增成功", "新增失败");
     }
 
     /**
-     * 更新部门
+     * 修改部门（重写BaseController的方法）
      */
     @PutMapping
-    @Operation(summary = "更新部门", description = "更新部门")
-    public Result<Boolean> update(@Parameter(description = "部门信息", required = true) @RequestBody SysDept dept) {
-        boolean success = sysDeptService.updateDept(dept);
-        return Result.of(success, "更新成功", "更新失败");
+    @Operation(summary = "修改部门", description = "修改部门")
+    @OperationLog(title = "部门管理", businessType = BusinessType.UPDATE, 
+                  description = "修改部门：#{#entity.deptName}")
+    @Override
+    public Result<Boolean> update(@Parameter(description = "部门信息", required = true) @RequestBody SysDept entity) {
+        // 校验部门编码是否唯一
+        if (!sysDeptService.checkDeptCodeUnique(entity.getDeptCode(), entity.getId())) {
+            return Result.error("部门编码已存在，请重新输入");
+        }
+        // 校验部门名称是否唯一
+        if (!sysDeptService.checkDeptNameUnique(entity.getDeptName(), entity.getId())) {
+            return Result.error("部门名称已存在，请重新输入");
+        }
+        boolean success = sysDeptService.updateDept(entity);
+        return Result.of(success, "修改成功", "修改失败");
     }
 
     /**
@@ -68,6 +92,8 @@ public class SysDeptController extends BaseController<SysDept, Long> {
     @Override
     @Operation(summary = "批量删除部门", description = "根据ID列表批量删除部门及关联数据")
     @DeleteMapping("/batch")
+    @OperationLog(title = "部门管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除部门，ID列表：#{#ids}")
     public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
@@ -99,6 +125,8 @@ public class SysDeptController extends BaseController<SysDept, Long> {
      */
     @Operation(summary = "根据ID删除部门", description = "根据主键ID删除部门及关联数据")
     @DeleteMapping("/{id}")
+    @OperationLog(title = "部门管理", businessType = BusinessType.DELETE, 
+                  description = "删除部门，ID：#{#id}")
     @Override
     public Result<Boolean> deleteById(@Parameter(description = "主键ID", required = true) @PathVariable Long id) {
         // 检查是否有子部门
@@ -241,5 +269,16 @@ public class SysDeptController extends BaseController<SysDept, Long> {
             @Parameter(description = "部门ID") @RequestParam(required = false) Long deptId) {
         boolean unique = sysDeptService.checkDeptNameUnique(deptName, deptId);
         return Result.success(unique);
+    }
+
+    /**
+     * 刷新部门缓存
+     */
+    @DeleteMapping("/refreshCache")
+    @Operation(summary = "刷新部门缓存", description = "刷新部门缓存")
+    @OperationLog(title = "部门管理", businessType = BusinessType.CLEAN, description = "刷新部门缓存")
+    public Result<Void> refreshCache() {
+        sysDeptService.refreshCache();
+        return Result.success();
     }
 }

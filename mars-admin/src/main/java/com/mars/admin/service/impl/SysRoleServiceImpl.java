@@ -10,8 +10,13 @@ import com.mars.admin.mapper.SysRoleMenuMapper;
 import com.mars.admin.service.ISysRoleService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.CacheableServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -27,13 +32,14 @@ import static com.mars.admin.entity.table.SysRoleTableDef.SYS_ROLE;
 
 /**
  * 系统角色Service实现类
- * 继承 BaseServiceImpl 获得更多便捷方法
+ * 继承 CacheableServiceImpl 获得更多便捷方法和缓存功能
  *
  * @author Mars
  */
 @Slf4j
 @Service
-public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISysRoleService {
+@CacheConfig(cacheNames = "sysRole")
+public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
@@ -45,16 +51,19 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
     private SysRoleDeptMapper sysRoleDeptMapper;
 
     @Override
+    @Cacheable(key = "'code:' + #roleCode")
     public SysRole selectByRoleCode(String roleCode) {
         return sysRoleMapper.selectByRoleCode(roleCode);
     }
 
     @Override
+    @Cacheable(key = "'key:' + #roleKey")
     public SysRole selectByRoleKey(String roleKey) {
         return sysRoleMapper.selectByRoleKey(roleKey);
     }
 
     @Override
+    @Cacheable(key = "'detail:' + #roleId")
     public SysRole selectRoleDetailById(Long roleId) {
         return sysRoleMapper.selectRoleDetailById(roleId);
     }
@@ -85,29 +94,40 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
     }
 
     @Override
+    @Cacheable(key = "'user:' + #userId")
     public List<SysRole> selectRolesByUserId(Long userId) {
         return sysRoleMapper.selectRolesByUserId(userId);
     }
 
     @Override
+    @Cacheable(key = "'normal'")
     public List<SysRole> selectNormalRoles() {
         return sysRoleMapper.selectNormalRoles();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean insertRole(SysRole role) {
         return this.save(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'code:' + #role.roleCode", condition = "#role.roleCode != null"),
+        @CacheEvict(key = "'key:' + #role.roleKey", condition = "#role.roleKey != null"),
+        @CacheEvict(key = "'detail:' + #role.id", condition = "#role.id != null"),
+        @CacheEvict(key = "#role.id", condition = "#role.id != null"),
+        @CacheEvict(key = "'normal'")
+    })
     public boolean updateRole(SysRole role) {
         return this.updateById(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(allEntries = true)
     public boolean deleteRoles(Long[] roleIds) {
         if (roleIds == null || roleIds.length == 0) {
             return false;
@@ -151,6 +171,11 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'detail:' + #roleId"),
+        @CacheEvict(key = "#roleId"),
+        @CacheEvict(key = "'normal'")
+    })
     public boolean changeStatus(Long roleId, Integer status) {
         SysRole role = new SysRole();
         role.setId(roleId);
@@ -160,6 +185,10 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'detail:' + #roleId"),
+        @CacheEvict(key = "#roleId")
+    })
     public boolean assignMenus(Long roleId, Long[] menuIds) {
         if (roleId == null) {
             throw new BusinessException("角色ID不能为空");
@@ -195,6 +224,10 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @Caching(evict = {
+        @CacheEvict(key = "'detail:' + #roleId"),
+        @CacheEvict(key = "#roleId")
+    })
     public boolean assignDepts(Long roleId, Long[] deptIds) {
         if (roleId == null) {
             throw new BusinessException("角色ID不能为空");
@@ -272,7 +305,15 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements ISys
     }
 
     @Override
+    @Cacheable(key = "'menu:' + #menuId")
     public List<SysRole> selectRolesByMenuId(Long menuId) {
         return sysRoleMapper.selectRolesByMenuId(menuId);
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public void refreshCache() {
+        log.info("清空系统角色缓存");
+        // @CacheEvict注解会自动清除sysRole缓存空间的所有数据
     }
 } 

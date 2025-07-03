@@ -307,7 +307,16 @@ onMounted(() => {
           @add="handleAdd"
           @delete="handleBatchDelete"
           @refresh="getData"
-        />
+        >
+          <template #suffix>
+            <AButton size="small" type="primary" ghost @click="refreshConfigCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
+          </template>
+        </TableHeaderOperation>
       </template>
       <ATable
         :columns="columns"

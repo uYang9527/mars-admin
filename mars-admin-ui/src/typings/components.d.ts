@@ -94,6 +94,7 @@ declare module 'vue' {
     'IconMdi:folder': typeof import('~icons/mdi/folder')['default']
     'IconMdi:folderOutline': typeof import('~icons/mdi/folder-outline')['default']
     'IconMdi:folderSearchOutline': typeof import('~icons/mdi/folder-search-outline')['default']
+    IconMdiCached: typeof import('~icons/mdi/cached')['default']
     IconMdiDrag: typeof import('~icons/mdi/drag')['default']
     IconMdiRefresh: typeof import('~icons/mdi/refresh')['default']
     LangSwitch: typeof import('./../components/common/lang-switch.vue')['default']

@@ -4,6 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.admin.common.response.FileUploadResult;
 import com.mars.admin.entity.SysOss;
 import com.mars.admin.framework.common.Result;
+import com.mars.admin.framework.common.annotation.OperationLog;
+import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.service.IFileUploadService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -39,6 +41,8 @@ public class FileUploadController {
     @Operation(summary = "上传文件")
     @Parameters({@Parameter(name = "file", description = "上传的文件", required = true), @Parameter(name = "configKey", description = "OSS配置key，不传则使用默认配置")})
     @PostMapping("/upload")
+    @OperationLog(title = "文件管理", businessType = BusinessType.UPLOAD, 
+                  description = "上传文件：#{#file.originalFilename}", isSaveRequestData = false)
     public Result<FileUploadResult> upload(@RequestParam("file") MultipartFile file, @RequestParam(value = "configKey", required = false) String configKey) {
 
         if (file.isEmpty()) {
@@ -62,6 +66,8 @@ public class FileUploadController {
     @Parameter(name = "id", description = "文件ID", required = true)
     @SaCheckPermission("system:file:delete")
     @DeleteMapping("/{id}")
+    @OperationLog(title = "文件管理", businessType = BusinessType.DELETE, 
+                  description = "删除文件，文件ID：#{#id}")
     public Result<Void> delete(@PathVariable Long id) {
         try {
             boolean success = fileUploadService.delete(id);
@@ -80,6 +86,8 @@ public class FileUploadController {
     @Parameter(name = "ids", description = "文件ID列表", required = true)
     @SaCheckPermission("system:file:delete")
     @DeleteMapping("/batch")
+    @OperationLog(title = "文件管理", businessType = BusinessType.DELETE, 
+                  description = "批量删除文件，ID列表：#{#ids}")
     public Result<Void> batchDelete(@RequestBody List<Long> ids) {
         try {
             boolean success = fileUploadService.batchDelete(ids);

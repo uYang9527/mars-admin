@@ -6,7 +6,8 @@ import {
   fetchChangeOssConfigStatus,
   fetchDeleteOssConfig,
   fetchDeleteOssConfigs,
-  fetchGetOssConfigList
+  fetchGetOssConfigList,
+  fetchRefreshOssConfigCache
 } from '@/service/api/file-manage';
 import { $t } from '@/locales';
 import StorageConfigSearch from './modules/storage-config-search.vue';
@@ -187,6 +188,19 @@ async function handleDelete(id: number) {
     onDeleted();
   }
 }
+
+// 刷新OSS配置缓存
+async function refreshOssConfigCache() {
+  try {
+    const { error } = await fetchRefreshOssConfigCache();
+    if (!error) {
+      window.$message?.success('刷新OSS配置缓存成功');
+    }
+  } catch (err) {
+    console.error('刷新OSS配置缓存失败:', err);
+    window.$message?.error('刷新缓存失败，请重试');
+  }
+}
 </script>
 
 <template>
@@ -200,6 +214,12 @@ async function handleDelete(id: number) {
         <AButton type="primary" @click="handleAdd">新增存储配置</AButton>
         <AButton type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
           批量删除
+        </AButton>
+        <AButton type="primary" ghost @click="refreshOssConfigCache">
+          <template #icon>
+            <icon-mdi-cached class="align-sub text-icon" />
+          </template>
+          <span class="ml-8px">刷新缓存</span>
         </AButton>
       </div>
     </ACard>

@@ -194,4 +194,17 @@ public class SysOssConfigController {
             return Result.error("连接测试失败: " + e.getMessage());
         }
     }
+
+    @Operation(summary = "刷新OSS配置缓存")
+    @SaCheckPermission("system:ossConfig:edit")
+    @DeleteMapping("/refreshCache")
+    public Result<Void> refreshCache() {
+        try {
+            ossConfigService.refreshCache();
+            return Result.success();
+        } catch (Exception e) {
+            log.error("刷新OSS配置缓存失败", e);
+            return Result.error("刷新缓存失败: " + e.getMessage());
+        }
+    }
 }

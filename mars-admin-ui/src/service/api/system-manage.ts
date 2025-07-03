@@ -830,3 +830,55 @@ export function fetchRefreshDictDataCache() {
     method: 'delete'
   });
 }
+
+// ==================== 其他模块缓存管理 ====================
+
+/**
+ * 刷新菜单缓存
+ */
+export function fetchRefreshMenuCache() {
+  return request({
+    url: '/system/menu/refreshCache',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新部门缓存
+ */
+export function fetchRefreshDeptCache() {
+  return request({
+    url: '/system/dept/refreshCache',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新角色缓存
+ */
+export function fetchRefreshRoleCache() {
+  return request({
+    url: '/system/role/refreshCache',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新岗位缓存
+ */
+export function fetchRefreshPostCache() {
+  return request({
+    url: '/system/post/refreshCache',
+    method: 'delete'
+  });
+}
+
+/**
+ * 刷新OSS配置缓存
+ */
+export function fetchRefreshOssConfigCache() {
+  return request({
+    url: '/system/oss-config/refreshCache',
+    method: 'delete'
+  });
+}
