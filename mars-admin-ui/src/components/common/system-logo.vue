@@ -3,16 +3,15 @@ defineOptions({ name: 'SystemLogo' });
 </script>
 
 <template>
-  <div><img class="system-logo" src="../../assets/svg-icon/logo.svg" /></div>
+  <div class="flex items-center">
+    <img class="system-logo" src="../../assets/svg-icon/logo.svg" />
+  </div>
 </template>
 
 <style scoped>
-
 .system-logo {
-  width: 60%;
-  height: 60%;
-  margin: 0 auto;
-
+  //width: 45px;
+  //height: 45px;
+  object-fit: contain;
 }
-
 </style>
