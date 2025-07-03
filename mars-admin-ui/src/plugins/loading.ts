@@ -35,7 +35,8 @@ export function setupLoading() {
     </div>
   </div>
   <h2 class="text-28px font-500 text-#646464">${$t('system.title')}</h2>
-</div>`;
+</div>
+`;
 
   const app = document.getElementById('app');
 
