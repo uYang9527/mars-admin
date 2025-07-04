@@ -9,7 +9,6 @@ import com.mars.admin.service.ISysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -168,7 +167,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @PostMapping
     @Operation(summary = "新增菜单", description = "新增菜单信息")
     @OperationLog(title = "菜单管理", businessType = BusinessType.INSERT, 
-                  description = "新增菜单")
+                  description = "新增菜单：#{#entity.menuName}")
     @Override
     public Result<Boolean> save(@RequestBody SysMenu entity) {
         // 校验菜单编码是否唯一
@@ -176,7 +175,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
             return Result.error("菜单编码已存在，请重新输入");
         }
         // 校验权限标识是否唯一
-        if (StringUtils.isNotEmpty(entity.getPerms()) && !sysMenuService.checkPermsUnique(entity.getPerms(), null)) {
+        if (entity.getPerms() != null && !sysMenuService.checkPermsUnique(entity.getPerms(), null)) {
             return Result.error("权限标识已存在，请重新输入");
         }
         boolean success = sysMenuService.insertMenu(entity);
@@ -189,7 +188,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @PutMapping
     @Operation(summary = "修改菜单", description = "修改菜单信息")
     @OperationLog(title = "菜单管理", businessType = BusinessType.UPDATE, 
-                  description = "修改菜单")
+                  description = "修改菜单：#{#entity.menuName}")
     @Override
     public Result<Boolean> update(@RequestBody SysMenu entity) {
         // 校验菜单编码是否唯一

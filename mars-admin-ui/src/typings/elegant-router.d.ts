@@ -48,6 +48,7 @@ declare module "@elegant-router/types" {
     "manage_oss-config": "/manage/oss-config";
     "manage_post": "/manage/post";
     "manage_role": "/manage/role";
+    "manage_system-monitor": "/manage/system-monitor";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
     "user-center": "/user-center";
@@ -138,6 +139,7 @@ declare module "@elegant-router/types" {
     | "manage_oss-config"
     | "manage_post"
     | "manage_role"
+    | "manage_system-monitor"
     | "manage_user-detail"
     | "manage_user"
     | "user-center"

@@ -38,7 +38,7 @@ import static com.mars.admin.entity.table.SysRoleTableDef.SYS_ROLE;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "sysRole")
+@CacheConfig(cacheNames = "role")
 public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
     @Autowired
@@ -51,19 +51,16 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
     private SysRoleDeptMapper sysRoleDeptMapper;
 
     @Override
-    @Cacheable(key = "'code:' + #roleCode")
     public SysRole selectByRoleCode(String roleCode) {
         return sysRoleMapper.selectByRoleCode(roleCode);
     }
 
     @Override
-    @Cacheable(key = "'key:' + #roleKey")
     public SysRole selectByRoleKey(String roleKey) {
         return sysRoleMapper.selectByRoleKey(roleKey);
     }
 
     @Override
-    @Cacheable(key = "'detail:' + #roleId")
     public SysRole selectRoleDetailById(Long roleId) {
         return sysRoleMapper.selectRoleDetailById(roleId);
     }
@@ -94,40 +91,29 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
     }
 
     @Override
-    @Cacheable(key = "'user:' + #userId")
     public List<SysRole> selectRolesByUserId(Long userId) {
         return sysRoleMapper.selectRolesByUserId(userId);
     }
 
     @Override
-    @Cacheable(key = "'normal'")
     public List<SysRole> selectNormalRoles() {
         return sysRoleMapper.selectNormalRoles();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(allEntries = true)
     public boolean insertRole(SysRole role) {
         return this.save(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @Caching(evict = {
-        @CacheEvict(key = "'code:' + #role.roleCode", condition = "#role.roleCode != null"),
-        @CacheEvict(key = "'key:' + #role.roleKey", condition = "#role.roleKey != null"),
-        @CacheEvict(key = "'detail:' + #role.id", condition = "#role.id != null"),
-        @CacheEvict(key = "#role.id", condition = "#role.id != null"),
-        @CacheEvict(key = "'normal'")
-    })
     public boolean updateRole(SysRole role) {
         return this.updateById(role);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(allEntries = true)
     public boolean deleteRoles(Long[] roleIds) {
         if (roleIds == null || roleIds.length == 0) {
             return false;
@@ -171,11 +157,6 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @Caching(evict = {
-        @CacheEvict(key = "'detail:' + #roleId"),
-        @CacheEvict(key = "#roleId"),
-        @CacheEvict(key = "'normal'")
-    })
     public boolean changeStatus(Long roleId, Integer status) {
         SysRole role = new SysRole();
         role.setId(roleId);
@@ -185,10 +166,6 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @Caching(evict = {
-        @CacheEvict(key = "'detail:' + #roleId"),
-        @CacheEvict(key = "#roleId")
-    })
     public boolean assignMenus(Long roleId, Long[] menuIds) {
         if (roleId == null) {
             throw new BusinessException("角色ID不能为空");
@@ -224,10 +201,6 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @Caching(evict = {
-        @CacheEvict(key = "'detail:' + #roleId"),
-        @CacheEvict(key = "#roleId")
-    })
     public boolean assignDepts(Long roleId, Long[] deptIds) {
         if (roleId == null) {
             throw new BusinessException("角色ID不能为空");
@@ -305,13 +278,11 @@ public class SysRoleServiceImpl extends CacheableServiceImpl<SysRoleMapper, SysR
     }
 
     @Override
-    @Cacheable(key = "'menu:' + #menuId")
     public List<SysRole> selectRolesByMenuId(Long menuId) {
         return sysRoleMapper.selectRolesByMenuId(menuId);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public void refreshCache() {
         log.info("清空系统角色缓存");
         // @CacheEvict注解会自动清除sysRole缓存空间的所有数据

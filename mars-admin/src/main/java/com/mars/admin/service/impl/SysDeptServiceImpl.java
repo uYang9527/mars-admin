@@ -34,7 +34,7 @@ import static com.mars.admin.entity.table.SysUserDeptTableDef.SYS_USER_DEPT;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "sysDept")
+@CacheConfig(cacheNames = "dept")
 public class SysDeptServiceImpl extends CacheableServiceImpl<SysDeptMapper, SysDept> implements ISysDeptService {
 
     @Autowired

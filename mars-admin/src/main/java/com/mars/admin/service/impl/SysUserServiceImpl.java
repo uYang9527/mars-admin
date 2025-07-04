@@ -468,6 +468,97 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
     }
 
     /**
+     * 更新个人用户信息
+     * @param user 用户信息
+     * @return 是否更新成功
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updatePersonalInfo(SysUser user) {
+        if (user == null || user.getId() == null) {
+            throw new BusinessException("用户ID不能为空");
+        }
+
+        try {
+            // 1. 检查用户是否存在
+            SysUser existUser = this.getById(user.getId());
+            if (existUser == null) {
+                throw new BusinessException("用户不存在");
+            }
+
+            // 2. 检查用户状态
+            if (existUser.getStatus() == null || existUser.getStatus() == 0) {
+                throw new BusinessException("用户已被禁用，无法修改个人信息");
+            }
+
+            // 3. 验证邮箱唯一性
+            if (StringUtils.hasText(user.getEmail()) && !user.getEmail().equals(existUser.getEmail())) {
+                if (!checkEmailUnique(user.getEmail(), user.getId())) {
+                    throw new BusinessException("邮箱已存在，请使用其他邮箱");
+                }
+            }
+
+            // 4. 验证手机号唯一性
+            if (StringUtils.hasText(user.getPhone()) && !user.getPhone().equals(existUser.getPhone())) {
+                if (!checkPhoneUnique(user.getPhone(), user.getId())) {
+                    throw new BusinessException("手机号已存在，请使用其他手机号");
+                }
+            }
+
+            // 5. 构建更新用户对象，只更新个人信息相关字段
+            SysUser updateUser = new SysUser();
+            updateUser.setId(user.getId());
+            
+            // 只更新允许修改的个人信息字段
+            if (StringUtils.hasText(user.getNickname())) {
+                updateUser.setNickname(user.getNickname().trim());
+            }
+            if (StringUtils.hasText(user.getRealName())) {
+                updateUser.setRealName(user.getRealName().trim());
+            }
+            if (StringUtils.hasText(user.getEmail())) {
+                updateUser.setEmail(user.getEmail().trim());
+            }
+            if (StringUtils.hasText(user.getPhone())) {
+                updateUser.setPhone(user.getPhone().trim());
+            }
+            if (user.getGender() != null) {
+                updateUser.setGender(user.getGender());
+            }
+            if (StringUtils.hasText(user.getAvatar())) {
+                updateUser.setAvatar(user.getAvatar());
+            }
+            if (user.getBirthday() != null) {
+                updateUser.setBirthday(user.getBirthday());
+            }
+            if (user.getRemark() != null) {
+                updateUser.setRemark(user.getRemark());
+            }
+
+            // 设置更新时间
+            updateUser.setUpdateTime(LocalDateTime.now());
+
+            // 6. 执行更新
+            boolean result = this.updateById(updateUser);
+            
+            if (result) {
+                log.info("用户个人信息更新成功，用户ID：{}", user.getId());
+            } else {
+                log.error("用户个人信息更新失败，用户ID：{}", user.getId());
+            }
+            
+            return result;
+
+        } catch (BusinessException e) {
+            log.error("更新个人信息失败：{}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("更新个人信息失败，用户ID：{}，错误信息：{}", user.getId(), e.getMessage(), e);
+            throw new BusinessException("更新个人信息失败：" + e.getMessage());
+        }
+    }
+
+    /**
      * 初始化管理员用户
      * 如果系统中没有管理员用户，则创建默认管理员
      */

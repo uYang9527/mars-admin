@@ -21,6 +21,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,10 +32,12 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 操作日志记录AOP切面
  * 自动处理标注了@OperationLog注解的方法
+ * 支持异步落库，提高性能
  *
  * @author Mars.wq [wqexpore@163.com]
  * @version 1.0
@@ -87,8 +90,8 @@ public class OperationLogAspect {
                 return;
             }
 
-            // 记录日志
-            handleLog(joinPoint, operationLog, request, result, null);
+            // 异步记录日志
+            handleLogAsync(joinPoint, operationLog, request, result, null);
 
         } catch (Exception exp) {
             log.error("记录操作日志异常: {}", exp.getMessage(), exp);
@@ -118,8 +121,8 @@ public class OperationLogAspect {
                 return;
             }
 
-            // 记录异常日志
-            handleLog(joinPoint, operationLog, request, null, e);
+            // 异步记录异常日志
+            handleLogAsync(joinPoint, operationLog, request, null, e);
 
         } catch (Exception exp) {
             log.error("记录操作异常日志失败: {}", exp.getMessage(), exp);
@@ -142,7 +145,7 @@ public class OperationLogAspect {
     }
 
     /**
-     * 处理操作日志
+     * 异步处理操作日志
      *
      * @param joinPoint     连接点
      * @param operationLog  操作日志注解
@@ -150,113 +153,122 @@ public class OperationLogAspect {
      * @param result        返回结果
      * @param e             异常对象
      */
-    protected void handleLog(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request, 
-                           Object result, Throwable e) {
-        try {
-            long startTime = System.currentTimeMillis();
-            
-            // 获取当前的用户
-            SysUser currentUser = getCurrentUser();
-
-            // 创建操作日志对象
-            SysOperLog operLog = new SysOperLog();
-            operLog.setStatus(e == null ? 0 : 1);  // 操作状态：0=正常,1=异常
-            operLog.setOperIp(IpUtils.getIpAddr(request));
-            operLog.setOperUrl(request.getRequestURI());
-            operLog.setRequestMethod(request.getMethod());
-
-            if (currentUser != null) {
-                operLog.setOperName(currentUser.getUsername());
-                operLog.setDeptName(getDeptName(currentUser));
-            }
-
-            if (e != null) {
-                operLog.setErrorMsg(substring(e.getMessage(), 0, 2000));
-            }
-
-            // 设置方法名称
-            String className = joinPoint.getTarget().getClass().getName();
-            String methodName = joinPoint.getSignature().getName();
-            operLog.setMethod(className + "." + methodName + "()");
-
-            // 设置操作模块标题
-            operLog.setTitle(operationLog.title());
-            operLog.setBusinessType(operationLog.businessType().ordinal());
-            operLog.setOperatorType(operationLog.operatorType().ordinal());
-
-            // 处理设置注解上的参数
-            getControllerMethodDescription(joinPoint, operationLog, operLog, result);
-
-            // 设置消耗时间
-            operLog.setCostTime(System.currentTimeMillis() - startTime);
-            operLog.setOperTime(LocalDateTime.now());
-
-            // 保存数据库
-            operLogService.insertOperLog(operLog);
-        } catch (Exception exp) {
-            log.error("记录操作日志异常: {}", exp.getMessage(), exp);
-        }
+    private void handleLogAsync(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request, 
+                               Object result, Throwable e) {
+        // 预先收集所有需要的数据，避免在异步线程中访问请求上下文
+        LogData logData = collectLogData(joinPoint, operationLog, request, result, e);
+        
+        // 异步保存到数据库
+        saveOperationLogAsync(logData);
     }
 
     /**
-     * 获取注解中对方法的描述信息 用于Controller层注解
-     *
-     * @param joinPoint     切入点
-     * @param operationLog  操作日志注解
-     * @param operLog       操作日志对象
-     * @param result        返回结果
+     * 收集日志数据
+     * 在主线程中收集所有必要的数据，避免在异步线程中访问可能已经失效的上下文
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, OperationLog operationLog, 
-                                             SysOperLog operLog, Object result) {
-        // 设置action动作
-        operLog.setBusinessType(operationLog.businessType().ordinal());
+    private LogData collectLogData(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request, 
+                                  Object result, Throwable e) {
+        long startTime = System.currentTimeMillis();
         
-        // 设置标题
-        operLog.setTitle(operationLog.title());
+        LogData logData = new LogData();
         
-        // 设置操作人类别
-        operLog.setOperatorType(operationLog.operatorType().ordinal());
+        // 获取当前用户信息
+        SysUser currentUser = getCurrentUser();
         
-        // 是否需要保存request，参数和值
+        // 基本信息
+        logData.status = (e == null ? 0 : 1);  // 操作状态：0=正常,1=异常
+        logData.operIp = IpUtils.getIpAddr(request);
+        logData.operUrl = request.getRequestURI();
+        logData.requestMethod = request.getMethod();
+        
+        if (currentUser != null) {
+            logData.operName = currentUser.getUsername();
+            logData.deptName = getDeptName(currentUser);
+        }
+        
+        if (e != null) {
+            logData.errorMsg = substring(e.getMessage(), 0, 2000);
+        }
+        
+        // 方法信息
+        String className = joinPoint.getTarget().getClass().getName();
+        String methodName = joinPoint.getSignature().getName();
+        logData.method = className + "." + methodName + "()";
+        
+        // 注解信息
+        logData.title = operationLog.title();
+        logData.businessType = operationLog.businessType().ordinal();
+        logData.operatorType = operationLog.operatorType().ordinal();
+        
+        // 参数和返回值处理
         if (operationLog.isSaveRequestData()) {
-            // 获取参数的信息，传入到数据库中。
-            setRequestValue(joinPoint, operLog, operationLog.excludeParamNames());
+            Map<String, Object> paramsMap = getRequestParams(joinPoint, operationLog.excludeParamNames());
+            logData.operParam = substring(toJsonString(paramsMap), 0, 2000);
         }
         
-        // 是否需要保存response，参数和值
         if (operationLog.isSaveResponseData() && result != null) {
-            operLog.setJsonResult(substring(toJsonString(result), 0, 2000));
+            logData.jsonResult = substring(toJsonString(result), 0, 2000);
         }
-
+        
         // 处理操作描述（支持SpEL表达式）
         if (!operationLog.description().isEmpty()) {
             try {
                 String description = parseSpelExpression(operationLog.description(), joinPoint, result);
-                // 如果已有参数，追加描述；否则设置描述
-                String currentParam = operLog.getOperParam();
-                if (currentParam != null && !currentParam.isEmpty()) {
-                    operLog.setOperParam(currentParam + " | 描述: " + description);
+                if (logData.operParam != null && !logData.operParam.isEmpty()) {
+                    logData.operParam = logData.operParam + " | 描述: " + description;
                 } else {
-                    operLog.setOperParam("描述: " + description);
+                    logData.operParam = "描述: " + description;
                 }
-            } catch (Exception e) {
-                log.warn("解析SpEL表达式失败: {}", e.getMessage());
-                operLog.setOperParam("描述解析失败: " + operationLog.description());
+            } catch (Exception ex) {
+                log.warn("解析SpEL表达式失败: {}", ex.getMessage());
+                logData.operParam = "描述解析失败: " + operationLog.description();
             }
         }
+        
+        // 计算耗时
+        logData.costTime = System.currentTimeMillis() - startTime;
+        logData.operTime = LocalDateTime.now();
+        
+        return logData;
     }
 
     /**
-     * 获取请求的参数，放到log中
+     * 异步保存操作日志到数据库
      *
-     * @param joinPoint           切入点
-     * @param operLog             操作日志
-     * @param excludeParamNames   忽略参数
+     * @param logData 日志数据
+     * @return CompletableFuture
      */
-    private void setRequestValue(JoinPoint joinPoint, SysOperLog operLog, String[] excludeParamNames) {
-        Map<String, Object> paramsMap = getRequestParams(joinPoint, excludeParamNames);
-        String params = toJsonString(paramsMap);
-        operLog.setOperParam(substring(params, 0, 2000));
+    @Async("operationLogExecutor")
+    public CompletableFuture<Void> saveOperationLogAsync(LogData logData) {
+        try {
+            // 创建操作日志对象
+            SysOperLog operLog = new SysOperLog();
+            operLog.setStatus(logData.status);
+            operLog.setOperIp(logData.operIp);
+            operLog.setOperUrl(logData.operUrl);
+            operLog.setRequestMethod(logData.requestMethod);
+            operLog.setOperName(logData.operName);
+            operLog.setDeptName(logData.deptName);
+            operLog.setErrorMsg(logData.errorMsg);
+            operLog.setMethod(logData.method);
+            operLog.setTitle(logData.title);
+            operLog.setBusinessType(logData.businessType);
+            operLog.setOperatorType(logData.operatorType);
+            operLog.setOperParam(logData.operParam);
+            operLog.setJsonResult(logData.jsonResult);
+            operLog.setCostTime(logData.costTime);
+            operLog.setOperTime(logData.operTime);
+            
+            // 保存到数据库
+            operLogService.insertOperLog(operLog);
+            
+            log.debug("异步保存操作日志成功: {}", logData.title);
+            
+        } catch (Exception exp) {
+            log.error("异步保存操作日志失败: {}, 错误: {}", logData.title, exp.getMessage(), exp);
+        }
+        
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -400,5 +412,27 @@ public class OperationLogAspect {
             return "";
         }
         return str.substring(start, end);
+    }
+
+    /**
+     * 日志数据传输对象
+     * 用于在异步线程间传递日志数据
+     */
+    private static class LogData {
+        Integer status;
+        String operIp;
+        String operUrl;
+        String requestMethod;
+        String operName;
+        String deptName;
+        String errorMsg;
+        String method;
+        String title;
+        Integer businessType;
+        Integer operatorType;
+        String operParam;
+        String jsonResult;
+        Long costTime;
+        LocalDateTime operTime;
     }
 } 

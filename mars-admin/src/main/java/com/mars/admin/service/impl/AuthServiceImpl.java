@@ -591,4 +591,51 @@ public class AuthServiceImpl implements IAuthService {
         }
         return DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
     }
+
+    @Override
+    public boolean changePassword(Long userId, String oldPassword, String newPassword) {
+        try {
+            // 1. 获取用户信息
+            SysUser user = sysUserMapper.selectOneById(userId);
+            if (user == null) {
+                log.error("修改密码失败：用户不存在，用户ID：{}", userId);
+                return false;
+            }
+
+            // 2. 验证原密码
+            if (!checkPassword(oldPassword, user.getPassword())) {
+                log.error("修改密码失败：原密码错误，用户ID：{}", userId);
+                return false;
+            }
+
+            // 3. 检查新密码格式
+            if (!StringUtils.hasText(newPassword) || newPassword.length() < 6 || newPassword.length() > 20) {
+                log.error("修改密码失败：新密码格式不正确，用户ID：{}", userId);
+                return false;
+            }
+
+            // 4. 加密新密码
+            String encryptedNewPassword = encryptPassword(newPassword);
+
+            // 5. 更新密码
+            SysUser updateUser = new SysUser();
+            updateUser.setId(userId);
+            updateUser.setPassword(encryptedNewPassword);
+            updateUser.setPasswordUpdateTime(LocalDateTime.now());
+
+            int updateCount = sysUserMapper.update(updateUser);
+            
+            if (updateCount > 0) {
+                log.info("用户密码修改成功，用户ID：{}", userId);
+                return true;
+            } else {
+                log.error("修改密码失败：数据库更新失败，用户ID：{}", userId);
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.error("修改密码失败，用户ID：{}，错误信息：{}", userId, e.getMessage(), e);
+            return false;
+        }
+    }
 }

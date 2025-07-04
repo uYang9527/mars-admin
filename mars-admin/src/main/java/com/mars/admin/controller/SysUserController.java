@@ -6,6 +6,7 @@ import com.mars.admin.framework.common.Result;
 import com.mars.admin.framework.enums.BusinessType;
 import com.mars.admin.framework.common.annotation.OperationLog;
 import com.mars.admin.service.ISysUserService;
+import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,7 +74,7 @@ public class SysUserController extends BaseController<SysUser, Long> {
      */
     @GetMapping("/pageList")
     @Operation(summary = "分页查询用户", description = "分页查询用户列表，支持条件筛选")
-    public Result<com.mybatisflex.core.paginate.Page<SysUser>> pageList(
+    public Result<Page<SysUser>> pageList(
             @Parameter(description = "页码") @RequestParam(defaultValue = "1") Integer current,
             @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") Integer size,
             @Parameter(description = "用户名") @RequestParam(required = false) String username,
@@ -93,8 +94,8 @@ public class SysUserController extends BaseController<SysUser, Long> {
         queryUser.setStatus(status);
 
         // 分页查询
-        com.mybatisflex.core.paginate.Page<SysUser> page = com.mybatisflex.core.paginate.Page.of(current, size);
-        com.mybatisflex.core.paginate.Page<SysUser> result = sysUserService.selectUserPage(page, queryUser);
+        Page<SysUser> page = Page.of(current, size);
+        Page<SysUser> result = sysUserService.selectUserPage(page, queryUser);
 
         return Result.success(result);
     }

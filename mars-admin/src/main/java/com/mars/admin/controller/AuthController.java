@@ -3,9 +3,12 @@ package com.mars.admin.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import com.mars.admin.framework.common.Result;
 import com.mars.admin.common.request.LoginRequest;
+import com.mars.admin.common.request.UpdateProfileRequest;
+import com.mars.admin.common.request.ChangePasswordRequest;
 import com.mars.admin.common.response.LoginResponse;
 import com.mars.admin.entity.SysUser;
 import com.mars.admin.service.IAuthService;
+import com.mars.admin.service.ISysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +40,9 @@ public class AuthController {
 
     @Autowired
     private IAuthService authService;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
     /**
      * 用户登录
@@ -218,5 +224,63 @@ public class AuthController {
 
         g.dispose();
         return image;
+    }
+
+    /**
+     * 更新个人信息
+     */
+    @Operation(summary = "更新个人信息", description = "当前用户更新自己的个人信息")
+    @PutMapping("/updateProfile")
+    public Result<String> updateProfile(@Parameter(description = "个人信息更新请求", required = true)
+                                        @Validated @RequestBody UpdateProfileRequest request) {
+        if (!StpUtil.isLogin()) {
+            return Result.error("用户未登录");
+        }
+
+        // 获取当前用户ID
+        Long currentUserId = Long.valueOf(StpUtil.getLoginId().toString());
+        
+        // 构建更新的用户信息
+        SysUser updateUser = new SysUser();
+        updateUser.setId(currentUserId);
+        updateUser.setNickname(request.getNickname());
+        updateUser.setRealName(request.getRealName());
+        updateUser.setEmail(request.getEmail());
+        updateUser.setPhone(request.getPhone());
+        updateUser.setGender(request.getGender());
+        updateUser.setAvatar(request.getAvatar());
+        updateUser.setBirthday(request.getBirthday());
+        updateUser.setRemark(request.getRemark());
+
+        boolean success = sysUserService.updatePersonalInfo(updateUser);
+        
+        if (success) {
+            return Result.success("个人信息更新成功");
+        } else {
+            return Result.error("个人信息更新失败");
+        }
+    }
+
+    /**
+     * 修改密码
+     */
+    @Operation(summary = "修改密码", description = "当前用户修改自己的密码")
+    @PostMapping("/changePassword")
+    public Result<String> changePassword(@Parameter(description = "修改密码请求", required = true)
+                                         @Validated @RequestBody ChangePasswordRequest request) {
+        if (!StpUtil.isLogin()) {
+            return Result.error("用户未登录");
+        }
+
+        // 获取当前用户ID
+        Long currentUserId = Long.valueOf(StpUtil.getLoginId().toString());
+        
+        boolean success = authService.changePassword(currentUserId, request.getOldPassword(), request.getNewPassword());
+        
+        if (success) {
+            return Result.success("密码修改成功");
+        } else {
+            return Result.error("密码修改失败，请检查原密码是否正确");
+        }
     }
 } 

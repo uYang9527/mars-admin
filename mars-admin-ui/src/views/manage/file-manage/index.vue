@@ -40,12 +40,14 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       dataIndex: 'index',
       title: $t('common.index'),
       align: 'center',
+      width: 80,
       customRender: ({ index }) => index + 1
     },
     {
       key: 'thumbnail',
       title: '缩略图',
       align: 'center',
+      width: 80,
       customRender: ({ record }) => {
         if (isImageFile(record.contentType)) {
           return (

@@ -183,6 +183,8 @@ const local: App.I18n.Schema = {
     user: '用户管理',
     manage_user: '用户列表',
     'manage_user-detail': '用户详情',
+    monitor: '系统监控',
+    'manage_system-monitor': '系统监控',
     manage_role: '角色管理',
     manage_menu: '菜单管理',
     manage_dept: '部门管理',

@@ -1,17 +1,17 @@
 /*
- Navicat Premium Dump SQL
+ Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : qiu
  Source Server Type    : MySQL
- Source Server Version : 80042 (8.0.42)
+ Source Server Version : 80036 (8.0.36)
  Source Host           : localhost:3306
  Source Schema         : mars_admin
 
  Target Server Type    : MySQL
- Target Server Version : 80042 (8.0.42)
+ Target Server Version : 80036 (8.0.36)
  File Encoding         : 65001
 
- Date: 03/07/2025 15:55:39
+ Date: 04/07/2025 17:07:35
 */
 
 SET NAMES utf8mb4;
@@ -180,7 +180,7 @@ CREATE TABLE `sys_logininfor`  (
   INDEX `idx_user_name`(`user_name` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -289,6 +289,21 @@ INSERT INTO `sys_logininfor` VALUES (101, 'admin', '0:0:0:0:0:0:0:1', '内网IP'
 INSERT INTO `sys_logininfor` VALUES (102, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 14:54:25');
 INSERT INTO `sys_logininfor` VALUES (103, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 14:58:41');
 INSERT INTO `sys_logininfor` VALUES (104, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 15:48:20');
+INSERT INTO `sys_logininfor` VALUES (105, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 16:01:37');
+INSERT INTO `sys_logininfor` VALUES (106, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 16:48:44');
+INSERT INTO `sys_logininfor` VALUES (107, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 16:49:58');
+INSERT INTO `sys_logininfor` VALUES (108, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 17:06:47');
+INSERT INTO `sys_logininfor` VALUES (109, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-03 17:08:45');
+INSERT INTO `sys_logininfor` VALUES (110, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 09:56:06');
+INSERT INTO `sys_logininfor` VALUES (111, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 10:36:19');
+INSERT INTO `sys_logininfor` VALUES (112, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '密码错误', '2025-07-04 11:10:58');
+INSERT INTO `sys_logininfor` VALUES (113, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 11:11:04');
+INSERT INTO `sys_logininfor` VALUES (114, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 11:11:36');
+INSERT INTO `sys_logininfor` VALUES (115, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 13:46:54');
+INSERT INTO `sys_logininfor` VALUES (116, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 13:56:25');
+INSERT INTO `sys_logininfor` VALUES (117, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 14:43:37');
+INSERT INTO `sys_logininfor` VALUES (118, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 15:57:49');
+INSERT INTO `sys_logininfor` VALUES (119, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 16:55:58');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -344,8 +359,9 @@ INSERT INTO `sys_menu` VALUES (103, 30306, '部门管理', 'DEPT_MANAGE', 'C', '
 INSERT INTO `sys_menu` VALUES (104, 30306, '岗位管理', 'POST_MANAGE', 'C', 'manage_post', '/manage/post', 'view.manage_post', NULL, NULL, 1, 0, '', 1, 1, 'system:post:list', 'post', 5, 1, NULL, '2025-06-25 16:34:16', '2025-07-03 15:46:58', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (105, 1, '字典管理', 'DICT_MANAGE', 'C', 'manage_dict', '/manage/dict', 'view.manage_dict', NULL, NULL, 1, 0, '', 1, 1, 'system:dict:list', 'dict', 6, 1, NULL, '2025-06-25 16:34:16', '2025-06-26 15:02:40', 1, NULL, 0, NULL);
 INSERT INTO `sys_menu` VALUES (106, 1, '参数设置', 'CONFIG_MANAGE', 'C', 'manage_config', '/manage/config', 'view.manage_config', NULL, NULL, 1, 0, '', 1, 1, 'system:config:list', 'edit', 7, 1, NULL, '2025-06-25 16:34:16', '2025-06-26 15:02:49', 1, NULL, 0, NULL);
-INSERT INTO `sys_menu` VALUES (107, 1, '缓存监控', 'CACHE_MONITOR', 'C', 'manage_cache-monitor', '/manage/cache-monitor', 'view.manage_cache-monitor', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:monitor', 'mdi:monitor-dashboard', 8, 1, NULL, '2025-07-01 15:02:21', '2025-07-01 15:02:21', 1, NULL, 0, NULL);
-INSERT INTO `sys_menu` VALUES (108, 1, '缓存列表', 'CACHE_LIST', 'C', 'manage_cache-list', '/manage/cache-list', 'view.manage_cache-list', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:list', 'mdi:database-search', 9, 1, NULL, '2025-07-01 15:02:21', '2025-07-01 15:02:21', 1, NULL, 0, NULL);
+INSERT INTO `sys_menu` VALUES (107, 2, '缓存监控', 'CACHE_MONITOR', 'C', 'manage_cache-monitor', '/manage/cache-monitor', 'view.manage_cache-monitor', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:monitor', 'mdi:monitor-dashboard', 8, 1, NULL, '2025-07-01 15:02:21', '2025-07-04 15:07:46', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (108, 2, '缓存列表', 'CACHE_LIST', 'C', 'manage_cache-list', '/manage/cache-list', 'view.manage_cache-list', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:list', 'mdi:database-search', 9, 1, NULL, '2025-07-01 15:02:21', '2025-07-04 15:07:53', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (109, 2, '系统监控', 'SYSTEM_MONITOR', 'C', 'manage_system-monitor', '/manage/system-monitor', 'view.manage_system-monitor', NULL, NULL, 1, 0, '', 1, 1, 'system:monitor:info', 'icon-park-outline:system', 1, 0, NULL, '2025-07-04 14:47:37', '2025-07-04 14:47:37', NULL, NULL, 0, NULL);
 INSERT INTO `sys_menu` VALUES (301, 0, '文件管理', 'FILE_MANAGE', 'M', 'file-manage', '/file-manage', '', NULL, NULL, 1, 0, '', 1, 1, '', 'ic:round-folder', 301, 0, '文件管理主菜单', '2025-07-01 20:04:43', '2025-07-01 20:24:32', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (302, 301, '文件列表', 'FILE_LIST', 'C', 'manage_file-manage', '/manage/file-manage', 'view.manage_file-manage', NULL, NULL, 1, 0, '', 1, 1, 'system:file:list', 'ic:round-insert-drive-file', 1, 0, '文件列表管理', '2025-07-01 20:04:43', '2025-07-01 20:24:37', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (303, 301, 'OSS配置', 'OSS_CONFIG', 'C', 'manage_oss-config', '/manage/oss-config', 'view.manage_oss-config', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:list', 'ic:round-storage', 2, 0, 'OSS配置管理', '2025-07-01 20:04:43', '2025-07-01 20:24:49', 1, 1, 0, NULL);
@@ -413,7 +429,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_business_type`(`business_type` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_oper_time`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -431,6 +447,15 @@ INSERT INTO `sys_oper_log` VALUES (10, '菜单管理', 2, 'com.mars.admin.contro
 INSERT INTO `sys_oper_log` VALUES (11, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-06-25 16:34:16\",\"updateTime\":\"2025-07-03 15:46:58\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":104,\"parentId\":30306,\"menuName\":\"岗位管理\",\"menuCode\":\"POST_MANAGE\",\"menuType\":\"C\",\"routeName\":\"manage_post\",\"routePath\":\"/manage/post\",\"component\":\"view.manage_post\",\"redirect\":null,\"queryParam\":null,\"isFrame\":1,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"system:post:list\",\"icon\":\"post\",\"orderNum\":5,\"isSystem\":1,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":200,\"message\":\"修改成功\",\"data\":null,\"timestamp\":1751528818389,\"error\":false,\"success\":true}', 0, NULL, '2025-07-03 15:46:58', 3);
 INSERT INTO `sys_oper_log` VALUES (12, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,100,101,102,107,108,302,303,1018,1017,1,301],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751528860862,\"error\":false,\"success\":true}', 0, NULL, '2025-07-03 15:47:40', 4);
 INSERT INTO `sys_oper_log` VALUES (13, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,100,101,102,107,108,302,303,1018,1017,1,301,30306,103,104],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751528866704,\"error\":false,\"success\":true}', 0, NULL, '2025-07-03 15:47:46', 5);
+INSERT INTO `sys_oper_log` VALUES (14, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":500,\"message\":\"上传失败: 本地文件上传失败: java.io.FileNotFoundException: C:\\\\Users\\\\qiu_m\\\\AppData\\\\Local\\\\Temp\\\\tomcat.8080.5746850484025418959\\\\work\\\\Tomcat\\\\localhost\\\\ROOT\\\\.\\\\upload\\\\upload\\\\2025\\\\07\\\\04\\\\cbcb6a91fb7b43fb83df4f03c0a688e5.jpeg (系统找不到指定的路径。)\",\"data\":null,\"timestamp\":1751598147896,\"error\":true,\"success\":false}', 0, NULL, '2025-07-04 11:02:27', 5);
+INSERT INTO `sys_oper_log` VALUES (15, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":3,\"fileName\":\"55afdcc5602c458ea03a22a2bc55bf16.jpeg\",\"originalName\":\"头像.jpeg\",\"fileSuffix\":\"jpeg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/04/55afdcc5602c458ea03a22a2bc55bf16.jpeg\",\"size\":8838,\"filePath\":\"upload/2025/07/04/55afdcc5602c458ea03a22a2bc55bf16.jpeg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751598273145,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 11:04:33', 2);
+INSERT INTO `sys_oper_log` VALUES (16, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":4,\"fileName\":\"ce27368b3efa4c1d81c0dc8c49ea8f89.jpg\",\"originalName\":\"Bears.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg\",\"size\":123500,\"filePath\":\"upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751599113397,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 11:18:33', 0);
+INSERT INTO `sys_oper_log` VALUES (17, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":5,\"fileName\":\"7af03b4667b14d4ba3f274a194365c19.jpeg\",\"originalName\":\"头像.jpeg\",\"fileSuffix\":\"jpeg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg\",\"size\":8838,\"filePath\":\"upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751599120842,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 11:18:40', 1);
+INSERT INTO `sys_oper_log` VALUES (18, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,100,101,102,107,108,302,303,1018,1017,1,301],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751608646198,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 13:57:26', 11);
+INSERT INTO `sys_oper_log` VALUES (19, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,100,101,102,107,108,302,303,1018,1017,1,301,30306,103,104],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751608998327,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:03:18', 11);
+INSERT INTO `sys_oper_log` VALUES (20, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,302,303,1018,1017,30306,301,1],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751609016094,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:03:36', 4);
+INSERT INTO `sys_oper_log` VALUES (21, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,302,303,1018,1017,30306,301,107,1070,1071,1072,108,1080,1081,1082,1083,1084,1],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751609021265,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:03:41', 6);
+INSERT INTO `sys_oper_log` VALUES (22, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,107,108,302,303,1018,1017,30306,1,301,2,109],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751611721309,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:48:41', 6);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -460,13 +485,16 @@ CREATE TABLE `sys_oss`  (
   INDEX `idx_upload_status`(`upload_status` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '对象存储表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '对象存储表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oss
 -- ----------------------------
 INSERT INTO `sys_oss` VALUES (1, '59e354e153c64b9886e4f5c7a83f214d.jpg', 'logo.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/06/28/59e354e153c64b9886e4f5c7a83f214d.jpg', 60453, 'minio', 'upload/2025/06/28/59e354e153c64b9886e4f5c7a83f214d.jpg', 'image/jpeg', NULL, 1, NULL, '2025-06-28 11:55:40', '2025-06-28 11:55:40', 1, NULL, 0, NULL);
 INSERT INTO `sys_oss` VALUES (2, 'b5f0f4fbb41c489fa1799c50db6247de.jpg', 'img_v3_02mm_6eaf2ac0-71ba-43ed-a56f-3913e28ab79g.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/03/b5f0f4fbb41c489fa1799c50db6247de.jpg', 100276, 'minio', 'upload/2025/07/03/b5f0f4fbb41c489fa1799c50db6247de.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-03 13:44:25', '2025-07-03 13:44:25', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (3, '55afdcc5602c458ea03a22a2bc55bf16.jpeg', '头像.jpeg', 'jpeg', 'http://150.158.49.140:9000/test/upload/2025/07/04/55afdcc5602c458ea03a22a2bc55bf16.jpeg', 8838, 'minio', 'upload/2025/07/04/55afdcc5602c458ea03a22a2bc55bf16.jpeg', 'image/jpeg', NULL, 1, NULL, '2025-07-04 11:04:33', '2025-07-04 11:04:33', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (4, 'ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 'Bears.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 123500, 'minio', 'upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-04 11:18:33', '2025-07-04 11:18:33', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (5, '7af03b4667b14d4ba3f274a194365c19.jpeg', '头像.jpeg', 'jpeg', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 8838, 'minio', 'upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 'image/jpeg', NULL, 1, NULL, '2025-07-04 11:18:40', '2025-07-04 11:18:40', NULL, NULL, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oss_config
@@ -616,58 +644,59 @@ CREATE TABLE `sys_role_menu`  (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (1, 1, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 2, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 3, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 100, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 101, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 102, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 103, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 104, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 105, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 106, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 107, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 108, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 301, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 302, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 303, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1000, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1001, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1002, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1003, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1004, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1005, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1006, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1007, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1008, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1009, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1010, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1011, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1012, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1013, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1014, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1015, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1016, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1017, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1018, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1070, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1071, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1072, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1080, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1081, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1082, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1083, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1084, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30201, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30202, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30203, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30204, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30301, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30302, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30303, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30304, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30305, '2025-07-03 15:47:46', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30306, '2025-07-03 15:47:46', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 3, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 100, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 101, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 102, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 103, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 104, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 105, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 106, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 107, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 108, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 109, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 301, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 302, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 303, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1000, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1001, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1002, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1003, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1004, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1005, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1006, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1007, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1008, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1009, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1010, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1011, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1012, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1013, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1014, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1015, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1016, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1017, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1018, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1070, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1071, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1072, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1080, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1081, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1082, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1083, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1084, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30201, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30202, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30203, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30204, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30301, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30302, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30303, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30304, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30305, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30306, '2025-07-04 14:48:41', 1);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -710,7 +739,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '18483678369', NULL, 0, NULL, 1, 1, 100, '2025-07-03 15:48:20', '0:0:0:0:0:0:0:1', NULL, '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-03 15:48:20', 1, 1, 0, NULL);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 114, '2025-07-04 16:55:58', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-04 16:55:58', 1, 1, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_dept

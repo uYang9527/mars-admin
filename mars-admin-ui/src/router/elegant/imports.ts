@@ -33,6 +33,7 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   "manage_oss-config": () => import("@/views/manage/oss-config/index.vue"),
   manage_post: () => import("@/views/manage/post/index.vue"),
   manage_role: () => import("@/views/manage/role/index.vue"),
+  "manage_system-monitor": () => import("@/views/manage/system-monitor/index.vue"),
   "manage_user-detail": () => import("@/views/manage/user-detail/[id].vue"),
   manage_user: () => import("@/views/manage/user/index.vue"),
   "user-center": () => import("@/views/user-center/index.vue"),

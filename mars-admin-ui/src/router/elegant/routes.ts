@@ -209,6 +209,15 @@ export const generatedRoutes: GeneratedRoute[] = [
         }
       },
       {
+        name: 'manage_system-monitor',
+        path: '/manage/system-monitor',
+        component: 'view.manage_system-monitor',
+        meta: {
+          title: 'manage_system-monitor',
+          i18nKey: 'route.manage_system-monitor'
+        }
+      },
+      {
         name: 'manage_user',
         path: '/manage/user',
         component: 'view.manage_user',

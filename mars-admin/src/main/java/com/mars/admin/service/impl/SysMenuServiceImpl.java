@@ -33,7 +33,7 @@ import static com.mars.admin.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "sysMenu")
+@CacheConfig(cacheNames = "menu")
 public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
     @Autowired
@@ -43,13 +43,11 @@ public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysM
     private SysRoleMenuMapper sysRoleMenuMapper;
 
     @Override
-    @Cacheable(key = "'code:' + #menuCode")
     public SysMenu selectByMenuCode(String menuCode) {
         return sysMenuMapper.selectByMenuCode(menuCode);
     }
 
     @Override
-    @Cacheable(key = "'perms:' + #perms")
     public SysMenu selectByPerms(String perms) {
         return sysMenuMapper.selectByPerms(perms);
     }
@@ -83,31 +81,26 @@ public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysM
     }
 
     @Override
-    @Cacheable(key = "'user:' + #userId")
     public List<SysMenu> selectMenusByUserId(Long userId) {
         return sysMenuMapper.selectMenusByUserId(userId);
     }
 
     @Override
-    @Cacheable(key = "'role:' + #roleId")
     public List<SysMenu> selectMenusByRoleId(Long roleId) {
         return sysMenuMapper.selectMenusByRoleId(roleId);
     }
 
     @Override
-    @Cacheable(key = "'normal'")
     public List<SysMenu> selectNormalMenus() {
         return sysMenuMapper.selectNormalMenus();
     }
 
     @Override
-    @Cacheable(key = "'children:' + #parentId")
     public List<SysMenu> selectChildrenByParentId(Long parentId) {
         return sysMenuMapper.selectChildrenByParentId(parentId);
     }
 
     @Override
-    @Cacheable(key = "'tree'")
     public List<SysMenu> selectMenuTree() {
         // 获取所有菜单数据
         List<SysMenu> allMenus = sysMenuMapper.selectMenuTree();
@@ -139,35 +132,24 @@ public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysM
     }
 
     @Override
-    @Cacheable(key = "'perms:user:' + #userId")
     public List<String> selectPermsByUserId(Long userId) {
         return sysMenuMapper.selectPermsByUserId(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(allEntries = true)
     public boolean insertMenu(SysMenu menu) {
         return this.save(menu);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @Caching(evict = {
-        @CacheEvict(key = "'code:' + #menu.menuCode", condition = "#menu.menuCode != null"),
-        @CacheEvict(key = "'perms:' + #menu.perms", condition = "#menu.perms != null"),
-        @CacheEvict(key = "'children:' + #menu.parentId", condition = "#menu.parentId != null"),
-        @CacheEvict(key = "#menu.id", condition = "#menu.id != null"),
-        @CacheEvict(key = "'tree'"),
-        @CacheEvict(key = "'normal'")
-    })
     public boolean updateMenu(SysMenu menu) {
         return this.updateById(menu);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(allEntries = true)
     public boolean deleteMenuById(Long menuId) {
         // 检查是否有子菜单
         if (hasChildMenu(menuId)) {
@@ -185,7 +167,6 @@ public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(allEntries = true)
     public boolean deleteMenus(Long[] menuIds) {
         if (menuIds == null || menuIds.length == 0) {
             return false;
@@ -237,7 +218,6 @@ public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysM
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public void refreshCache() {
         log.info("清空系统菜单缓存");
         // @CacheEvict注解会自动清除sysMenu缓存空间的所有数据

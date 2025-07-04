@@ -176,4 +176,12 @@ public interface ISysUserService extends BaseService<SysUser> {
      * @return 用户列表
      */
     List<SysUser> exportUser(SysUser user);
+
+    /**
+     * 更新个人信息
+     *
+     * @param user 用户信息
+     * @return 更新结果
+     */
+    boolean updatePersonalInfo(SysUser user);
 } 

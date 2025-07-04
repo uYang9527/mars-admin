@@ -431,6 +431,185 @@ declare namespace Api {
       /** login time */
       loginTime: string;
     }>;
+
+    /** 系统监控信息 */
+    type MonitorInfo = {
+      server: ServerInfo;
+      cpu: CpuInfo;
+      memory: MemoryInfo;
+      jvm: JvmInfo;
+      disk: DiskInfo[];
+      network: NetworkInfo;
+      thread: ThreadInfo;
+      systemLoad: SystemLoadInfo;
+      timestamp: number;
+    };
+
+    /** 服务器信息 */
+    type ServerInfo = {
+      computerName: string;
+      computerIp: string;
+      osName: string;
+      osArch: string;
+      osVersion: string;
+      uptime: string;
+      timezone: string;
+      javaVersion: string;
+      processId: string;
+      availableProcessors: number;
+    };
+
+    /** CPU信息 */
+    type CpuInfo = {
+      cpuNum: number;
+      physicalCores: number;
+      total: number;
+      sys: number;
+      used: number;
+      wait: number;
+      free: number;
+      irq: number;
+      softirq: number;
+      cpuModel: string;
+      architecture: string;
+      frequency: number;
+      cacheSize?: number;
+      usagePercent: number;
+    };
+
+    /** 内存信息 */
+    type MemoryInfo = {
+      total: number;
+      used: number;
+      free: number;
+      available: number;
+      usage: number;
+      buffers?: number;
+      cached?: number;
+      swapTotal: number;
+      swapUsed: number;
+      swapFree: number;
+      swapUsage: number;
+      totalFormatted: string;
+      usedFormatted: string;
+      availableFormatted: string;
+    };
+
+    /** JVM信息 */
+    type JvmInfo = {
+      total: number;
+      used: number;
+      free: number;
+      usage: number;
+      name: string;
+      version: string;
+      home: string;
+      startTime: string;
+      runTime: string;
+      nonHeapTotal: number;
+      nonHeapUsed: number;
+      nonHeapUsage: number;
+      metaspaceTotal?: number;
+      metaspaceUsed?: number;
+      metaspaceUsage?: number;
+      compressedClassSpaceTotal?: number;
+      compressedClassSpaceUsed?: number;
+      jvmArgs: string[];
+      classLoader: ClassLoaderInfo;
+      gcInfo: GcInfo[];
+      heapFormatted: string;
+      nonHeapFormatted: string;
+    };
+
+    /** 磁盘信息 */
+    type DiskInfo = {
+      dirName: string;
+      sysTypeName: string;
+      typeName: string;
+      total: string;
+      free: string;
+      used: string;
+      usage: number;
+    };
+
+    /** 网络信息 */
+    type NetworkInfo = {
+      interfaces: NetworkInterface[];
+      totalBytesSent: number;
+      totalBytesReceived: number;
+      totalPacketsSent: number;
+      totalPacketsReceived: number;
+      sendRate: number;
+      receiveRate: number;
+    };
+
+    /** 网络接口信息 */
+    type NetworkInterface = {
+      name: string;
+      displayName: string;
+      macAddress: string;
+      ipAddresses: string[];
+      type?: string;
+      status?: string;
+      speed: number;
+      enabled: boolean;
+      bytesSent: number;
+      bytesReceived: number;
+      packetsSent: number;
+      packetsReceived: number;
+      sendErrors: number;
+      receiveErrors: number;
+    };
+
+    /** 线程信息 */
+    type ThreadInfo = {
+      liveThreads: number;
+      daemonThreads: number;
+      peakThreads: number;
+      totalStartedThreads: number;
+      deadlockedThreads: number;
+      newThreads: number;
+      runnableThreads: number;
+      blockedThreads: number;
+      waitingThreads: number;
+      timedWaitingThreads: number;
+      terminatedThreads: number;
+    };
+
+    /** 系统负载信息 */
+    type SystemLoadInfo = {
+      load1: number;
+      load5: number;
+      load15: number;
+      bootTime: number;
+      uptime: number;
+      processCount: number;
+      runningProcesses: number;
+      sleepingProcesses?: number;
+      stoppedProcesses?: number;
+      zombieProcesses?: number;
+      loadLevel: string;
+      loadPercent: number;
+    };
+
+    /** 类加载器信息 */
+    type ClassLoaderInfo = {
+      loadedClassCount: number;
+      totalLoadedClassCount: number;
+      unloadedClassCount: number;
+      verbose: boolean;
+    };
+
+    /** 垃圾回收信息 */
+    type GcInfo = {
+      name: string;
+      type: string;
+      collectionCount: number;
+      collectionTime: number;
+      averageCollectionTime: number;
+      lastCollectionTime?: string;
+      frequency?: number;
+    };
   }
 
   /**
