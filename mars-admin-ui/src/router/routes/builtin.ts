@@ -33,7 +33,20 @@ const NOT_FOUND_ROUTE: CustomRoute = {
 };
 
 /** builtin routes, it must be constant and setup in vue-router */
-const builtinRoutes: CustomRoute[] = [ROOT_ROUTE, NOT_FOUND_ROUTE];
+const builtinRoutes: CustomRoute[] = [
+  ROOT_ROUTE, 
+  NOT_FOUND_ROUTE,
+  // iframe直接访问路由
+  {
+    name: 'iframe-direct',
+    path: '/iframe-direct',
+    component: 'layout.base$view.iframe-direct',
+    meta: {
+      title: 'iframe-direct',
+      constant: true
+    }
+  } as unknown as CustomRoute
+];
 
 /** create builtin vue routes */
 export function createBuiltinVueRoutes() {

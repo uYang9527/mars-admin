@@ -13,6 +13,49 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 连接池配置
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall
+      # 监控统计拦截的filters
+      filter:
+        stat:
+          enabled: true
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 500
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            multi-statement-allow: true
+            # StatViewServlet配置
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: marsadmin
+        allow: ""
+      # WebStatFilter配置
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+      # Spring监控配置
+      aop-patterns: com.mars.admin.service.*
 
   # Redis配置
   data:
@@ -157,6 +200,7 @@ sa-token:
     - /sql-log/**
     # 文件上传
     - /file/upload
+    - /druid/**
 # SQL日志页面配置
 sql-log:
   username: admin

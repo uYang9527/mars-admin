@@ -202,6 +202,10 @@ declare namespace App {
       title?: string;
       /** The menu children */
       children?: Menu[];
+      /** Whether the menu is an external link (iframe) */
+      isFrame?: boolean;
+      /** Original URL for external links */
+      originalUrl?: string;
     };
 
     /** Tab route */

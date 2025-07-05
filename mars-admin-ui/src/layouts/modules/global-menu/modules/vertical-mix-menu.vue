@@ -14,6 +14,7 @@ import { useMenu, useMixMenuContext } from '../../../context';
 import FirstLevelMenu from '../components/first-level-menu.vue';
 import GlobalLogo from '../../global-logo/index.vue';
 import { convertMenusToAntdItems } from '@/store/modules/route/shared';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   name: 'VerticalMixMenu'
@@ -48,7 +49,15 @@ function handleSelectMixMenu(menu: App.Global.Menu) {
   if (menu.children?.length) {
     setDrawerVisible(true);
   } else {
-    routerPushByKeyWithMetaQuery(menu.routeKey);
+    // 如果是外部链接菜单(isFrame=true 且有 originalUrl)
+    if (menu.isFrame && menu.originalUrl) {
+      console.log('🔗 点击外部链接菜单:', menu.originalUrl);
+      // 直接在新窗口中打开外部链接
+      window.open(menu.originalUrl, '_blank');
+    } else {
+      // 普通路由导航
+      routerPushByKeyWithMetaQuery(menu.routeKey);
+    }
   }
 }
 
@@ -69,9 +78,19 @@ const openKeys = computed(() => {
 });
 
 function handleClickMenu(menuInfo: MenuInfo) {
-  const key = menuInfo.key as RouteKey;
-
-  routerPushByKeyWithMetaQuery(key);
+  const key = menuInfo.key as string;
+  
+  // 检查菜单键是否是外部链接格式（以ext:开头）
+  if (key.startsWith('ext:')) {
+    // 提取URL部分（移除"ext:"前缀）
+    const externalUrl = key.substring(4);
+    console.log('🔗 点击外部链接菜单:', externalUrl);
+    // 直接在新窗口中打开外部链接
+    window.open(externalUrl, '_blank');
+  } else {
+    // 普通路由导航
+    routerPushByKeyWithMetaQuery(key as RouteKey);
+  }
 }
 
 

@@ -180,6 +180,8 @@ const local: App.I18n.Schema = {
     manage: '系统管理',
     power: '权限管理',
     org: '组织管理',
+    mysqlconn: '连接监控',
+    maintenance: '系统监控',
     user: '用户管理',
     manage_user: '用户列表',
     'manage_user-detail': '用户详情',

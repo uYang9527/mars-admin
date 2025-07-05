@@ -350,14 +350,29 @@ export const useRouteStore = defineStore(SetupStoreId.Route, () => {
       
       // 确保组件字段是有效的字符串
       let component = route.component;
-      if (!component || typeof component !== 'string') {
+      let path = route.path;
+      let originalUrl = undefined;
+      
+      // 处理外部链接 - 当 isFrame 为 true 且路径以 http 开头时
+      if (route.isFrame === true && (path.startsWith('http://') || path.startsWith('https://'))) {
+        console.log(`🔗 检测到外部链接:`, path);
+        // 保存原始URL
+        originalUrl = path;
+        console.log(`🔗 保存原始URL:`, originalUrl);
+        
+        // 设置组件为 'iframe-page'
+        if (!component || typeof component !== 'string') {
+          component = 'iframe-page';
+        }
+        console.log(`🔗 使用组件:`, component);
+      } else if (!component || typeof component !== 'string') {
         console.warn(`⚠️ 路由 ${route.name} 的组件字段无效:`, component, '使用默认组件');
         component = 'layout.base$view.' + route.name;
       }
       
       const elegantRoute: ElegantConstRoute = {
         name: route.name as any,
-        path: route.path,
+        path: path,
         component: component,
         meta: {
           title: route.meta?.title || route.label || route.name,
@@ -369,6 +384,16 @@ export const useRouteStore = defineStore(SetupStoreId.Route, () => {
           keepAlive: route.meta?.keepAlive === true
         }
       };
+      
+      // 添加 isFrame 属性和原始URL
+      if (route.isFrame === true) {
+        console.log(`📑 设置isFrame=true, 原始URL=`, originalUrl || 'N/A');
+        (elegantRoute as any).isFrame = true;
+        
+        if (originalUrl) {
+          (elegantRoute as any).originalUrl = originalUrl;
+        }
+      }
 
       // 处理子路由
       if (route.children && Array.isArray(route.children) && route.children.length > 0) {

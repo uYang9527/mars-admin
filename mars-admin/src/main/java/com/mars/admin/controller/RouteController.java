@@ -45,7 +45,7 @@ public class RouteController {
             // 查询用户菜单
             List<SysMenu> userMenus = sysMenuService.selectMenusByUserId(userId);
             log.info("查询到用户菜单数量: {}", userMenus != null ? userMenus.size() : 0);
-            
+
             // 如果没有查询到菜单，返回空路由
             if (userMenus == null || userMenus.isEmpty()) {
                 log.warn("用户没有菜单权限，返回空路由");
@@ -54,14 +54,14 @@ public class RouteController {
                 emptyResult.put("home", "home");
                 return Result.success(emptyResult);
             }
-            
+
             // 转换为前端需要的路由格式
             List<Map<String, Object>> routes = convertMenusToElegantRoutes(userMenus);
-            
+
             Map<String, Object> result = new HashMap<>();
             result.put("routes", routes);
             result.put("home", "home"); // 默认首页
-            
+
             log.info("返回路由数据: {}", result);
             return Result.success(result);
         } catch (Exception e) {
@@ -93,11 +93,11 @@ public class RouteController {
         // 简单实现：检查路由名称是否在菜单中存在
         Object loginId = StpUtil.getLoginId();
         Long userId = Long.valueOf(loginId.toString());
-        
+
         List<SysMenu> userMenus = sysMenuService.selectMenusByUserId(userId);
         boolean exists = userMenus.stream()
                 .anyMatch(menu -> routeName.equals(menu.getRouteName()));
-        
+
         return Result.success(exists);
     }
 
@@ -106,14 +106,14 @@ public class RouteController {
      */
     private List<Map<String, Object>> convertMenusToElegantRoutes(List<SysMenu> menus) {
         List<Map<String, Object>> routes = new ArrayList<>();
-        
+
         // 按照菜单层级结构处理
         // 首先找出所有顶级菜单（parent_id = 0）
         List<SysMenu> topMenus = menus.stream()
                 .filter(menu -> menu.getParentId() == 0)
                 .sorted((a, b) -> Integer.compare(a.getOrderNum(), b.getOrderNum()))
                 .toList();
-        
+
         for (SysMenu topMenu : topMenus) {
             // 检查目录类型菜单是否有子菜单
             if ("M".equals(topMenu.getMenuType())) {
@@ -121,24 +121,24 @@ public class RouteController {
                         .filter(child -> topMenu.getId().equals(child.getParentId()))
                         .filter(child -> "M".equals(child.getMenuType()) || "C".equals(child.getMenuType()))
                         .toList();
-                
+
                 // 如果目录菜单没有有效的子菜单，跳过它
                 if (childMenus.isEmpty()) {
                     log.info("跳过空目录菜单: {}", topMenu.getMenuName());
                     continue;
                 }
             }
-            
+
             Map<String, Object> route = convertMenuToRoute(topMenu, menus);
             if (route != null) {
                 routes.add(route);
             }
         }
-        
+
         log.info("转换完成，共生成 {} 个顶级路由", routes.size());
         return routes;
     }
-    
+
     /**
      * 将单个菜单转换为路由格式
      */
@@ -147,17 +147,25 @@ public class RouteController {
         if (!"M".equals(menu.getMenuType()) && !"C".equals(menu.getMenuType())) {
             return null;
         }
-        
+
         // 检查必要字段
         if (menu.getRouteName() == null || menu.getRoutePath() == null) {
             log.warn("菜单缺少必要字段: {}", menu);
             return null;
         }
-        
+
         Map<String, Object> route = new HashMap<>();
         route.put("name", menu.getRouteName());
         route.put("path", menu.getRoutePath());
-        
+        // isFrame=0表示是外链，此时设置isFrame=true
+        boolean isExternalLink = menu.getIsFrame() == 0;
+        route.put("isFrame", isExternalLink);
+
+        // 如果是外链且路径以http开头，将原始路径保存在originalUrl中
+        if (isExternalLink && (menu.getRoutePath().startsWith("http://") || menu.getRoutePath().startsWith("https://"))) {
+            route.put("originalUrl", menu.getRoutePath());
+        }
+
         // 设置组件
         String component;
         if ("M".equals(menu.getMenuType())) {
@@ -174,14 +182,14 @@ public class RouteController {
             }
         }
         route.put("component", component);
-        
+
         // 设置meta信息
         Map<String, Object> meta = new HashMap<>();
         meta.put("title", menu.getMenuName());
         meta.put("i18nKey", "route." + menu.getRouteName());
         meta.put("icon", convertIcon(menu.getIcon()));
         meta.put("order", menu.getOrderNum());
-        
+
         // 根据菜单权限设置角色要求
         if (menu.getPerms() != null && !menu.getPerms().trim().isEmpty()) {
             // 如果菜单有权限要求，设置需要超级管理员角色
@@ -191,17 +199,17 @@ public class RouteController {
             // 如果没有特殊权限要求，所有登录用户都可以访问
             meta.put("roles", List.of());
         }
-        
+
         meta.put("hideInMenu", menu.getVisible() == 0);
         meta.put("keepAlive", menu.getIsCache() == 1);
         route.put("meta", meta);
-        
+
         // 处理子菜单
         List<SysMenu> childMenus = allMenus.stream()
                 .filter(child -> menu.getId().equals(child.getParentId()))
                 .sorted((a, b) -> Integer.compare(a.getOrderNum(), b.getOrderNum()))
                 .toList();
-        
+
         if (!childMenus.isEmpty()) {
             List<Map<String, Object>> children = new ArrayList<>();
             for (SysMenu childMenu : childMenus) {
@@ -214,11 +222,11 @@ public class RouteController {
                 route.put("children", children);
             }
         }
-        
+
         log.debug("转换菜单路由: {} -> {}", menu.getMenuName(), route);
         return route;
     }
-    
+
     /**
      * 转换图标名称
      */
@@ -226,7 +234,7 @@ public class RouteController {
         if (icon == null || icon.trim().isEmpty()) {
             return "mdi:menu";
         }
-        
+
         // 如果图标名称不包含前缀，添加默认前缀
         if (!icon.contains(":")) {
             // 根据图标名称映射到合适的图标库
@@ -257,7 +265,7 @@ public class RouteController {
                     return "mdi:" + icon;
             }
         }
-        
+
         return icon;
     }
 
@@ -268,7 +276,7 @@ public class RouteController {
         // 获取当前登录用户ID
         Object loginId = StpUtil.getLoginId();
         Long userId = Long.valueOf(loginId.toString());
-        
+
         // 查询用户所有菜单，然后筛选子菜单
         List<SysMenu> allMenus = sysMenuService.selectMenusByUserId(userId);
         return allMenus.stream()

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
-import { fetchGetUserInfo, fetchChangePassword } from '@/service/api/auth';
-import { fetchUpdateUser, fetchCheckEmailUnique, fetchCheckPhoneUnique } from '@/service/api/system-manage';
+import { fetchChangePassword, fetchGetUserInfo } from '@/service/api/auth';
+import { fetchCheckEmailUnique, fetchCheckPhoneUnique, fetchUpdateUser } from '@/service/api/system-manage';
 import { useAuthStore } from '@/store/modules/auth';
 import { $t } from '@/locales';
 
@@ -69,7 +69,7 @@ const { formRef: passwordFormRef, validate: validatePassword, resetFields: reset
 // 表单验证规则
 const userRules = computed(() => {
   const { patternRules } = useFormRules();
-  
+
   return {
     nickname: formRules.nickName,
     realName: [
@@ -102,7 +102,7 @@ const userRules = computed(() => {
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
-          
+
           const isUnique = await fetchCheckEmailUnique(value, userModel.id);
           if (!isUnique.data) {
             return Promise.reject(new Error('邮箱已存在'));
@@ -116,9 +116,7 @@ const userRules = computed(() => {
 });
 
 const passwordRules = {
-  oldPassword: [
-    { required: true, message: '请输入当前密码', trigger: 'blur' }
-  ],
+  oldPassword: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
   newPassword: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
     { min: 6, max: 20, message: '密码长度在 6 到 20 个字符', trigger: 'blur' }
@@ -196,7 +194,7 @@ async function loadUserInfo() {
     }
   } catch (error) {
     console.error('加载用户信息失败:', error);
-            console.error('加载用户信息失败:', error);
+    console.error('加载用户信息失败:', error);
   }
 }
 
@@ -205,7 +203,7 @@ async function handleUpdateProfile() {
   try {
     await validate();
     loading.value = true;
-    
+
     const { error } = await fetchUpdateUser({
       id: userModel.id,
       nickname: userModel.nickname,
@@ -217,7 +215,7 @@ async function handleUpdateProfile() {
       birthday: userModel.birthday,
       remark: userModel.remark
     });
-    
+
     if (!error) {
       window.$message?.success('个人信息更新成功');
       // 刷新认证store中的用户信息
@@ -238,9 +236,9 @@ async function handleChangePassword() {
   try {
     await validatePassword();
     passwordLoading.value = true;
-    
+
     const { error } = await fetchChangePassword(passwordModel.oldPassword, passwordModel.newPassword);
-    
+
     if (!error) {
       window.$message?.success('密码修改成功');
       resetPasswordFields();
@@ -268,7 +266,7 @@ function closeDrawer() {
 }
 
 // 监听抽屉显示状态
-watch(visible, (newVisible) => {
+watch(visible, newVisible => {
   if (newVisible) {
     loadUserInfo();
     resetFields();
@@ -281,21 +279,27 @@ watch(visible, (newVisible) => {
   <ADrawer
     v-model:visible="visible"
     title="个人中心"
-    :width="600"
+    :width="500"
     :body-style="{ paddingRight: '20px' }"
     @close="closeDrawer"
   >
-    <ATabs v-model:activeKey="activeTab" type="card">
+    <ATabs v-model:active-key="activeTab" type="card">
       <!-- 个人信息 -->
       <ATabPane key="profile" tab="个人信息">
-        <div class="mb-24px">
-          <AForm ref="formRef" :model="userModel" :rules="userRules" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
+        <div class="mb-10px">
+          <AForm
+            ref="formRef"
+            :model="userModel"
+            :rules="userRules"
+            :label-col="{ span: 4 }"
+            :wrapper-col="{ span: 20 }"
+          >
             <!-- 头像 -->
             <AFormItem label="头像">
               <div class="flex-y-center gap-16px">
-                <AAvatar :size="80" :src="userModel.avatar" class="border-2 border-gray-200 relative overflow-hidden">
+                <AAvatar :size="80" :src="userModel.avatar" class="relative overflow-hidden border-2 border-gray-200">
                   <template #icon>
-                    <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block">
+                    <span class="absolute left-1/2 top-1/2 block -translate-x-1/2 -translate-y-1/2">
                       <SvgIcon icon="ph:user-circle" class="text-40px" />
                     </span>
                   </template>
@@ -315,9 +319,7 @@ watch(visible, (newVisible) => {
                       更换头像
                     </AButton>
                   </AUpload>
-                  <div class="text-12px text-gray-500 mt-4px">
-                    支持 JPG、PNG 格式，文件大小不超过 2MB
-                  </div>
+                  <div class="mt-4px text-12px text-gray-500">支持 JPG、PNG 格式，文件大小不超过 2MB</div>
                 </div>
               </div>
             </AFormItem>
@@ -326,16 +328,17 @@ watch(visible, (newVisible) => {
             <AFormItem label="用户名">
               <AInput v-model:value="userModel.username" disabled />
             </AFormItem>
+            <div>
+              <!-- 昵称 -->
+              <AFormItem label="昵称" name="nickname">
+                <AInput v-model:value="userModel.nickname" placeholder="请输入昵称" />
+              </AFormItem>
 
-            <!-- 昵称 -->
-            <AFormItem label="昵称" name="nickname">
-              <AInput v-model:value="userModel.nickname" placeholder="请输入昵称" />
-            </AFormItem>
-
-            <!-- 真实姓名 -->
-            <AFormItem label="真实姓名" name="realName">
-              <AInput v-model:value="userModel.realName" placeholder="请输入真实姓名" />
-            </AFormItem>
+              <!-- 真实姓名 -->
+              <AFormItem label="真实姓名" name="realName">
+                <AInput v-model:value="userModel.realName" placeholder="请输入真实姓名" />
+              </AFormItem>
+            </div>
 
             <!-- 性别 -->
             <AFormItem label="性别">
@@ -352,16 +355,6 @@ watch(visible, (newVisible) => {
               <AInput v-model:value="userModel.email" placeholder="请输入邮箱" />
             </AFormItem>
 
-            <!-- 生日 -->
-            <AFormItem label="生日">
-              <ADatePicker
-                v-model:value="userModel.birthday"
-                placeholder="请选择生日"
-                value-format="YYYY-MM-DD"
-                style="width: 100%"
-              />
-            </AFormItem>
-
             <!-- 个人简介 -->
             <AFormItem label="个人简介">
               <ATextarea
@@ -374,10 +367,10 @@ watch(visible, (newVisible) => {
             </AFormItem>
           </AForm>
 
-          <div class="text-right mt-24px">
+          <div class="mt-15px text-right">
             <ASpace>
               <AButton @click="closeDrawer">取消</AButton>
-              <AButton type="primary" :loading="loading" @click="handleUpdateProfile" class="inline-flex items-center">
+              <AButton type="primary" :loading="loading" class="inline-flex items-center" @click="handleUpdateProfile">
                 <SvgIcon icon="ph:check" class="mr-4px" />
                 保存修改
               </AButton>
@@ -389,11 +382,11 @@ watch(visible, (newVisible) => {
       <!-- 修改密码 -->
       <ATabPane key="password" tab="修改密码">
         <div class="mb-24px">
-          <AForm 
-            ref="passwordFormRef" 
-            :model="passwordModel" 
-            :rules="passwordRules" 
-            :label-col="{ span: 6 }" 
+          <AForm
+            ref="passwordFormRef"
+            :model="passwordModel"
+            :rules="passwordRules"
+            :label-col="{ span: 6 }"
             :wrapper-col="{ span: 18 }"
           >
             <AFormItem label="当前密码" name="oldPassword">
@@ -421,10 +414,15 @@ watch(visible, (newVisible) => {
             </AFormItem>
           </AForm>
 
-          <div class="text-right mt-24px">
+          <div class="mt-24px text-right">
             <ASpace>
               <AButton @click="closeDrawer">取消</AButton>
-              <AButton type="primary" :loading="passwordLoading" @click="handleChangePassword" class="inline-flex items-center">
+              <AButton
+                type="primary"
+                :loading="passwordLoading"
+                class="inline-flex items-center"
+                @click="handleChangePassword"
+              >
                 <SvgIcon icon="ph:key" class="mr-4px" />
                 修改密码
               </AButton>
@@ -458,9 +456,7 @@ watch(visible, (newVisible) => {
               <ADescriptionsItem label="最后登录">
                 {{ authStore.userInfo.lastLoginTime || '-' }}
               </ADescriptionsItem>
-              <ADescriptionsItem label="登录次数">
-                {{ authStore.userInfo.loginCount || 0 }} 次
-              </ADescriptionsItem>
+              <ADescriptionsItem label="登录次数">{{ authStore.userInfo.loginCount || 0 }} 次</ADescriptionsItem>
             </ADescriptions>
           </ACard>
 
@@ -491,4 +487,4 @@ watch(visible, (newVisible) => {
   background-color: #fafafa;
   font-weight: 500;
 }
-</style> 
+</style>

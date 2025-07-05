@@ -143,6 +143,14 @@ function getGlobalMenuByBaseRoute(route: RouteLocationNormalizedLoaded | Elegant
 
   const label = i18nKey ? $t(i18nKey) : title!;
 
+  // 检查是否是外部链接路由（isFrame标志）
+  const isFrame = (route as any).isFrame === true;
+  
+  // 如果是isFrame为true的路由，存储原始链接以供跳转使用
+  const originalUrl = isFrame && typeof path === 'string' && (path.startsWith('http://') || path.startsWith('https://')) 
+    ? path 
+    : undefined;
+
   const menu: App.Global.Menu = {
     key: name as string,
     label,
@@ -150,7 +158,9 @@ function getGlobalMenuByBaseRoute(route: RouteLocationNormalizedLoaded | Elegant
     routeKey: name as RouteKey,
     routePath: path as RouteMap[RouteKey],
     icon: SvgIconVNode({ icon, localIcon, fontSize: iconFontSize || 20 }),
-    title: label
+    title: label,
+    isFrame, // 添加isFrame标志
+    originalUrl // 添加原始URL
   };
 
   return menu;
@@ -345,8 +355,16 @@ export function convertMenusToAntdItems(menus: App.Global.Menu[]): any[] {
  * @param menu Global menu
  */
 function convertMenuToAntdItem(menu: App.Global.Menu): any {
+  let menuKey = menu.key;
+  
+  // 处理外部链接菜单 - 在key中添加特殊前缀
+  if (menu.isFrame && menu.originalUrl) {
+    // 使用特殊前缀 "ext:" 来标记外部链接菜单
+    menuKey = `ext:${menu.originalUrl}`;
+  }
+  
   const item: any = {
-    key: menu.key,
+    key: menuKey,
     label: menu.label,
     title: menu.title || menu.label
   };
