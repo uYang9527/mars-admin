@@ -180,10 +180,8 @@ async function handleInitModel() {
     // 获取用户详情
     const { data: userDetail } = await fetchGetUserById(props.rowData.id);
     if (userDetail) {
-      console.log('获取到的用户详情数据:', userDetail);
       // 确保将数据正确赋值到模型中
       Object.assign(model, userDetail);
-      console.log('合并后的模型数据:', model);
     } else {
       console.error('获取用户详情失败');
     }

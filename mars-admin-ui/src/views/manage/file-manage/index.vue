@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { useTable, useTableOperate } from '@/hooks/common/table';
@@ -13,12 +13,10 @@ defineOptions({
   name: 'FileManage'
 });
 
-const wrapperEl = ref<HTMLElement>();
-
 // 上传抽屉相关
 const uploadVisible = ref(false);
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+const { columns, data, getData, loading, mobilePagination, searchParams } = useTable({
   apiFn: fetchGetFileList,
   apiParams: {
     current: 1,
@@ -91,7 +89,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
       key: 'contentType',
       dataIndex: 'contentType',
       title: '文件类型',
-      align: 'center',
+      align: 'center'
     },
     {
       key: 'configKey',
@@ -135,15 +133,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
   ]
 });
 
-const {
-  drawerVisible,
-  operateType,
-  editingData,
-  checkedRowKeys,
-  onBatchDeleted,
-  onDeleted,
-  rowSelection
-} = useTableOperate(data, getData);
+const { checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(data, getData);
 
 // 预览相关
 const previewVisible = ref(false);
@@ -248,6 +238,28 @@ async function handleDelete(id: number) {
     onDeleted();
   }
 }
+
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== mobilePagination.value.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      mobilePagination.value.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
+}
 </script>
 
 <template>
@@ -275,7 +287,9 @@ async function handleDelete(id: number) {
         :loading="loading"
         :row-selection="rowSelection"
         :scroll="{ x: 1200 }"
-        @change="getDataByPage"
+        size="small"
+        class="h-full"
+        @change="handleTableChange"
       />
     </ACard>
 

@@ -216,6 +216,28 @@ async function resetPassword(id: number) {
 function edit(id: number) {
   handleEdit(id);
 }
+
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      mobilePagination.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
+}
 </script>
 
 <template>
@@ -242,6 +264,7 @@ function edit(id: number) {
         :row-selection="rowSelection"
         :pagination="mobilePagination"
         class="h-full"
+        @change="handleTableChange"
       />
     </ACard>
     <UserOperateDrawer

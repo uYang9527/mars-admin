@@ -19,7 +19,6 @@ export const views: Record<LastLevelRouteKey, RouteComponent | (() => Promise<Ro
   404: () => import("@/views/_builtin/404/index.vue"),
   500: () => import("@/views/_builtin/500/index.vue"),
   "iframe-page": () => import("@/views/_builtin/iframe-page/[url].vue"),
-  "iframe-direct": () => import("@/views/_builtin/iframe-page/direct.vue"),
   login: () => import("@/views/_builtin/login/index.vue"),
   home: () => import("@/views/home/index.vue"),
   "manage_cache-list": () => import("@/views/manage/cache-list/index.vue"),

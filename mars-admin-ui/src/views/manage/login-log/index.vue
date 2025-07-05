@@ -16,113 +16,112 @@ defineOptions({
   name: 'LoginLog'
 });
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams } =
-  useTable({
-    apiFn: fetchGetLoginLogList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      userName: '',
-      ipaddr: '',
-      status: '',
-      loginLocation: ''
+const { columns, data, getData, loading, mobilePagination, searchParams } = useTable({
+  apiFn: fetchGetLoginLogList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    userName: '',
+    ipaddr: '',
+    status: '',
+    loginLocation: ''
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'userName',
-        dataIndex: 'userName',
-        title: '用户账号',
-        align: 'center',
-        ellipsis: true
-      },
-      {
-        key: 'ipaddr',
-        dataIndex: 'ipaddr',
-        title: '登录IP',
-        align: 'center',
-        ellipsis: true
-      },
-      {
-        key: 'loginLocation',
-        dataIndex: 'loginLocation',
-        title: '登录地点',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.loginLocation || '-'
-      },
-      {
-        key: 'browser',
-        dataIndex: 'browser',
-        title: '浏览器',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.browser || '-'
-      },
-      {
-        key: 'os',
-        dataIndex: 'os',
-        title: '操作系统',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.os || '-'
-      },
-      {
-        key: 'status',
-        dataIndex: 'status',
-        title: '登录状态',
-        align: 'center',
-        customRender: ({ record }) => (
-          <Tag color={record.status === '0' ? 'success' : 'error'}>{record.status === '0' ? '成功' : '失败'}</Tag>
-        )
-      },
-      {
-        key: 'msg',
-        dataIndex: 'msg',
-        title: '提示消息',
-        align: 'center',
-        ellipsis: true,
-        customRender: ({ record }) => record.msg || '-'
-      },
-      {
-        key: 'loginTime',
-        dataIndex: 'loginTime',
-        title: '登录时间',
-        align: 'center',
-        ellipsis: true
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => handleDetail(record.id)}>
-              详情
+    {
+      key: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'userName',
+      dataIndex: 'userName',
+      title: '用户账号',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      key: 'ipaddr',
+      dataIndex: 'ipaddr',
+      title: '登录IP',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      key: 'loginLocation',
+      dataIndex: 'loginLocation',
+      title: '登录地点',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.loginLocation || '-'
+    },
+    {
+      key: 'browser',
+      dataIndex: 'browser',
+      title: '浏览器',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.browser || '-'
+    },
+    {
+      key: 'os',
+      dataIndex: 'os',
+      title: '操作系统',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.os || '-'
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: '登录状态',
+      align: 'center',
+      customRender: ({ record }) => (
+        <Tag color={record.status === '0' ? 'success' : 'error'}>{record.status === '0' ? '成功' : '失败'}</Tag>
+      )
+    },
+    {
+      key: 'msg',
+      dataIndex: 'msg',
+      title: '提示消息',
+      align: 'center',
+      ellipsis: true,
+      customRender: ({ record }) => record.msg || '-'
+    },
+    {
+      key: 'loginTime',
+      dataIndex: 'loginTime',
+      title: '登录时间',
+      align: 'center',
+      ellipsis: true
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => handleDetail(record.id)}>
+            详情
+          </Button>
+          <Popconfirm title="确定要删除这条登录日志吗？" onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
             </Button>
-            <Popconfirm title="确定要删除这条登录日志吗？" onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
-      }
-    ]
-  });
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const { drawerVisible, editingData, checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(
   data,
@@ -200,27 +199,23 @@ async function handleCleanAll() {
 
 // 导出日志
 async function handleExport() {
-  console.log('导出按钮被点击');
-  console.log('searchParams:', searchParams);
-  console.log('searchParams.value:', searchParams.value);
-
   try {
     // 构建导出参数，只包含搜索条件，不包含分页参数
     const exportParams: any = {};
 
     // 安全检查 searchParams.value
-    if (searchParams.value) {
-      if (searchParams.value.userName) {
-        exportParams.userName = searchParams.value.userName;
+    if (searchParams) {
+      if (searchParams.userName) {
+        exportParams.userName = searchParams.userName;
       }
-      if (searchParams.value.ipaddr) {
-        exportParams.ipaddr = searchParams.value.ipaddr;
+      if (searchParams.ipaddr) {
+        exportParams.ipaddr = searchParams.ipaddr;
       }
-      if (searchParams.value.status) {
-        exportParams.status = searchParams.value.status;
+      if (searchParams.status) {
+        exportParams.status = searchParams.status;
       }
-      if (searchParams.value.loginLocation) {
-        exportParams.loginLocation = searchParams.value.loginLocation;
+      if (searchParams.loginLocation) {
+        exportParams.loginLocation = searchParams.loginLocation;
       }
     }
 
@@ -268,6 +263,28 @@ async function handleExport() {
     window.$message?.error(`导出失败: ${error instanceof Error ? error.message : '未知错误'}`);
   }
 }
+
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== mobilePagination.value.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      mobilePagination.value.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
+}
 </script>
 
 <template>
@@ -297,7 +314,7 @@ async function handleExport() {
         row-key="id"
         :row-selection="rowSelection"
         :pagination="mobilePagination"
-        @change="getDataByPage"
+        @change="handleTableChange"
       />
     </ACard>
     <LoginLogDetailDrawer :visible="drawerVisible" :row-data="editingData" @update:visible="drawerVisible = $event" />

@@ -192,6 +192,28 @@ async function refreshPostCache() {
     window.$message?.error('刷新缓存失败，请重试');
   }
 }
+
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== pagination.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      pagination.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
+}
 </script>
 
 <template>
@@ -226,6 +248,7 @@ async function refreshPostCache() {
         :row-selection="rowSelection"
         row-key="id"
         :pagination="pagination"
+        @change="handleTableChange"
         class="h-full"
       />
     </ACard>

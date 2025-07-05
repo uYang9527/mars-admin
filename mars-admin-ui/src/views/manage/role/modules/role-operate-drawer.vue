@@ -4,7 +4,7 @@ import { useBoolean } from '@sa/hooks';
 import { useAntdForm, useFormRules } from '@/hooks/common/form';
 import { $t } from '@/locales';
 import { enableStatusOptions } from '@/constants/business';
-import { fetchAddRole, fetchUpdateRole } from '@/service/api';
+import { fetchAddRole, fetchUpdateRole, fetchGetRoleById } from '@/service/api';
 import MenuAuthModal from './menu-auth-modal.vue';
 import ButtonAuthModal from './button-auth-modal.vue';
 import DataAuthModal from './data-auth-modal.vue';
@@ -48,11 +48,11 @@ const title = computed(() => {
 
 // 数据范围选项
 const dataScopeOptions = [
-  { label: '全部数据权限', value: '1' },
-  { label: '自定义数据权限', value: '2' },
-  { label: '本部门数据权限', value: '3' },
-  { label: '本部门及以下数据权限', value: '4' },
-  { label: '仅本人数据权限', value: '5' }
+  { label: '全部数据权限', value: 1 },
+  { label: '自定义数据权限', value: 2 },
+  { label: '本部门数据权限', value: 3 },
+  { label: '本部门及以下数据权限', value: 4 },
+  { label: '仅本人数据权限', value: 5 }
 ];
 
 type Model = Pick<
@@ -77,7 +77,7 @@ function createDefaultModel(): Model {
     roleCode: '',
     roleKey: '',
     roleSort: 0,
-    dataScope: '1',
+    dataScope: 1,
     menuCheckStrictly: 1,
     deptCheckStrictly: 1,
     description: '',
@@ -111,11 +111,27 @@ const roleId = computed(() => props.rowData?.id || -1);
 const isEdit = computed(() => props.operateType === 'edit');
 const isSystem = computed(() => props.rowData?.isSystem === 1);
 
-function handleInitModel() {
-  model.value = createDefaultModel();
+async function handleInitModel() {
+  Object.assign(model.value, createDefaultModel());
 
-  if (props.operateType === 'edit' && props.rowData) {
-    Object.assign(model.value, props.rowData);
+  if (props.operateType === 'edit' && props.rowData?.id) {
+    // 获取角色详情
+    const { data: roleDetail } = await fetchGetRoleById(props.rowData.id);
+    if (roleDetail) {
+      // 确保数据类型正确
+      Object.assign(model.value, {
+        roleName: roleDetail.roleName || '',
+        roleCode: roleDetail.roleCode || '',
+        roleKey: roleDetail.roleKey || '',
+        roleSort: Number(roleDetail.roleSort || 0),
+        dataScope: Number(roleDetail.dataScope || 1),
+        menuCheckStrictly: Number(roleDetail.menuCheckStrictly || 1),
+        deptCheckStrictly: Number(roleDetail.deptCheckStrictly || 1),
+        description: roleDetail.description || '',
+        status: Number(roleDetail.status ?? 1),
+        remark: roleDetail.remark || ''
+      });
+    }
   }
 }
 
@@ -171,38 +187,39 @@ watch(visible, () => {
   <ADrawer
     v-model:open="visible"
     :title="title"
-    :width="500"
+    :width="600"
     :body-style="{ paddingRight: '20px' }"
     :footer-style="{ textAlign: 'right' }"
   >
     <AForm
       ref="formRef"
-      layout="vertical"
+      layout="horizontal"
       :model="model"
       :rules="rules"
-      :label-col="{ span: 6 }"
-      :wrapper-col="{ span: 18 }"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 19 }"
+      class="role-form"
     >
-      <ARow :gutter="16">
-        <ACol :span="12">
-          <AFormItem :label="$t('page.manage.role.roleName')" name="roleName">
-            <AInput v-model:value="model.roleName" :placeholder="$t('page.manage.role.form.roleName')" />
-          </AFormItem>
-        </ACol>
-        <ACol :span="12">
-          <AFormItem :label="$t('page.manage.role.roleCode')" name="roleCode">
-            <AInput
-              v-model:value="model.roleCode"
-              :placeholder="$t('page.manage.role.form.roleCode')"
-              :disabled="isEdit && isSystem"
-            />
-          </AFormItem>
-        </ACol>
-      </ARow>
+      <AFormItem :label="$t('page.manage.role.roleName')" name="roleName">
+        <AInput v-model:value="model.roleName" :placeholder="$t('page.manage.role.form.roleName')" />
+      </AFormItem>
+
+      <AFormItem :label="$t('page.manage.role.roleCode')" name="roleCode">
+        <AInput
+          v-model:value="model.roleCode"
+          :placeholder="$t('page.manage.role.form.roleCode')"
+          :disabled="isEdit && isSystem"
+        />
+      </AFormItem>
 
       <ARow :gutter="16">
         <ACol :span="12">
-          <AFormItem :label="$t('page.manage.role.roleKey')" name="roleKey">
+          <AFormItem 
+            :label="$t('page.manage.role.roleKey')" 
+            name="roleKey"
+            :label-col="{ span: 10 }"
+            :wrapper-col="{ span: 14 }"
+          >
             <AInput
               v-model:value="model.roleKey"
               :placeholder="$t('page.manage.role.form.roleKey')"
@@ -211,7 +228,12 @@ watch(visible, () => {
           </AFormItem>
         </ACol>
         <ACol :span="12">
-          <AFormItem label="显示顺序" name="roleSort">
+          <AFormItem 
+            label="显示顺序" 
+            name="roleSort"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
             <AInputNumber
               v-model:value="model.roleSort"
               :min="0"
@@ -225,7 +247,7 @@ watch(visible, () => {
 
       <AFormItem :label="$t('page.manage.role.roleStatus')" name="status">
         <ARadioGroup v-model:value="model.status">
-          <ARadio v-for="item in enableStatusOptions" :key="item.value" :value="item.value">
+          <ARadio v-for="item in enableStatusOptions" :key="item.value" :value="Number(item.value)">
             {{ $t(item.label) }}
           </ARadio>
         </ARadioGroup>
@@ -241,7 +263,12 @@ watch(visible, () => {
 
       <ARow :gutter="16">
         <ACol :span="12">
-          <AFormItem label="菜单树选择项关联显示" name="menuCheckStrictly">
+          <AFormItem 
+            label="菜单树关联显示" 
+            name="menuCheckStrictly"
+            :label-col="{ span: 12 }"
+            :wrapper-col="{ span: 12 }"
+          >
             <ASwitch
               :checked="model.menuCheckStrictly === 1"
               checked-children="是"
@@ -251,7 +278,12 @@ watch(visible, () => {
           </AFormItem>
         </ACol>
         <ACol :span="12">
-          <AFormItem label="部门树选择项关联显示" name="deptCheckStrictly">
+          <AFormItem 
+            label="部门树关联显示" 
+            name="deptCheckStrictly"
+            :label-col="{ span: 12 }"
+            :wrapper-col="{ span: 12 }"
+          >
             <ASwitch
               :checked="model.deptCheckStrictly === 1"
               checked-children="是"

@@ -9,7 +9,6 @@ import {
   fetchRefreshConfigCache
 } from '@/service/api/system-config';
 import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
 import ConfigOperateDrawer from './modules/config-operate-drawer.vue';
 
@@ -17,104 +16,101 @@ defineOptions({
   name: 'ManageConfig'
 });
 
-const appStore = useAppStore();
-
 const wrapperEl = ref<HTMLElement>();
 
 // 参数配置表格配置
-const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } =
-  useTable({
-    apiFn: fetchGetConfigList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      configName: '',
-      configKey: '',
-      configType: null
+const { columns, columnChecks, data, getData, loading, pagination, searchParams } = useTable({
+  apiFn: fetchGetConfigList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    configName: '',
+    configKey: '',
+    configType: null
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'configName',
-        title: '参数名称',
-        align: 'center',
-        dataIndex: 'configName'
-      },
-      {
-        key: 'configKey',
-        title: '参数键名',
-        align: 'center',
-        dataIndex: 'configKey'
-      },
-      {
-        key: 'configValue',
-        title: '参数键值',
-        align: 'center',
-        dataIndex: 'configValue'
-      },
-      {
-        key: 'configType',
-        title: '系统内置',
-        align: 'center',
-        dataIndex: 'configType',
-        customRender: ({ record }) => {
-          if (!record.configType) {
-            return null;
-          }
-
-          const configType = record.configType;
-          const label = configType === 'Y' ? '是' : '否';
-          const color = configType === 'Y' ? 'success' : 'default';
-
-          return <Tag color={color}>{label}</Tag>;
+    {
+      key: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'configName',
+      title: '参数名称',
+      align: 'center',
+      dataIndex: 'configName'
+    },
+    {
+      key: 'configKey',
+      title: '参数键名',
+      align: 'center',
+      dataIndex: 'configKey'
+    },
+    {
+      key: 'configValue',
+      title: '参数键值',
+      align: 'center',
+      dataIndex: 'configValue'
+    },
+    {
+      key: 'configType',
+      title: '系统内置',
+      align: 'center',
+      dataIndex: 'configType',
+      customRender: ({ record }) => {
+        if (!record.configType) {
+          return null;
         }
-      },
-      {
-        key: 'createTime',
-        title: '创建时间',
-        align: 'center',
-        dataIndex: 'createTime'
-      },
-      {
-        key: 'remark',
-        title: '备注',
-        align: 'center',
-        ellipsis: true,
-        dataIndex: 'remark'
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        fixed: 'right',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-              {$t('common.edit')}
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
+
+        const configType = record.configType;
+        const label = configType === 'Y' ? '是' : '否';
+        const color = configType === 'Y' ? 'success' : 'default';
+
+        return <Tag color={color}>{label}</Tag>;
       }
-    ]
-  });
+    },
+    {
+      key: 'createTime',
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime'
+    },
+    {
+      key: 'remark',
+      title: '备注',
+      align: 'center',
+      ellipsis: true,
+      dataIndex: 'remark'
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      fixed: 'right',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const {
   drawerVisible,
@@ -166,14 +162,14 @@ async function handleBatchDelete() {
   });
 }
 
-async function handleDelete(id) {
+async function handleDelete(id: number) {
   const { error } = await fetchDeleteConfig(id);
   if (!error) {
     onDeleted();
   }
 }
 
-function edit(id) {
+function edit(id: number) {
   handleEdit(id);
 }
 
@@ -209,6 +205,28 @@ function handleReset() {
 
 function toggleCollapsed() {
   collapsed.value = !collapsed.value;
+}
+
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== pagination.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      pagination.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
 }
 
 onMounted(() => {
@@ -328,6 +346,7 @@ onMounted(() => {
         row-key="id"
         :pagination="pagination"
         class="h-full"
+        @change="handleTableChange"
       />
     </ACard>
 

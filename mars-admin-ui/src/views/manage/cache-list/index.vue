@@ -38,7 +38,7 @@ const cacheSpaceOptions = [
 ];
 
 // 表格配置
-const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } =
+const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, pagination, reloadColumns, searchParams } =
   useTable({
     apiFn: fetchCacheList,
     apiParams: {
@@ -335,6 +335,28 @@ function formatJsonValue(value: any): string {
   return JSON.stringify(value, null, 2);
 }
 
+// 处理表格变化事件（分页、排序、筛选）
+function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+  // 处理分页变化（包括页码和分页大小）
+  if (paginationInfo) {
+    const { current, pageSize } = paginationInfo;
+
+    // 更新分页参数
+    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
+      // 分页大小改变时，需要重新计算当前页
+      mobilePagination.pageSize = pageSize;
+      searchParams.size = pageSize;
+      searchParams.current = current || 1;
+    } else if (current !== undefined) {
+      // 只是页码改变
+      searchParams.current = current;
+    }
+
+    // 刷新数据
+    getData();
+  }
+}
+
 onMounted(() => {
   getData();
 });
@@ -349,7 +371,7 @@ onMounted(() => {
           <div class="flex-y-center gap-12px">
             <div class="flex-y-center gap-8px text-12px text-gray-500">
               <SvgIcon icon="mdi:database-search" />
-              <span>共 {{ pagination.total }} 个缓存键</span>
+              <span>共 {{ mobilePagination.total }} 个缓存键</span>
             </div>
           </div>
         </template>
@@ -432,11 +454,11 @@ onMounted(() => {
           :data-source="data"
           :loading="loading"
           :row-selection="rowSelection"
-          :pagination="pagination"
-          :scroll="{ x: 1200, y: 'calc(100vh - 360px)' }"
+          :pagination="mobilePagination"
+          :scroll="{ x: 1200, y: 'calc(100vh - 420px)' }"
           row-key="key"
           size="small"
-          @change="getDataByPage"
+          @change="handleTableChange"
         />
       </ACard>
     </div>

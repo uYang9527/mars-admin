@@ -6,7 +6,8 @@ import {
   fetchCheckDeptCodeUnique,
   fetchCheckDeptNameUnique,
   fetchGetDeptTree,
-  fetchUpdateDept
+  fetchUpdateDept,
+  fetchGetDeptById
 } from '@/service/api';
 defineOptions({
   name: 'DeptOperateDrawer'
@@ -50,10 +51,17 @@ const title = computed(() => {
   return titles[props.operateType];
 });
 
-type Model = Pick<
-  Api.SystemManage.Dept,
-  'parentId' | 'deptName' | 'deptCode' | 'orderNum' | 'leader' | 'phone' | 'email' | 'status' | 'remark'
->;
+interface Model {
+  parentId: number;
+  deptName: string;
+  deptCode: string;
+  orderNum: number;
+  leader: string;
+  phone: string;
+  email: string;
+  status: string;
+  remark: string;
+}
 
 const model: Model = reactive(createDefaultModel());
 
@@ -78,7 +86,7 @@ const rules = computed<Record<RuleKey, App.Global.FormRule[]>>(() => {
 
   return {
     deptName: [
-      formRules.deptName || { required: true, message: '请输入部门名称' },
+      { required: true, message: '请输入部门名称' },
       {
         validator: async (_, value) => {
           if (!value) return Promise.resolve();
@@ -150,29 +158,36 @@ async function loadDeptTree() {
   }
 }
 
-function handleInitModel() {
+async function handleInitModel() {
   // 先重置为默认值
   const defaultModel = createDefaultModel();
-  Object.keys(defaultModel).forEach(key => {
-    model[key as keyof Model] = defaultModel[key as keyof Model];
-  });
+  model.parentId = defaultModel.parentId;
+  model.deptName = defaultModel.deptName;
+  model.deptCode = defaultModel.deptCode;
+  model.orderNum = defaultModel.orderNum;
+  model.leader = defaultModel.leader;
+  model.phone = defaultModel.phone;
+  model.email = defaultModel.email;
+  model.status = defaultModel.status;
+  model.remark = defaultModel.remark;
 
-  if (props.operateType === 'edit' && props.rowData) {
-    // 逐个设置属性以确保响应性
-    if (props.rowData.parentId !== undefined) model.parentId = props.rowData.parentId;
-    if (props.rowData.deptName) model.deptName = props.rowData.deptName;
-    if (props.rowData.deptCode) model.deptCode = props.rowData.deptCode;
-    if (props.rowData.orderNum !== undefined) model.orderNum = props.rowData.orderNum;
-    if (props.rowData.leader) model.leader = props.rowData.leader;
-    if (props.rowData.phone) model.phone = props.rowData.phone;
-    if (props.rowData.email) model.email = props.rowData.email;
+  if (props.operateType === 'edit' && props.rowData?.id) {
+    try {
+      // 通过API重新获取完整的部门详情数据，确保数据完整性
+      const { data: deptDetail } = await fetchGetDeptById(props.rowData.id);
+      
+      if (deptDetail) {
+        // 直接赋值给reactive对象的属性
+        model.parentId = deptDetail.parentId || 0;
+        model.deptName = deptDetail.deptName || '';
+        model.deptCode = deptDetail.deptCode || '';
+        model.orderNum = deptDetail.orderNum || 0;
+        model.leader = deptDetail.leader || '';
+        model.phone = deptDetail.phone || '';
+        model.email = deptDetail.email || '';
     // 确保status为字符串类型
-    if (props.rowData.status !== undefined) {
-      model.status = typeof props.rowData.status === 'number' ? String(props.rowData.status) : props.rowData.status;
-    }
-    if (props.rowData.remark) model.remark = props.rowData.remark;
-
-    console.log('设置后的模型数据:', model);
+        model.status = typeof deptDetail.status === 'number' ? String(deptDetail.status) : (deptDetail.status || '1');
+        model.remark = deptDetail.remark || '';
 
     // 强制触发表单更新
     nextTick(() => {
@@ -180,6 +195,10 @@ function handleInitModel() {
         formRef.value.clearValidate();
       }
     });
+      }
+    } catch (error) {
+      console.error('获取部门详情失败:', error);
+    }
   }
 }
 
@@ -212,7 +231,7 @@ watch(visible, async () => {
     await loadDeptTree();
     await nextTick();
     // 先设置数据
-    handleInitModel();
+    await handleInitModel();
     await nextTick();
     // 最后重置验证状态
     if (formRef.value) {
@@ -220,6 +239,13 @@ watch(visible, async () => {
     }
   }
 });
+
+// 监听rowData变化，确保数据更新时能正确回显
+watch(() => props.rowData, async () => {
+  if (visible.value && props.rowData) {
+    await handleInitModel();
+  }
+}, { deep: true });
 </script>
 
 <template>

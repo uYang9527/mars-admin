@@ -1,21 +1,22 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
 import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
-import { useAppStore } from '@/store/modules/app';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import { $t } from '@/locales';
 import { enableStatusRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-import { fetchDeleteDept, fetchDeleteDepts, fetchGetDeptById, fetchGetDeptTree, fetchRefreshDeptCache } from '@/service/api';
+import {
+  fetchDeleteDept,
+  fetchDeleteDepts,
+  fetchGetDeptById,
+  fetchGetDeptTree,
+  fetchRefreshDeptCache
+} from '@/service/api';
 import DeptOperateDrawer from './modules/dept-operate-drawer.vue';
-
-const appStore = useAppStore();
 
 defineOptions({
   name: 'ManageDept'
 });
-
-const wrapperEl = ref<HTMLElement>();
 
 // 折叠状态
 const collapsed = ref(false);
@@ -50,7 +51,7 @@ const { columns, columnChecks, data, loading, getData, searchParams } = useTable
       dataIndex: 'label',
       title: '部门名称',
       align: 'left',
-      customRender: ({ record, index }) => {
+      customRender: ({ record }) => {
         return record.label;
       }
     },
@@ -103,7 +104,7 @@ const { columns, columnChecks, data, loading, getData, searchParams } = useTable
     {
       dataIndex: 'createTime',
       title: $t('common.createTime'),
-      align: 'center',
+      align: 'center'
     },
     {
       key: 'operate',
@@ -133,7 +134,7 @@ const {
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  handleDataEdit,
+  handleEdit,
   rowSelection
 } = useTableOperate(data, getData);
 
@@ -180,13 +181,34 @@ async function handleDelete(id: number) {
   }
 }
 
+// 递归查找树形数据中的记录
+function findRecordInTree(treeData: any[], id: number): any {
+  for (const item of treeData) {
+    if (item.id === id) {
+      return item;
+    }
+    if (item.children && item.children.length > 0) {
+      const found = findRecordInTree(item.children, id);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return null;
+}
+
 async function edit(id: number) {
   try {
-    const { data, error } = await fetchGetDeptById(id);
-    if (!error && data) {
-      handleDataEdit(data);
+    // 在树形数据中查找记录
+    const record = findRecordInTree(data.value, id);
+    
+    if (record) {
+      // 直接设置editingData和operateType，然后打开抽屉
+      editingData.value = record;
+      operateType.value = 'edit';
+      drawerVisible.value = true;
     } else {
-      window.$message?.error(`获取部门信息失败: ${error || '数据为空'}`);
+      window.$message?.error('未找到对应的部门记录');
     }
   } catch (error) {
     console.error('获取部门信息错误:', error);
