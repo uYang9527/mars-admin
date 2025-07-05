@@ -13,6 +13,7 @@ import oshi.SystemInfo;
 import oshi.hardware.*;
 import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
+import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem;
 import oshi.util.Util;
 
@@ -62,7 +63,7 @@ public class SysMonitorServiceImpl implements ISysMonitorService {
      * @throws Exception 获取信息异常
      */
     @Override
-    @Cacheable(value = "systemMonitor", key = "'monitorInfo'", cacheManager = "caffeineCacheManager")
+    @Cacheable(value = "systemMonitor", key = "'monitorInfo'")
     public SysMonitorVO getMonitorInfo() throws Exception {
         log.debug("开始获取系统监控信息");
         long startTime = System.currentTimeMillis();
@@ -789,295 +790,6 @@ public class SysMonitorServiceImpl implements ISysMonitorService {
         return jvmVo;
     }
 
-    /**
-     * 执行系统健康检查
-     *
-     * @return HealthCheckVO 健康检查结果
-     * @throws Exception 健康检查异常
-     */
-    @Override
-    @Cacheable(value = "systemMonitor", key = "'healthCheck'", cacheManager = "caffeineCacheManager")
-    public HealthCheckVO performHealthCheck() throws Exception {
-        log.debug("开始执行系统健康检查");
-        
-        try {
-            HealthCheckVO healthCheck = new HealthCheckVO();
-            SysMonitorVO monitorInfo = getMonitorInfo();
-            
-            // 计算健康分数
-            int score = calculateHealthScore(monitorInfo);
-            healthCheck.setHealthScore((double) score);
-            healthCheck.setOverallStatus(getHealthStatus(score));
-            healthCheck.setCheckTime(System.currentTimeMillis());
-            
-            // 检查各项指标
-            Map<String, HealthCheckVO.HealthMetric> metrics = new HashMap<>();
-            
-            // CPU健康检查
-            HealthCheckVO.HealthMetric cpuMetric = checkCpuHealth(monitorInfo.getCpu());
-            metrics.put("cpu", cpuMetric);
-            
-            // 内存健康检查  
-            HealthCheckVO.HealthMetric memoryMetric = checkMemoryHealth(monitorInfo.getMemory());
-            metrics.put("memory", memoryMetric);
-            
-            // JVM健康检查
-            HealthCheckVO.HealthMetric jvmMetric = checkJvmHealth(monitorInfo.getJvm());
-            metrics.put("jvm", jvmMetric);
-            
-            // 磁盘健康检查
-            HealthCheckVO.HealthMetric diskMetric = checkDiskHealth(monitorInfo.getDisk());
-            metrics.put("disk", diskMetric);
-            
-            healthCheck.setMetrics(metrics);
-            
-            log.debug("系统健康检查完成，总分: {}", score);
-            return healthCheck;
-            
-        } catch (Exception e) {
-            log.error("执行系统健康检查失败", e);
-            throw new Exception("健康检查失败: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 获取系统性能摘要
-     *
-     * @return Map<String, Object> 性能摘要数据
-     * @throws Exception 获取摘要异常
-     */
-    @Override
-    @Cacheable(value = "systemMonitor", key = "'performanceSummary'", cacheManager = "caffeineCacheManager")
-    public Map<String, Object> getPerformanceSummary() throws Exception {
-        log.debug("开始获取系统性能摘要");
-        
-        try {
-            Map<String, Object> summary = new HashMap<>();
-            SysMonitorVO monitorInfo = getMonitorInfo();
-            
-            // CPU摘要
-            CpuInfoVO cpu = monitorInfo.getCpu();
-            Map<String, Object> cpuSummary = new HashMap<>();
-            cpuSummary.put("usage", cpu.getUsagePercent());
-            cpuSummary.put("cores", cpu.getCpuNum());
-            cpuSummary.put("model", cpu.getCpuModel());
-            cpuSummary.put("status", cpu.getUsagePercent() > 80 ? "高负载" : "正常");
-            summary.put("cpu", cpuSummary);
-            
-            // 内存摘要
-            MemoryInfoVO memory = monitorInfo.getMemory();
-            Map<String, Object> memorySummary = new HashMap<>();
-            memorySummary.put("usage", memory.getUsage());
-            memorySummary.put("total", memory.getTotalFormatted());
-            memorySummary.put("used", memory.getUsedFormatted());
-            memorySummary.put("available", memory.getAvailableFormatted());
-            memorySummary.put("status", memory.getUsage() > 85 ? "内存紧张" : "正常");
-            summary.put("memory", memorySummary);
-            
-            // JVM摘要
-            JvmInfoVO jvm = monitorInfo.getJvm();
-            Map<String, Object> jvmSummary = new HashMap<>();
-            jvmSummary.put("usage", jvm.getUsage());
-            jvmSummary.put("heap", jvm.getHeapFormatted());
-            jvmSummary.put("nonHeap", jvm.getNonHeapFormatted());
-            jvmSummary.put("runTime", jvm.getRunTime());
-            jvmSummary.put("status", jvm.getUsage() > 85 ? "JVM内存紧张" : "正常");
-            summary.put("jvm", jvmSummary);
-            
-            // 磁盘摘要
-            List<DiskInfoVO> disks = monitorInfo.getDisk();
-            double maxDiskUsage = disks.stream()
-                    .mapToDouble(DiskInfoVO::getUsage)
-                    .max().orElse(0.0);
-            Map<String, Object> diskSummary = new HashMap<>();
-            diskSummary.put("maxUsage", maxDiskUsage);
-            diskSummary.put("diskCount", disks.size());
-            diskSummary.put("status", maxDiskUsage > 90 ? "磁盘空间不足" : "正常");
-            summary.put("disk", diskSummary);
-            
-            // 网络摘要
-            NetworkInfoVO network = monitorInfo.getNetwork();
-            Map<String, Object> networkSummary = new HashMap<>();
-            networkSummary.put("sendRate", network.getSendRate());
-            networkSummary.put("receiveRate", network.getReceiveRate());
-            networkSummary.put("interfaceCount", network.getInterfaces().size());
-            summary.put("network", networkSummary);
-            
-            // 系统负载摘要
-            SystemLoadVO systemLoad = monitorInfo.getSystemLoad();
-            summary.put("systemLoad", systemLoad);
-            
-            // 线程摘要
-            ThreadInfoVO thread = monitorInfo.getThread();
-            summary.put("thread", thread);
-            
-            summary.put("timestamp", monitorInfo.getTimestamp());
-            
-            log.debug("系统性能摘要获取完成");
-            return summary;
-            
-        } catch (Exception e) {
-            log.error("获取系统性能摘要失败", e);
-            throw new Exception("获取性能摘要失败: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 检查系统告警
-     *
-     * @param cpuThreshold CPU使用率阈值
-     * @param memoryThreshold 内存使用率阈值
-     * @param diskThreshold 磁盘使用率阈值
-     * @param jvmThreshold JVM堆内存使用率阈值
-     * @return Map<String, Object> 告警信息
-     * @throws Exception 检查告警异常
-     */
-    @Override
-    public Map<String, Object> checkSystemAlerts(Double cpuThreshold, Double memoryThreshold,
-                                                Double diskThreshold, Double jvmThreshold) throws Exception {
-        log.debug("开始检查系统告警，阈值：CPU={}%, 内存={}%, 磁盘={}%, JVM={}%", 
-                cpuThreshold, memoryThreshold, diskThreshold, jvmThreshold);
-        
-        try {
-            Map<String, Object> alerts = new HashMap<>();
-            List<Map<String, Object>> alertList = new ArrayList<>();
-            SysMonitorVO monitorInfo = getMonitorInfo();
-            
-            // 设置默认阈值
-            if (cpuThreshold == null) cpuThreshold = 80.0;
-            if (memoryThreshold == null) memoryThreshold = 85.0;
-            if (diskThreshold == null) diskThreshold = 90.0;
-            if (jvmThreshold == null) jvmThreshold = 85.0;
-            
-            // CPU告警检查
-            CpuInfoVO cpu = monitorInfo.getCpu();
-            if (cpu.getUsagePercent() > cpuThreshold) {
-                Map<String, Object> alert = new HashMap<>();
-                alert.put("type", "CPU");
-                alert.put("level", cpu.getUsagePercent() > 90 ? "严重" : "警告");
-                alert.put("message", String.format("CPU使用率过高：%.1f%% (阈值：%.1f%%)", cpu.getUsagePercent(), cpuThreshold));
-                alert.put("value", cpu.getUsagePercent());
-                alert.put("threshold", cpuThreshold);
-                alert.put("timestamp", System.currentTimeMillis());
-                alertList.add(alert);
-            }
-            
-            // 内存告警检查
-            MemoryInfoVO memory = monitorInfo.getMemory();
-            if (memory.getUsage() > memoryThreshold) {
-                Map<String, Object> alert = new HashMap<>();
-                alert.put("type", "MEMORY");
-                alert.put("level", memory.getUsage() > 95 ? "严重" : "警告");
-                alert.put("message", String.format("内存使用率过高：%.1f%% (阈值：%.1f%%)", memory.getUsage(), memoryThreshold));
-                alert.put("value", memory.getUsage());
-                alert.put("threshold", memoryThreshold);
-                alert.put("timestamp", System.currentTimeMillis());
-                alertList.add(alert);
-            }
-            
-            // JVM告警检查
-            JvmInfoVO jvm = monitorInfo.getJvm();
-            if (jvm.getUsage() > jvmThreshold) {
-                Map<String, Object> alert = new HashMap<>();
-                alert.put("type", "JVM");
-                alert.put("level", jvm.getUsage() > 95 ? "严重" : "警告");
-                alert.put("message", String.format("JVM堆内存使用率过高：%.1f%% (阈值：%.1f%%)", jvm.getUsage(), jvmThreshold));
-                alert.put("value", jvm.getUsage());
-                alert.put("threshold", jvmThreshold);
-                alert.put("timestamp", System.currentTimeMillis());
-                alertList.add(alert);
-            }
-            
-            // 磁盘告警检查
-            List<DiskInfoVO> disks = monitorInfo.getDisk();
-            for (DiskInfoVO disk : disks) {
-                if (disk.getUsage() > diskThreshold) {
-                    Map<String, Object> alert = new HashMap<>();
-                    alert.put("type", "DISK");
-                    alert.put("level", disk.getUsage() > 95 ? "严重" : "警告");
-                    alert.put("message", String.format("磁盘 %s 使用率过高：%.1f%% (阈值：%.1f%%)", 
-                            disk.getDirName(), disk.getUsage(), diskThreshold));
-                    alert.put("value", disk.getUsage());
-                    alert.put("threshold", diskThreshold);
-                    alert.put("diskName", disk.getDirName());
-                    alert.put("timestamp", System.currentTimeMillis());
-                    alertList.add(alert);
-                }
-            }
-            
-            alerts.put("hasAlerts", !alertList.isEmpty());
-            alerts.put("alertCount", alertList.size());
-            alerts.put("alerts", alertList);
-            alerts.put("checkTime", System.currentTimeMillis());
-            alerts.put("thresholds", Map.of(
-                    "cpu", cpuThreshold,
-                    "memory", memoryThreshold,
-                    "disk", diskThreshold,
-                    "jvm", jvmThreshold
-            ));
-            
-            log.debug("系统告警检查完成，发现 {} 个告警", alertList.size());
-            return alerts;
-            
-        } catch (Exception e) {
-            log.error("检查系统告警失败", e);
-            throw new Exception("检查告警失败: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 获取系统运行时间统计
-     *
-     * @return Map<String, Object> 运行时间统计
-     * @throws Exception 获取统计异常
-     */
-    @Override
-    @Cacheable(value = "systemMonitor", key = "'systemUptime'", cacheManager = "caffeineCacheManager")
-    public Map<String, Object> getSystemUptime() throws Exception {
-        log.debug("开始获取系统运行时间统计");
-        
-        try {
-            Map<String, Object> uptime = new HashMap<>();
-            SystemInfo si = getSystemInfo();
-            OperatingSystem os = si.getOperatingSystem();
-            
-            // 系统运行时间
-            long systemUptimeSeconds = os.getSystemUptime();
-            uptime.put("systemUptimeSeconds", systemUptimeSeconds);
-            uptime.put("systemUptimeFormatted", formatDuration(systemUptimeSeconds * 1000));
-            
-            // JVM运行时间
-            RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
-            long jvmUptimeMillis = runtimeBean.getUptime();
-            uptime.put("jvmUptimeMillis", jvmUptimeMillis);
-            uptime.put("jvmUptimeFormatted", formatDuration(jvmUptimeMillis));
-            
-            // JVM启动时间
-            long jvmStartTime = runtimeBean.getStartTime();
-            uptime.put("jvmStartTime", jvmStartTime);
-            uptime.put("jvmStartTimeFormatted", DateUtil.format(new Date(jvmStartTime), "yyyy-MM-dd HH:mm:ss"));
-            
-            // 系统启动时间估算
-            long estimatedBootTime = System.currentTimeMillis() - (systemUptimeSeconds * 1000);
-            uptime.put("estimatedBootTime", estimatedBootTime);
-            uptime.put("estimatedBootTimeFormatted", DateUtil.format(new Date(estimatedBootTime), "yyyy-MM-dd HH:mm:ss"));
-            
-            // 运行时间对比
-            uptime.put("systemRunLonger", systemUptimeSeconds * 1000 > jvmUptimeMillis);
-            uptime.put("timeDifference", Math.abs(systemUptimeSeconds * 1000 - jvmUptimeMillis));
-            
-            // 当前时间
-            uptime.put("currentTime", System.currentTimeMillis());
-            uptime.put("currentTimeFormatted", DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-            
-            log.debug("系统运行时间统计获取完成");
-            return uptime;
-            
-        } catch (Exception e) {
-            log.error("获取系统运行时间统计失败", e);
-            throw new Exception("获取运行时间统计失败: " + e.getMessage(), e);
-        }
-    }
 
     // ==================== 私有辅助方法 ====================
 
@@ -1246,6 +958,670 @@ public class SysMonitorServiceImpl implements ISysMonitorService {
         NetworkStats(long bytesSent, long bytesReceived) {
             this.bytesSent = bytesSent;
             this.bytesReceived = bytesReceived;
+        }
+    }
+
+    @Override
+    public Map<String, Object> getSimpleMonitorInfo() throws Exception {
+        log.debug("开始获取简化版系统监控信息");
+        
+        try {
+            SystemInfo si = getSystemInfo();
+            HardwareAbstractionLayer hal = si.getHardware();
+            OperatingSystem os = si.getOperatingSystem();
+            
+            Map<String, Object> result = new HashMap<>();
+            
+            // 时间戳
+            result.put("timestamp", System.currentTimeMillis());
+            
+            // CPU信息
+            CentralProcessor processor = hal.getProcessor();
+            Map<String, Object> cpu = new HashMap<>();
+            cpu.put("cpuNum", processor.getLogicalProcessorCount());
+            cpu.put("physicalCores", processor.getPhysicalProcessorCount());
+            cpu.put("cpuModel", formatCpuModel(processor.getProcessorIdentifier().getName()));
+            cpu.put("architecture", processor.getProcessorIdentifier().getMicroarchitecture());
+            
+            // 计算CPU使用率
+            long[] prevTicks = processor.getSystemCpuLoadTicks();
+            Util.sleep(500); // 等待500ms计算使用率
+            long[] ticks = processor.getSystemCpuLoadTicks();
+            
+            long user = ticks[CentralProcessor.TickType.USER.getIndex()] - prevTicks[CentralProcessor.TickType.USER.getIndex()];
+            long sys = ticks[CentralProcessor.TickType.SYSTEM.getIndex()] - prevTicks[CentralProcessor.TickType.SYSTEM.getIndex()];
+            long idle = ticks[CentralProcessor.TickType.IDLE.getIndex()] - prevTicks[CentralProcessor.TickType.IDLE.getIndex()];
+            long iowait = ticks[CentralProcessor.TickType.IOWAIT.getIndex()] - prevTicks[CentralProcessor.TickType.IOWAIT.getIndex()];
+            long totalCpu = user + sys + idle + iowait;
+            
+            double usagePercent = totalCpu > 0 ? (double)(user + sys) / totalCpu * 100 : 0.0;
+            cpu.put("usagePercent", Math.round(usagePercent * 100.0) / 100.0);
+            cpu.put("userPercent", totalCpu > 0 ? Math.round((double)user / totalCpu * 10000.0) / 100.0 : 0.0);
+            cpu.put("systemPercent", totalCpu > 0 ? Math.round((double)sys / totalCpu * 10000.0) / 100.0 : 0.0);
+            cpu.put("idlePercent", totalCpu > 0 ? Math.round((double)idle / totalCpu * 10000.0) / 100.0 : 0.0);
+            cpu.put("iowaitPercent", totalCpu > 0 ? Math.round((double)iowait / totalCpu * 10000.0) / 100.0 : 0.0);
+            
+            long[] freqs = processor.getCurrentFreq();
+            cpu.put("frequency", freqs.length > 0 ? freqs[0] / 1_000_000L : 0);
+            
+            result.put("cpu", cpu);
+            
+            // 内存信息
+            GlobalMemory memory = hal.getMemory();
+            Map<String, Object> mem = new HashMap<>();
+            long total = memory.getTotal();
+            long available = memory.getAvailable();
+            long used = total - available;
+            
+            mem.put("total", total);
+            mem.put("used", used);
+            mem.put("available", available);
+            mem.put("usage", total > 0 ? Math.round((double)used / total * 10000.0) / 100.0 : 0.0);
+            mem.put("totalFormatted", convertFileSize(total));
+            mem.put("usedFormatted", convertFileSize(used));
+            mem.put("availableFormatted", convertFileSize(available));
+            
+            // 交换分区信息
+            try {
+                VirtualMemory virtualMemory = memory.getVirtualMemory();
+                long swapTotal = virtualMemory.getSwapTotal();
+                long swapUsed = virtualMemory.getSwapUsed();
+                mem.put("swapTotal", swapTotal);
+                mem.put("swapUsed", swapUsed);
+                mem.put("swapUsage", swapTotal > 0 ? Math.round((double)swapUsed / swapTotal * 10000.0) / 100.0 : 0.0);
+                mem.put("swapTotalFormatted", convertFileSize(swapTotal));
+                mem.put("swapUsedFormatted", convertFileSize(swapUsed));
+            } catch (Exception e) {
+                log.debug("获取交换分区信息失败", e);
+            }
+            
+            result.put("memory", mem);
+            
+            // JVM信息
+            MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+            MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
+            MemoryUsage nonHeapMemoryUsage = memoryMXBean.getNonHeapMemoryUsage();
+            
+            Map<String, Object> jvm = new HashMap<>();
+            long jvmTotal = heapMemoryUsage.getMax();
+            long jvmUsed = heapMemoryUsage.getUsed();
+            long jvmCommitted = heapMemoryUsage.getCommitted();
+            
+            jvm.put("total", jvmTotal);
+            jvm.put("used", jvmUsed);
+            jvm.put("committed", jvmCommitted);
+            jvm.put("usage", jvmTotal > 0 ? Math.round((double)jvmUsed / jvmTotal * 10000.0) / 100.0 : 0.0);
+            jvm.put("heapFormatted", convertFileSize(jvmUsed) + " / " + convertFileSize(jvmTotal));
+            jvm.put("version", System.getProperty("java.version"));
+            jvm.put("vendor", System.getProperty("java.vendor"));
+            jvm.put("home", System.getProperty("java.home"));
+            
+            // 非堆内存
+            jvm.put("nonHeapUsed", nonHeapMemoryUsage.getUsed());
+            jvm.put("nonHeapTotal", nonHeapMemoryUsage.getMax() > 0 ? nonHeapMemoryUsage.getMax() : nonHeapMemoryUsage.getCommitted());
+            jvm.put("nonHeapFormatted", convertFileSize(nonHeapMemoryUsage.getUsed()) + " / " + 
+                    convertFileSize(nonHeapMemoryUsage.getMax() > 0 ? nonHeapMemoryUsage.getMax() : nonHeapMemoryUsage.getCommitted()));
+            
+            // JVM运行时间
+            RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+            jvm.put("startTime", runtimeMXBean.getStartTime());
+            jvm.put("uptime", runtimeMXBean.getUptime());
+            jvm.put("uptimeFormatted", formatDuration(runtimeMXBean.getUptime()));
+            
+            result.put("jvm", jvm);
+            
+            // 磁盘信息
+            List<Map<String, Object>> diskList = new ArrayList<>();
+            List<OSFileStore> fileStores = os.getFileSystem().getFileStores();
+            for (OSFileStore fs : fileStores) {
+                try {
+                    Map<String, Object> disk = new HashMap<>();
+                    long diskTotal = fs.getTotalSpace();
+                    long diskFree = fs.getUsableSpace();
+                    long diskUsed = diskTotal - diskFree;
+                    
+                    disk.put("dirName", fs.getMount());
+                    disk.put("fsType", fs.getType());
+                    disk.put("name", fs.getName());
+                    disk.put("total", diskTotal);
+                    disk.put("used", diskUsed);
+                    disk.put("free", diskFree);
+                    disk.put("usage", diskTotal > 0 ? Math.round((double)diskUsed / diskTotal * 10000.0) / 100.0 : 0.0);
+                    disk.put("totalFormatted", convertFileSize(diskTotal));
+                    disk.put("usedFormatted", convertFileSize(diskUsed));
+                    disk.put("freeFormatted", convertFileSize(diskFree));
+                    
+                    diskList.add(disk);
+                } catch (Exception e) {
+                    log.debug("获取磁盘信息失败: {}", fs.getMount(), e);
+                }
+            }
+            result.put("disk", diskList);
+            
+            // 网络信息
+            Map<String, Object> network = new HashMap<>();
+            List<NetworkIF> networkIFs = hal.getNetworkIFs();
+            
+            long totalBytesSent = 0;
+            long totalBytesReceived = 0;
+            long totalPacketsSent = 0;
+            long totalPacketsReceived = 0;
+            List<Map<String, Object>> interfaceList = new ArrayList<>();
+            
+            for (NetworkIF net : networkIFs) {
+                try {
+                    if (net.getBytesRecv() > 0 || net.getBytesSent() > 0) {
+                        Map<String, Object> iface = new HashMap<>();
+                        iface.put("name", net.getName());
+                        iface.put("displayName", net.getDisplayName());
+                        iface.put("macAddress", net.getMacaddr());
+                        iface.put("speed", net.getSpeed());
+                        iface.put("bytesSent", net.getBytesSent());
+                        iface.put("bytesReceived", net.getBytesRecv());
+                        iface.put("packetsSent", net.getPacketsSent());
+                        iface.put("packetsReceived", net.getPacketsRecv());
+                        iface.put("bytesReceivedFormatted", convertFileSize(net.getBytesRecv()));
+                        iface.put("bytesSentFormatted", convertFileSize(net.getBytesSent()));
+                        iface.put("ipAddresses", Arrays.asList(net.getIPv4addr()));
+                        
+                        interfaceList.add(iface);
+                        
+                        totalBytesSent += net.getBytesSent();
+                        totalBytesReceived += net.getBytesRecv();
+                        totalPacketsSent += net.getPacketsSent();
+                        totalPacketsReceived += net.getPacketsRecv();
+                    }
+                } catch (Exception e) {
+                    log.debug("获取网络接口信息失败: {}", net.getName(), e);
+                }
+            }
+            
+            network.put("totalBytesSent", totalBytesSent);
+            network.put("totalBytesReceived", totalBytesReceived);
+            network.put("totalPacketsSent", totalPacketsSent);
+            network.put("totalPacketsReceived", totalPacketsReceived);
+            network.put("totalBytesSentFormatted", convertFileSize(totalBytesSent));
+            network.put("totalBytesReceivedFormatted", convertFileSize(totalBytesReceived));
+            network.put("interfaces", interfaceList);
+            network.put("interfaceCount", interfaceList.size());
+            
+            result.put("network", network);
+            
+            // 线程信息
+            ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+            Map<String, Object> thread = new HashMap<>();
+            thread.put("liveThreads", threadMXBean.getThreadCount());
+            thread.put("daemonThreads", threadMXBean.getDaemonThreadCount());
+            thread.put("peakThreads", threadMXBean.getPeakThreadCount());
+            thread.put("totalStartedThreads", threadMXBean.getTotalStartedThreadCount());
+            
+            // 获取各种状态的线程数
+            ThreadInfo[] threadInfos = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds());
+            int newThreads = 0, runnableThreads = 0, blockedThreads = 0, waitingThreads = 0, timedWaitingThreads = 0, terminatedThreads = 0;
+            
+            for (ThreadInfo info : threadInfos) {
+                if (info != null) {
+                    switch (info.getThreadState()) {
+                        case NEW: newThreads++; break;
+                        case RUNNABLE: runnableThreads++; break;
+                        case BLOCKED: blockedThreads++; break;
+                        case WAITING: waitingThreads++; break;
+                        case TIMED_WAITING: timedWaitingThreads++; break;
+                        case TERMINATED: terminatedThreads++; break;
+                    }
+                }
+            }
+            
+            thread.put("newThreads", newThreads);
+            thread.put("runnableThreads", runnableThreads);
+            thread.put("blockedThreads", blockedThreads);
+            thread.put("waitingThreads", waitingThreads);
+            thread.put("timedWaitingThreads", timedWaitingThreads);
+            thread.put("terminatedThreads", terminatedThreads);
+            
+            // 检查死锁
+            long[] deadlockedThreads = threadMXBean.findDeadlockedThreads();
+            thread.put("deadlockedThreads", deadlockedThreads != null ? deadlockedThreads.length : 0);
+            
+            result.put("thread", thread);
+            
+            // 系统负载信息
+            Map<String, Object> systemLoad = new HashMap<>();
+            double[] loadAverage = processor.getSystemLoadAverage(3);
+            if (loadAverage[0] >= 0) {
+                systemLoad.put("load1", Math.round(loadAverage[0] * 100.0) / 100.0);
+                systemLoad.put("load5", loadAverage.length > 1 && loadAverage[1] >= 0 ? Math.round(loadAverage[1] * 100.0) / 100.0 : 0.0);
+                systemLoad.put("load15", loadAverage.length > 2 && loadAverage[2] >= 0 ? Math.round(loadAverage[2] * 100.0) / 100.0 : 0.0);
+                
+                // 计算负载等级
+                double load1 = loadAverage[0];
+                int processorCount = processor.getLogicalProcessorCount();
+                double loadPercent = (load1 / processorCount) * 100;
+                
+                systemLoad.put("loadPercent", Math.round(loadPercent * 100.0) / 100.0);
+                systemLoad.put("loadLevel", loadPercent > 80 ? "高" : loadPercent > 60 ? "中" : "低");
+            } else {
+                systemLoad.put("load1", 0.0);
+                systemLoad.put("load5", 0.0);
+                systemLoad.put("load15", 0.0);
+                systemLoad.put("loadPercent", 0.0);
+                systemLoad.put("loadLevel", "未知");
+            }
+            
+            // 进程数
+            systemLoad.put("processCount", os.getProcessCount());
+            
+            result.put("systemLoad", systemLoad);
+            
+            // 服务器信息
+            Map<String, Object> server = new HashMap<>();
+            server.put("computerName", getComputerName());
+            server.put("osName", formatOsName(os));
+            server.put("osVersion", os.getVersionInfo().getVersion());
+            server.put("osArch", System.getProperty("os.arch"));
+            server.put("uptime", formatDuration(os.getSystemUptime() * 1000));
+            server.put("uptimeSeconds", os.getSystemUptime());
+            server.put("javaVersion", System.getProperty("java.version"));
+            server.put("javaVendor", System.getProperty("java.vendor"));
+            server.put("timezone", ZoneId.systemDefault().toString());
+            server.put("availableProcessors", Runtime.getRuntime().availableProcessors());
+            
+            result.put("server", server);
+            
+            log.debug("简化版系统监控信息获取完成");
+            return result;
+            
+        } catch (Exception e) {
+            log.error("获取简化版系统监控信息失败", e);
+            throw new Exception("获取简化版系统监控信息失败: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getResourceUsage() throws Exception {
+        try {
+            SystemInfo si = getSystemInfo();
+            HardwareAbstractionLayer hal = si.getHardware();
+            
+            Map<String, Object> result = new HashMap<>();
+            
+            // CPU使用率
+            CentralProcessor processor = hal.getProcessor();
+            double cpuUsage = processor.getSystemCpuLoadBetweenTicks(processor.getSystemCpuLoadTicks()) * 100;
+            result.put("cpuUsage", Math.round(cpuUsage * 100.0) / 100.0);
+            
+            // 内存使用率
+            GlobalMemory memory = hal.getMemory();
+            long total = memory.getTotal();
+            long available = memory.getAvailable();
+            double memoryUsage = total > 0 ? (double)(total - available) / total * 100 : 0.0;
+            result.put("memoryUsage", Math.round(memoryUsage * 100.0) / 100.0);
+            
+            // JVM堆内存使用率
+            MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+            MemoryUsage heapMemoryUsage = memoryMXBean.getHeapMemoryUsage();
+            long jvmTotal = heapMemoryUsage.getMax();
+            long jvmUsed = heapMemoryUsage.getUsed();
+            double jvmUsage = jvmTotal > 0 ? (double)jvmUsed / jvmTotal * 100 : 0.0;
+            result.put("jvmUsage", Math.round(jvmUsage * 100.0) / 100.0);
+            
+            result.put("timestamp", System.currentTimeMillis());
+            
+            return result;
+            
+        } catch (Exception e) {
+            log.error("获取资源使用情况失败", e);
+            throw new Exception("获取资源使用情况失败: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getSystemAlerts(Double cpuThreshold, Double memoryThreshold, 
+                                              Double diskThreshold, Double jvmThreshold) throws Exception {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            List<Map<String, Object>> alerts = new ArrayList<>();
+            
+            // 设置默认阈值
+            cpuThreshold = cpuThreshold != null ? cpuThreshold : 80.0;
+            memoryThreshold = memoryThreshold != null ? memoryThreshold : 85.0;
+            diskThreshold = diskThreshold != null ? diskThreshold : 90.0;
+            jvmThreshold = jvmThreshold != null ? jvmThreshold : 85.0;
+            
+            // 获取当前监控数据
+            Map<String, Object> monitorData = getSimpleMonitorInfo();
+            
+            // CPU告警检查
+            Map<String, Object> cpu = (Map<String, Object>) monitorData.get("cpu");
+            if (cpu != null && cpu.get("usagePercent") instanceof Number) {
+                double cpuUsage = ((Number) cpu.get("usagePercent")).doubleValue();
+                if (cpuUsage > cpuThreshold) {
+                    Map<String, Object> alert = new HashMap<>();
+                    alert.put("type", "CPU");
+                    alert.put("level", cpuUsage > 90 ? "严重" : "警告");
+                    alert.put("message", String.format("CPU使用率过高: %.1f%% (阈值: %.1f%%)", cpuUsage, cpuThreshold));
+                    alert.put("value", cpuUsage);
+                    alert.put("threshold", cpuThreshold);
+                    alert.put("timestamp", System.currentTimeMillis());
+                    alerts.add(alert);
+                }
+            }
+            
+            // 内存告警检查
+            Map<String, Object> memory = (Map<String, Object>) monitorData.get("memory");
+            if (memory != null && memory.get("usage") instanceof Number) {
+                double memoryUsage = ((Number) memory.get("usage")).doubleValue();
+                if (memoryUsage > memoryThreshold) {
+                    Map<String, Object> alert = new HashMap<>();
+                    alert.put("type", "MEMORY");
+                    alert.put("level", memoryUsage > 95 ? "严重" : "警告");
+                    alert.put("message", String.format("内存使用率过高: %.1f%% (阈值: %.1f%%)", memoryUsage, memoryThreshold));
+                    alert.put("value", memoryUsage);
+                    alert.put("threshold", memoryThreshold);
+                    alert.put("timestamp", System.currentTimeMillis());
+                    alerts.add(alert);
+                }
+            }
+            
+            // JVM告警检查
+            Map<String, Object> jvm = (Map<String, Object>) monitorData.get("jvm");
+            if (jvm != null && jvm.get("usage") instanceof Number) {
+                double jvmUsage = ((Number) jvm.get("usage")).doubleValue();
+                if (jvmUsage > jvmThreshold) {
+                    Map<String, Object> alert = new HashMap<>();
+                    alert.put("type", "JVM");
+                    alert.put("level", jvmUsage > 95 ? "严重" : "警告");
+                    alert.put("message", String.format("JVM堆内存使用率过高: %.1f%% (阈值: %.1f%%)", jvmUsage, jvmThreshold));
+                    alert.put("value", jvmUsage);
+                    alert.put("threshold", jvmThreshold);
+                    alert.put("timestamp", System.currentTimeMillis());
+                    alerts.add(alert);
+                }
+            }
+            
+            // 磁盘告警检查
+            List<Map<String, Object>> diskList = (List<Map<String, Object>>) monitorData.get("disk");
+            if (diskList != null) {
+                for (Map<String, Object> disk : diskList) {
+                    if (disk.get("usage") instanceof Number) {
+                        double diskUsage = ((Number) disk.get("usage")).doubleValue();
+                        if (diskUsage > diskThreshold) {
+                            Map<String, Object> alert = new HashMap<>();
+                            alert.put("type", "DISK");
+                            alert.put("level", diskUsage > 95 ? "严重" : "警告");
+                            alert.put("message", String.format("磁盘 %s 使用率过高: %.1f%% (阈值: %.1f%%)", 
+                                    disk.get("dirName"), diskUsage, diskThreshold));
+                            alert.put("value", diskUsage);
+                            alert.put("threshold", diskThreshold);
+                            alert.put("diskName", disk.get("dirName"));
+                            alert.put("timestamp", System.currentTimeMillis());
+                            alerts.add(alert);
+                        }
+                    }
+                }
+            }
+            
+            // 死锁检查
+            Map<String, Object> thread = (Map<String, Object>) monitorData.get("thread");
+            if (thread != null && thread.get("deadlockedThreads") instanceof Number) {
+                int deadlocks = ((Number) thread.get("deadlockedThreads")).intValue();
+                if (deadlocks > 0) {
+                    Map<String, Object> alert = new HashMap<>();
+                    alert.put("type", "THREAD");
+                    alert.put("level", "严重");
+                    alert.put("message", String.format("检测到线程死锁: %d个", deadlocks));
+                    alert.put("value", deadlocks);
+                    alert.put("timestamp", System.currentTimeMillis());
+                    alerts.add(alert);
+                }
+            }
+            
+            result.put("hasAlerts", !alerts.isEmpty());
+            result.put("alertCount", alerts.size());
+            result.put("alerts", alerts);
+            result.put("timestamp", System.currentTimeMillis());
+            result.put("thresholds", Map.of(
+                    "cpu", cpuThreshold,
+                    "memory", memoryThreshold,
+                    "disk", diskThreshold,
+                    "jvm", jvmThreshold
+            ));
+            
+            return result;
+            
+        } catch (Exception e) {
+            log.error("获取系统告警信息失败", e);
+            throw new Exception("获取告警信息失败: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getPerformanceOverview() throws Exception {
+        try {
+            Map<String, Object> overview = new HashMap<>();
+            Map<String, Object> monitorData = getSimpleMonitorInfo();
+            
+            // 系统健康分数计算
+            int healthScore = 100;
+            Map<String, Object> cpu = (Map<String, Object>) monitorData.get("cpu");
+            Map<String, Object> memory = (Map<String, Object>) monitorData.get("memory");
+            Map<String, Object> jvm = (Map<String, Object>) monitorData.get("jvm");
+            
+            if (cpu != null && cpu.get("usagePercent") instanceof Number) {
+                double cpuUsage = ((Number) cpu.get("usagePercent")).doubleValue();
+                if (cpuUsage > 90) healthScore -= 30;
+                else if (cpuUsage > 80) healthScore -= 20;
+                else if (cpuUsage > 70) healthScore -= 10;
+            }
+            
+            if (memory != null && memory.get("usage") instanceof Number) {
+                double memoryUsage = ((Number) memory.get("usage")).doubleValue();
+                if (memoryUsage > 95) healthScore -= 25;
+                else if (memoryUsage > 85) healthScore -= 15;
+                else if (memoryUsage > 75) healthScore -= 8;
+            }
+            
+            if (jvm != null && jvm.get("usage") instanceof Number) {
+                double jvmUsage = ((Number) jvm.get("usage")).doubleValue();
+                if (jvmUsage > 95) healthScore -= 25;
+                else if (jvmUsage > 85) healthScore -= 15;
+                else if (jvmUsage > 75) healthScore -= 8;
+            }
+            
+            // 磁盘健康检查
+            List<Map<String, Object>> diskList = (List<Map<String, Object>>) monitorData.get("disk");
+            if (diskList != null) {
+                for (Map<String, Object> disk : diskList) {
+                    if (disk.get("usage") instanceof Number) {
+                        double diskUsage = ((Number) disk.get("usage")).doubleValue();
+                        if (diskUsage > 95) healthScore -= 15;
+                        else if (diskUsage > 90) healthScore -= 10;
+                        else if (diskUsage > 80) healthScore -= 5;
+                    }
+                }
+            }
+            
+            healthScore = Math.max(0, healthScore);
+            
+            overview.put("healthScore", healthScore);
+            overview.put("healthStatus", healthScore >= 90 ? "优秀" : 
+                                      healthScore >= 80 ? "良好" : 
+                                      healthScore >= 60 ? "一般" : 
+                                      healthScore >= 40 ? "较差" : "危险");
+            
+            // 性能等级
+            String performanceLevel = "优秀";
+            if (cpu != null && cpu.get("usagePercent") instanceof Number) {
+                double cpuUsage = ((Number) cpu.get("usagePercent")).doubleValue();
+                if (cpuUsage > 80) performanceLevel = "高负载";
+                else if (cpuUsage > 60) performanceLevel = "中等";
+            }
+            
+            overview.put("performanceLevel", performanceLevel);
+            overview.put("timestamp", System.currentTimeMillis());
+            
+            // 关键指标摘要
+            Map<String, Object> summary = new HashMap<>();
+            summary.put("cpu", cpu != null ? cpu.get("usagePercent") : 0);
+            summary.put("memory", memory != null ? memory.get("usage") : 0);
+            summary.put("jvm", jvm != null ? jvm.get("usage") : 0);
+            
+            overview.put("summary", summary);
+            
+            return overview;
+            
+        } catch (Exception e) {
+            log.error("获取性能总览失败", e);
+            throw new Exception("获取性能总览失败: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getProcessInfo() throws Exception {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            SystemInfo si = getSystemInfo();
+            OperatingSystem os = si.getOperatingSystem();
+            
+            // 当前进程信息
+            Map<String, Object> currentProcess = new HashMap<>();
+            OSProcess currentOSProcess = os.getProcess(os.getProcessId());
+            if (currentOSProcess != null) {
+                currentProcess.put("pid", currentOSProcess.getProcessID());
+                currentProcess.put("name", currentOSProcess.getName());
+                currentProcess.put("commandLine", currentOSProcess.getCommandLine());
+                currentProcess.put("user", currentOSProcess.getUser());
+                currentProcess.put("residentSetSize", currentOSProcess.getResidentSetSize());
+                currentProcess.put("virtualSize", currentOSProcess.getVirtualSize());
+                currentProcess.put("cpuPercent", currentOSProcess.getProcessCpuLoadCumulative() * 100);
+                currentProcess.put("memoryPercent", (double) currentOSProcess.getResidentSetSize() / 
+                                                   si.getHardware().getMemory().getTotal() * 100);
+                currentProcess.put("startTime", currentOSProcess.getStartTime());
+                currentProcess.put("upTime", currentOSProcess.getUpTime());
+            }
+            result.put("currentProcess", currentProcess);
+            
+            // 系统进程统计（简化版）
+            List<Map<String, Object>> topProcesses = new ArrayList<>();
+            
+            // 获取所有进程并限制数量
+            Collection<OSProcess> processes = os.getProcesses().stream()
+                    .sorted((p1, p2) -> Double.compare(p2.getProcessCpuLoadCumulative(), p1.getProcessCpuLoadCumulative()))
+                    .limit(10)
+                    .toList();
+            
+            for (OSProcess process : processes) {
+                try {
+                    Map<String, Object> proc = new HashMap<>();
+                    proc.put("pid", process.getProcessID());
+                    proc.put("name", process.getName());
+                    proc.put("user", process.getUser());
+                    proc.put("cpuPercent", Math.round(process.getProcessCpuLoadCumulative() * 10000.0) / 100.0);
+                    proc.put("memoryPercent", Math.round((double) process.getResidentSetSize() / 
+                                                       si.getHardware().getMemory().getTotal() * 10000.0) / 100.0);
+                    proc.put("residentSetSize", process.getResidentSetSize());
+                    proc.put("residentSetSizeFormatted", convertFileSize(process.getResidentSetSize()));
+                    topProcesses.add(proc);
+                } catch (Exception e) {
+                    log.debug("获取进程信息失败: PID={}", process.getProcessID(), e);
+                }
+            }
+            
+            result.put("topProcesses", topProcesses);
+            result.put("totalProcesses", os.getProcessCount());
+            result.put("timestamp", System.currentTimeMillis());
+            
+            return result;
+            
+        } catch (Exception e) {
+            log.error("获取进程信息失败", e);
+            throw new Exception("获取进程信息失败: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getGcInfo() throws Exception {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+            List<Map<String, Object>> gcList = new ArrayList<>();
+            
+            long totalCollectionCount = 0;
+            long totalCollectionTime = 0;
+            
+            for (GarbageCollectorMXBean gcBean : gcBeans) {
+                Map<String, Object> gc = new HashMap<>();
+                gc.put("name", gcBean.getName());
+                gc.put("collectionCount", gcBean.getCollectionCount());
+                gc.put("collectionTime", gcBean.getCollectionTime());
+                
+                if (gcBean.getCollectionCount() > 0) {
+                    gc.put("averageCollectionTime", (double) gcBean.getCollectionTime() / gcBean.getCollectionCount());
+                } else {
+                    gc.put("averageCollectionTime", 0.0);
+                }
+                
+                // GC类型判断
+                String gcType = "未知";
+                String name = gcBean.getName().toLowerCase();
+                if (name.contains("young") || name.contains("minor") || name.contains("scavenge") || name.contains("parnew")) {
+                    gcType = "新生代";
+                } else if (name.contains("old") || name.contains("major") || name.contains("cms") || name.contains("mark")) {
+                    gcType = "老年代";
+                } else if (name.contains("g1")) {
+                    gcType = "G1";
+                }
+                gc.put("type", gcType);
+                
+                totalCollectionCount += gcBean.getCollectionCount();
+                totalCollectionTime += gcBean.getCollectionTime();
+                
+                gcList.add(gc);
+            }
+            
+            result.put("collectors", gcList);
+            result.put("totalCollectionCount", totalCollectionCount);
+            result.put("totalCollectionTime", totalCollectionTime);
+            result.put("averageCollectionTime", totalCollectionCount > 0 ? 
+                      (double) totalCollectionTime / totalCollectionCount : 0.0);
+            
+            // 内存池信息
+            List<MemoryPoolMXBean> memoryPools = ManagementFactory.getMemoryPoolMXBeans();
+            List<Map<String, Object>> poolList = new ArrayList<>();
+            
+            for (MemoryPoolMXBean pool : memoryPools) {
+                Map<String, Object> poolInfo = new HashMap<>();
+                poolInfo.put("name", pool.getName());
+                poolInfo.put("type", pool.getType().toString());
+                
+                MemoryUsage usage = pool.getUsage();
+                if (usage != null) {
+                    poolInfo.put("used", usage.getUsed());
+                    poolInfo.put("committed", usage.getCommitted());
+                    poolInfo.put("max", usage.getMax());
+                    poolInfo.put("init", usage.getInit());
+                    
+                    if (usage.getMax() > 0) {
+                        poolInfo.put("usage", Math.round((double) usage.getUsed() / usage.getMax() * 10000.0) / 100.0);
+                    } else {
+                        poolInfo.put("usage", 0.0);
+                    }
+                    
+                    poolInfo.put("usedFormatted", convertFileSize(usage.getUsed()));
+                    poolInfo.put("maxFormatted", usage.getMax() > 0 ? convertFileSize(usage.getMax()) : "N/A");
+                }
+                
+                poolList.add(poolInfo);
+            }
+            
+            result.put("memoryPools", poolList);
+            result.put("timestamp", System.currentTimeMillis());
+            
+            return result;
+            
+        } catch (Exception e) {
+            log.error("获取垃圾回收信息失败", e);
+            throw new Exception("获取垃圾回收信息失败: " + e.getMessage(), e);
         }
     }
 } 

@@ -1,31 +1,70 @@
 import { request } from '@/service/request';
 
-/** 获取系统监控信息 */
-export function fetchSystemMonitorInfo() {
-  return request.get<Api.SystemManage.MonitorInfo>('/system/monitor/info');
-}
+/**
+ * 获取系统监控信息
+ */
+export const getMonitorInfo = () => {
+  return request<any>({
+    url: '/system/monitor/info',
+    method: 'GET'
+  });
+};
 
-/** 系统健康检查 */
-export function fetchSystemHealthCheck() {
-  return request.get<Api.SystemManage.HealthCheck>('/system/monitor/health');
-}
+// 向后兼容的别名
+export const fetchSystemMonitorInfo = getMonitorInfo;
 
-/** 获取系统性能摘要 */
-export function fetchPerformanceSummary() {
-  return request.get<Record<string, any>>('/system/monitor/summary');
-}
+/**
+ * 获取系统资源使用情况
+ */
+export const getResourceUsage = () => {
+  return request<any>({
+    url: '/system/monitor/resources',
+    method: 'GET'
+  });
+};
 
-/** 获取系统告警信息 */
-export function fetchSystemAlerts(params?: {
+/**
+ * 获取系统告警信息
+ */
+export const getSystemAlerts = (params?: {
   cpuThreshold?: number;
   memoryThreshold?: number;
   diskThreshold?: number;
   jvmThreshold?: number;
-}) {
-  return request.get<Record<string, any>>('/system/monitor/alerts', { params });
-}
+}) => {
+  return request<any>({
+    url: '/system/monitor/alerts',
+    method: 'GET',
+    params
+  });
+};
 
-/** 获取系统运行时间统计 */
-export function fetchSystemUptime() {
-  return request.get<Record<string, any>>('/system/monitor/uptime');
-} 
+/**
+ * 获取系统性能总览
+ */
+export const getPerformanceOverview = () => {
+  return request<any>({
+    url: '/system/monitor/overview',
+    method: 'GET'
+  });
+};
+
+/**
+ * 获取进程信息
+ */
+export const getProcessInfo = () => {
+  return request<any>({
+    url: '/system/monitor/process',
+    method: 'GET'
+  });
+};
+
+/**
+ * 获取垃圾回收信息
+ */
+export const getGcInfo = () => {
+  return request<any>({
+    url: '/system/monitor/gc',
+    method: 'GET'
+  });
+}; 

@@ -6,21 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/horizontal-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/horizontal-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/horizontal-mix-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/horizontal-mix-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/reversed-horizontal-mix-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/reversed-horizontal-mix-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/vertical-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/vertical-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/vertical-mix-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/modules/global-menu/modules/vertical-mix-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/elegant/imports.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/elegant/imports.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/routes/builtin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/routes/builtin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/modules/route/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/modules/route/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/modules/route/shared.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/modules/route/shared.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/typings/app.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/typings/app.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/_builtin/iframe-page/[url].vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/_builtin/iframe-page/[url].vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/user-center/modules/user-profile-drawer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/user-center/modules/user-profile-drawer.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/RouteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/RouteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/system-monitor/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/system-monitor/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,25 +29,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/java-project/mars-admin/mars-admin-ui/src/assets/svg-icon&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\java-project\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/java-project/mars-admin/mars-admin-ui/src/assets/svg-icon",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "pnpm",
+    "show.migrate.to.gradle.popup": "false",
+    "ts.external.directory.path": "E:\\java-code4\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\java-project\mars-admin\mars-admin-ui\src\assets\svg-icon" />
@@ -67,8 +57,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -88,7 +78,8 @@
       <workItem from="1751009799022" duration="23000" />
       <workItem from="1751079527133" duration="11915000" />
       <workItem from="1751291243095" duration="1621000" />
-      <workItem from="1751448910106" duration="13764000" />
+      <workItem from="1751448910106" duration="9003000" />
+      <workItem from="1751684261402" duration="1114000" />
     </task>
     <servers />
   </component>

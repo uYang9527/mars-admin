@@ -20,7 +20,7 @@ import java.util.Map;
 public interface ISysMonitorService {
 
     /**
-     * 获取系统监控信息
+     * 获取系统监控信息（VO版本）
      *
      * @return SysMonitorVO 完整的系统监控信息
      * @throws Exception 获取信息异常
@@ -28,39 +28,45 @@ public interface ISysMonitorService {
     SysMonitorVO getMonitorInfo() throws Exception;
 
     /**
-     * 执行系统健康检查
-     * 
-     * @return HealthCheckVO 健康检查结果
-     * @throws Exception 健康检查异常
+     * 获取简化版系统监控信息（Map版本）
+     *
+     * @return Map<String, Object> 系统监控信息
+     * @throws Exception 获取信息异常
      */
-    HealthCheckVO performHealthCheck() throws Exception;
+    Map<String, Object> getSimpleMonitorInfo() throws Exception;
 
     /**
-     * 获取系统性能摘要
-     * 
-     * @return Map<String, Object> 性能摘要数据
-     * @throws Exception 获取摘要异常
+     * 获取系统资源使用情况
+     *
+     * @return Map<String, Object> 系统资源使用情况
+     * @throws Exception 获取资源使用情况异常
      */
-    Map<String, Object> getPerformanceSummary() throws Exception;
+    Map<String, Object> getResourceUsage() throws Exception;
 
     /**
-     * 检查系统告警
+     * 获取系统告警信息
      * 
      * @param cpuThreshold CPU使用率阈值
-     * @param memoryThreshold 内存使用率阈值  
+     * @param memoryThreshold 内存使用率阈值
      * @param diskThreshold 磁盘使用率阈值
      * @param jvmThreshold JVM堆内存使用率阈值
-     * @return Map<String, Object> 告警信息
-     * @throws Exception 检查告警异常
+     * @return 告警信息
      */
-    Map<String, Object> checkSystemAlerts(Double cpuThreshold, Double memoryThreshold, 
-                                         Double diskThreshold, Double jvmThreshold) throws Exception;
+    Map<String, Object> getSystemAlerts(Double cpuThreshold, Double memoryThreshold, 
+                                       Double diskThreshold, Double jvmThreshold) throws Exception;
 
     /**
-     * 获取系统运行时间统计
-     * 
-     * @return Map<String, Object> 运行时间统计
-     * @throws Exception 获取统计异常
+     * 获取系统性能总览
      */
-    Map<String, Object> getSystemUptime() throws Exception;
+    Map<String, Object> getPerformanceOverview() throws Exception;
+
+    /**
+     * 获取进程信息
+     */
+    Map<String, Object> getProcessInfo() throws Exception;
+
+    /**
+     * 获取垃圾回收信息
+     */
+    Map<String, Object> getGcInfo() throws Exception;
 } 
