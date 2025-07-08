@@ -403,6 +403,10 @@ INSERT INTO `sys_menu` VALUES (30304, 303, '配置查询', 'OSS_COMFIG_QUERY', '
 INSERT INTO `sys_menu` VALUES (30305, 303, '配置测试', 'OSS_COMFIG_TEST', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:test', '', 5, 0, 'OSS配置测试权限', '2025-07-01 20:04:43', '2025-07-01 20:23:54', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30306, 0, '组织管理', 'org', 'M', 'org', '/org', '', '', NULL, 1, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:46:07', '2025-07-03 15:46:07', 1, NULL, 0, NULL);
 
+INSERT INTO `mars_admin`.`sys_menu` (`id`, `parent_id`, `menu_name`, `menu_code`, `menu_type`, `route_name`, `route_path`, `component`, `redirect`, `query_param`, `is_frame`, `is_cache`, `menu_type_flag`, `visible`, `status`, `perms`, `icon`, `order_num`, `is_system`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `is_deleted`, `delete_time`) VALUES (30307, 0, '系统运维', 'maintenance', 'M', 'maintenance', '/maintenance', '', '', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:59:01', '2025-07-03 15:59:01', 1, NULL, 0, NULL);
+INSERT INTO `mars_admin`.`sys_menu` (`id`, `parent_id`, `menu_name`, `menu_code`, `menu_type`, `route_name`, `route_path`, `component`, `redirect`, `query_param`, `is_frame`, `is_cache`, `menu_type_flag`, `visible`, `status`, `perms`, `icon`, `order_num`, `is_system`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `is_deleted`, `delete_time`) VALUES (30308, 30307, '连接监控', 'mysqlconn', 'C', 'mysqlconn', 'http://localhost:8080/druid/index.html', '', 'http://localhost:8080/druid/index.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-04 16:53:55', 1, NULL, 0, NULL);
+
+
 -- ----------------------------
 -- Table structure for sys_oper_log
 -- ----------------------------
