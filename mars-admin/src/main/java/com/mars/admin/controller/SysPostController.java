@@ -10,6 +10,7 @@ import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/post")
 @Tag(name = "系统岗位管理", description = "系统岗位管理相关接口")
+@AllArgsConstructor
 public class SysPostController extends BaseController<SysPost, Long> {
 
-    @Autowired
-    private ISysPostService sysPostService;
+    private final ISysPostService sysPostService;
 
     // 继承BaseController后自动拥有基础的增删改查功能：
     // GET    /system/post/list           - 获取所有岗位
