@@ -20,7 +20,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@MapperScan("com.mars.admin.mapper")
+@MapperScan(basePackages = "com.mars.admin.mapper", 
+           annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class MyBatisFlexConfiguration {
 
     public MyBatisFlexConfiguration() {

@@ -1,5 +1,6 @@
 package com.mars.admin.framework.anno;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,5 +15,6 @@ import java.lang.annotation.*;
 @EnableCaching
 @SpringBootApplication
 @EnableConfigurationProperties
+@MapperScan("com.mars.admin.mapper")
 public @interface MarsAdminStarter {
 }

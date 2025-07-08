@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SnailJobConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/job/TestAnnoJobExecutor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/MarsAdminStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/MarsAdminStarter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/MyBatisFlexConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/MyBatisFlexConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
