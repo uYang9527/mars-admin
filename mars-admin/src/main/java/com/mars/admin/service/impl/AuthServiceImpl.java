@@ -10,6 +10,9 @@ import com.mars.admin.entity.SysDept;
 import com.mars.admin.entity.SysPost;
 import com.mars.admin.entity.SysMenu;
 import com.mars.admin.framework.exception.BusinessException;
+import com.mars.admin.framework.strategy.LoginStrategyFactory;
+import com.mars.admin.framework.strategy.LoginStrategy;
+import com.mars.admin.framework.strategy.impl.AppLoginStrategy;
 import com.mars.admin.mapper.SysUserMapper;
 import com.mars.admin.service.IAuthService;
 import com.mars.admin.service.ISysLoginInfoService;
@@ -17,6 +20,7 @@ import com.mars.admin.service.ISysRoleService;
 import com.mars.admin.service.ISysDeptService;
 import com.mars.admin.service.ISysPostService;
 import com.mars.admin.service.ISysMenuService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,31 +45,37 @@ import com.mybatisflex.core.query.QueryWrapper;
  */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class AuthServiceImpl implements IAuthService {
 
-    @Autowired
-    private SysUserMapper sysUserMapper;
+    private final SysUserMapper sysUserMapper;
 
-    @Autowired
-    private ISysLoginInfoService sysLoginInfoService;
+    private final ISysLoginInfoService sysLoginInfoService;
 
-    @Autowired
-    private ISysRoleService sysRoleService;
+    private final ISysRoleService sysRoleService;
 
-    @Autowired
-    private ISysDeptService sysDeptService;
+    private final ISysDeptService sysDeptService;
 
-    @Autowired
-    private ISysPostService sysPostService;
+    private final ISysPostService sysPostService;
 
-    @Autowired
-    private ISysMenuService sysMenuService;
+    private final ISysMenuService sysMenuService;
 
-    @Autowired(required = false)
-    private HttpServletRequest request;
+    private final LoginStrategyFactory loginStrategyFactory;
+
+    private final HttpServletRequest request;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        // 使用策略工厂进行多端登录
+        LoginStrategy strategy = loginStrategyFactory.getStrategy(loginRequest.getLoginType());
+        return strategy.login(loginRequest);
+    }
+
+    /**
+     * 原有的PC登录逻辑（保留作为备份）
+     */
+    @Deprecated
+    public LoginResponse oldLogin(LoginRequest loginRequest) {
         // 1. 参数校验
         if (loginRequest == null || !StringUtils.hasText(loginRequest.getUsername()) || !StringUtils.hasText(loginRequest.getPassword())) {
             throw BusinessException.of("用户名或密码不能为空");
@@ -624,7 +634,7 @@ public class AuthServiceImpl implements IAuthService {
             updateUser.setPasswordUpdateTime(LocalDateTime.now());
 
             int updateCount = sysUserMapper.update(updateUser);
-            
+
             if (updateCount > 0) {
                 log.info("用户密码修改成功，用户ID：{}", userId);
                 return true;
@@ -635,6 +645,18 @@ public class AuthServiceImpl implements IAuthService {
 
         } catch (Exception e) {
             log.error("修改密码失败，用户ID：{}，错误信息：{}", userId, e.getMessage(), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean sendCaptcha(String mobile) {
+        // 委托给APP登录策略处理验证码发送
+        try {
+            AppLoginStrategy appLoginStrategy = (AppLoginStrategy) loginStrategyFactory.getStrategy("app");
+            return appLoginStrategy.sendCaptcha(mobile);
+        } catch (Exception e) {
+            log.error("发送验证码失败", e);
             return false;
         }
     }

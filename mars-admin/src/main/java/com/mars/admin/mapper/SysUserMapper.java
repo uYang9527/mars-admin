@@ -43,6 +43,15 @@ public interface SysUserMapper extends BasePlusMapper<SysUser> {
     SysUser selectByPhone(@Param("phone") String phone);
 
     /**
+     * 根据微信OpenId查询用户
+     *
+     * @param openId 微信OpenId
+     * @return 用户信息
+     */
+    @Select("SELECT * FROM sys_user WHERE open_id = #{openId} AND is_deleted = 0")
+    SysUser selectByOpenId(@Param("openId") String openId);
+
+    /**
      * 查询用户详情（包含角色、部门、岗位信息）
      *
      * @param userId 用户ID

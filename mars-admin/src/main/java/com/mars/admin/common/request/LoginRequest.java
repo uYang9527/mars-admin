@@ -16,14 +16,37 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 public class LoginRequest {
 
-    @Schema(description = "用户名", example = "admin", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "用户名不能为空")
+    @Schema(description = "登录类型", example = "pc", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "登录类型不能为空")
+    private String loginType = "pc";
+
+    @Schema(description = "用户名", example = "admin")
     private String username;
 
-    @Schema(description = "密码", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "密码不能为空")
+    @Schema(description = "密码", example = "123456")
     private String password;
+
+    @Schema(description = "手机号", example = "13800138000")
+    private String mobile;
+
+    @Schema(description = "验证码", example = "1234")
+    private String captcha;
+
+    @Schema(description = "微信小程序code", example = "wx_code_123")
+    private String wxCode;
+
+    @Schema(description = "微信小程序用户信息", example = "{}")
+    private String wxUserInfo;
+
+    @Schema(description = "APP设备ID", example = "device_123")
+    private String deviceId;
+
+    @Schema(description = "APP推送token", example = "push_token_123")
+    private String pushToken;
 
     @Schema(description = "记住我", example = "false")
     private Boolean rememberMe = false;
+
+    @Schema(description = "客户端信息", example = "iOS 15.0")
+    private String clientInfo;
 } 

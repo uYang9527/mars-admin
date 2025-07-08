@@ -4,6 +4,8 @@ import com.mars.admin.entity.SysUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * 登录响应DTO
  *
@@ -24,8 +26,14 @@ public class LoginResponse {
     @Schema(description = "过期时间（秒）", example = "2592000")
     private Long expiresIn;
 
+    @Schema(description = "登录类型", example = "pc")
+    private String loginType;
+
     @Schema(description = "用户信息")
     private SysUser userInfo;
+
+    @Schema(description = "扩展信息")
+    private Map<String, Object> extraInfo;
 
     public LoginResponse() {}
 
@@ -33,5 +41,13 @@ public class LoginResponse {
         this.token = token;
         this.expiresIn = expiresIn;
         this.userInfo = userInfo;
+    }
+
+    public LoginResponse(String token, Long expiresIn, String loginType, SysUser userInfo, Map<String, Object> extraInfo) {
+        this.token = token;
+        this.expiresIn = expiresIn;
+        this.loginType = loginType;
+        this.userInfo = userInfo;
+        this.extraInfo = extraInfo;
     }
 } 

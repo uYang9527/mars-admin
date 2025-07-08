@@ -14,7 +14,7 @@ import com.mars.admin.entity.SysUser;
 public interface IAuthService {
 
     /**
-     * 用户登录
+     * 多端统一登录
      *
      * @param loginRequest 登录请求
      * @return 登录响应
@@ -51,4 +51,12 @@ public interface IAuthService {
      * @return 是否成功
      */
     boolean changePassword(Long userId, String oldPassword, String newPassword);
+
+    /**
+     * 发送验证码（APP登录使用）
+     *
+     * @param mobile 手机号
+     * @return 是否发送成功
+     */
+    boolean sendCaptcha(String mobile);
 } 

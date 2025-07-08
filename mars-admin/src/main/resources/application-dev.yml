@@ -199,6 +199,12 @@ sql-log:
   username: admin
   password: admin
 
+# 微信小程序配置
+wechat:
+  miniprogram:
+    appid: your_miniprogram_appid
+    secret: your_miniprogram_secret
+
 # 文件上传配置
 file:
   upload:

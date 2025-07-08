@@ -45,9 +45,9 @@ public class AuthController {
     private ISysUserService sysUserService;
 
     /**
-     * 用户登录
+     * 多端统一登录
      */
-    @Operation(summary = "用户登录", description = "用户账号密码登录接口")
+    @Operation(summary = "多端统一登录", description = "支持PC、小程序、APP多端登录")
     @PostMapping("/login")
     public Result<LoginResponse> login(@Parameter(description = "登录请求", required = true)
                                        @Validated @RequestBody LoginRequest loginRequest) {
@@ -281,6 +281,22 @@ public class AuthController {
             return Result.success("密码修改成功");
         } else {
             return Result.error("密码修改失败，请检查原密码是否正确");
+        }
+    }
+
+    /**
+     * 发送验证码
+     */
+    @Operation(summary = "发送验证码", description = "发送短信验证码到手机号")
+    @PostMapping("/sendCaptcha")
+    public Result<String> sendCaptcha(@Parameter(description = "手机号", required = true)
+                                      @RequestParam String mobile) {
+        boolean success = authService.sendCaptcha(mobile);
+        
+        if (success) {
+            return Result.success("验证码发送成功");
+        } else {
+            return Result.error("验证码发送失败");
         }
     }
 } 

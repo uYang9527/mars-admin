@@ -57,6 +57,10 @@ public class SysUser extends BaseEntity {
     @ColumnMask(Masks.MOBILE)
     private String phone;
 
+    @Schema(description = "微信OpenId")
+    @Column("open_id")
+    private String openId;
+
     @Schema(description = "头像URL")
     @Column("avatar")
     private String avatar;
