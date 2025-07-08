@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * 基础实体类
  * 包含公共字段：创建时间、更新时间、创建人、更新人、删除标记、删除时间
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

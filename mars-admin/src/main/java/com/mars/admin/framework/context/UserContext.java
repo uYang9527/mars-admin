@@ -6,7 +6,7 @@ import cn.dev33.satoken.stp.StpUtil;
  * 用户上下文工具类
  * 用于获取当前登录用户信息
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

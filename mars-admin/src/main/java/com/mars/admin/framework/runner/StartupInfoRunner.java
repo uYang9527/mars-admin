@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 /**
  * 应用启动完成后打印系统信息
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-01-16
  */

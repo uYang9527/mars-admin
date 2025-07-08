@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
  * 角色实体类
  * 继承BaseEntity，自动拥有公共字段和自动填充功能
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

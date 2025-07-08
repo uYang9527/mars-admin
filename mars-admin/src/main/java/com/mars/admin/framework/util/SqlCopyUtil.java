@@ -10,7 +10,7 @@ import java.awt.datatransfer.StringSelection;
  * SQL复制工具类
  * 提供SQL格式化和复制到剪贴板功能
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

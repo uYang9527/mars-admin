@@ -39,7 +39,7 @@ import java.util.concurrent.CompletableFuture;
  * 自动处理标注了@OperationLog注解的方法
  * 支持异步落库，提高性能
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

@@ -5,7 +5,7 @@ import com.mars.admin.entity.User;
 /**
  * 用户服务接口
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

@@ -14,7 +14,7 @@ import java.util.List;
  * Sa-Token权限接口实现类
  * 用于告诉Sa-Token当前用户具有哪些权限和角色
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

@@ -12,7 +12,7 @@ import java.util.List;
  * 在 MyBatis-Flex 的 BaseMapper 基础上提供更多便捷方法
  *
  * @param <T> 实体类型
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

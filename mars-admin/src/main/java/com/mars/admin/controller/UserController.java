@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 用户控制器
  * 继承 BaseController 自动获得完整的增删改查功能
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

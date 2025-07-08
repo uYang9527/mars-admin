@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 登录响应DTO
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

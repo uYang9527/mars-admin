@@ -24,7 +24,7 @@ import java.io.ObjectInputStream;
  * Redis配置类
  * 配置RedisTemplate，确保与SaToken兼容
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */

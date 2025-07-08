@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 用户数据访问层
  * 继承 BasePlusMapper 获得更多便捷方法
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

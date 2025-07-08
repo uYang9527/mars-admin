@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * 系统信息打印器（在StartupInfoRunner之后执行）
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-01-16
  */

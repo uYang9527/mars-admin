@@ -16,7 +16,7 @@ import java.util.List;
  * SaToken 配置类
  * 实现Token验证：用户登录后Token存入Redis，访问接口时Header必须携带Token
  *
- * @author 程序员Mars
+ * @author 【全栈学习关注公众号：程序员Mars】
  * @version 1.0
  * @date 2025-07-05
  */
