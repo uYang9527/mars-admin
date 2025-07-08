@@ -70,25 +70,36 @@ public class StartupInfoRunner implements ApplicationRunner {
             System.out.printf("🌐 本地访问地址: http://localhost:%s%s%n", port, contextPathStr);
             System.out.printf("🌐 外部访问地址: http://%s:%s%s%n", hostAddress, port, contextPathStr);
             
-            // 根据模式显示详细信息
+                        // 根据模式显示详细信息
             if ("full".equals(infoMode)) {
                 System.out.println();
-                System.out.println("📚 接口文档地址:");
-                System.out.printf("   ├─ Knife4j文档:  http://localhost:%s%sdoc.html%n", port, contextPathStr);
-                System.out.printf("   ├─ Swagger文档:  http://localhost:%s%sswagger-ui.html%n", port, contextPathStr);
-                System.out.printf("   └─ OpenAPI规范:  http://localhost:%s%sv3/api-docs%n", port, contextPathStr);
                 
-                System.out.println();
+                // 只在非生产环境显示接口文档
+                if (!"prod".equals(activeProfile)) {
+                    System.out.println("📚 接口文档地址:");
+                    System.out.printf("   ├─ Knife4j文档:  http://localhost:%s%sdoc.html%n", port, contextPathStr);
+                    System.out.printf("   ├─ Swagger文档:  http://localhost:%s%sswagger-ui.html%n", port, contextPathStr);
+                    System.out.printf("   └─ OpenAPI规范:  http://localhost:%s%sv3/api-docs%n", port, contextPathStr);
+                    System.out.println();
+                }
+                
                 System.out.println("🔧 系统监控地址:");
                 System.out.printf("   ├─ Druid监控:    http://localhost:%s%sdruid%n", port, contextPathStr);
-                System.out.printf("   └─ SQL日志:      http://localhost:%s%ssqlLog.html%n", port, contextPathStr);
+                if (!"prod".equals(activeProfile)) {
+                    System.out.printf("   └─ SQL日志:      http://localhost:%s%ssqlLog.html%n", port, contextPathStr);
+                } else {
+                    System.out.println("   └─ 生产环境已禁用SQL日志访问");
+                }
 
-
+                
                 System.out.println();
                 System.out.println("==================================================================================");
             } else if ("simple".equals(infoMode)) {
                 System.out.println();
-                System.out.printf("📚 接口文档:     http://localhost:%s%sdoc.html%n", port, contextPathStr);
+                // 只在非生产环境显示接口文档
+                if (!"prod".equals(activeProfile)) {
+                    System.out.printf("📚 接口文档:     http://localhost:%s%sdoc.html%n", port, contextPathStr);
+                }
                 System.out.printf("🔧 监控面板:     http://localhost:%s%sdruid%n", port, contextPathStr);
                 System.out.println("==================================================================================");
             }

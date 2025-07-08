@@ -85,7 +85,7 @@ spring:
         await-termination: true
         await-termination-period: 30s
 
-# SpringDoc OpenAPI 3 配置 (替代Swagger 2)
+# SpringDoc OpenAPI 3 配置 (替代Swagger 2) - 开发环境启用
 springdoc:
   api-docs:
     enabled: true
@@ -97,7 +97,7 @@ springdoc:
     tags-sorter: alpha
   show-actuator: true
 
-# Knife4j配置 (OpenAPI 3 版本)
+# Knife4j配置 (OpenAPI 3 版本) - 开发环境启用
 knife4j:
   enable: true
   setting:
