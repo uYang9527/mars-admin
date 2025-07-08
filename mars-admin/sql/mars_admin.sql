@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 08/07/2025 11:59:02
+ Date: 08/07/2025 12:01:03
 */
 
 SET NAMES utf8mb4;
@@ -180,7 +180,7 @@ CREATE TABLE `sys_logininfor`  (
   INDEX `idx_user_name`(`user_name` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 127 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 128 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -311,6 +311,7 @@ INSERT INTO `sys_logininfor` VALUES (123, 'admin', '0:0:0:0:0:0:0:1', '内网IP'
 INSERT INTO `sys_logininfor` VALUES (124, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:52:34');
 INSERT INTO `sys_logininfor` VALUES (125, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:54:26');
 INSERT INTO `sys_logininfor` VALUES (126, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:58:15');
+INSERT INTO `sys_logininfor` VALUES (127, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 12:00:39');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -422,7 +423,7 @@ INSERT INTO `sys_menu` VALUES (30302, 303, '配置编辑', 'OSS_COMFIG_EDIT', 'F
 INSERT INTO `sys_menu` VALUES (30303, 303, '配置删除', 'OSS_COMFIG_REMOVE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:remove', '', 3, 0, 'OSS配置删除权限', '2025-07-01 20:04:43', '2025-07-01 20:24:05', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30304, 303, '配置查询', 'OSS_COMFIG_QUERY', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:query', '', 4, 0, 'OSS配置查询权限', '2025-07-01 20:04:43', '2025-07-01 20:24:00', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30305, 303, '配置测试', 'OSS_COMFIG_TEST', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:test', '', 5, 0, 'OSS配置测试权限', '2025-07-01 20:04:43', '2025-07-01 20:23:54', 1, 1, 0, NULL);
-INSERT INTO `sys_menu` VALUES (30306, 0, '组织管理', 'org', 'M', 'org', '/org', '', '', NULL, 1, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:46:07', '2025-07-03 15:46:07', 1, NULL, 0, NULL);
+INSERT INTO `sys_menu` VALUES (30306, 0, '组织管理', 'org', 'M', 'org', '/org', '', '', NULL, 1, 0, '', 1, 1, '', '', 3, 0, NULL, '2025-07-03 15:46:07', '2025-07-08 12:00:33', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30307, 0, '系统运维', 'maintenance', 'M', 'maintenance', '/maintenance', '', '', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:59:01', '2025-07-08 11:50:10', 1, NULL, 1, '2025-07-08 11:50:10');
 INSERT INTO `sys_menu` VALUES (30308, 2, '连接监控', 'mysqlconn', 'C', 'mysqlconn', 'http://localhost:8080/druid/index.html', '', 'http://localhost:8080/druid/index.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-08 11:54:15', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30309, 2, '接口文档', 'apidoc', 'C', 'apidoc', 'http://localhost:8080/doc.html', '', 'http://localhost:8080/doc.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-08 11:54:15', 1, 1, 0, NULL);
@@ -453,7 +454,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_business_type`(`business_type` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_oper_time`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -490,6 +491,7 @@ INSERT INTO `sys_oper_log` VALUES (29, '菜单管理', 2, 'com.mars.admin.contro
 INSERT INTO `sys_oper_log` VALUES (30, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751946526468,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:48:46', 9);
 INSERT INTO `sys_oper_log` VALUES (31, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-08 11:49:54\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":200,\"message\":\"修改成功\",\"data\":null,\"timestamp\":1751946594489,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:49:54', 47);
 INSERT INTO `sys_oper_log` VALUES (32, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.deleteById()', 'DELETE', 1, 'admin', '未知部门', '/system/menu/30307', '127.0.0.1', NULL, '{\"id\":30307} | 描述: 删除菜单', '{\"code\":200,\"message\":\"删除成功\",\"data\":null,\"timestamp\":1751946610859,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:50:10', 12);
+INSERT INTO `sys_oper_log` VALUES (33, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 15:46:07\",\"updateTime\":\"2025-07-08 12:00:33\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":30306,\"parentId\":0,\"menuName\":\"组织管理\",\"menuCode\":\"org\",\"menuType\":\"M\",\"routeName\":\"org\",\"routePath\":\"/org\",\"component\":\"\",\"redirect\":\"\",\"queryParam\":null,\"isFrame\":1,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":3,\"isSystem\":0,\"remark\":null,\"children\":[{\"createTime\":\"2025-06-25 16:34:16\",\"updateTime\":\"2025-07-03 15:46:42\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":103,\"parentId\":30306,\"menuName\":\"部门管理\",\"menuCode\":\"DEPT_MANAGE\",\"menuType\":\"C\",\"routeName\":\"manage_dept\",\"routePath\":\"/manage/dept\",\"component\":\"view.manage_dept\",\"redirect\":null,\"queryParam\":null,\"isFrame\":1,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"system:dept:list\",\"icon\":\"tree\",\"orderNum\":4,\"isSystem\":1,\"remark\":null,\"children\":[],\"parentName\":null},{\"createTime\":\"2025-06-25 16:34:16\",\"updateTime\":\"2025-07-03 15:46:58\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":104,\"parentId\":30306,\"menuName\":\"岗位管理\",\"menuCode\":\"POST_MANAGE\",\"menuType\":\"C\",\"routeName\":\"manage_post\",\"routePath\":\"/manage/post\",\"component\":\"view.manage_post\",\"redirect\":null,\"queryParam\":null,\"isFrame\":1,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"system:post:list\",\"icon\":\"post\",\"orderNum\":5,\"isSystem\":1,\"remark\":null,\"children\":[],\"parentName\":null}],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":200,\"message\":\"修改成功\",\"data\":null,\"timestamp\":1751947233286,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 12:00:33', 8);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -789,7 +791,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 121, '2025-07-08 11:58:16', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-08 11:58:15', 1, 1, 0, NULL);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 122, '2025-07-08 12:00:39', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-08 12:00:39', 1, 1, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_dept
