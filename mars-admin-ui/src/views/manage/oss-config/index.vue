@@ -225,24 +225,33 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <StorageConfigSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
 
-    <!-- 操作按钮 -->
-    <ACard :bordered="false" class="card-wrapper">
-      <div class="flex gap-12px">
-        <AButton type="primary" @click="handleAdd">新增存储配置</AButton>
-        <AButton type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
-          批量删除
-        </AButton>
-        <AButton type="primary" ghost @click="refreshOssConfigCache">
-          <template #icon>
-            <icon-mdi-cached class="align-sub text-icon"/>
-          </template>
-          <span class="ml-8px">刷新缓存</span>
-        </AButton>
-      </div>
-    </ACard>
+
 
     <!-- 存储配置列表 -->
-    <ACard title="存储配置列表" :bordered="false" class="flex-1-hidden card-wrapper">
+    <ACard :bordered="false" class="flex-1-hidden card-wrapper">
+      <!-- 自定义标题插槽 -->
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span class="text-base font-medium">存储配置列表</span>
+          <div class="flex gap-12px flex-wrap">
+            <AButton type="primary" @click="handleAdd">
+              <template #icon>
+                <icon-ic-round-add class="align-sub text-icon" />
+              </template>
+              新增存储配置</AButton>
+            <AButton type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+              批量删除
+            </AButton>
+            <AButton type="primary" ghost @click="refreshOssConfigCache">
+              <template #icon>
+                <icon-mdi-cached class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">刷新缓存</span>
+            </AButton>
+          </div>
+        </div>
+      </template>
+
       <ATable
         :columns="columns"
         :data-source="data"
@@ -256,6 +265,7 @@ function handleTableChange(paginationInfo: any) {
         class="h-full"
       />
     </ACard>
+
 
     <!-- 配置操作抽屉 -->
     <StorageConfigOperateDrawer

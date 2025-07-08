@@ -53,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex-col-stretch gap-20px overflow-auto p-4px">
+  <div class="flex-col-stretch gap-20px overflow-auto p-10px">
     <!-- 欢迎横幅 -->
     <div class="relative overflow-hidden">
       <!-- 背景装饰 -->

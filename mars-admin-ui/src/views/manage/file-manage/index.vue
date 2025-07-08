@@ -265,18 +265,25 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <FileSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
 
-    <!-- 操作按钮 -->
-    <ACard :bordered="false" class="card-wrapper">
-      <div class="flex gap-12px">
-        <Button type="primary" @click="showUploadDrawer">上传文件</Button>
-        <Button type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
-          批量删除
-        </Button>
-      </div>
-    </ACard>
 
-    <!-- 文件列表 -->
-    <ACard title="文件列表" :bordered="false" class="flex-1-hidden card-wrapper">
+    <ACard :bordered="false" class="flex-1-hidden card-wrapper">
+      <!-- 自定义标题插槽 -->
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span class="text-base font-medium">文件列表</span>
+          <div class="flex gap-12px flex-wrap">
+            <Button type="primary" @click="showUploadDrawer">
+              <template #icon>
+                <icon-ic-round-upload class="align-sub text-icon" />
+              </template>
+              上传文件</Button>
+            <Button type="primary" ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+              批量删除
+            </Button>
+          </div>
+        </div>
+      </template>
+
       <ATable
         :columns="columns"
         :data-source="data"
@@ -290,6 +297,7 @@ function handleTableChange(paginationInfo: any) {
         @change="handleTableChange"
       />
     </ACard>
+
 
     <!-- 文件上传抽屉 -->
     <FileUploadDrawer v-model:visible="uploadVisible" @uploaded="getData"/>
