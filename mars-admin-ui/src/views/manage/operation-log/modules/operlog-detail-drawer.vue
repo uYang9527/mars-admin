@@ -148,14 +148,12 @@ function getBusinessTypeText(type?: number): string {
 
 <style scoped>
 .label {
-  @apply text-sm font-medium text-gray-600 w-100px flex-shrink-0;
+  @apply text-sm font-medium w-100px flex-shrink-0;
+  @apply text-gray-600 dark:text-gray-300;
 }
 
 .value {
-  @apply text-sm text-gray-900 flex-1;
-}
-
-.text-break {
-  word-break: break-all;
+  @apply text-sm flex-1;
+  @apply text-gray-900 dark:text-gray-100;
 }
 </style>
