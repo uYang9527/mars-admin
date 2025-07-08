@@ -213,7 +213,7 @@ public class OperationLogAspect {
         // 处理操作描述（支持SpEL表达式）
         if (!operationLog.description().isEmpty()) {
             try {
-                String description = parseSpelExpression(operationLog.description(), joinPoint, result);
+                String description = operationLog.description();
                 if (logData.operParam != null && !logData.operParam.isEmpty()) {
                     logData.operParam = logData.operParam + " | 描述: " + description;
                 } else {

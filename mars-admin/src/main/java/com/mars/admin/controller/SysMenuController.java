@@ -9,6 +9,7 @@ import com.mars.admin.service.ISysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -110,7 +111,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @Operation(summary = "根据ID删除菜单", description = "根据主键ID删除菜单及关联数据")
     @DeleteMapping("/{id}")
     @OperationLog(title = "菜单管理", businessType = BusinessType.DELETE, 
-                  description = "删除菜单，菜单ID：#{#id}")
+                  description = "删除菜单")
     @Override
     public Result<Boolean> deleteById(@Parameter(description = "主键ID", required = true) @PathVariable Long id) {
         // 检查是否有子菜单
@@ -131,7 +132,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @Operation(summary = "批量删除菜单", description = "根据ID列表批量删除菜单及关联数据")
     @DeleteMapping("/batch")
     @OperationLog(title = "菜单管理", businessType = BusinessType.DELETE, 
-                  description = "批量删除菜单，ID列表：#{#ids}")
+                  description = "批量删除菜单")
     public Result<Boolean> deleteBatch(@Parameter(description = "ID列表", required = true) @RequestBody List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return Result.error("ID列表不能为空");
@@ -167,7 +168,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @PostMapping
     @Operation(summary = "新增菜单", description = "新增菜单信息")
     @OperationLog(title = "菜单管理", businessType = BusinessType.INSERT, 
-                  description = "新增菜单：#{#entity.menuName}")
+                  description = "新增菜单")
     @Override
     public Result<Boolean> save(@RequestBody SysMenu entity) {
         // 校验菜单编码是否唯一
@@ -175,7 +176,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
             return Result.error("菜单编码已存在，请重新输入");
         }
         // 校验权限标识是否唯一
-        if (entity.getPerms() != null && !sysMenuService.checkPermsUnique(entity.getPerms(), null)) {
+        if (StringUtils.isNotEmpty(entity.getPerms()) && !sysMenuService.checkPermsUnique(entity.getPerms(), null)) {
             return Result.error("权限标识已存在，请重新输入");
         }
         boolean success = sysMenuService.insertMenu(entity);
@@ -188,7 +189,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
     @PutMapping
     @Operation(summary = "修改菜单", description = "修改菜单信息")
     @OperationLog(title = "菜单管理", businessType = BusinessType.UPDATE, 
-                  description = "修改菜单：#{#entity.menuName}")
+                  description = "修改菜单")
     @Override
     public Result<Boolean> update(@RequestBody SysMenu entity) {
         // 校验菜单编码是否唯一
@@ -196,7 +197,7 @@ public class SysMenuController extends BaseController<SysMenu, Long> {
             return Result.error("菜单编码已存在，请重新输入");
         }
         // 校验权限标识是否唯一
-        if (entity.getPerms() != null && !sysMenuService.checkPermsUnique(entity.getPerms(), entity.getId())) {
+        if (StringUtils.isNotEmpty(entity.getPerms()) && !sysMenuService.checkPermsUnique(entity.getPerms(), entity.getId())) {
             return Result.error("权限标识已存在，请重新输入");
         }
         boolean success = sysMenuService.updateMenu(entity);

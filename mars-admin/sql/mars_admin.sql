@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
- Source Server         : qiu
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80036 (8.0.36)
+ Source Server Version : 80042 (8.0.42)
  Source Host           : localhost:3306
  Source Schema         : mars_admin
 
  Target Server Type    : MySQL
- Target Server Version : 80036 (8.0.36)
+ Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 04/07/2025 17:07:35
+ Date: 08/07/2025 11:59:02
 */
 
 SET NAMES utf8mb4;
@@ -180,7 +180,7 @@ CREATE TABLE `sys_logininfor`  (
   INDEX `idx_user_name`(`user_name` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 127 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -304,6 +304,13 @@ INSERT INTO `sys_logininfor` VALUES (116, 'admin', '0:0:0:0:0:0:0:1', '内网IP'
 INSERT INTO `sys_logininfor` VALUES (117, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 14:43:37');
 INSERT INTO `sys_logininfor` VALUES (118, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 15:57:49');
 INSERT INTO `sys_logininfor` VALUES (119, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-04 16:55:58');
+INSERT INTO `sys_logininfor` VALUES (120, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:25:55');
+INSERT INTO `sys_logininfor` VALUES (121, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:31:28');
+INSERT INTO `sys_logininfor` VALUES (122, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:33:37');
+INSERT INTO `sys_logininfor` VALUES (123, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:50:33');
+INSERT INTO `sys_logininfor` VALUES (124, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:52:34');
+INSERT INTO `sys_logininfor` VALUES (125, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:54:26');
+INSERT INTO `sys_logininfor` VALUES (126, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 11:58:15');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -344,13 +351,13 @@ CREATE TABLE `sys_menu`  (
   INDEX `idx_visible`(`visible` ASC) USING BTREE,
   INDEX `idx_order_num`(`order_num` ASC) USING BTREE,
   INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 30307 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 30310 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, 0, '系统管理', 'SYSTEM', 'M', 'manage', '/manage', 'layout.base', NULL, NULL, 1, 0, '', 1, 1, '', 'system', 1, 1, NULL, '2025-06-25 16:34:16', '2025-06-26 15:01:07', 1, NULL, 0, NULL);
-INSERT INTO `sys_menu` VALUES (2, 0, '系统监控', 'MONITOR', 'M', 'monitor', '/monitor', 'layout.base', NULL, NULL, 1, 0, '', 1, 1, '', 'monitor', 2, 1, NULL, '2025-06-25 16:34:16', '2025-06-26 15:02:57', 1, NULL, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2, 0, '系统运维', 'MONITOR', 'M', 'monitor', '/monitor', 'layout.base', NULL, NULL, 1, 0, '', 1, 1, '', 'monitor', 2, 1, NULL, '2025-06-25 16:34:16', '2025-07-08 11:50:22', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (3, 0, '系统工具', 'TOOL', 'M', 'tool', '/tool', 'layout.base', NULL, NULL, 1, 0, '', 1, 1, '', 'tool', 3, 1, NULL, '2025-06-25 16:34:16', '2025-06-26 15:03:19', 1, NULL, 0, NULL);
 INSERT INTO `sys_menu` VALUES (100, 1018, '用户列表', 'USER_MANAGE', 'C', 'manage_user', '/manage/user', 'view.manage_user', NULL, NULL, 1, 0, '', 1, 1, 'system:user:list', 'user', 1, 1, NULL, '2025-06-25 16:34:16', '2025-07-01 18:25:39', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (101, 1017, '角色管理', 'ROLE_MANAGE', 'C', 'manage_role', '/manage/role', 'view.manage_role', NULL, NULL, 1, 0, '', 1, 1, 'system:role:list', 'peoples', 2, 1, NULL, '2025-06-25 16:34:16', '2025-06-30 21:54:17', 1, NULL, 0, NULL);
@@ -392,6 +399,20 @@ INSERT INTO `sys_menu` VALUES (1081, 108, '缓存详情查看', 'CACHE_DETAIL_VI
 INSERT INTO `sys_menu` VALUES (1082, 108, '缓存删除', 'CACHE_DELETE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:delete', '', 3, 1, NULL, '2025-07-01 15:02:58', '2025-07-01 15:02:58', 1, NULL, 0, NULL);
 INSERT INTO `sys_menu` VALUES (1083, 108, '缓存批量删除', 'CACHE_BATCH_DELETE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:batch:delete', '', 4, 1, NULL, '2025-07-01 15:02:58', '2025-07-01 15:02:58', 1, NULL, 0, NULL);
 INSERT INTO `sys_menu` VALUES (1084, 108, '缓存空间清空', 'CACHE_SPACE_CLEAR', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:cache:space:clear', '', 5, 1, NULL, '2025-07-01 15:02:58', '2025-07-01 15:02:58', 1, NULL, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2100, 0, '日志管理', 'LOG_MANAGE', 'M', 'log-manage', '/log-manage', '', NULL, NULL, 1, 0, '', 1, 1, '', 'octicon:log-16', 10, 0, '日志管理目录', '2025-01-02 10:00:00', '2025-07-02 13:57:43', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2101, 2100, '操作日志', 'OPERATION_LOG', 'C', 'manage_operation-log', '/manage/operation-log', 'view.manage_operation-log', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:list', 'form', 1, 0, '操作日志菜单', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2102, 2100, '登录日志', 'LOGIN_LOG', 'C', 'manage_login-log', '/manage/login-log', 'view.manage_login-log', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:list', 'ix:log', 2, 0, '登录日志菜单', '2025-01-02 10:00:00', '2025-07-02 13:58:40', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2103, 2101, '操作查询', 'OPERLOG_QUERY', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:query', '', 1, 0, '操作日志查询权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2104, 2101, '操作删除', 'OPERLOG_REMOVE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:remove', '', 2, 0, '操作日志删除权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2105, 2101, '日志导出', 'OPERLOG_EXPORT', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:export', '', 3, 0, '操作日志导出权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2106, 2101, '详情查看', 'OPERLOG_DETAIL', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:detail', '', 4, 0, '操作日志详情权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2107, 2101, '日志清空', 'OPERLOG_CLEAR', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:operlog:clear', '', 5, 0, '操作日志清空权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2108, 2102, '登录查询', 'LOGININFOR_QUERY', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:query', '', 1, 0, '登录日志查询权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2109, 2102, '登录删除', 'LOGININFOR_REMOVE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:remove', '', 2, 0, '登录日志删除权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2110, 2102, '日志导出', 'LOGININFOR_EXPORT', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:export', '', 3, 0, '登录日志导出权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2111, 2102, '账户解锁', 'LOGININFOR_UNLOCK', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:unlock', '', 4, 0, '登录日志解锁权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2112, 2102, '详情查看', 'LOGININFOR_DETAIL', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:detail', '', 5, 0, '登录日志详情权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (2113, 2102, '日志清空', 'LOGININFOR_CLEAR', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:logininfor:clear', '', 6, 0, '登录日志清空权限', '2025-01-02 10:00:00', '2025-01-02 10:00:00', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30201, 302, '文件上传', 'FILE_UPLOAD', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:file:upload', '', 1, 0, '文件上传权限', '2025-07-01 20:04:43', '2025-07-01 20:22:45', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30202, 302, '文件下载', 'FILE_DOWNLOAD', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:file:download', '', 2, 0, '文件下载权限', '2025-07-01 20:04:43', '2025-07-01 20:22:55', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30203, 302, '文件删除', 'FILE_DELETE', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:file:delete', '', 3, 0, '文件删除权限', '2025-07-01 20:04:43', '2025-07-01 20:23:06', 1, 1, 0, NULL);
@@ -402,10 +423,9 @@ INSERT INTO `sys_menu` VALUES (30303, 303, '配置删除', 'OSS_COMFIG_REMOVE', 
 INSERT INTO `sys_menu` VALUES (30304, 303, '配置查询', 'OSS_COMFIG_QUERY', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:query', '', 4, 0, 'OSS配置查询权限', '2025-07-01 20:04:43', '2025-07-01 20:24:00', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30305, 303, '配置测试', 'OSS_COMFIG_TEST', 'F', '', '', '', NULL, NULL, 1, 0, '', 1, 1, 'system:ossConfig:test', '', 5, 0, 'OSS配置测试权限', '2025-07-01 20:04:43', '2025-07-01 20:23:54', 1, 1, 0, NULL);
 INSERT INTO `sys_menu` VALUES (30306, 0, '组织管理', 'org', 'M', 'org', '/org', '', '', NULL, 1, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:46:07', '2025-07-03 15:46:07', 1, NULL, 0, NULL);
-
-INSERT INTO `mars_admin`.`sys_menu` (`id`, `parent_id`, `menu_name`, `menu_code`, `menu_type`, `route_name`, `route_path`, `component`, `redirect`, `query_param`, `is_frame`, `is_cache`, `menu_type_flag`, `visible`, `status`, `perms`, `icon`, `order_num`, `is_system`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `is_deleted`, `delete_time`) VALUES (30307, 0, '系统运维', 'maintenance', 'M', 'maintenance', '/maintenance', '', '', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:59:01', '2025-07-03 15:59:01', 1, NULL, 0, NULL);
-INSERT INTO `mars_admin`.`sys_menu` (`id`, `parent_id`, `menu_name`, `menu_code`, `menu_type`, `route_name`, `route_path`, `component`, `redirect`, `query_param`, `is_frame`, `is_cache`, `menu_type_flag`, `visible`, `status`, `perms`, `icon`, `order_num`, `is_system`, `remark`, `create_time`, `update_time`, `create_by`, `update_by`, `is_deleted`, `delete_time`) VALUES (30308, 30307, '连接监控', 'mysqlconn', 'C', 'mysqlconn', 'http://localhost:8080/druid/index.html', '', 'http://localhost:8080/druid/index.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-04 16:53:55', 1, NULL, 0, NULL);
-
+INSERT INTO `sys_menu` VALUES (30307, 0, '系统运维', 'maintenance', 'M', 'maintenance', '/maintenance', '', '', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 15:59:01', '2025-07-08 11:50:10', 1, NULL, 1, '2025-07-08 11:50:10');
+INSERT INTO `sys_menu` VALUES (30308, 2, '连接监控', 'mysqlconn', 'C', 'mysqlconn', 'http://localhost:8080/druid/index.html', '', 'http://localhost:8080/druid/index.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-08 11:54:15', 1, 1, 0, NULL);
+INSERT INTO `sys_menu` VALUES (30309, 2, '接口文档', 'apidoc', 'C', 'apidoc', 'http://localhost:8080/doc.html', '', 'http://localhost:8080/doc.html', NULL, 0, 0, '', 1, 1, '', '', 0, 0, NULL, '2025-07-03 16:01:20', '2025-07-08 11:54:15', 1, 1, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -433,7 +453,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_business_type`(`business_type` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_oper_time`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -460,6 +480,16 @@ INSERT INTO `sys_oper_log` VALUES (19, '角色管理', 4, 'com.mars.admin.contro
 INSERT INTO `sys_oper_log` VALUES (20, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,302,303,1018,1017,30306,301,1],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751609016094,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:03:36', 4);
 INSERT INTO `sys_oper_log` VALUES (21, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,2,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,302,303,1018,1017,30306,301,107,1070,1071,1072,108,1080,1081,1082,1083,1084,1],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751609021265,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:03:41', 6);
 INSERT INTO `sys_oper_log` VALUES (22, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,3,105,106,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,100,101,102,107,108,302,303,1018,1017,30306,1,301,2,109],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751611721309,\"error\":false,\"success\":true}', 0, NULL, '2025-07-04 14:48:41', 6);
+INSERT INTO `sys_oper_log` VALUES (23, '角色管理', 4, 'com.mars.admin.controller.SysRoleController.authMenu()', 'PUT', 1, 'admin', '未知部门', '/system/role/authMenu', '127.0.0.1', NULL, '{\"role\":{\"createTime\":null,\"updateTime\":null,\"createBy\":null,\"updateBy\":null,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":null,\"roleCode\":null,\"roleKey\":null,\"roleSort\":null,\"dataScope\":null,\"menuCheckStrictly\":null,\"deptCheckStrictly\":null,\"status\":null,\"isSystem\":null,\"description\":null,\"remark\":null,\"menus\":null,\"depts\":null,\"menuIds\":[1016,3,105,106,109,1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1070,1071,1072,1080,1081,1082,1083,1084,30201,30202,30203,30204,30301,30302,30303,30304,30305,103,104,30308,100,101,102,107,108,302,303,1018,1017,30306,1,2,301,30307,2100,2101,2102,2103,2104,2105,2106,2107,2108,2109,2110,2111,2112,2113],\"deptIds\":null}} | 描述: 分配角色菜单权限，角色ID：#{#role.id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751945608256,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:33:28', 9);
+INSERT INTO `sys_oper_log` VALUES (24, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 1, 'admin', '未知部门', '/system/role', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":null,\"updateTime\":\"2025-07-08 11:33:30\",\"createBy\":null,\"updateBy\":1,\"isDeleted\":null,\"deleteTime\":null,\"id\":1,\"roleName\":\"超级管理员\",\"roleCode\":\"SUPER_ADMIN\",\"roleKey\":\"admin\",\"roleSort\":1,\"dataScope\":1,\"menuCheckStrictly\":1,\"deptCheckStrictly\":1,\"status\":1,\"isSystem\":null,\"description\":\"超级管理员\",\"remark\":\"\",\"menus\":null,\"depts\":null,\"menuIds\":null,\"deptIds\":null}} | 描述: 修改角色：#{#entity.roleName}', '{\"code\":200,\"message\":\"修改成功\",\"data\":null,\"timestamp\":1751945610581,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:33:30', 5);
+INSERT INTO `sys_oper_log` VALUES (25, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单：#{#entity.menuName}', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751945845824,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:37:25', 5);
+INSERT INTO `sys_oper_log` VALUES (26, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751945935683,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:38:55', 31);
+INSERT INTO `sys_oper_log` VALUES (27, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751946342949,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:45:43', 32);
+INSERT INTO `sys_oper_log` VALUES (28, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751946368712,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:46:08', 7);
+INSERT INTO `sys_oper_log` VALUES (29, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751946433654,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:47:13', 7);
+INSERT INTO `sys_oper_log` VALUES (30, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-04 16:53:55\",\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":500,\"message\":\"权限标识已存在，请重新输入\",\"data\":null,\"timestamp\":1751946526468,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 11:48:46', 9);
+INSERT INTO `sys_oper_log` VALUES (31, '菜单管理', 2, 'com.mars.admin.controller.SysMenuController.update()', 'PUT', 1, 'admin', '未知部门', '/system/menu', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-03 16:01:20\",\"updateTime\":\"2025-07-08 11:49:54\",\"createBy\":1,\"updateBy\":1,\"isDeleted\":0,\"deleteTime\":null,\"id\":30308,\"parentId\":2,\"menuName\":\"连接监控\",\"menuCode\":\"mysqlconn\",\"menuType\":\"C\",\"routeName\":\"mysqlconn\",\"routePath\":\"/mysqlconn\",\"component\":\"\",\"redirect\":\"http://localhost:8080/druid/index.html\",\"queryParam\":null,\"isFrame\":0,\"isCache\":0,\"menuTypeFlag\":\"\",\"visible\":1,\"status\":1,\"perms\":\"\",\"icon\":\"\",\"orderNum\":0,\"isSystem\":0,\"remark\":null,\"children\":[],\"parentName\":null}} | 描述: 修改菜单', '{\"code\":200,\"message\":\"修改成功\",\"data\":null,\"timestamp\":1751946594489,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:49:54', 47);
+INSERT INTO `sys_oper_log` VALUES (32, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.deleteById()', 'DELETE', 1, 'admin', '未知部门', '/system/menu/30307', '127.0.0.1', NULL, '{\"id\":30307} | 描述: 删除菜单', '{\"code\":200,\"message\":\"删除成功\",\"data\":null,\"timestamp\":1751946610859,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 11:50:10', 12);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -605,7 +635,7 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 'SUPER_ADMIN', 'admin', 1, 1, 1, 1, 1, 1, '超级管理员', NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'SUPER_ADMIN', 'admin', 1, 1, 1, 1, 1, 1, '超级管理员', '', '2025-06-25 16:34:16', '2025-07-08 11:33:30', 1, 1, 0, NULL);
 INSERT INTO `sys_role` VALUES (2, '系统管理员', 'SYSTEM_ADMIN', 'system', 2, 2, 1, 1, 1, 1, '系统管理员', NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
 INSERT INTO `sys_role` VALUES (3, '普通用户', 'COMMON_USER', 'common', 3, 5, 1, 1, 1, 0, '普通用户', NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
 
@@ -648,59 +678,75 @@ CREATE TABLE `sys_role_menu`  (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (1, 1, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 2, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 3, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 100, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 101, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 102, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 103, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 104, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 105, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 106, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 107, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 108, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 109, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 301, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 302, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 303, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1000, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1001, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1002, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1003, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1004, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1005, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1006, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1007, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1008, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1009, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1010, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1011, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1012, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1013, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1014, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1015, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1016, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1017, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1018, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1070, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1071, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1072, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1080, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1081, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1082, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1083, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 1084, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30201, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30202, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30203, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30204, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30301, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30302, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30303, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30304, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30305, '2025-07-04 14:48:41', 1);
-INSERT INTO `sys_role_menu` VALUES (1, 30306, '2025-07-04 14:48:41', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 3, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 100, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 101, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 102, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 103, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 104, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 105, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 106, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 107, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 108, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 109, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 301, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 302, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 303, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1000, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1001, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1002, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1003, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1004, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1005, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1006, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1007, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1008, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1009, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1010, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1011, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1012, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1013, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1014, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1015, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1016, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1017, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1018, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1070, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1071, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1072, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1080, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1081, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1082, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1083, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 1084, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2100, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2101, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2102, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2103, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2104, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2105, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2106, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2107, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2108, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2109, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2110, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2111, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2112, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 2113, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30201, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30202, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30203, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30204, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30301, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30302, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30303, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30304, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30305, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30306, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30308, '2025-07-08 11:33:28', 1);
+INSERT INTO `sys_role_menu` VALUES (1, 30309, '2025-07-08 11:57:25', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -743,7 +789,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 114, '2025-07-04 16:55:58', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-04 16:55:58', 1, 1, 0, NULL);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 121, '2025-07-08 11:58:16', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-08 11:58:15', 1, 1, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_dept

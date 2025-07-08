@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/sql/mars_admin.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/sql/mars_admin.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/MarsAdminApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/MarsAdminApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/axios/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/axios/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/aspect/OperationLogAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/aspect/OperationLogAspect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +80,7 @@
       <workItem from="1751291243095" duration="1621000" />
       <workItem from="1751448910106" duration="9003000" />
       <workItem from="1751684261402" duration="1114000" />
-      <workItem from="1751944836425" duration="301000" />
+      <workItem from="1751944836425" duration="2066000" />
     </task>
     <servers />
   </component>

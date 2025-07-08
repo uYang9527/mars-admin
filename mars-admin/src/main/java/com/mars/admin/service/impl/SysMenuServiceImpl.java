@@ -33,8 +33,7 @@ import static com.mars.admin.entity.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
  */
 @Slf4j
 @Service
-@CacheConfig(cacheNames = "menu")
-public class SysMenuServiceImpl extends CacheableServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
+public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements ISysMenuService {
 
     @Autowired
     private SysMenuMapper sysMenuMapper;
