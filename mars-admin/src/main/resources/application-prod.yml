@@ -115,6 +115,7 @@ mybatis-flex:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
+
 # 日志配置
 logging:
   level:
@@ -129,7 +130,7 @@ logging:
     root: info
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
-  
+
   # 异步日志相关的日志文件配置 - 开发环境
   logback:
     rollingpolicy:
@@ -160,6 +161,7 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
+
 
   exclude-paths:
     # 认证相关接口
@@ -196,6 +198,22 @@ sa-token:
 sql-log:
   username: admin
   password: admin
+
+# 微信小程序配置
+wechat:
+  miniprogram:
+    appid: your_miniprogram_appid
+    secret: your_miniprogram_secret
+
+# 启动信息配置
+startup:
+  info:
+    # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
+    mode: simple
+    # 是否显示系统信息
+    show-system-info: false
+    # 是否显示ASCII艺术字
+    show-banner: true
 
 # 文件上传配置
 file:

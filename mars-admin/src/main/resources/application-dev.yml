@@ -161,8 +161,6 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
-
-
   exclude-paths:
     # 认证相关接口
     - /auth/**
@@ -204,6 +202,16 @@ wechat:
   miniprogram:
     appid: your_miniprogram_appid
     secret: your_miniprogram_secret
+
+# 启动信息配置
+startup:
+  info:
+    # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
+    mode: full
+    # 是否显示系统信息
+    show-system-info: true
+    # 是否显示ASCII艺术字
+    show-banner: true
 
 # 文件上传配置
 file:

@@ -27,8 +27,7 @@ public class OssConfigLoader implements ApplicationRunner {
     @Override
     @Async
     public void run(ApplicationArguments args) throws Exception {
-        log.info("开始加载OSS配置...");
-        
+
         try {
             // 获取所有启用的OSS配置
             List<SysOssConfig> configs = ossConfigService.selectEnabledConfigs();
