@@ -95,7 +95,7 @@ function copyUrl() {
     <div v-if="fileData" class="detail-content">
       <!-- 文件预览区域 -->
       <div v-if="isImageFile(fileData.contentType)" class="mb-6 text-center">
-        <div class="border rounded-lg bg-gray-50 p-4">
+        <div class="border rounded-lg p-4">
           <img
             :src="fileData.url"
             :alt="fileData.originalName"
