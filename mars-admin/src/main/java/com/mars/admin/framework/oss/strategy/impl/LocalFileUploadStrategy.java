@@ -174,9 +174,9 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
     }
 
     private String buildFilePath(String fileName, SysOssConfig config) {
-        String prefix = StringUtils.hasText(config.getPrefix()) ? config.getPrefix() : "upload";
+        // 直接使用日期路径，不添加额外的前缀，避免重复的upload目录
         String datePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        return prefix + File.separator + datePath + File.separator + fileName;
+        return datePath + File.separator + fileName;
     }
     
     /**
@@ -230,11 +230,15 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
     }
 
     private String buildAccessUrl(String filePath) {
-        // 使用相对路径而非硬编码的主机名
+        // 构建完整的访问URL
         String baseUrl = "";
+        // 获取当前主机名和端口
+        baseUrl = "http://localhost:" + serverPort;
         if (StringUtils.hasText(contextPath) && !contextPath.equals("/")) {
             baseUrl += contextPath;
         }
-        return baseUrl + "/file/" + filePath.replace(File.separator, "/");
+        // 将Windows风格的路径分隔符替换为URL路径分隔符
+        String normalizedPath = filePath.replace(File.separator, "/");
+        return baseUrl + "/file/" + normalizedPath;
     }
 } 

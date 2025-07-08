@@ -234,7 +234,7 @@ function handleTableChange(paginationInfo: any) {
         <div class="flex justify-between items-center w-full">
           <span class="text-base font-medium">存储配置列表</span>
           <div class="flex gap-12px flex-wrap">
-            <AButton type="primary" @click="handleAdd">
+            <AButton type="primary" ghost @click="handleAdd">
               <template #icon>
                 <icon-ic-round-add class="align-sub text-icon" />
               </template>

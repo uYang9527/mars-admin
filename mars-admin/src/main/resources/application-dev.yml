@@ -189,6 +189,8 @@ sa-token:
     - /sqlLog.html
     - /sqlLog/**
     - /sql-log/**
+    # 文件访问
+    - /file/**
     # 文件上传
     - /file/upload
     - /druid/**

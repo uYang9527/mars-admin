@@ -304,13 +304,13 @@ function handleTableChange(paginationInfo: any) {
             <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
               批量删除
             </AButton>
-            <AButton type="primary" danger @click="handleCleanAll">
+            <AButton type="primary" danger ghost @click="handleCleanAll">
               <template #icon>
                 <icon-ic-round-delete class="align-sub text-icon" />
               </template>
               清空日志
             </AButton>
-            <AButton type="primary" @click="handleExport">
+            <AButton type="primary" ghost @click="handleExport">
               <template #icon>
                 <icon-ic-round-download class="align-sub text-icon" />
               </template>
