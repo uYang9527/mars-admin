@@ -293,7 +293,7 @@ onMounted(() => {
       <div class="w-400px flex-col-stretch">
         <ACard title="字典管理" :bordered="false" :body-style="{ padding: '16px' }" class="h-full">
           <template #extra>
-            <ADropdown placement="bottomRight">
+            <ADropdown placement="bottomRight" >
               <AButton type="default">
                 <template #icon>
                   <icon-ic-round-refresh class="align-sub text-icon"/>
@@ -324,7 +324,7 @@ onMounted(() => {
                 </AMenu>
               </template>
             </ADropdown>
-            <AButton type="primary" size="small" @click="handleAddDictType">
+            <AButton type="primary" size="small" @click="handleAddDictType" style="margin-left: 10px">
               <template #icon>
                 <icon-ic-round-plus class="align-sub text-icon"/>
               </template>
@@ -349,7 +349,6 @@ onMounted(() => {
                   :expanded-keys="expandedKeys"
                   :selected-keys="selectedKeys"
                   show-line
-                  show-icon
                   @select="handleTreeSelect"
                   @expand="handleTreeExpand"
                 >
