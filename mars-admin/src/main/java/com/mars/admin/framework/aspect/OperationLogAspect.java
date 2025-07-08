@@ -39,9 +39,9 @@ import java.util.concurrent.CompletableFuture;
  * 自动处理标注了@OperationLog注解的方法
  * 支持异步落库，提高性能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Aspect
 @Component
@@ -213,7 +213,7 @@ public class OperationLogAspect {
         // 处理操作描述（支持SpEL表达式）
         if (!operationLog.description().isEmpty()) {
             try {
-                String description = parseSpelExpression(operationLog.description(), joinPoint, result);
+                String description = operationLog.description();
                 if (logData.operParam != null && !logData.operParam.isEmpty()) {
                     logData.operParam = logData.operParam + " | 描述: " + description;
                 } else {

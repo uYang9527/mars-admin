@@ -80,7 +80,6 @@ public class RouteController {
     @GetMapping("/getConstantRoutes")
     @Operation(summary = "获取常量路由", description = "获取系统常量路由")
     public Result<List<Map<String, Object>>> getConstantRoutes() {
-        // 返回空列表，常量路由由前端静态定义
         return Result.success(List.of());
     }
 

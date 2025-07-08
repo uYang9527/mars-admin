@@ -7,9 +7,9 @@ import com.mars.admin.entity.SysUser;
 /**
  * 认证服务接口
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 public interface IAuthService {
 

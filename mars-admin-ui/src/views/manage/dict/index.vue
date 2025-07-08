@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {
   fetchDeleteDictData,
   fetchDeleteDictType,
@@ -111,7 +111,7 @@ function findNodeByKey(nodes: any[], key: string): any {
 async function loadTreeData() {
   loading.value = true;
   try {
-    const { data, error } = await fetchGetDictTree();
+    const {data, error} = await fetchGetDictTree();
 
     if (error) {
       window.$message?.error('加载数据失败');
@@ -130,7 +130,7 @@ async function loadTreeData() {
 }
 
 // 树节点选择
-function handleTreeSelect(selectedKeysValue: string[], { node }: any) {
+function handleTreeSelect(selectedKeysValue: string[], {node}: any) {
   selectedKeys.value = selectedKeysValue;
 
   if (selectedKeysValue.length > 0) {
@@ -179,7 +179,7 @@ async function handleDeleteDictType(data: any) {
   }
 
   try {
-    const { error } = await fetchDeleteDictType(actualData.id);
+    const {error} = await fetchDeleteDictType(actualData.id);
     if (!error) {
       window.$message?.success('删除成功');
       loadTreeData();
@@ -227,7 +227,7 @@ async function handleDeleteDictData(data: any) {
   }
 
   try {
-    const { error } = await fetchDeleteDictData(actualData.id);
+    const {error} = await fetchDeleteDictData(actualData.id);
     if (!error) {
       window.$message?.success('删除成功');
       loadTreeData();
@@ -246,7 +246,7 @@ async function handleDeleteDictData(data: any) {
 // 刷新缓存
 async function handleRefreshAllCache() {
   try {
-    const { error } = await fetchRefreshAllDictCache();
+    const {error} = await fetchRefreshAllDictCache();
     if (!error) {
       window.$message?.success('刷新所有字典缓存成功');
     }
@@ -258,7 +258,7 @@ async function handleRefreshAllCache() {
 
 async function handleRefreshTypeCache() {
   try {
-    const { error } = await fetchRefreshDictTypeCache();
+    const {error} = await fetchRefreshDictTypeCache();
     if (!error) {
       window.$message?.success('刷新字典类型缓存成功');
     }
@@ -270,7 +270,7 @@ async function handleRefreshTypeCache() {
 
 async function handleRefreshDataCache() {
   try {
-    const { error } = await fetchRefreshDictDataCache();
+    const {error} = await fetchRefreshDictDataCache();
     if (!error) {
       window.$message?.success('刷新字典数据缓存成功');
     }
@@ -293,40 +293,40 @@ onMounted(() => {
       <div class="w-400px flex-col-stretch">
         <ACard title="字典管理" :bordered="false" :body-style="{ padding: '16px' }" class="h-full">
           <template #extra>
-            <ADropdown placement="bottomRight">
+            <ADropdown placement="bottomRight" >
               <AButton type="default">
                 <template #icon>
-                  <icon-ic-round-refresh class="align-sub text-icon" />
+                  <icon-ic-round-refresh class="align-sub text-icon"/>
                 </template>
                 刷新缓存
-                <icon-ic-round-keyboard-arrow-down class="ml-1 align-sub text-icon" />
+                <icon-ic-round-keyboard-arrow-down class="ml-1 align-sub text-icon"/>
               </AButton>
               <template #overlay>
                 <AMenu>
                   <AMenuItem @click="handleRefreshAllCache">
                     <template #icon>
-                      <icon-ic-round-refresh class="text-blue-500" />
+                      <icon-ic-round-refresh class="text-blue-500"/>
                     </template>
                     刷新所有缓存
                   </AMenuItem>
                   <AMenuItem @click="handleRefreshTypeCache">
                     <template #icon>
-                      <icon-ic-round-category class="text-green-500" />
+                      <icon-ic-round-category class="text-green-500"/>
                     </template>
                     刷新类型缓存
                   </AMenuItem>
                   <AMenuItem @click="handleRefreshDataCache">
                     <template #icon>
-                      <icon-ic-round-label class="text-orange-500" />
+                      <icon-ic-round-label class="text-orange-500"/>
                     </template>
                     刷新数据缓存
                   </AMenuItem>
                 </AMenu>
               </template>
             </ADropdown>
-            <AButton type="primary" size="small" @click="handleAddDictType">
+            <AButton type="primary" size="small" @click="handleAddDictType" style="margin-left: 10px">
               <template #icon>
-                <icon-ic-round-plus class="align-sub text-icon" />
+                <icon-ic-round-plus class="align-sub text-icon"/>
               </template>
               新增类型
             </AButton>
@@ -336,7 +336,7 @@ onMounted(() => {
             <!-- 搜索框 -->
             <AInput v-model:value="searchValue" placeholder="搜索字典..." allow-clear>
               <template #prefix>
-                <icon-ic-round-search class="text-gray-400" />
+                <icon-ic-round-search class="text-gray-400"/>
               </template>
             </AInput>
 
@@ -349,29 +349,28 @@ onMounted(() => {
                   :expanded-keys="expandedKeys"
                   :selected-keys="selectedKeys"
                   show-line
-                  show-icon
                   @select="handleTreeSelect"
                   @expand="handleTreeExpand"
                 >
                   <template #icon="{ nodeType }">
-                    <icon-ic-round-category v-if="nodeType === 'dictType'" class="text-base text-blue-500" />
-                    <icon-ic-round-label v-else class="text-base text-green-500" />
+                    <icon-ic-round-category v-if="nodeType === 'dictType'" class="text-base text-blue-500"/>
+                    <icon-ic-round-label v-else class="text-base text-green-500"/>
                   </template>
 
                   <template #title="nodeData">
                     <div class="group min-h-[24px] w-full flex items-center justify-between pr-2">
                       <div class="min-w-0 flex flex-1 items-center gap-2">
                         <span class="truncate text-sm leading-6">{{ nodeData.title }}</span>
-                        <ATag v-if="nodeData.nodeType === 'dictType'" size="small" color="blue">
-                          {{ nodeData.data?.dictType }}
-                        </ATag>
-                        <ATag
-                          v-else-if="nodeData.data?.status !== undefined"
-                          size="small"
-                          :color="nodeData.data.status === 1 ? 'success' : 'error'"
-                        >
-                          {{ nodeData.data.status === 1 ? '正常' : '停用' }}
-                        </ATag>
+                        <!--                        <ATag v-if="nodeData.nodeType === 'dictType'" size="small" color="blue">-->
+                        <!--                          {{ nodeData.data?.dictType }}-->
+                        <!--                        </ATag>-->
+                        <!--                        <ATag-->
+                        <!--                          v-else-if="nodeData.data?.status !== undefined"-->
+                        <!--                          size="small"-->
+                        <!--                          :color="nodeData.data.status === 1 ? 'success' : 'error'"-->
+                        <!--                        >-->
+                        <!--                          {{ nodeData.data.status === 1 ? '正常' : '停用' }}-->
+                        <!--                        </ATag>-->
                       </div>
 
                       <!-- 操作按钮 -->
@@ -384,19 +383,20 @@ onMounted(() => {
                             title="新增字典数据"
                             @click.stop="handleAddDictData(nodeData.data)"
                           >
-                            <icon-ic-round-plus class="text-xs text-green-600" />
+                            <icon-ic-round-plus class="text-xs text-green-600"/>
                           </AButton>
+
                           <AButton
                             type="text"
                             size="small"
                             title="编辑字典类型"
                             @click.stop="handleEditDictType(nodeData.data)"
                           >
-                            <icon-ic-round-edit class="text-xs text-blue-600" />
+                            <icon-ic-round-edit class="text-xs text-blue-600"/>
                           </AButton>
                           <APopconfirm title="确定删除此字典类型吗？" @confirm="handleDeleteDictType(nodeData.data)">
                             <AButton type="text" size="small" title="删除字典类型" @click.stop>
-                              <icon-ic-round-delete class="text-xs text-red-600" />
+                              <icon-ic-round-delete class="text-xs text-red-600"/>
                             </AButton>
                           </APopconfirm>
                         </template>
@@ -409,11 +409,11 @@ onMounted(() => {
                             title="编辑字典数据"
                             @click.stop="handleEditDictData(nodeData.data)"
                           >
-                            <icon-ic-round-edit class="text-xs text-blue-600" />
+                            <icon-ic-round-edit class="text-xs text-blue-600"/>
                           </AButton>
                           <APopconfirm title="确定删除此字典数据吗？" @confirm="handleDeleteDictData(nodeData.data)">
                             <AButton type="text" size="small" title="删除字典数据" @click.stop>
-                              <icon-ic-round-delete class="text-xs text-red-600" />
+                              <icon-ic-round-delete class="text-xs text-red-600"/>
                             </AButton>
                           </APopconfirm>
                         </template>
@@ -421,7 +421,7 @@ onMounted(() => {
                     </div>
                   </template>
                 </ATree>
-                <AEmpty v-else description="暂无字典数据" />
+                <AEmpty v-else description="暂无字典数据"/>
               </ASpin>
             </div>
           </div>
@@ -436,10 +436,10 @@ onMounted(() => {
             <div v-if="selectedNode.nodeType === 'dictType'" class="space-y-4">
               <div class="flex items-center gap-3">
                 <h3 class="m-0 text-lg font-medium">字典类型详情</h3>
-                <ATag color="blue">{{ selectedNode.data.dictType }}</ATag>
+                <!--                <ATag color="blue">{{ selectedNode.data.dictType }}</ATag>-->
               </div>
 
-              <div class="rounded-lg bg-gray-50 p-4">
+              <div class="rounded-lg p-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm text-gray-600">字典名称：</label>
@@ -470,7 +470,7 @@ onMounted(() => {
                 <h4 class="text-base font-medium">字典数据列表</h4>
                 <AButton type="primary" size="small" @click="handleAddDictData(selectedNode.data)">
                   <template #icon>
-                    <icon-ic-round-plus class="align-sub text-icon" />
+                    <icon-ic-round-plus class="align-sub text-icon"/>
                   </template>
                   新增数据
                 </AButton>
@@ -500,18 +500,18 @@ onMounted(() => {
                     <template v-else-if="column.key === 'operation'">
                       <div class="flex items-center gap-1">
                         <AButton type="text" size="small" @click="handleEditDictData(record.data)">
-                          <icon-ic-round-edit class="text-blue-600" />
+                          <icon-ic-round-edit class="text-blue-600"/>
                         </AButton>
                         <APopconfirm title="确定删除吗？" @confirm="handleDeleteDictData(record.data)">
                           <AButton type="text" size="small">
-                            <icon-ic-round-delete class="text-red-600" />
+                            <icon-ic-round-delete class="text-red-600"/>
                           </AButton>
                         </APopconfirm>
                       </div>
                     </template>
                   </template>
                 </ATable>
-                <AEmpty v-else description="暂无字典数据" />
+                <AEmpty v-else description="暂无字典数据"/>
               </div>
             </div>
 
@@ -524,7 +524,7 @@ onMounted(() => {
                 </ATag>
               </div>
 
-              <div class="rounded-lg bg-gray-50 p-4">
+              <div class="rounded-lg p-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm text-gray-600">字典标签：</label>
@@ -570,14 +570,14 @@ onMounted(() => {
               <div class="flex gap-2 pt-4">
                 <AButton type="primary" @click="handleEditDictData(selectedNode.data)">
                   <template #icon>
-                    <icon-ic-round-edit class="align-sub text-icon" />
+                    <icon-ic-round-edit class="align-sub text-icon"/>
                   </template>
                   编辑数据
                 </AButton>
                 <APopconfirm title="确定删除此字典数据吗？" @confirm="handleDeleteDictData(selectedNode.data)">
                   <AButton danger>
                     <template #icon>
-                      <icon-ic-round-delete class="align-sub text-icon" />
+                      <icon-ic-round-delete class="align-sub text-icon"/>
                     </template>
                     删除数据
                   </AButton>
@@ -589,7 +589,7 @@ onMounted(() => {
           <div v-else class="h-full flex-center">
             <AEmpty description="请在左侧选择字典类型或字典数据以查看详细信息">
               <template #image>
-                <icon-mdi:folder-search-outline class="text-6xl text-gray-300" />
+                <icon-mdi:folder-search-outline class="text-6xl text-gray-300"/>
               </template>
             </AEmpty>
           </div>

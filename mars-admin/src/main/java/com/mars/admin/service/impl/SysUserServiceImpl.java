@@ -557,37 +557,4 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements ISys
             throw new BusinessException("更新个人信息失败：" + e.getMessage());
         }
     }
-
-    /**
-     * 初始化管理员用户
-     * 如果系统中没有管理员用户，则创建默认管理员
-     */
-    @PostConstruct
-    public void initAdminUser() {
-        try {
-                         // 检查是否已存在管理员用户
-             SysUser adminUser = sysUserMapper.selectByUsername("admin");
-            if (adminUser == null) {
-                // 创建默认管理员用户
-                adminUser = new SysUser();
-                adminUser.setUsername("admin");
-                adminUser.setPassword(AuthServiceImpl.encryptPassword("123456")); // 默认密码
-                adminUser.setNickname("系统管理员");
-                adminUser.setRealName("管理员");
-                adminUser.setEmail("admin@mars.com");
-                adminUser.setPhone("13800138000");
-                adminUser.setStatus(1); // 启用状态
-                adminUser.setUserType(1); // 系统用户
-                adminUser.setGender(0); // 未知
-                adminUser.setRemark("系统默认管理员用户");
-
-                // 保存用户
-                this.save(adminUser);
-                
-                log.info("初始化管理员用户成功：username=admin, password=123456");
-            }
-        } catch (Exception e) {
-            log.warn("初始化管理员用户失败：{}", e.getMessage());
-        }
-    }
-} 
+}

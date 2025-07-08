@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
  * 基础实体类
  * 包含公共字段：创建时间、更新时间、创建人、更新人、删除标记、删除时间
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Data
 @Accessors(chain = true)

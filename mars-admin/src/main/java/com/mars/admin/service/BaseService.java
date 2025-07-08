@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 继承 MyBatis-Flex 的 IService，提供基础的增删改查功能
  *
  * @param <T> 实体类型
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

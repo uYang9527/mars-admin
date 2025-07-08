@@ -38,118 +38,117 @@ const cacheSpaceOptions = [
 ];
 
 // 表格配置
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, pagination, reloadColumns, searchParams } =
-  useTable({
-    apiFn: fetchCacheList,
-    apiParams: {
-      current: 1,
-      size: 20,
-      pattern: '',
-      cacheSpace: ''
+const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
+  apiFn: fetchCacheList,
+  apiParams: {
+    current: 1,
+    size: 20,
+    pattern: '',
+    cacheSpace: ''
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        width: 64,
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'cache_space',
-        title: '缓存空间',
-        align: 'center',
-        width: 120,
-        dataIndex: 'cache_space_name',
-        customRender: ({ record }) => {
-          const colors = ['blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'volcano', 'gold'];
-          const colorIndex = Math.abs(record.cache_space.charCodeAt(0)) % colors.length;
-          return <Tag color={colors[colorIndex]}>{record.cache_space_name}</Tag>;
-        }
-      },
-      {
-        key: 'key',
-        title: '缓存键',
-        align: 'left',
-        dataIndex: 'key',
-        ellipsis: true,
-        width: 300,
-        customRender: ({ record }) => (
-          <div class="text-12px font-mono">
-            <div class="truncate text-gray-800 dark:text-gray-200">{record.key}</div>
-          </div>
-        )
-      },
-      {
-        key: 'type',
-        title: '数据类型',
-        align: 'center',
-        width: 100,
-        dataIndex: 'type',
-        customRender: ({ record }) => {
-          const typeColors = {
-            string: 'green',
-            hash: 'blue',
-            list: 'orange',
-            set: 'purple',
-            zset: 'cyan'
-          };
-          return <Tag color={typeColors[record.type] || 'default'}>{record.type.toUpperCase()}</Tag>;
-        }
-      },
-      {
-        key: 'size',
-        title: '大小',
-        align: 'center',
-        width: 100,
-        dataIndex: 'size',
-        customRender: ({ record }) => <span class="text-12px font-mono">{record.size}</span>
-      },
-      {
-        key: 'ttl_text',
-        title: '过期时间',
-        align: 'center',
-        width: 120,
-        dataIndex: 'ttl_text',
-        customRender: ({ record }) => {
-          let color = 'default';
-          if (record.ttl === -1) color = 'green';
-          else if (record.ttl < 300) color = 'red';
-          else if (record.ttl < 3600) color = 'orange';
-          else color = 'blue';
-
-          return <Tag color={color}>{record.ttl_text}</Tag>;
-        }
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        width: 200,
-        fixed: 'right',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="link" size="small" onClick={() => handleViewDetail(record.key)}>
-              查看详情
-            </Button>
-            <Popconfirm title="确定要删除此缓存吗？" onConfirm={() => handleDelete(record.key)}>
-              <Button danger size="small">
-                删除
-              </Button>
-            </Popconfirm>
-          </div>
-        )
+    {
+      key: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      width: 64,
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'cache_space',
+      title: '缓存空间',
+      align: 'center',
+      width: 120,
+      dataIndex: 'cache_space_name',
+      customRender: ({ record }) => {
+        const colors = ['blue', 'green', 'orange', 'purple', 'cyan', 'magenta', 'volcano', 'gold'];
+        const colorIndex = Math.abs(record.cache_space.charCodeAt(0)) % colors.length;
+        return <Tag color={colors[colorIndex]}>{record.cache_space_name}</Tag>;
       }
-    ]
-  });
+    },
+    {
+      key: 'key',
+      title: '缓存键',
+      align: 'left',
+      dataIndex: 'key',
+      ellipsis: true,
+      width: 300,
+      customRender: ({ record }) => (
+        <div class="text-12px font-mono">
+          <div class="truncate text-gray-800 dark:text-gray-200">{record.key}</div>
+        </div>
+      )
+    },
+    {
+      key: 'type',
+      title: '数据类型',
+      align: 'center',
+      width: 100,
+      dataIndex: 'type',
+      customRender: ({ record }) => {
+        const typeColors = {
+          string: 'green',
+          hash: 'blue',
+          list: 'orange',
+          set: 'purple',
+          zset: 'cyan'
+        };
+        return <Tag color={typeColors[record.type] || 'default'}>{record.type.toUpperCase()}</Tag>;
+      }
+    },
+    {
+      key: 'size',
+      title: '大小',
+      align: 'center',
+      width: 100,
+      dataIndex: 'size',
+      customRender: ({ record }) => <span class="text-12px font-mono">{record.size}</span>
+    },
+    {
+      key: 'ttl_text',
+      title: '过期时间',
+      align: 'center',
+      width: 120,
+      dataIndex: 'ttl_text',
+      customRender: ({ record }) => {
+        let color = 'default';
+        if (record.ttl === -1) color = 'green';
+        else if (record.ttl < 300) color = 'red';
+        else if (record.ttl < 3600) color = 'orange';
+        else color = 'blue';
+
+        return <Tag color={color}>{record.ttl_text}</Tag>;
+      }
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      width: 200,
+      fixed: 'right',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="link" size="small" onClick={() => handleViewDetail(record.key)}>
+            查看详情
+          </Button>
+          <Popconfirm title="确定要删除此缓存吗？" onConfirm={() => handleDelete(record.key)}>
+            <Button danger size="small">
+              删除
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const { checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(data, getData);
 
@@ -336,21 +335,19 @@ function formatJsonValue(value: any): string {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();

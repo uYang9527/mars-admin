@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @param <T> 实体类型
  * @param <ID> 主键类型
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

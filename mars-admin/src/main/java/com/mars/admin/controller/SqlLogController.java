@@ -16,9 +16,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * SQL日志查看控制器
  * 提供SQL日志查看和复制功能的Web接口
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Slf4j
 @RestController

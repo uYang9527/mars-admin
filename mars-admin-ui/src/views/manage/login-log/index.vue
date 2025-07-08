@@ -16,7 +16,7 @@ defineOptions({
   name: 'LoginLog'
 });
 
-const { columns, data, getData, loading, mobilePagination, searchParams } = useTable({
+const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetLoginLogList,
   apiParams: {
     current: 1,
@@ -270,16 +270,14 @@ function handleTableChange(paginationInfo: any) {
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.value.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.value.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();
@@ -292,31 +290,47 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <LoginLogSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
-    <!-- 操作按钮 -->
-    <ACard :bordered="false">
-      <div class="flex gap-12px">
-        <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
-          批量删除
-        </AButton>
-        <AButton type="primary" danger @click="handleCleanAll">清空日志</AButton>
-        <AButton type="primary" @click="handleExport">导出日志</AButton>
-      </div>
-    </ACard>
+    <ACard :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
+      <!-- 自定义标题区域 -->
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span class="text-base font-medium">登录日志</span>
+          <!-- 操作按钮 -->
+          <div class="flex flex-wrap justify-end gap-x-12px gap-y-8px lt-sm:(w-200px py-12px)">
+            <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+              批量删除
+            </AButton>
+            <AButton type="primary" danger @click="handleCleanAll">
+              <template #icon>
+                <icon-ic-round-delete class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">清空日志</span>
+            </AButton>
+            <AButton type="primary" @click="handleExport">
+              <template #icon>
+                <icon-ic-round-download class="align-sub text-icon" />
+              </template>
+              <span class="ml-8px">导出日志</span>
+            </AButton>
+          </div>
+        </div>
+      </template>
 
-    <!-- 登录日志列表 -->
-    <ACard title="登录日志" :bordered="false" :body-style="{ padding: '0' }">
+      <!-- 表格部分 -->
       <ATable
         :columns="columns"
         :data-source="data"
         size="small"
-        :scroll="{ x: 'max-content', y: 600 }"
+        :scroll="{ x: 'max-content' }"
         :loading="loading"
         row-key="id"
         :row-selection="rowSelection"
         :pagination="mobilePagination"
+        class="h-full"
         @change="handleTableChange"
       />
     </ACard>
+
     <LoginLogDetailDrawer :visible="drawerVisible" :row-data="editingData" @update:visible="drawerVisible = $event" />
   </div>
 </template>

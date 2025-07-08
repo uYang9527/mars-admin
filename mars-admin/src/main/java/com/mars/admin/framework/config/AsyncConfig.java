@@ -13,9 +13,9 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 异步任务配置
  * 专门用于操作日志等异步处理任务
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Configuration
 @EnableAsync
@@ -26,8 +26,8 @@ public class AsyncConfig {
      * 操作日志专用线程池
      * 采用独立线程池，避免影响其他异步任务
      */
-    @Bean("operationLogExecutor")
-    public Executor operationLogExecutor() {
+    @Bean("threadPoolTaskExecutor")
+    public Executor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         
         // 核心线程数：建议根据CPU核数配置，一般为CPU核数
@@ -43,7 +43,7 @@ public class AsyncConfig {
         executor.setKeepAliveSeconds(60);
         
         // 线程名前缀
-        executor.setThreadNamePrefix("operation-log-");
+        executor.setThreadNamePrefix("thread-pool-task-");
         
         // 拒绝策略：使用调用者线程执行，确保日志不丢失
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());

@@ -15,9 +15,9 @@ import java.util.*;
  * SQL日志页面控制器
  * 提供登录认证和SQL执行功能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Controller
 @RequestMapping("/sqlLog")

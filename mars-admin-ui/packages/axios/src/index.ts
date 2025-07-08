@@ -62,7 +62,7 @@ function createCommonRequest<ResponseData = any>(
       }
 
       const backendError = new AxiosError<ResponseData>(
-        'the backend request error',
+        response.data?.message || '服务器异常，请稍后再试',
         BACKEND_ERROR_CODE,
         response.config,
         response.request,

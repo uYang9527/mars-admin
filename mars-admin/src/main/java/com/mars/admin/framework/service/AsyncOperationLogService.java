@@ -14,9 +14,9 @@ import java.util.concurrent.CompletableFuture;
  * 异步操作日志服务
  * 专门处理操作日志的异步保存，提高系统性能
  * 
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Service
 @Slf4j

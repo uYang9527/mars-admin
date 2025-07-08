@@ -7,9 +7,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  * AOP配置类
  * 启用AspectJ自动代理，支持操作日志切面功能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Configuration
 @EnableAspectJAutoProxy(exposeProxy = true)

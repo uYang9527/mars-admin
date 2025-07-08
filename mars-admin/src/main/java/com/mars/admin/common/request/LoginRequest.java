@@ -8,9 +8,9 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * 登录请求DTO
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Schema(name = "登录请求", description = "用户登录请求参数")
 @Data

@@ -116,7 +116,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex-col-stretch gap-16px overflow-auto p-4px">
+  <div class="flex-col-stretch gap-16px overflow-auto p-10px">
     <!-- 页面标题 -->
     <div class="flex-y-center justify-between">
       <div class="flex-y-center gap-8px">

@@ -19,7 +19,7 @@ defineOptions({
 const wrapperEl = ref<HTMLElement>();
 
 // 参数配置表格配置
-const { columns, columnChecks, data, getData, loading, pagination, searchParams } = useTable({
+const { columns, columnChecks, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetConfigList,
   apiParams: {
     current: 1,
@@ -211,18 +211,17 @@ function toggleCollapsed() {
 function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
+
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== pagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      pagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();
@@ -344,7 +343,7 @@ onMounted(() => {
         :loading="loading"
         :row-selection="rowSelection"
         row-key="id"
-        :pagination="pagination"
+        :pagination="mobilePagination"
         class="h-full"
         @change="handleTableChange"
       />
