@@ -1,0 +1,269 @@
+
+.container.data-v-60cb334c {
+  padding: 0;
+  background: transparent;
+  min-height: 100vh;
+}
+
+/* 用户信息头部样式 - 精致版 */
+.user-header.data-v-60cb334c {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 48rpx 32rpx;
+  color: #ffffff;
+  margin-bottom: 24rpx;
+  position: relative;
+  overflow: hidden;
+}
+.user-header.data-v-60cb334c::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  opacity: 0.8;
+}
+.user-avatar.data-v-60cb334c {
+  position: relative;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin-right: 32rpx;
+  overflow: hidden;
+  border: 4rpx solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.user-avatar.data-v-60cb334c:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.3);
+}
+.avatar-image.data-v-60cb334c {
+  width: 100%;
+  height: 100%;
+}
+.avatar-edit.data-v-60cb334c {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+}
+.user-info.data-v-60cb334c {
+  flex: 1;
+}
+.user-name.data-v-60cb334c {
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+.user-position.data-v-60cb334c {
+  font-size: 28rpx;
+  display: block;
+  margin-bottom: 8rpx;
+  opacity: 0.9;
+}
+.user-dept.data-v-60cb334c {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+.user-qr.data-v-60cb334c {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+/* 统计信息样式 - 精致版 */
+.stats-section.data-v-60cb334c {
+  display: flex;
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10rpx);
+          backdrop-filter: blur(10rpx);
+  margin: 0 20rpx 24rpx;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stats-section.data-v-60cb334c:hover {
+  -webkit-transform: translateY(-2rpx);
+          transform: translateY(-2rpx);
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.15);
+}
+.stats-item.data-v-60cb334c {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stats-item.data-v-60cb334c:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  -webkit-transform: translateY(-2rpx);
+          transform: translateY(-2rpx);
+}
+.stats-number.data-v-60cb334c {
+  font-size: 40rpx;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 12rpx;
+}
+.stats-label.data-v-60cb334c {
+  font-size: 24rpx;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* 功能菜单样式 - 精致版 */
+.menu-section.data-v-60cb334c {
+  margin: 0 20rpx;
+}
+.menu-group.data-v-60cb334c {
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(10rpx);
+          backdrop-filter: blur(10rpx);
+  border-radius: 20rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-group.data-v-60cb334c:hover {
+  -webkit-transform: translateY(-2rpx);
+          transform: translateY(-2rpx);
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.15);
+}
+.menu-item.data-v-60cb334c {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid rgba(240, 240, 240, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-item.data-v-60cb334c:last-child {
+  border-bottom: none;
+}
+.menu-item.data-v-60cb334c:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  -webkit-transform: translateX(4rpx);
+          transform: translateX(4rpx);
+}
+.menu-icon.data-v-60cb334c {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+.icon-text.data-v-60cb334c {
+  font-size: 32rpx;
+}
+.menu-text.data-v-60cb334c {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333333;
+}
+.menu-badge.data-v-60cb334c {
+  background-color: #ff4757;
+  color: #ffffff;
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 20rpx;
+  margin-right: 20rpx;
+  min-width: 32rpx;
+  text-align: center;
+}
+.menu-arrow.data-v-60cb334c {
+  font-size: 28rpx;
+  color: #cccccc;
+}
+
+/* 设置选项样式 */
+.settings-section.data-v-60cb334c {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  margin: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+.settings-item.data-v-60cb334c {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.settings-item.data-v-60cb334c:last-child {
+  border-bottom: none;
+}
+.settings-icon.data-v-60cb334c {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+.settings-text.data-v-60cb334c {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333333;
+}
+.settings-arrow.data-v-60cb334c {
+  font-size: 28rpx;
+  color: #cccccc;
+}
+
+/* 退出登录样式 */
+.logout-section.data-v-60cb334c {
+  margin: 20rpx;
+  padding: 20rpx 0;
+}
+.logout-btn.data-v-60cb334c {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+.logout-text.data-v-60cb334c {
+  font-size: 28rpx;
+  color: #ff4757;
+  font-weight: bold;
+}
+
+/* 版本信息样式 */
+.version-info.data-v-60cb334c {
+  text-align: center;
+  padding: 20rpx;
+  margin-bottom: 40rpx;
+}
+.version-text.data-v-60cb334c {
+  font-size: 24rpx;
+  color: #999999;
+}
+
