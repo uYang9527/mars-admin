@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
-import { useTable, useTableOperate } from '@/hooks/common/table';
+import {Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag} from 'ant-design-vue';
+import {useTable, useTableOperate} from '@/hooks/common/table';
 import {
   fetchChangeOssConfigStatus,
   fetchDeleteOssConfig,
@@ -8,13 +8,14 @@ import {
   fetchGetOssConfigList,
   fetchRefreshOssConfigCache
 } from '@/service/api/file-manage';
-import { $t } from '@/locales';
+import {$t} from '@/locales';
 import StorageConfigSearch from './modules/storage-config-search.vue';
 import StorageConfigOperateDrawer from './modules/storage-config-operate-drawer.vue';
 
 defineOptions({
   name: 'OssConfig'
 });
+
 
 const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetOssConfigList,
@@ -37,14 +38,14 @@ const { columns, data, getData, loading, mobilePagination, updatePagination, sea
       key: 'index',
       title: $t('common.index'),
       align: 'center',
-      customRender: ({ index }) => index + 1
+      customRender: ({index}) => index + 1
     },
     {
       key: 'configKey',
       dataIndex: 'configKey',
       title: '配置标识',
       align: 'center',
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <Tag color={getConfigColor(record.configKey)}>{getConfigName(record.configKey)}</Tag>
       )
     },
@@ -53,7 +54,7 @@ const { columns, data, getData, loading, mobilePagination, updatePagination, sea
       dataIndex: 'bucketName',
       title: '存储桶',
       align: 'center',
-      customRender: ({ record }) => record.bucketName || '-'
+      customRender: ({record}) => record.bucketName || '-'
     },
     {
       key: 'endpoint',
@@ -61,7 +62,7 @@ const { columns, data, getData, loading, mobilePagination, updatePagination, sea
       title: '端点地址',
       align: 'center',
       ellipsis: true,
-      customRender: ({ record }) => record.endpoint || '-'
+      customRender: ({record}) => record.endpoint || '-'
     },
     {
       key: 'domain',
@@ -69,14 +70,14 @@ const { columns, data, getData, loading, mobilePagination, updatePagination, sea
       title: '自定义域名',
       align: 'center',
       ellipsis: true,
-      customRender: ({ record }) => record.domain || '-'
+      customRender: ({record}) => record.domain || '-'
     },
     {
       key: 'status',
       dataIndex: 'status',
       title: '状态',
       align: 'center',
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <Tag color={record.status === 1 ? 'success' : 'error'}>{record.status === 1 ? '启用' : '停用'}</Tag>
       )
     },
@@ -84,7 +85,7 @@ const { columns, data, getData, loading, mobilePagination, updatePagination, sea
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <div class="flex-center gap-8px">
           <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
             {$t('common.edit')}
@@ -147,7 +148,7 @@ function getConfigName(configKey: string): string {
 // 切换状态
 async function toggleStatus(id: number, currentStatus: number) {
   const newStatus = currentStatus === 1 ? 0 : 1;
-  const { error } = await fetchChangeOssConfigStatus(id, newStatus);
+  const {error} = await fetchChangeOssConfigStatus(id, newStatus);
   if (!error) {
     window.$message?.success(newStatus === 1 ? '启用成功' : '停用成功');
     getData();
@@ -167,7 +168,7 @@ async function handleBatchDelete() {
     okText: '确定',
     cancelText: '取消',
     async onOk() {
-      const { error } = await fetchDeleteOssConfigs(checkedRowKeys.value);
+      const {error} = await fetchDeleteOssConfigs(checkedRowKeys.value);
       if (!error) {
         window.$message?.success('批量删除成功');
         onBatchDeleted();
@@ -178,7 +179,7 @@ async function handleBatchDelete() {
 
 // 删除单个配置
 async function handleDelete(id: number) {
-  const { error } = await fetchDeleteOssConfig(id);
+  const {error} = await fetchDeleteOssConfig(id);
   if (!error) {
     window.$message?.success('删除成功');
     onDeleted();
@@ -188,7 +189,7 @@ async function handleDelete(id: number) {
 // 刷新OSS配置缓存
 async function refreshOssConfigCache() {
   try {
-    const { error } = await fetchRefreshOssConfigCache();
+    const {error} = await fetchRefreshOssConfigCache();
     if (!error) {
       window.$message?.success('刷新OSS配置缓存成功');
     }
@@ -202,7 +203,7 @@ async function refreshOssConfigCache() {
 function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
-    const { current, pageSize } = paginationInfo;
+    const {current, pageSize} = paginationInfo;
 
     // 处理分页大小变化
     updatePagination({
@@ -222,7 +223,7 @@ function handleTableChange(paginationInfo: any) {
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <StorageConfigSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <StorageConfigSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
 
     <!-- 操作按钮 -->
     <ACard :bordered="false" class="card-wrapper">
@@ -233,7 +234,7 @@ function handleTableChange(paginationInfo: any) {
         </AButton>
         <AButton type="primary" ghost @click="refreshOssConfigCache">
           <template #icon>
-            <icon-mdi-cached class="align-sub text-icon" />
+            <icon-mdi-cached class="align-sub text-icon"/>
           </template>
           <span class="ml-8px">刷新缓存</span>
         </AButton>
@@ -267,13 +268,7 @@ function handleTableChange(paginationInfo: any) {
 </template>
 
 <style scoped>
-.card-wrapper {
-  background: #fff;
-}
 
-.search-form {
-  margin-bottom: 0;
-}
 
 .detail-content .ant-descriptions-item-label {
   width: 120px;

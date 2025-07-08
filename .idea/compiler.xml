@@ -10,6 +10,37 @@
         <module name="mars-admin" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mars-admin-monitor" target="17" />
+      <module name="mars-admin-server" target="17" />
+      <module name="snail-job" target="17" />
+      <module name="snail-job-client" target="17" />
+      <module name="snail-job-client-common" target="17" />
+      <module name="snail-job-client-job-core" target="17" />
+      <module name="snail-job-client-retry-core" target="17" />
+      <module name="snail-job-client-starter" target="17" />
+      <module name="snail-job-common" target="17" />
+      <module name="snail-job-common-client-api" target="17" />
+      <module name="snail-job-common-core" target="17" />
+      <module name="snail-job-common-log" target="17" />
+      <module name="snail-job-common-server-api" target="17" />
+      <module name="snail-job-datasource" target="17" />
+      <module name="snail-job-datasource-template" target="17" />
+      <module name="snail-job-dm8-datasource" target="17" />
+      <module name="snail-job-kingbase-datasource" target="17" />
+      <module name="snail-job-mariadb-datasource" target="17" />
+      <module name="snail-job-mysql-datasource" target="17" />
+      <module name="snail-job-oracle-datasource" target="17" />
+      <module name="snail-job-postgres-datasource" target="17" />
+      <module name="snail-job-server" target="17" />
+      <module name="snail-job-server-common" target="17" />
+      <module name="snail-job-server-job-task" target="17" />
+      <module name="snail-job-server-retry-task" target="17" />
+      <module name="snail-job-server-starter" target="17" />
+      <module name="snail-job-server-ui" target="17" />
+      <module name="snail-job-server-web" target="17" />
+      <module name="snail-job-sqlserver-datasource" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

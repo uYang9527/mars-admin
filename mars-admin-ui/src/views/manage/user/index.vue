@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
-import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
-import { useTable, useTableOperate } from '@/hooks/common/table';
+import {ref} from 'vue';
+import {Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag} from 'ant-design-vue';
+import {useTable, useTableOperate} from '@/hooks/common/table';
 import {
   fetchChangeUserStatus,
   fetchDeleteUser,
@@ -9,8 +9,8 @@ import {
   fetchGetUserList,
   fetchResetUserPassword
 } from '@/service/api';
-import { $t } from '@/locales';
-import { enableStatusRecord, userGenderRecord } from '@/constants/business';
+import {$t} from '@/locales';
+import {enableStatusRecord, userGenderRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
 import UserOperateDrawer from './modules/user-operate-drawer.vue';
 import UserSearch from './modules/user-search.vue';
@@ -90,7 +90,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, updateP
       dataIndex: 'status',
       title: $t('page.manage.user.userStatus'),
       align: 'center',
-      customRender: ({ record }) => {
+      customRender: ({record}) => {
         if (record.status === null) {
           return null;
         }
@@ -104,7 +104,7 @@ const { columns, columnChecks, data, getData, loading, mobilePagination, updateP
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <div class="flex-center gap-8px">
           <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
             {$t('common.edit')}
@@ -157,7 +157,7 @@ async function handleBatchDelete() {
       cancelText: '取消',
       async onOk() {
         // 发送请求
-        const { error } = await fetchDeleteUsers(checkedRowKeys.value);
+        const {error} = await fetchDeleteUsers(checkedRowKeys.value);
         if (!error) {
           window.$message?.success('批量删除成功');
           onBatchDeleted();
@@ -181,7 +181,7 @@ async function handleDelete(id: number) {
     }
 
     // 发送请求
-    const { error } = await fetchDeleteUser(id);
+    const {error} = await fetchDeleteUser(id);
     if (!error) {
       window.$message?.success('删除成功');
       onDeleted();
@@ -195,7 +195,7 @@ async function handleDelete(id: number) {
 
 async function toggleStatus(id: number, status: number) {
   const newStatus = status === 1 ? 0 : 1;
-  const { error } = await fetchChangeUserStatus(id, newStatus);
+  const {error} = await fetchChangeUserStatus(id, newStatus);
   if (!error) {
     window.$message?.success('状态修改成功');
     getData();
@@ -203,7 +203,7 @@ async function toggleStatus(id: number, status: number) {
 }
 
 async function resetPassword(id: number) {
-  const { error } = await fetchResetUserPassword(id, '123456');
+  const {error} = await fetchResetUserPassword(id, '123456');
   if (!error) {
     window.$message?.success('密码重置成功，新密码为：123456');
   }
@@ -217,7 +217,7 @@ function edit(id: number) {
 function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
-    const { current, pageSize } = paginationInfo;
+    const {current, pageSize} = paginationInfo;
 
     // 处理分页大小变化
     updatePagination({
@@ -236,7 +236,7 @@ function handleTableChange(paginationInfo: any) {
 
 <template>
   <div ref="wrapperEl" class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <UserSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
     <ACard title="用户列表" :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
       <template #extra>
         <TableHeaderOperation
