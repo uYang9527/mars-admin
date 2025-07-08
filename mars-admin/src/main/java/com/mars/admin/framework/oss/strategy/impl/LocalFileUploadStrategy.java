@@ -47,17 +47,35 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
     @Override
     public FileUploadResult upload(MultipartFile file, SysOssConfig config) {
         try {
+            // 初始化上传路径
+            initUploadPath();
+            
             String originalName = file.getOriginalFilename();
             String fileName = generateFileName(originalName);
             String filePath = buildFilePath(fileName, config);
-            String fullPath = uploadPath + File.separator + filePath;
+            String fullPath = getNormalizedPath(uploadPath, filePath);
+            
+            log.info("保存文件到: {}", fullPath);
             
             // 创建目录
             createDirectories(fullPath);
             
             // 保存文件
             File targetFile = new File(fullPath);
-            file.transferTo(targetFile);
+            try {
+                file.transferTo(targetFile);
+            } catch (IOException e) {
+                log.error("保存文件失败: {}", e.getMessage());
+                // 尝试使用替代方法保存
+                try (FileOutputStream out = new FileOutputStream(targetFile)) {
+                    out.write(file.getBytes());
+                }
+            }
+            
+            // 确认文件已保存成功
+            if (!targetFile.exists()) {
+                throw new IOException("文件保存失败，无法在目标路径找到文件: " + targetFile.getAbsolutePath());
+            }
             
             // 构建访问URL
             String url = buildAccessUrl(filePath);
@@ -74,7 +92,7 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
                     .setUploadStatus(1);
                     
         } catch (IOException e) {
-            log.error("本地文件上传失败", e);
+            log.error("本地文件上传失败: {}", e.getMessage(), e);
             throw new RuntimeException("本地文件上传失败: " + e.getMessage());
         }
     }
@@ -82,14 +100,20 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
     @Override
     public FileUploadResult upload(InputStream inputStream, String fileName, String contentType, SysOssConfig config) {
         try {
+            // 初始化上传路径
+            initUploadPath();
+            
             String filePath = buildFilePath(fileName, config);
-            String fullPath = uploadPath + File.separator + filePath;
+            String fullPath = getNormalizedPath(uploadPath, filePath);
+            
+            log.info("保存文件流到: {}", fullPath);
             
             // 创建目录
             createDirectories(fullPath);
             
             // 保存文件
-            try (FileOutputStream outputStream = new FileOutputStream(fullPath)) {
+            File targetFile = new File(fullPath);
+            try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
                 byte[] buffer = new byte[8192];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -98,7 +122,7 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
             }
             
             // 获取文件大小
-            long size = new File(fullPath).length();
+            long size = targetFile.length();
             
             // 构建访问URL
             String url = buildAccessUrl(filePath);
@@ -115,7 +139,7 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
                     .setUploadStatus(1);
                     
         } catch (IOException e) {
-            log.error("本地文件流上传失败", e);
+            log.error("本地文件流上传失败: {}", e.getMessage(), e);
             throw new RuntimeException("本地文件流上传失败: " + e.getMessage());
         }
     }
@@ -124,7 +148,7 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
     public boolean delete(String fileName, SysOssConfig config) {
         try {
             String filePath = config.getPrefix() + File.separator + fileName;
-            String fullPath = uploadPath + File.separator + filePath;
+            String fullPath = getNormalizedPath(uploadPath, filePath);
             File file = new File(fullPath);
             if (file.exists()) {
                 return file.delete();
@@ -154,17 +178,61 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
         String datePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         return prefix + File.separator + datePath + File.separator + fileName;
     }
+    
+    /**
+     * 初始化上传根目录
+     */
+    private void initUploadPath() throws IOException {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            log.info("创建上传根目录: {}", uploadPath);
+            if (!uploadDir.mkdirs()) {
+                throw new IOException("无法创建上传根目录: " + uploadPath);
+            }
+        }
+    }
+
+    /**
+     * 获取规范化的完整路径
+     */
+    private String getNormalizedPath(String basePath, String relativePath) {
+        // 确保基础路径不以分隔符结尾
+        if (basePath.endsWith(File.separator)) {
+            basePath = basePath.substring(0, basePath.length() - 1);
+        }
+        
+        // 确保相对路径不以分隔符开头
+        if (relativePath.startsWith(File.separator)) {
+            relativePath = relativePath.substring(1);
+        }
+        
+        // 组合并规范化路径
+        Path path = Paths.get(basePath, relativePath).normalize();
+        return path.toString();
+    }
 
     private void createDirectories(String fullPath) throws IOException {
-        Path path = Paths.get(fullPath).getParent();
-        if (path != null && !Files.exists(path)) {
-            Files.createDirectories(path);
+        try {
+            Path path = Paths.get(fullPath).getParent();
+            if (path != null && !Files.exists(path)) {
+                log.info("创建目录: {}", path);
+                Files.createDirectories(path);
+            }
+        } catch (IOException e) {
+            log.error("创建目录失败: {}", e.getMessage(), e);
+            
+            // 尝试使用File API创建目录
+            File directory = new File(Paths.get(fullPath).getParent().toString());
+            if (!directory.exists() && !directory.mkdirs()) {
+                throw new IOException("无法创建目录: " + directory.getAbsolutePath());
+            }
         }
     }
 
     private String buildAccessUrl(String filePath) {
-        String baseUrl = "http://localhost:" + serverPort;
-        if (StringUtils.hasText(contextPath)) {
+        // 使用相对路径而非硬编码的主机名
+        String baseUrl = "";
+        if (StringUtils.hasText(contextPath) && !contextPath.equals("/")) {
             baseUrl += contextPath;
         }
         return baseUrl + "/file/" + filePath.replace(File.separator, "/");

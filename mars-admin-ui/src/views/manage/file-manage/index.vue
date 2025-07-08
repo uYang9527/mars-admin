@@ -16,7 +16,7 @@ defineOptions({
 // 上传抽屉相关
 const uploadVisible = ref(false);
 
-const {columns, data, getData, loading, mobilePagination, searchParams} = useTable({
+const {columns, data, getData, loading, mobilePagination, updatePagination, searchParams} = useTable({
   apiFn: fetchGetFileList,
   apiParams: {
     current: 1,
