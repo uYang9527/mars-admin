@@ -290,7 +290,7 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <LoginLogSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
-    <ACard :bordered="false" :body-style="{ paddingTop: '0px' }" class="sm:flex-1-hidden card-wrapper">
+    <ACard :bordered="false" :body-style="{ padding: '0' }">
       <!-- 自定义标题区域 -->
       <template #title>
         <div class="flex justify-between items-center w-full">
@@ -300,13 +300,13 @@ function handleTableChange(paginationInfo: any) {
             <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
               批量删除
             </AButton>
-            <AButton type="primary" danger @click="handleCleanAll">
+            <AButton type="primary" danger ghost @click="handleCleanAll">
               <template #icon>
                 <icon-ic-round-delete class="align-sub text-icon" />
               </template>
               <span class="ml-8px">清空日志</span>
             </AButton>
-            <AButton type="primary" @click="handleExport">
+            <AButton type="primary" ghost @click="handleExport">
               <template #icon>
                 <icon-ic-round-download class="align-sub text-icon" />
               </template>

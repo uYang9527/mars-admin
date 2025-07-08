@@ -272,7 +272,7 @@ function handleTableChange(paginationInfo: any) {
         <div class="flex justify-between items-center w-full">
           <span class="text-base font-medium">文件列表</span>
           <div class="flex gap-12px flex-wrap">
-            <Button type="primary" @click="showUploadDrawer">
+            <Button type="primary" ghost @click="showUploadDrawer">
               <template #icon>
                 <icon-ic-round-upload class="align-sub text-icon" />
               </template>

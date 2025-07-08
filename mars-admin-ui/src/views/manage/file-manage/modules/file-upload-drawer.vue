@@ -95,8 +95,17 @@ function handleBeforeUpload(file: any) {
 function handleUploadChange(info: any) {
   const { status, name, response } = info.file;
   
-  // 复制文件列表
-  fileList.value = [...info.fileList];
+  // 处理预览URL
+  const fileListWithPreview = info.fileList.map((file: any) => {
+    if (file.status === 'done' && file.response && file.response.code === 200 && file.response.data) {
+      // 为上传成功的文件添加预览URL
+      file.url = file.response.data.url;
+    }
+    return file;
+  });
+  
+  // 更新文件列表
+  fileList.value = fileListWithPreview;
   
   if (status === 'uploading') {
     uploading.value = true;
@@ -105,13 +114,13 @@ function handleUploadChange(info: any) {
   
   if (status === 'done') {
     uploading.value = false;
-    if (response && response.code === '0000') {
+    if (response && response.code === 200) {
       window.$message?.success?.(`${name} 文件上传成功`);
       emit('uploaded');
       isVisible.value = false;
     } else {
       // 服务器返回了错误信息
-      const errorMsg = response?.msg || '文件上传失败';
+      const errorMsg = response?.message || '文件上传失败';
       window.$message?.error?.(`${name} 上传失败: ${errorMsg}`);
     }
   } else if (status === 'error') {
@@ -194,6 +203,7 @@ onMounted(() => {
         :file-list="fileList"
         :before-upload="handleBeforeUpload"
         @change="handleUploadChange"
+        :showUploadList="{ showPreviewIcon: true }"
       >
         <p class="ant-upload-drag-icon">
           <InboxOutlined style="font-size: 48px; color: #bfbfbf" />
