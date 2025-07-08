@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/cache-monitor/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/cache-monitor/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/manage/dict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/sql/mars_admin.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/login-log/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/login-log/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/operation-log/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/operation-log/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/system-monitor/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/system-monitor/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

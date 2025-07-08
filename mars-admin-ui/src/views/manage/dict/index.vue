@@ -439,7 +439,7 @@ onMounted(() => {
                 <!--                <ATag color="blue">{{ selectedNode.data.dictType }}</ATag>-->
               </div>
 
-              <div class="rounded-lg bg-gray-50 p-4">
+              <div class="rounded-lg p-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm text-gray-600">字典名称：</label>
@@ -524,7 +524,7 @@ onMounted(() => {
                 </ATag>
               </div>
 
-              <div class="rounded-lg bg-gray-50 p-4">
+              <div class="rounded-lg p-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm text-gray-600">字典标签：</label>

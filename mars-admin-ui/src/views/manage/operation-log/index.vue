@@ -292,19 +292,35 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <OperLogSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
-    <!-- 操作按钮 -->
-    <ACard :bordered="false">
-      <div class="flex gap-12px">
-        <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
-          批量删除
-        </AButton>
-        <AButton type="primary" danger @click="handleCleanAll">清空日志</AButton>
-        <AButton type="primary" @click="handleExport">导出日志</AButton>
-      </div>
-    </ACard>
+
 
     <!-- 操作日志列表 -->
-    <ACard title="操作日志" :bordered="false" :body-style="{ padding: '0' }">
+    <ACard :bordered="false" :body-style="{ padding: '0' }">
+      <!-- 自定义标题插槽 -->
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span class="text-base font-medium">操作日志</span>
+          <div class="flex gap-12px flex-wrap">
+            <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
+              批量删除
+            </AButton>
+            <AButton type="primary" danger @click="handleCleanAll">
+              <template #icon>
+                <icon-ic-round-delete class="align-sub text-icon" />
+              </template>
+              清空日志
+            </AButton>
+            <AButton type="primary" @click="handleExport">
+              <template #icon>
+                <icon-ic-round-download class="align-sub text-icon" />
+              </template>
+              导出日志
+            </AButton>
+          </div>
+        </div>
+      </template>
+
+      <!-- 表格 -->
       <ATable
         :columns="columns"
         :data-source="data"
@@ -318,6 +334,7 @@ function handleTableChange(paginationInfo: any) {
         @change="handleTableChange"
       />
     </ACard>
+
 
     <!-- 操作日志详情抽屉 -->
     <OperLogDetailDrawer v-model:visible="drawerVisible" :row-data="editingData" />
