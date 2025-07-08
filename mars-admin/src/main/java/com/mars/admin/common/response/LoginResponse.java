@@ -7,9 +7,9 @@ import lombok.Data;
 /**
  * 登录响应DTO
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Schema(name = "登录响应", description = "用户登录响应数据")
 @Data

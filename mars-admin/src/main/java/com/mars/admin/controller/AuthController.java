@@ -29,9 +29,9 @@ import javax.imageio.ImageIO;
 /**
  * 认证控制器
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Tag(name = "用户认证", description = "用户登录、登出等认证相关操作")
 @RestController

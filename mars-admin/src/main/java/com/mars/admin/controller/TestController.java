@@ -13,9 +13,9 @@ import java.util.Map;
  * 测试控制器
  * 用于测试跨域配置和基本功能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @RestController
 @RequestMapping("/test")

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * MyBatis-Flex 配置类
  * 配置SQL审计、逻辑删除等功能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
  * @date 2025-06-02 14:39:44
  */

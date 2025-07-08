@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * 继承 CrudServiceImpl 自动获得完整的 CRUD 功能
  * 无需手动编写任何代码，只需要实现接口即可！
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */

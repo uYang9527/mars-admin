@@ -9,9 +9,9 @@ import java.io.Serializable;
  * 统一返回结果类
  *
  * @param <T> 数据类型
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Schema(name = "统一返回结果", description = "接口统一返回格式")
 @Data

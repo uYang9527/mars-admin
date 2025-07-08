@@ -23,9 +23,9 @@ import java.util.Set;
 /**
  * 全局异常处理器
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Slf4j
 @RestControllerAdvice

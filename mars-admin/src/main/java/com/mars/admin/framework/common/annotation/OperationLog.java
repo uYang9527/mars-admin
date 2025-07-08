@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
  * 操作日志注解
  * 用于标记需要记录操作日志的方法
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

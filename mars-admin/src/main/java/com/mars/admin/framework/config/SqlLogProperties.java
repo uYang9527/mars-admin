@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 /**
  * SQL日志配置属性
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Data
 @Component

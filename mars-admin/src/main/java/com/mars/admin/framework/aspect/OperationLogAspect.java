@@ -39,9 +39,9 @@ import java.util.concurrent.CompletableFuture;
  * 自动处理标注了@OperationLog注解的方法
  * 支持异步落库，提高性能
  *
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
- * @date 2025-01-27
+ * @date 2025-07-05
  */
 @Aspect
 @Component

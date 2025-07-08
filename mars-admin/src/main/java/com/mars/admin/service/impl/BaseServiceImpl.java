@@ -20,7 +20,7 @@ import java.util.Map;
  * 通过反射自动注入 Mapper，只需要实现接口即可
  *
  * @param <T> 实体类型
- * @author Mars.wq [wqexpore@163.com]
+ * @author 程序员Mars
  * @version 1.0
  * @date 2025-06-23 17:35:08
  */
