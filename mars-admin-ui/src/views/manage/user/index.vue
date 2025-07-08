@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
-import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Space, Tag } from 'ant-design-vue';
+import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   fetchChangeUserStatus,
@@ -10,129 +10,125 @@ import {
   fetchResetUserPassword
 } from '@/service/api';
 import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
 import { enableStatusRecord, userGenderRecord } from '@/constants/business';
 import TableHeaderOperation from '@/components/advanced/table-header-operation.vue';
-import UserOperateDrawer, { type OperateType } from './modules/user-operate-drawer.vue';
+import UserOperateDrawer from './modules/user-operate-drawer.vue';
 import UserSearch from './modules/user-search.vue';
-
-const appStore = useAppStore();
 
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, reloadColumns, searchParams } =
-  useTable({
-    apiFn: fetchGetUserList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      // if you want to use the searchParams in Form, you can define the initial values
-      status: null,
-      username: null,
-      gender: null,
-      nickname: null,
-      phone: null,
-      email: null
+const { columns, columnChecks, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
+  apiFn: fetchGetUserList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    // if you want to use the searchParams in Form, you can define the initial values
+    status: null,
+    username: null,
+    gender: null,
+    nickname: null,
+    phone: null,
+    email: null
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      align: 'center',
+      type: 'selection',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        align: 'center',
-        type: 'selection',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        dataIndex: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'username',
-        dataIndex: 'username',
-        title: $t('page.manage.user.userName'),
-        align: 'center'
-      },
-      {
-        key: 'nickname',
-        dataIndex: 'nickname',
-        title: $t('page.manage.user.nickName'),
-        align: 'center'
-      },
-      {
-        key: 'gender',
-        dataIndex: 'gender',
-        title: $t('page.manage.user.userGender'),
-        align: 'center',
-        customRender: ({ record }) => {
-          if (record.gender === null) {
-            return null;
-          }
-
-          const label = $t(userGenderRecord[record.gender]);
-
-          return <Tag color={record.gender === 0 ? 'blue' : 'pink'}>{label}</Tag>;
+    {
+      key: 'index',
+      dataIndex: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'username',
+      dataIndex: 'username',
+      title: $t('page.manage.user.userName'),
+      align: 'center'
+    },
+    {
+      key: 'nickname',
+      dataIndex: 'nickname',
+      title: $t('page.manage.user.nickName'),
+      align: 'center'
+    },
+    {
+      key: 'gender',
+      dataIndex: 'gender',
+      title: $t('page.manage.user.userGender'),
+      align: 'center',
+      customRender: ({ record }) => {
+        if (record.gender === null) {
+          return null;
         }
-      },
-      {
-        key: 'phone',
-        dataIndex: 'phone',
-        title: $t('page.manage.user.userPhone'),
-        align: 'center'
-      },
-      {
-        key: 'email',
-        dataIndex: 'email',
-        title: $t('page.manage.user.userEmail'),
-        align: 'center'
-      },
-      {
-        key: 'status',
-        dataIndex: 'status',
-        title: $t('page.manage.user.userStatus'),
-        align: 'center',
-        customRender: ({ record }) => {
-          if (record.status === null) {
-            return null;
-          }
 
-          const label = $t(enableStatusRecord[record.status]);
+        const label = $t(userGenderRecord[record.gender]);
 
-          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
-        }
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-              {$t('common.edit')}
-            </Button>
-            <Popconfirm title="确定要重置密码吗？" onConfirm={() => resetPassword(record.id)}>
-              <Button size="small">重置密码</Button>
-            </Popconfirm>
-            <Button
-              type={record.status === 1 ? 'default' : 'primary'}
-              size="small"
-              onClick={() => toggleStatus(record.id, record.status)}
-            >
-              {record.status === 1 ? '禁用' : '启用'}
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
+        return <Tag color={record.gender === 0 ? 'blue' : 'pink'}>{label}</Tag>;
       }
-    ]
-  });
+    },
+    {
+      key: 'phone',
+      dataIndex: 'phone',
+      title: $t('page.manage.user.userPhone'),
+      align: 'center'
+    },
+    {
+      key: 'email',
+      dataIndex: 'email',
+      title: $t('page.manage.user.userEmail'),
+      align: 'center'
+    },
+    {
+      key: 'status',
+      dataIndex: 'status',
+      title: $t('page.manage.user.userStatus'),
+      align: 'center',
+      customRender: ({ record }) => {
+        if (record.status === null) {
+          return null;
+        }
+
+        const label = $t(enableStatusRecord[record.status]);
+
+        return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
+      }
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Popconfirm title="确定要重置密码吗？" onConfirm={() => resetPassword(record.id)}>
+            <Button size="small">重置密码</Button>
+          </Popconfirm>
+          <Button
+            type={record.status === 1 ? 'default' : 'primary'}
+            size="small"
+            onClick={() => toggleStatus(record.id, record.status)}
+          >
+            {record.status === 1 ? '禁用' : '启用'}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 const {
   drawerVisible,
   operateType,
@@ -218,21 +214,19 @@ function edit(id: number) {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();

@@ -30,7 +30,7 @@ public class UserAgentUtils {
 
         userAgent = userAgent.toLowerCase();
 
-        if (userAgent.contains("edge")) {
+        if (userAgent.contains("edg")) {
             return "Microsoft Edge";
         } else if (userAgent.contains("chrome")) {
             return "Google Chrome";

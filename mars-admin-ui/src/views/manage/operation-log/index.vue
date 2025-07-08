@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { computed, reactive, ref } from 'vue';
 import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
@@ -17,9 +16,7 @@ defineOptions({
   name: 'OperationLog'
 });
 
-const wrapperEl = ref<HTMLElement>();
-
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetOperLogList,
   apiParams: {
     current: 1,
@@ -126,7 +123,7 @@ const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagi
   ]
 });
 
-const { drawerVisible, editingData, checkedRowKeys, onBatchDeleted, onDeleted, onSelectChange, rowSelection } =
+const { drawerVisible, editingData, checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } =
   useTableOperate(data, getData);
 
 // 查看详情
@@ -215,21 +212,21 @@ async function handleExport() {
     const exportParams: any = {};
 
     // 安全检查 searchParams.value
-    if (searchParams.value) {
-      if (searchParams.value.title) {
-        exportParams.title = searchParams.value.title;
+    if (searchParams) {
+      if (searchParams.title) {
+        exportParams.title = searchParams.title;
       }
-      if (searchParams.value.operName) {
-        exportParams.operName = searchParams.value.operName;
+      if (searchParams.operName) {
+        exportParams.operName = searchParams.operName;
       }
-      if (searchParams.value.businessType !== null && searchParams.value.businessType !== undefined) {
-        exportParams.businessType = searchParams.value.businessType;
+      if (searchParams.businessType !== null && searchParams.businessType !== undefined) {
+        exportParams.businessType = searchParams.businessType;
       }
-      if (searchParams.value.status !== null && searchParams.value.status !== undefined) {
-        exportParams.status = searchParams.value.status;
+      if (searchParams.status !== null && searchParams.status !== undefined) {
+        exportParams.status = searchParams.status;
       }
-      if (searchParams.value.operIp) {
-        exportParams.operIp = searchParams.value.operIp;
+      if (searchParams.operIp) {
+        exportParams.operIp = searchParams.operIp;
       }
     }
     window.$message?.info('开始导出，请稍候...');
@@ -272,22 +269,18 @@ async function handleExport() {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
-
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
-
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
     // 刷新数据
     getData();
   }
@@ -316,11 +309,12 @@ function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
         :columns="columns"
         :data-source="data"
         size="small"
-        :scroll="{ x: 'max-content', y: 600 }"
+        :scroll="{ x: 'max-content' }"
         :loading="loading"
-        row-key="id"
         :row-selection="rowSelection"
+        row-key="id"
         :pagination="mobilePagination"
+        class="h-full"
         @change="handleTableChange"
       />
     </ACard>

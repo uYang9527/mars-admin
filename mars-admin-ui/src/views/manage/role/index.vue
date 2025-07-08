@@ -2,10 +2,16 @@
 import { ref } from 'vue';
 import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
-import { fetchChangeRoleStatus, fetchDeleteRole, fetchDeleteRoles, fetchGetRoleList, fetchRefreshRoleCache } from '@/service/api';
+import {
+  fetchChangeRoleStatus,
+  fetchDeleteRole,
+  fetchDeleteRoles,
+  fetchGetRoleList,
+  fetchRefreshRoleCache
+} from '@/service/api';
 import { $t } from '@/locales';
 import { enableStatusRecord } from '@/constants/business';
-import RoleOperateDrawer, { type OperateType } from './modules/role-operate-drawer.vue';
+import RoleOperateDrawer from './modules/role-operate-drawer.vue';
 import MenuAuthModal from './modules/menu-auth-modal.vue';
 import ButtonAuthModal from './modules/button-auth-modal.vue';
 import DataAuthModal from './modules/data-auth-modal.vue';
@@ -13,7 +19,7 @@ import RoleSearch from './modules/role-search.vue';
 
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+const { columns, columnChecks, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetRoleList,
   apiParams: {
     current: 1,
@@ -135,7 +141,6 @@ const {
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  onSelectChange,
   rowSelection
 } = useTableOperate(data, getData);
 
@@ -244,21 +249,19 @@ async function refreshRoleCache() {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();
@@ -300,8 +303,8 @@ function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
         row-key="id"
         :row-selection="rowSelection"
         :pagination="mobilePagination"
-        @change="handleTableChange"
         class="h-full"
+        @change="handleTableChange"
       />
     </ACard>
 

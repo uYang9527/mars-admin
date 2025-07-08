@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
 import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
@@ -11,15 +10,13 @@ import {
 } from '@/service/api/file-manage';
 import { $t } from '@/locales';
 import StorageConfigSearch from './modules/storage-config-search.vue';
-import StorageConfigOperateDrawer, { type OperateType } from './modules/storage-config-operate-drawer.vue';
+import StorageConfigOperateDrawer from './modules/storage-config-operate-drawer.vue';
 
 defineOptions({
   name: 'OssConfig'
 });
 
-const wrapperEl = ref<HTMLElement>();
-
-const { columns, columnChecks, data, getData, getDataByPage, loading, mobilePagination, searchParams } = useTable({
+const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
   apiFn: fetchGetOssConfigList,
   apiParams: {
     current: 1,
@@ -119,7 +116,6 @@ const {
   checkedRowKeys,
   onBatchDeleted,
   onDeleted,
-  onSelectChange,
   rowSelection
 } = useTableOperate(data, getData);
 
@@ -203,21 +199,19 @@ async function refreshOssConfigCache() {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== mobilePagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      mobilePagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();

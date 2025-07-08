@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { ref } from 'vue';
-import { Button, Modal, Popconfirm, Space, Tag } from 'ant-design-vue';
+import { Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
 import { useTable, useTableOperate } from '@/hooks/common/table';
 import {
   fetchChangePostStatus,
@@ -10,117 +10,113 @@ import {
   fetchRefreshPostCache
 } from '@/service/api/system-manage';
 import { $t } from '@/locales';
-import { useAppStore } from '@/store/modules/app';
 import { enableStatusRecord } from '@/constants/business';
-import PostOperateDrawer, { type OperateType } from './modules/post-operate-drawer.vue';
+import PostOperateDrawer from './modules/post-operate-drawer.vue';
 import PostSearch from './modules/post-search.vue';
 
 defineOptions({
   name: 'ManagePost'
 });
 
-const appStore = useAppStore();
-
 const wrapperEl = ref<HTMLElement>();
 
-const { columns, columnChecks, data, getData, getDataByPage, loading, pagination, reloadColumns, searchParams } =
-  useTable({
-    apiFn: fetchGetPostList,
-    apiParams: {
-      current: 1,
-      size: 10,
-      postName: null,
-      postCode: null,
-      status: null
+const { columns, columnChecks, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
+  apiFn: fetchGetPostList,
+  apiParams: {
+    current: 1,
+    size: 10,
+    postName: null,
+    postCode: null,
+    status: null
+  },
+  columns: () => [
+    {
+      key: 'selection',
+      title: '',
+      type: 'selection',
+      align: 'center',
+      width: 48,
+      fixed: 'left'
     },
-    columns: () => [
-      {
-        key: 'selection',
-        title: '',
-        type: 'selection',
-        align: 'center',
-        width: 48,
-        fixed: 'left'
-      },
-      {
-        key: 'index',
-        title: $t('common.index'),
-        align: 'center',
-        customRender: ({ index }) => index + 1
-      },
-      {
-        key: 'postName',
-        title: '岗位名称',
-        align: 'center',
-        dataIndex: 'postName'
-      },
-      {
-        key: 'postCode',
-        title: '岗位编码',
-        align: 'center',
-        dataIndex: 'postCode'
-      },
-      {
-        key: 'postSort',
-        title: '显示顺序',
-        align: 'center',
-        dataIndex: 'postSort'
-      },
-      {
-        key: 'status',
-        title: '状态',
-        align: 'center',
-        dataIndex: 'status',
-        customRender: ({ record }) => {
-          if (record.status === null) {
-            return null;
-          }
-
-          const label = $t(enableStatusRecord[record.status]);
-
-          return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
+    {
+      key: 'index',
+      title: $t('common.index'),
+      align: 'center',
+      customRender: ({ index }) => index + 1
+    },
+    {
+      key: 'postName',
+      title: '岗位名称',
+      align: 'center',
+      dataIndex: 'postName'
+    },
+    {
+      key: 'postCode',
+      title: '岗位编码',
+      align: 'center',
+      dataIndex: 'postCode'
+    },
+    {
+      key: 'postSort',
+      title: '显示顺序',
+      align: 'center',
+      dataIndex: 'postSort'
+    },
+    {
+      key: 'status',
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status',
+      customRender: ({ record }) => {
+        if (record.status === null) {
+          return null;
         }
-      },
-      {
-        key: 'createTime',
-        title: '创建时间',
-        align: 'center',
-        dataIndex: 'createTime'
-      },
-      {
-        key: 'remark',
-        title: '备注',
-        align: 'center',
-        ellipsis: true,
-        dataIndex: 'remark'
-      },
-      {
-        key: 'operate',
-        title: $t('common.operate'),
-        align: 'center',
-        fixed: 'right',
-        customRender: ({ record }) => (
-          <div class="flex-center gap-8px">
-            <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
-              {$t('common.edit')}
-            </Button>
-            <Button
-              type={record.status === 1 ? 'default' : 'primary'}
-              size="small"
-              onClick={() => toggleStatus(record.id, record.status)}
-            >
-              {record.status === 1 ? '禁用' : '启用'}
-            </Button>
-            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-              <Button danger size="small">
-                {$t('common.delete')}
-              </Button>
-            </Popconfirm>
-          </div>
-        )
+
+        const label = $t(enableStatusRecord[record.status]);
+
+        return <Tag color={record.status === 1 ? 'success' : 'error'}>{label}</Tag>;
       }
-    ]
-  });
+    },
+    {
+      key: 'createTime',
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime'
+    },
+    {
+      key: 'remark',
+      title: '备注',
+      align: 'center',
+      ellipsis: true,
+      dataIndex: 'remark'
+    },
+    {
+      key: 'operate',
+      title: $t('common.operate'),
+      align: 'center',
+      fixed: 'right',
+      customRender: ({ record }) => (
+        <div class="flex-center gap-8px">
+          <Button type="primary" ghost size="small" onClick={() => edit(record.id)}>
+            {$t('common.edit')}
+          </Button>
+          <Button
+            type={record.status === 1 ? 'default' : 'primary'}
+            size="small"
+            onClick={() => toggleStatus(record.id, record.status)}
+          >
+            {record.status === 1 ? '禁用' : '启用'}
+          </Button>
+          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+            <Button danger size="small">
+              {$t('common.delete')}
+            </Button>
+          </Popconfirm>
+        </div>
+      )
+    }
+  ]
+});
 
 const {
   drawerVisible,
@@ -194,21 +190,19 @@ async function refreshPostCache() {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
+function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
     const { current, pageSize } = paginationInfo;
 
+    // 处理分页大小变化
+    updatePagination({
+      current: current || 1,
+      pageSize: pageSize || mobilePagination.value.pageSize
+    });
     // 更新分页参数
-    if (pageSize !== undefined && pageSize !== pagination.pageSize) {
-      // 分页大小改变时，需要重新计算当前页
-      pagination.pageSize = pageSize;
-      searchParams.size = pageSize;
-      searchParams.current = current || 1;
-    } else if (current !== undefined) {
-      // 只是页码改变
-      searchParams.current = current;
-    }
+    searchParams.current = current || 1;
+    searchParams.size = pageSize || mobilePagination.value.pageSize;
 
     // 刷新数据
     getData();
@@ -247,9 +241,9 @@ function handleTableChange(paginationInfo: any, filters: any, sorter: any) {
         :loading="loading"
         :row-selection="rowSelection"
         row-key="id"
-        :pagination="pagination"
-        @change="handleTableChange"
+        :pagination="mobilePagination"
         class="h-full"
+        @change="handleTableChange"
       />
     </ACard>
     <PostOperateDrawer
