@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/axios/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/axios/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/locales/langs/zh-cn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/controller/SysMenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/aspect/OperationLogAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/aspect/OperationLogAspect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysMenuServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/dict/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/dict/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/file-manage/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/file-manage/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/oss-config/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/oss-config/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/manage/user/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/manage/user/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,14 +41,14 @@
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/java-project/mars-admin/mars-admin-ui",
+    "last_opened_file_path": "D:/java-code/mars-admin/mars-admin-ui",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "pnpm",
     "show.migrate.to.gradle.popup": "false",
-    "ts.external.directory.path": "D:\\java-project\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "D:\\java-code\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -57,8 +61,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
       </set>
     </attachedChunks>
   </component>
@@ -81,6 +85,7 @@
       <workItem from="1751448910106" duration="9003000" />
       <workItem from="1751684261402" duration="1114000" />
       <workItem from="1751944836425" duration="2066000" />
+      <workItem from="1751953400260" duration="2880000" />
     </task>
     <servers />
   </component>

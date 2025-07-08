@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import { ref } from 'vue';
-import { Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag } from 'ant-design-vue';
+import {ref} from 'vue';
+import {Card as ACard, Table as ATable, Button, Modal, Popconfirm, Tag} from 'ant-design-vue';
 import dayjs from 'dayjs';
-import { useTable, useTableOperate } from '@/hooks/common/table';
-import { fetchDeleteFile, fetchDeleteFiles, fetchGetFileList } from '@/service/api/file-manage';
-import { $t } from '@/locales';
+import {useTable, useTableOperate} from '@/hooks/common/table';
+import {fetchDeleteFile, fetchDeleteFiles, fetchGetFileList} from '@/service/api/file-manage';
+import {$t} from '@/locales';
 import FileSearch from './modules/file-search.vue';
 import FileOperateDrawer from './modules/file-operate-drawer.vue';
 import FileUploadDrawer from './modules/file-upload-drawer.vue';
@@ -16,7 +16,7 @@ defineOptions({
 // 上传抽屉相关
 const uploadVisible = ref(false);
 
-const { columns, data, getData, loading, mobilePagination, searchParams } = useTable({
+const {columns, data, getData, loading, mobilePagination, searchParams} = useTable({
   apiFn: fetchGetFileList,
   apiParams: {
     current: 1,
@@ -39,14 +39,14 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
       title: $t('common.index'),
       align: 'center',
       width: 80,
-      customRender: ({ index }) => index + 1
+      customRender: ({index}) => index + 1
     },
     {
       key: 'thumbnail',
       title: '缩略图',
       align: 'center',
       width: 80,
-      customRender: ({ record }) => {
+      customRender: ({record}) => {
         if (isImageFile(record.contentType)) {
           return (
             <img
@@ -70,7 +70,7 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
       dataIndex: 'originalName',
       align: 'center',
       ellipsis: true,
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <div class="cursor-pointer text-blue-600" onClick={() => handleShowDetail(record)}>
           {record.originalName}
         </div>
@@ -81,7 +81,7 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
       dataIndex: 'size',
       title: '文件大小',
       align: 'center',
-      customRender: ({ record }) => {
+      customRender: ({record}) => {
         return formatFileSize(record.size);
       }
     },
@@ -96,14 +96,14 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
       dataIndex: 'configKey',
       title: '存储配置',
       align: 'center',
-      customRender: ({ record }) => <Tag color={getConfigColor(record.configKey)}>{record.configKey}</Tag>
+      customRender: ({record}) => <Tag color={getConfigColor(record.configKey)}>{record.configKey}</Tag>
     },
     {
       key: 'createTime',
       dataIndex: 'createTime',
       title: '上传时间',
       align: 'center',
-      customRender: ({ record }) => {
+      customRender: ({record}) => {
         return record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') : '';
       }
     },
@@ -111,7 +111,7 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
       key: 'operate',
       title: $t('common.operate'),
       align: 'center',
-      customRender: ({ record }) => (
+      customRender: ({record}) => (
         <div class="flex-center gap-8px">
           <Button type="primary" ghost size="small" onClick={() => handleShowDetail(record)}>
             详情
@@ -133,7 +133,7 @@ const { columns, data, getData, loading, mobilePagination, searchParams } = useT
   ]
 });
 
-const { checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(data, getData);
+const {checkedRowKeys, onBatchDeleted, onDeleted, rowSelection} = useTableOperate(data, getData);
 
 // 预览相关
 const previewVisible = ref(false);
@@ -221,7 +221,7 @@ async function handleBatchDelete() {
     okText: '确定',
     cancelText: '取消',
     async onOk() {
-      const { error } = await fetchDeleteFiles(checkedRowKeys.value);
+      const {error} = await fetchDeleteFiles(checkedRowKeys.value);
       if (!error) {
         window.$message?.success('批量删除成功');
         onBatchDeleted();
@@ -232,7 +232,7 @@ async function handleBatchDelete() {
 
 // 删除单个文件
 async function handleDelete(id: number) {
-  const { error } = await fetchDeleteFile(id);
+  const {error} = await fetchDeleteFile(id);
   if (!error) {
     window.$message?.success('删除成功');
     onDeleted();
@@ -243,7 +243,7 @@ async function handleDelete(id: number) {
 function handleTableChange(paginationInfo: any) {
   // 处理分页变化（包括页码和分页大小）
   if (paginationInfo) {
-    const { current, pageSize } = paginationInfo;
+    const {current, pageSize} = paginationInfo;
 
     // 更新分页参数
     if (pageSize !== undefined && pageSize !== mobilePagination.value.pageSize) {
@@ -265,7 +265,7 @@ function handleTableChange(paginationInfo: any) {
 <template>
   <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
     <!-- 搜索区域 -->
-    <FileSearch v-model:model="searchParams" @reset="getData" @search="getData" />
+    <FileSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
 
     <!-- 操作按钮 -->
     <ACard :bordered="false" class="card-wrapper">
@@ -294,13 +294,13 @@ function handleTableChange(paginationInfo: any) {
     </ACard>
 
     <!-- 文件上传抽屉 -->
-    <FileUploadDrawer v-model:visible="uploadVisible" @uploaded="getData" />
+    <FileUploadDrawer v-model:visible="uploadVisible" @uploaded="getData"/>
 
     <!-- 文件预览模态框 -->
-    <Modal v-model:open="previewVisible" title="文件预览" :width="800" :footer="null" centered>
-      <div v-if="previewFile" class="preview-content">
-        <div v-if="isImageFile(previewFile.contentType)" class="text-center">
-          <img :src="previewFile.url" :alt="previewFile.originalName" class="max-h-500px max-w-full" />
+    <Modal v-model:open="previewVisible" title="文件预览" :footer="null" centered>
+      <div v-if="previewFile">
+        <div v-if="isImageFile(previewFile.contentType)">
+          <img :src="previewFile.url" :alt="previewFile.originalName"/>
         </div>
         <div v-else class="py-40px text-center">
           <div class="mb-4 text-6xl">📄</div>
@@ -322,13 +322,6 @@ function handleTableChange(paginationInfo: any) {
 </template>
 
 <style scoped>
-.card-wrapper {
-  background: #fff;
-}
-
-.search-form {
-  margin-bottom: 0;
-}
 
 .preview-content img {
   max-width: 100%;
