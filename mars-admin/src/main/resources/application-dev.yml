@@ -81,15 +81,6 @@ spring:
   # 异步任务配置 - 开发环境
   task:
     execution:
-      pool:
-        # 操作日志异步任务线程池配置
-        operation-log:
-          core-size: 2
-          max-size: 4
-          queue-capacity: 1000
-          keep-alive: 60s
-          thread-name-prefix: "operation-log-"
-          allow-core-thread-timeout: true
       shutdown:
         await-termination: true
         await-termination-period: 30s

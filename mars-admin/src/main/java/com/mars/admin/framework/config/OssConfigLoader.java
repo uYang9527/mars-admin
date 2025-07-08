@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class OssConfigLoader implements ApplicationRunner {
     private ISysOssConfigService ossConfigService;
 
     @Override
+    @Async
     public void run(ApplicationArguments args) throws Exception {
         log.info("开始加载OSS配置...");
         
