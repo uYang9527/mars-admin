@@ -81,6 +81,15 @@ spring:
   # 异步任务配置 - 开发环境
   task:
     execution:
+      pool:
+        # 操作日志异步任务线程池配置
+        operation-log:
+          core-size: 2
+          max-size: 4
+          queue-capacity: 1000
+          keep-alive: 60s
+          thread-name-prefix: "operation-log-"
+          allow-core-thread-timeout: true
       shutdown:
         await-termination: true
         await-termination-period: 30s
@@ -114,7 +123,6 @@ mybatis-flex:
     cache-enabled: false
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
-
 
 # 日志配置
 logging:
@@ -161,6 +169,7 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
+
   exclude-paths:
     # 认证相关接口
     - /auth/**
@@ -196,22 +205,6 @@ sa-token:
 sql-log:
   username: admin
   password: admin
-
-# 微信小程序配置
-wechat:
-  miniprogram:
-    appid: your_miniprogram_appid
-    secret: your_miniprogram_secret
-
-# 启动信息配置
-startup:
-  info:
-    # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
-    mode: full
-    # 是否显示系统信息
-    show-system-info: true
-    # 是否显示ASCII艺术字
-    show-banner: true
 
 # 文件上传配置
 file:

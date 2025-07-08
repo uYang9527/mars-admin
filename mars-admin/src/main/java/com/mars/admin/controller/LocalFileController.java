@@ -39,11 +39,15 @@ public class LocalFileController {
             String requestURI = request.getRequestURI();
             String filePath = requestURI.substring("/file/".length());
 
+            // 处理可能的编码问题
+            filePath = java.net.URLDecoder.decode(filePath, "UTF-8");
+
             // 构建完整的文件路径
             Path fullPath = Paths.get(uploadPath, filePath).normalize();
             File file = fullPath.toFile();
 
             if (!file.exists() || !file.isFile()) {
+                log.warn("请求的文件不存在: {}", fullPath);
                 return ResponseEntity.notFound().build();
             }
 
@@ -62,7 +66,10 @@ public class LocalFileController {
                 contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
             }
 
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"").body(resource);
+            return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
+                .body(resource);
 
         } catch (Exception e) {
             log.error("访问本地文件失败", e);
