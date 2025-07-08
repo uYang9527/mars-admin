@@ -115,6 +115,7 @@ mybatis-flex:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
+
 # 日志配置
 logging:
   level:
@@ -160,6 +161,7 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
+
 
   exclude-paths:
     # 认证相关接口

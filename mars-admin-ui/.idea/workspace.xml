@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/MarsAdminStarter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/theme/settings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/settings.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/sql/mars_admin.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/doc/mars_admin.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/MarsAdminApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/MarsAdminApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/AsyncConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/AsyncConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/OssConfigLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/OssConfigLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysUserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/service/impl/SysUserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
