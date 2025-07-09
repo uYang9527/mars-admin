@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   servlet:
     context-path: /
     encoding:
@@ -85,25 +85,25 @@ spring:
         await-termination: true
         await-termination-period: 30s
 
-# SpringDoc OpenAPI 3 配置 (替代Swagger 2)
+# SpringDoc OpenAPI 3 配置 (替代Swagger 2) - 生产环境禁用
 springdoc:
   api-docs:
-    enabled: true
+    enabled: false
     path: /v3/api-docs
   swagger-ui:
-    enabled: true
+    enabled: false
     path: /swagger-ui.html
     operations-sorter: alpha
     tags-sorter: alpha
-  show-actuator: true
+  show-actuator: false
 
-# Knife4j配置 (OpenAPI 3 版本)
+# Knife4j配置 (OpenAPI 3 版本) - 生产环境禁用
 knife4j:
-  enable: true
+  enable: false
   setting:
     language: zh_cn
     swagger-model-name: 实体类列表
-  production: false
+  production: true
 
 
 
@@ -116,18 +116,18 @@ mybatis-flex:
     jdbc-type-for-null: 'null'
 
 
-# 日志配置
+# 日志配置 - 生产环境
 logging:
   level:
-    com.mars.admin: debug
-    com.mars.admin.framework.listener: debug
+    com.mars.admin: info
+    com.mars.admin.framework.listener: info
     com.mars.admin.framework.config: info
-    # 异步操作日志相关 - 开发环境可开启DEBUG
-    com.mars.admin.framework.aspect.OperationLogAspect: DEBUG
-    com.mars.admin.framework.service.AsyncOperationLogService: DEBUG
-    com.mybatisflex: debug
-    org.springframework.jdbc: debug
-    root: info
+    # 异步操作日志相关 - 生产环境设置为INFO
+    com.mars.admin.framework.aspect.OperationLogAspect: INFO
+    com.mars.admin.framework.service.AsyncOperationLogService: INFO
+    com.mybatisflex: warn
+    org.springframework.jdbc: warn
+    root: warn
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
 
@@ -206,15 +206,15 @@ wechat:
     appid: your_miniprogram_appid
     secret: your_miniprogram_secret
 
-# 启动信息配置
+# 启动信息配置 - 生产环境
 startup:
   info:
     # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
-    mode: full
+    mode: simple
     # 是否显示系统信息
     show-system-info: false
     # 是否显示ASCII艺术字
-    show-banner: true
+    show-banner: false
 
 # 文件上传配置
 file:
@@ -223,4 +223,11 @@ file:
     default-config: minio  # 默认使用的配置类型
     max-size: 10485760  # 最大文件大小(10MB)
     allowed-types: jpg,jpeg,png,gif,bmp,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar  # 允许的文件类型
+
+# Mars Admin 生产环境配置
+mars:
+  production:
+    read-only:
+      enabled: true  # 启用生产环境只读模式
+      message: "演示环境，不允许进行增删改操作，如需测试请联系管理员"
 

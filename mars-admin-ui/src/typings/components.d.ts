@@ -65,6 +65,7 @@ declare module 'vue' {
     CollapsibleSearch: typeof import('./../components/common/collapsible-search.vue')['default']
     CountTo: typeof import('./../components/custom/count-to.vue')['default']
     DarkModeContainer: typeof import('./../components/common/dark-mode-container.vue')['default']
+    ErrorHandlerDemo: typeof import('./../components/common/error-handler-demo.vue')['default']
     ExceptionBase: typeof import('./../components/common/exception-base.vue')['default']
     FileUpload: typeof import('./../components/custom/file-upload.vue')['default']
     FullScreen: typeof import('./../components/common/full-screen.vue')['default']
