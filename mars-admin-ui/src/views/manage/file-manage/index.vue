@@ -261,12 +261,12 @@ function handleTableChange(paginationInfo: any) {
 </script>
 
 <template>
-  <div class="min-h-500px flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
+  <div class="min-h-500px flex-col-stretch gap-16px">
     <!-- 搜索区域 -->
     <FileSearch v-model:model="searchParams" @reset="getData" @search="getData"/>
 
 
-    <ACard :bordered="false" class="flex-1-hidden card-wrapper">
+    <ACard :bordered="false" :body-style="{ padding: '0' }">
       <!-- 自定义标题插槽 -->
       <template #title>
         <div class="flex justify-between items-center w-full">

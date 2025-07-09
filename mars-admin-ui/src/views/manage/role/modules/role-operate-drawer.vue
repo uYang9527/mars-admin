@@ -55,6 +55,7 @@ const dataScopeOptions = [
   { label: '仅本人数据权限', value: 5 }
 ];
 
+// 修改Model类型定义，添加isSystem
 type Model = Pick<
   Api.SystemManage.Role,
   | 'roleName'
@@ -67,6 +68,7 @@ type Model = Pick<
   | 'description'
   | 'status'
   | 'remark'
+  | 'isSystem'
 >;
 
 const model = ref(createDefaultModel());
@@ -82,7 +84,8 @@ function createDefaultModel(): Model {
     deptCheckStrictly: 1,
     description: '',
     status: 1,
-    remark: ''
+    remark: '',
+    isSystem: 0 // 默认为非系统角色
   };
 }
 
@@ -111,6 +114,7 @@ const roleId = computed(() => props.rowData?.id || -1);
 const isEdit = computed(() => props.operateType === 'edit');
 const isSystem = computed(() => props.rowData?.isSystem === 1);
 
+// 修改handleInitModel函数，确保处理isSystem字段
 async function handleInitModel() {
   Object.assign(model.value, createDefaultModel());
 
@@ -129,7 +133,8 @@ async function handleInitModel() {
         deptCheckStrictly: Number(roleDetail.deptCheckStrictly || 1),
         description: roleDetail.description || '',
         status: Number(roleDetail.status ?? 1),
-        remark: roleDetail.remark || ''
+        remark: roleDetail.remark || '',
+        isSystem: Number(roleDetail.isSystem ?? 0) // 添加isSystem字段处理
       });
     }
   }
