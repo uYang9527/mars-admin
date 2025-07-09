@@ -81,13 +81,11 @@ public class SysDeptServiceImpl extends CacheableServiceImpl<SysDeptMapper, SysD
     }
 
     @Override
-    @Cacheable(key = "'user:' + #userId")
     public List<SysDept> selectDeptsByUserId(Long userId) {
         return sysDeptMapper.selectDeptsByUserId(userId);
     }
 
     @Override
-    @Cacheable(key = "'role:' + #roleId")
     public List<SysDept> selectDeptsByRoleId(Long roleId) {
         return sysDeptMapper.selectDeptsByRoleId(roleId);
     }
@@ -111,7 +109,6 @@ public class SysDeptServiceImpl extends CacheableServiceImpl<SysDeptMapper, SysD
     }
 
     @Override
-    @Cacheable(key = "'tree'")
     public List<SysDept> selectDeptTree() {
         // 查询所有部门数据
         List<SysDept> allDepts = sysDeptMapper.selectDeptTree();
