@@ -326,7 +326,7 @@ public class OperationLogAspect {
      */
     private String parseSpelExpression(String spelExpression, JoinPoint joinPoint, Object result) {
         try {
-            Expression expression = parser.parseExpression(spelExpression);
+            Expression expression = parser.parseExpression("");
             EvaluationContext context = new StandardEvaluationContext();
             
             // 设置方法参数

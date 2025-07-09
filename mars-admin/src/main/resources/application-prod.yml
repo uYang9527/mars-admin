@@ -85,18 +85,25 @@ spring:
         await-termination: true
         await-termination-period: 30s
 
-# SpringDoc OpenAPI 3 配置 - 生产环境禁用
+# SpringDoc OpenAPI 3 配置 (替代Swagger 2)
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
+    path: /v3/api-docs
   swagger-ui:
-    enabled: false
-  show-actuator: false
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  show-actuator: true
 
-# Knife4j配置 - 生产环境禁用
+# Knife4j配置 (OpenAPI 3 版本)
 knife4j:
-  enable: false
-  production: true
+  enable: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+  production: false
 
 
 
@@ -137,7 +144,8 @@ sa-token:
   # token名称 (同时也是cookie名称)
   token-name: Authorization
   # token有效期，单位s 默认30天, -1代表永不过期
-  timeout: 2592000
+  #  timeout: 2592000
+  timeout: 3600
   # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
   active-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
@@ -154,8 +162,6 @@ sa-token:
   is-read-header: true
   # token前缀
   token-prefix: Bearer
-
-
   exclude-paths:
     # 认证相关接口
     - /auth/**
@@ -164,14 +170,31 @@ sa-token:
     - /public/**
     - /webjars/**
     - /favicon.ico
+    # API文档相关
+    - /doc.html
+    - /swagger-ui.html
+    - /swagger-ui/**
+    - /swagger-resources/**
+    - /v2/api-docs
+    - /v3/api-docs
+    - /v3/api-docs/**
+    - /knife4j/**
     # 健康检查
     - /actuator/**
     - /health
     # 错误页面
     - /error
+    # 测试接口
+    - /test/**
+    # SQL日志页面相关
+    - /sqlLog.html
+    - /sqlLog/**
+    - /sql-log/**
+    # 文件访问
+    - /file/**
     # 文件上传
     - /file/upload
-    # 注意：生产环境移除了API文档、SQL日志、测试接口等路径
+    - /druid/**
 # SQL日志页面配置
 sql-log:
   username: admin
@@ -187,7 +210,7 @@ wechat:
 startup:
   info:
     # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
-    mode: simple
+    mode: full
     # 是否显示系统信息
     show-system-info: false
     # 是否显示ASCII艺术字
@@ -201,4 +224,3 @@ file:
     max-size: 10485760  # 最大文件大小(10MB)
     allowed-types: jpg,jpeg,png,gif,bmp,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar  # 允许的文件类型
 
-# Spring文件上传配置已在主spring节点中配置

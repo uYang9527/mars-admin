@@ -24,7 +24,6 @@ public class FileUploadStrategyFactory {
     public FileUploadStrategyFactory(List<FileUploadStrategy> strategies) {
         for (FileUploadStrategy strategy : strategies) {
             strategyMap.put(strategy.getType(), strategy);
-            log.info("注册文件上传策略: {}", strategy.getType());
         }
     }
 

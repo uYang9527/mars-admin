@@ -30,7 +30,7 @@ const {columns, data, getData, loading, mobilePagination, updatePagination, sear
       title: '',
       align: 'center',
       type: 'selection',
-      width: 48,
+      width: 10,
       fixed: 'left'
     },
     {
@@ -103,6 +103,7 @@ const {columns, data, getData, loading, mobilePagination, updatePagination, sear
       dataIndex: 'createTime',
       title: '上传时间',
       align: 'center',
+      width: 300,
       customRender: ({record}) => {
         return record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') : '';
       }
