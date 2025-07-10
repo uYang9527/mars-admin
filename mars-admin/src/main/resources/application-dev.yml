@@ -144,7 +144,8 @@ sa-token:
   # token名称 (同时也是cookie名称)
   token-name: Authorization
   # token有效期，单位s 默认30天, -1代表永不过期
-  timeout: 2592000
+#  timeout: 2592000
+  timeout: 3600
   # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
   active-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
@@ -211,7 +212,7 @@ startup:
     # 启动信息显示模式: full(完整), simple(简洁), none(不显示)
     mode: full
     # 是否显示系统信息
-    show-system-info: true
+    show-system-info: false
     # 是否显示ASCII艺术字
     show-banner: true
 

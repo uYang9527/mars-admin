@@ -33,7 +33,7 @@ export function fetchGetFileById(id: number) {
 
 /** 删除文件 */
 export function fetchDeleteFile(id: number) {
-  return request({
+  return request<boolean>({
     url: `/file/${id}`,
     method: 'delete'
   });
@@ -41,7 +41,7 @@ export function fetchDeleteFile(id: number) {
 
 /** 批量删除文件 */
 export function fetchDeleteFiles(ids: number[]) {
-  return request({
+  return request<boolean>({
     url: '/file/batch',
     method: 'delete',
     data: ids
@@ -63,6 +63,24 @@ export function fetchGetAvailableTypes() {
     url: '/file/types',
     method: 'get'
   });
+}
+
+/** 获取文件预览信息 */
+export function fetchGetFilePreviewInfo(fileId: number) {
+  return request<Api.FileManage.FilePreviewInfo>({
+    url: `/file/preview/info/${fileId}`,
+    method: 'get'
+  });
+}
+
+/** 获取文件下载地址 */
+export function getFileDownloadUrl(fileId: number): string {
+  return `/proxy-default/file/download/${fileId}`;
+}
+
+/** 获取文件预览地址 */
+export function getFilePreviewUrl(fileId: number): string {
+  return `/proxy-default/file/preview/${fileId}`;
 }
 
 // ==================== OSS配置管理 ====================

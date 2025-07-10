@@ -134,7 +134,6 @@ public class RouteController {
             }
         }
 
-        log.info("转换完成，共生成 {} 个顶级路由", routes.size());
         return routes;
     }
 
@@ -222,7 +221,6 @@ public class RouteController {
             }
         }
 
-        log.debug("转换菜单路由: {} -> {}", menu.getMenuName(), route);
         return route;
     }
 

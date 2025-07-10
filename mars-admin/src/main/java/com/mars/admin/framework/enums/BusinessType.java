@@ -60,4 +60,14 @@ public enum BusinessType {
      * 文件上传
      */
     UPLOAD,
+    
+    /**
+     * 文件下载
+     */
+    DOWNLOAD,
+    
+    /**
+     * 文件预览
+     */
+    PREVIEW
 } 

@@ -4,6 +4,7 @@ import { setupAppVersionNotification, setupDayjs, setupIconifyOffline, setupLoad
 import { setupStore } from './store';
 import { setupRouter } from './router';
 import { setupI18n } from './locales';
+import { setupGlobalErrorHandler, handleComponentError } from './utils/error';
 import App from './App.vue';
 
 async function setupApp() {
@@ -15,7 +16,13 @@ async function setupApp() {
 
   setupDayjs();
 
+  // 设置全局错误处理
+  setupGlobalErrorHandler();
+
   const app = createApp(App);
+
+  // 设置Vue组件错误处理
+  app.config.errorHandler = handleComponentError;
 
   setupStore(app);
 

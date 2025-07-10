@@ -799,6 +799,24 @@ declare namespace Api {
       total: number;
       records: OssConfig[];
     }
+
+    /** 文件预览信息 */
+    interface FilePreviewInfo {
+      /** 预览类型：1-直接预览(图片等)，2-Office预览，3-PDF预览，4-视频预览，5-音频预览，0-不支持预览 */
+      previewType: number;
+      /** 预览URL */
+      previewUrl: string;
+      /** 文件内容类型 */
+      contentType: string;
+      /** 文件原始名称 */
+      originalName: string;
+      /** 文件大小 */
+      size: number;
+      /** 是否需要转换 */
+      needConvert: boolean;
+      /** 预览参数 */
+      previewParams?: string;
+    }
   }
 
   /** 日志管理 */

@@ -44,11 +44,11 @@ public class SysOperLogController extends BaseController<SysOperLog, Long> {
     @GetMapping("/pageList")
     @Operation(summary = "根据条件分页查询操作日志", description = "根据条件分页查询操作日志")
     public Result<Page<SysOperLog>> getByCondition(
-            @Parameter(description = "页码", example = "1") @RequestParam(defaultValue = "1") Integer pageNum,
-            @Parameter(description = "每页大小", example = "10") @RequestParam(defaultValue = "10") Integer pageSize,
+            @Parameter(description = "页码", example = "1") @RequestParam(value = "current", defaultValue = "1") Integer current,
+            @Parameter(description = "每页大小", example = "10") @RequestParam(value = "size", defaultValue = "10") Integer size,
             @Parameter(description = "查询条件实体") SysOperLog operLog) {
         // 使用Service层方法，这些方法在Service实现类中定义
-        Page<SysOperLog> logs = sysOperLogService.selectOperLogPage(Page.of(pageNum, pageSize), operLog);
+        Page<SysOperLog> logs = sysOperLogService.selectOperLogPage(Page.of(current, size), operLog);
         return Result.success(logs);
     }
 

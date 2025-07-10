@@ -16,115 +16,118 @@ defineOptions({
   name: 'OperationLog'
 });
 
-const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams } = useTable({
-  apiFn: fetchGetOperLogList,
-  apiParams: {
-    current: 1,
-    size: 10,
-    title: '',
-    operName: '',
-    businessType: null,
-    status: null,
-    operIp: ''
-  },
-  columns: () => [
-    {
-      key: 'selection',
+const { columns, data, getData, loading, mobilePagination, updatePagination, searchParams, updateSearchParams } =
+  useTable({
+    apiFn: fetchGetOperLogList,
+    apiParams: {
+      current: 1,
+      size: 10,
       title: '',
-      align: 'center',
-      type: 'selection',
-      width: 48,
-      fixed: 'left'
+      operName: '',
+      businessType: null,
+      status: null,
+      operIp: ''
     },
-    {
-      key: 'index',
-      title: $t('common.index'),
-      align: 'center',
-      customRender: ({ index }) => index + 1
-    },
-    {
-      key: 'title',
-      dataIndex: 'title',
-      title: '模块标题',
-      align: 'center',
-      ellipsis: true
-    },
-    {
-      key: 'businessType',
-      dataIndex: 'businessType',
-      title: '业务类型',
-      align: 'center',
-      customRender: ({ record }) => (
-        <Tag color={getBusinessTypeColor(record.businessType)}>{getBusinessTypeText(record.businessType)}</Tag>
-      )
-    },
-    {
-      key: 'operName',
-      dataIndex: 'operName',
-      title: '操作人员',
-      align: 'center',
-      ellipsis: true
-    },
-    {
-      key: 'operIp',
-      dataIndex: 'operIp',
-      title: '主机地址',
-      align: 'center',
-      ellipsis: true
-    },
-    {
-      key: 'operLocation',
-      dataIndex: 'operLocation',
-      title: '操作地点',
-      align: 'center',
-      ellipsis: true,
-      customRender: ({ record }) => record.operLocation || '-'
-    },
-    {
-      key: 'status',
-      dataIndex: 'status',
-      title: '操作状态',
-      align: 'center',
-      customRender: ({ record }) => (
-        <Tag color={record.status === 0 ? 'success' : 'error'}>{record.status === 0 ? '正常' : '异常'}</Tag>
-      )
-    },
-    {
-      key: 'operTime',
-      dataIndex: 'operTime',
-      title: '操作时间',
-      align: 'center',
-      ellipsis: true
-    },
-    {
-      key: 'costTime',
-      dataIndex: 'costTime',
-      title: '消耗时间(ms)',
-      align: 'center',
-      customRender: ({ record }) => record.costTime || 0
-    },
-    {
-      key: 'operate',
-      title: $t('common.operate'),
-      align: 'center',
-      customRender: ({ record }) => (
-        <div class="flex-center gap-8px">
-          <Button type="primary" ghost size="small" onClick={() => handleDetail(record.id)}>
-            详情
-          </Button>
-          <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
-            <Button danger size="small">
-              {$t('common.delete')}
+    columns: () => [
+      {
+        key: 'selection',
+        title: '',
+        align: 'center',
+        type: 'selection',
+        width: 48,
+        fixed: 'left'
+      },
+      {
+        key: 'index',
+        title: $t('common.index'),
+        align: 'center',
+        customRender: ({ index }) => index + 1
+      },
+      {
+        key: 'title',
+        dataIndex: 'title',
+        title: '模块标题',
+        align: 'center',
+        ellipsis: true
+      },
+      {
+        key: 'businessType',
+        dataIndex: 'businessType',
+        title: '业务类型',
+        align: 'center',
+        customRender: ({ record }) => (
+          <Tag color={getBusinessTypeColor(record.businessType)}>{getBusinessTypeText(record.businessType)}</Tag>
+        )
+      },
+      {
+        key: 'operName',
+        dataIndex: 'operName',
+        title: '操作人员',
+        align: 'center',
+        ellipsis: true
+      },
+      {
+        key: 'operIp',
+        dataIndex: 'operIp',
+        title: '主机地址',
+        align: 'center',
+        ellipsis: true
+      },
+      {
+        key: 'operLocation',
+        dataIndex: 'operLocation',
+        title: '操作地点',
+        align: 'center',
+        ellipsis: true,
+        customRender: ({ record }) => record.operLocation || '-'
+      },
+      {
+        key: 'status',
+        dataIndex: 'status',
+        title: '操作状态',
+        align: 'center',
+        customRender: ({ record }) => (
+          <Tag color={record.status === 0 ? 'success' : 'error'}>{record.status === 0 ? '正常' : '异常'}</Tag>
+        )
+      },
+      {
+        key: 'operTime',
+        dataIndex: 'operTime',
+        title: '操作时间',
+        align: 'center',
+        ellipsis: true
+      },
+      {
+        key: 'costTime',
+        dataIndex: 'costTime',
+        title: '消耗时间(ms)',
+        align: 'center',
+        customRender: ({ record }) => record.costTime || 0
+      },
+      {
+        key: 'operate',
+        title: $t('common.operate'),
+        align: 'center',
+        customRender: ({ record }) => (
+          <div class="flex-center gap-8px">
+            <Button type="primary" ghost size="small" onClick={() => handleDetail(record.id)}>
+              详情
             </Button>
-          </Popconfirm>
-        </div>
-      )
-    }
-  ]
-});
+            <Popconfirm title={$t('common.confirmDelete')} onConfirm={() => handleDelete(record.id)}>
+              <Button danger size="small">
+                {$t('common.delete')}
+              </Button>
+            </Popconfirm>
+          </div>
+        )
+      }
+    ]
+  });
 
-const { drawerVisible, editingData, checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } =
-  useTableOperate(data, getData);
+const { drawerVisible, editingData, checkedRowKeys, onBatchDeleted, onDeleted, rowSelection } = useTableOperate(
+  data,
+  getData
+);
 
 // 查看详情
 function handleDetail(id: number) {
@@ -269,19 +272,29 @@ async function handleExport() {
 }
 
 // 处理表格变化事件（分页、排序、筛选）
-function handleTableChange(paginationInfo: any) {
+function handleTableChange(pagination: any) {
   // 处理分页变化（包括页码和分页大小）
-  if (paginationInfo) {
-    const { current, pageSize } = paginationInfo;
-    // 处理分页大小变化
+  if (pagination) {
+    const { current, pageSize } = pagination;
+
+    // 不要重设搜索条件中的除分页之外的参数
+    const currentParams = { ...searchParams };
+
+    // 更新分页设置
     updatePagination({
       current: current || 1,
-      pageSize: pageSize || mobilePagination.value.pageSize
+      pageSize: pageSize || 10,
+      total: mobilePagination.value.total // 保持原来的总记录数
     });
-    // 更新分页参数
-    searchParams.current = current || 1;
-    searchParams.size = pageSize || mobilePagination.value.pageSize;
-    // 刷新数据
+
+    // 更新搜索参数中的分页信息，但保留其他搜索条件
+    currentParams.current = current || 1;
+    currentParams.size = pageSize || 10;
+
+    // 使用updateSearchParams方法而不是直接修改searchParams
+    updateSearchParams(currentParams);
+
+    // 重新加载数据
     getData();
   }
 }
@@ -292,15 +305,13 @@ function handleTableChange(paginationInfo: any) {
     <!-- 搜索区域 -->
     <OperLogSearch v-model:model="searchParams" @reset="getData" @search="getData" />
 
-
-
     <!-- 操作日志列表 -->
     <ACard :bordered="false" :body-style="{ padding: '0' }">
       <!-- 自定义标题插槽 -->
       <template #title>
-        <div class="flex justify-between items-center w-full">
+        <div class="w-full flex items-center justify-between">
           <span class="text-base font-medium">操作日志</span>
-          <div class="flex gap-12px flex-wrap">
+          <div class="flex flex-wrap gap-12px">
             <AButton type="primary" danger ghost :disabled="checkedRowKeys.length === 0" @click="handleBatchDelete">
               批量删除
             </AButton>
@@ -334,7 +345,6 @@ function handleTableChange(paginationInfo: any) {
         @change="handleTableChange"
       />
     </ACard>
-
 
     <!-- 操作日志详情抽屉 -->
     <OperLogDetailDrawer v-model:visible="drawerVisible" :row-data="editingData" />

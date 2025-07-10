@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 08/07/2025 15:07:47
+ Date: 09/07/2025 16:35:29
 */
 
 SET NAMES utf8mb4;
@@ -182,7 +182,7 @@ CREATE TABLE `sys_logininfor`  (
   INDEX `idx_user_name`(`user_name` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 131 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 144 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -317,6 +317,19 @@ INSERT INTO `sys_logininfor` VALUES (127, 'admin', '0:0:0:0:0:0:0:1', '内网IP'
 INSERT INTO `sys_logininfor` VALUES (128, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 13:49:02');
 INSERT INTO `sys_logininfor` VALUES (129, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 13:55:48');
 INSERT INTO `sys_logininfor` VALUES (130, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 14:26:58');
+INSERT INTO `sys_logininfor` VALUES (131, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 15:27:08');
+INSERT INTO `sys_logininfor` VALUES (132, 'admin', '0:0:0:0:0:0:0:1', '内网IP', 'Google Chrome', 'Windows 10', '0', '登录成功', '2025-07-08 15:55:32');
+INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-08 17:07:08');
+INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Microsoft Edge', 'Windows 10', '0', 'PC端登录成功', '2025-07-08 17:34:41');
+INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Microsoft Edge', 'Windows 10', '0', 'PC端登录成功', '2025-07-08 17:38:47');
+INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:29:31');
+INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:46:15');
+INSERT INTO `sys_logininfor` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:47:45');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:49:53');
+INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:54:13');
+INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Microsoft Edge', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:54:24');
+INSERT INTO `sys_logininfor` VALUES (142, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 15:54:30');
+INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Google Chrome', 'Windows 10', '0', 'PC端登录成功', '2025-07-09 16:25:08');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -461,7 +474,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_business_type`(`business_type` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_oper_time`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -508,6 +521,20 @@ INSERT INTO `sys_oper_log` VALUES (39, '文件管理', 10, 'com.mars.admin.contr
 INSERT INTO `sys_oper_log` VALUES (40, '文件管理', 3, 'com.mars.admin.controller.FileUploadController.delete()', 'DELETE', 1, 'admin', '未知部门', '/file/6', '127.0.0.1', NULL, '{\"id\":6} | 描述: 删除文件，文件ID：#{#id}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1751954334745,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 13:58:54', 4);
 INSERT INTO `sys_oper_log` VALUES (41, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":500,\"message\":\"上传失败: 本地文件上传失败: java.io.FileNotFoundException: C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Temp\\\\tomcat.8080.12348213868114401789\\\\work\\\\Tomcat\\\\localhost\\\\ROOT\\\\.\\\\upload\\\\upload\\\\2025\\\\07\\\\08\\\\b3c108b13c524d07957c8b9c4fc8c301.jpg (系统找不到指定的路径。)\",\"data\":null,\"timestamp\":1751954340921,\"error\":true,\"success\":false}', 0, NULL, '2025-07-08 13:59:00', 0);
 INSERT INTO `sys_oper_log` VALUES (42, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.deleteById()', 'DELETE', 1, 'admin', '未知部门', '/system/menu/3', '127.0.0.1', NULL, '{\"id\":3} | 描述: 删除菜单', '{\"code\":200,\"message\":\"删除成功\",\"data\":null,\"timestamp\":1751954391504,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 13:59:51', 2);
+INSERT INTO `sys_oper_log` VALUES (43, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":7,\"fileName\":\"3098111a10b340d79926b877bedbb8ea.jpg\",\"originalName\":\"img_v3_02mm_6eaf2ac0-71ba-43ed-a56f-3913e28ab79g.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/08/3098111a10b340d79926b877bedbb8ea.jpg\",\"size\":100276,\"filePath\":\"upload/2025/07/08/3098111a10b340d79926b877bedbb8ea.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751961344340,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 15:55:44', 6);
+INSERT INTO `sys_oper_log` VALUES (44, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":8,\"fileName\":\"05d75ad7b8aa400183ea2712293ca9c4.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/08/05d75ad7b8aa400183ea2712293ca9c4.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/08/05d75ad7b8aa400183ea2712293ca9c4.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751961386577,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 15:56:26', 0);
+INSERT INTO `sys_oper_log` VALUES (45, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":9,\"fileName\":\"6a6007c5eea44aca847344b0ea689c36.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/08/6a6007c5eea44aca847344b0ea689c36.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/08/6a6007c5eea44aca847344b0ea689c36.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1751961420504,\"error\":false,\"success\":true}', 0, NULL, '2025-07-08 15:57:00', 0);
+INSERT INTO `sys_oper_log` VALUES (46, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":10,\"fileName\":\"2e6040c282ca4023b99154d64e256b1c.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://localhost:8080/file/2025/07/09/2e6040c282ca4023b99154d64e256b1c.jpg\",\"size\":93672,\"filePath\":\"2025/07/09\\\\2e6040c282ca4023b99154d64e256b1c.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"local\",\"uploadStatus\":1},\"timestamp\":1752045805222,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 15:23:25', 5);
+INSERT INTO `sys_oper_log` VALUES (47, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":11,\"fileName\":\"738b8d79e4ae4354958001222ddd4004.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/09/738b8d79e4ae4354958001222ddd4004.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/09/738b8d79e4ae4354958001222ddd4004.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1752046551316,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 15:36:10', 19562);
+INSERT INTO `sys_oper_log` VALUES (48, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":12,\"fileName\":\"0a6fadf4d7804fdf86a1b371f819c0cb.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/09/0a6fadf4d7804fdf86a1b371f819c0cb.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/09/0a6fadf4d7804fdf86a1b371f819c0cb.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1752046913335,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 15:43:21', 27487);
+INSERT INTO `sys_oper_log` VALUES (49, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":13,\"fileName\":\"541f2175a8d94b85bbaa2e89f3c82643.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/09/541f2175a8d94b85bbaa2e89f3c82643.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/09/541f2175a8d94b85bbaa2e89f3c82643.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1752047023383,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 15:44:19', 36373);
+INSERT INTO `sys_oper_log` VALUES (50, '岗位管理', 1, 'com.mars.admin.controller.SysPostController.save()', 'POST', 1, 'admin', '未知部门', '/system/post', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-09 16:10:42\",\"updateTime\":null,\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":5,\"postCode\":\"test111\",\"postName\":\"test\",\"postSort\":0,\"status\":1,\"isSystem\":null,\"remark\":\"\"}} | 描述: 新增岗位：#{#entity.postName}', '{\"code\":200,\"message\":\"新增成功\",\"data\":null,\"timestamp\":1752048642406,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:10:42', 7);
+INSERT INTO `sys_oper_log` VALUES (51, '文件管理', 10, 'com.mars.admin.controller.FileUploadController.upload()', 'POST', 1, NULL, NULL, '/file/upload', '127.0.0.1', NULL, '描述: 上传文件：#{#file.originalFilename}', '{\"code\":200,\"message\":\"上传成功\",\"data\":{\"id\":14,\"fileName\":\"7c035439baca475e9434b9e2daec2c00.jpg\",\"originalName\":\"profile.jpg\",\"fileSuffix\":\"jpg\",\"url\":\"http://150.158.49.140:9000/test/upload/2025/07/09/7c035439baca475e9434b9e2daec2c00.jpg\",\"size\":93672,\"filePath\":\"upload/2025/07/09/7c035439baca475e9434b9e2daec2c00.jpg\",\"contentType\":\"image/jpeg\",\"configKey\":\"minio\",\"uploadStatus\":1},\"timestamp\":1752049750887,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:29:10', 26);
+INSERT INTO `sys_oper_log` VALUES (52, '岗位管理', 1, 'com.mars.admin.controller.SysPostController.save()', 'POST', 1, 'admin', '未知部门', '/system/post', '127.0.0.1', NULL, '{\"entity\":{\"createTime\":\"2025-07-09 16:30:04\",\"updateTime\":null,\"createBy\":1,\"updateBy\":null,\"isDeleted\":0,\"deleteTime\":null,\"id\":6,\"postCode\":\"2323\",\"postName\":\"test1213\",\"postSort\":0,\"status\":1,\"isSystem\":null,\"remark\":\"\"}} | 描述: 新增岗位：#{#entity.postName}', '{\"code\":200,\"message\":\"新增成功\",\"data\":null,\"timestamp\":1752049804698,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:30:04', 23);
+INSERT INTO `sys_oper_log` VALUES (53, '岗位管理', 2, 'com.mars.admin.controller.SysPostController.changeStatus()', 'PUT', 1, 'admin', '未知部门', '/system/post/changeStatus', '127.0.0.1', NULL, '{\"post\":{\"createTime\":null,\"updateTime\":\"2025-07-09 16:31:29\",\"createBy\":null,\"updateBy\":1,\"isDeleted\":null,\"deleteTime\":null,\"id\":6,\"postCode\":null,\"postName\":null,\"postSort\":null,\"status\":0,\"isSystem\":null,\"remark\":null}} | 描述: 修改岗位状态，ID：#{#post.id}，状态：#{#post.status}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1752049889266,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:31:29', 10);
+INSERT INTO `sys_oper_log` VALUES (54, '岗位管理', 2, 'com.mars.admin.controller.SysPostController.changeStatus()', 'PUT', 1, 'admin', '未知部门', '/system/post/changeStatus', '127.0.0.1', NULL, '{\"post\":{\"createTime\":null,\"updateTime\":\"2025-07-09 16:31:37\",\"createBy\":null,\"updateBy\":1,\"isDeleted\":null,\"deleteTime\":null,\"id\":6,\"postCode\":null,\"postName\":null,\"postSort\":null,\"status\":1,\"isSystem\":null,\"remark\":null}} | 描述: 修改岗位状态，ID：#{#post.id}，状态：#{#post.status}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null,\"timestamp\":1752049897212,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:31:37', 4);
+INSERT INTO `sys_oper_log` VALUES (55, '岗位管理', 3, 'com.mars.admin.controller.SysPostController.deleteById()', 'DELETE', 1, 'admin', '未知部门', '/system/post/6', '127.0.0.1', NULL, '{\"id\":6} | 描述: 删除岗位，ID：#{#id}', '{\"code\":200,\"message\":\"删除成功\",\"data\":null,\"timestamp\":1752049900015,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:31:40', 5);
+INSERT INTO `sys_oper_log` VALUES (56, '岗位管理', 3, 'com.mars.admin.controller.SysPostController.deleteById()', 'DELETE', 1, 'admin', '未知部门', '/system/post/5', '127.0.0.1', NULL, '{\"id\":5} | 描述: 删除岗位，ID：#{#id}', '{\"code\":200,\"message\":\"删除成功\",\"data\":null,\"timestamp\":1752049902826,\"error\":false,\"success\":true}', 0, NULL, '2025-07-09 16:31:42', 4);
 
 -- ----------------------------
 -- Table structure for sys_oss
@@ -537,7 +564,7 @@ CREATE TABLE `sys_oss`  (
   INDEX `idx_upload_status`(`upload_status` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '对象存储表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '对象存储表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oss
@@ -548,6 +575,14 @@ INSERT INTO `sys_oss` VALUES (3, '55afdcc5602c458ea03a22a2bc55bf16.jpeg', '头�
 INSERT INTO `sys_oss` VALUES (4, 'ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 'Bears.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 123500, 'minio', 'upload/2025/07/04/ce27368b3efa4c1d81c0dc8c49ea8f89.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-04 11:18:33', '2025-07-04 11:18:33', NULL, NULL, 0, NULL);
 INSERT INTO `sys_oss` VALUES (5, '7af03b4667b14d4ba3f274a194365c19.jpeg', '头像.jpeg', 'jpeg', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 8838, 'minio', 'upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 'image/jpeg', NULL, 1, NULL, '2025-07-04 11:18:40', '2025-07-04 11:18:40', NULL, NULL, 0, NULL);
 INSERT INTO `sys_oss` VALUES (6, 'fdebb9be36184ceaa0bebf3c49f63b00.jpg', 'sex.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/08/fdebb9be36184ceaa0bebf3c49f63b00.jpg', 39854, 'minio', 'upload/2025/07/08/fdebb9be36184ceaa0bebf3c49f63b00.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-08 13:56:10', '2025-07-08 13:58:54', NULL, NULL, 1, '2025-07-08 13:58:54');
+INSERT INTO `sys_oss` VALUES (7, '3098111a10b340d79926b877bedbb8ea.jpg', 'img_v3_02mm_6eaf2ac0-71ba-43ed-a56f-3913e28ab79g.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/08/3098111a10b340d79926b877bedbb8ea.jpg', 100276, 'minio', 'upload/2025/07/08/3098111a10b340d79926b877bedbb8ea.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-08 15:55:44', '2025-07-08 15:55:44', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (8, '05d75ad7b8aa400183ea2712293ca9c4.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/08/05d75ad7b8aa400183ea2712293ca9c4.jpg', 93672, 'minio', 'upload/2025/07/08/05d75ad7b8aa400183ea2712293ca9c4.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-08 15:56:26', '2025-07-08 15:56:26', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (9, '6a6007c5eea44aca847344b0ea689c36.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/08/6a6007c5eea44aca847344b0ea689c36.jpg', 93672, 'minio', 'upload/2025/07/08/6a6007c5eea44aca847344b0ea689c36.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-08 15:57:00', '2025-07-08 15:57:00', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (10, '2e6040c282ca4023b99154d64e256b1c.jpg', 'profile.jpg', 'jpg', 'http://localhost:8080/file/2025/07/09/2e6040c282ca4023b99154d64e256b1c.jpg', 93672, 'local', '2025/07/09\\2e6040c282ca4023b99154d64e256b1c.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-09 15:23:25', '2025-07-09 15:23:25', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (11, '738b8d79e4ae4354958001222ddd4004.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/09/738b8d79e4ae4354958001222ddd4004.jpg', 93672, 'minio', 'upload/2025/07/09/738b8d79e4ae4354958001222ddd4004.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-09 15:35:51', '2025-07-09 15:35:51', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (12, '0a6fadf4d7804fdf86a1b371f819c0cb.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/09/0a6fadf4d7804fdf86a1b371f819c0cb.jpg', 93672, 'minio', 'upload/2025/07/09/0a6fadf4d7804fdf86a1b371f819c0cb.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-09 15:41:53', '2025-07-09 15:41:53', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (13, '541f2175a8d94b85bbaa2e89f3c82643.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/09/541f2175a8d94b85bbaa2e89f3c82643.jpg', 93672, 'minio', 'upload/2025/07/09/541f2175a8d94b85bbaa2e89f3c82643.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-09 15:43:43', '2025-07-09 15:43:43', NULL, NULL, 0, NULL);
+INSERT INTO `sys_oss` VALUES (14, '7c035439baca475e9434b9e2daec2c00.jpg', 'profile.jpg', 'jpg', 'http://150.158.49.140:9000/test/upload/2025/07/09/7c035439baca475e9434b9e2daec2c00.jpg', 93672, 'minio', 'upload/2025/07/09/7c035439baca475e9434b9e2daec2c00.jpg', 'image/jpeg', NULL, 1, NULL, '2025-07-09 16:29:10', '2025-07-09 16:29:10', NULL, NULL, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_oss_config
@@ -610,7 +645,7 @@ CREATE TABLE `sys_post`  (
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_post_sort`(`post_sort` ASC) USING BTREE,
   INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统岗位表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统岗位表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_post
@@ -619,6 +654,8 @@ INSERT INTO `sys_post` VALUES (1, 'CEO', '董事长', 1, 1, 1, NULL, '2025-06-25
 INSERT INTO `sys_post` VALUES (2, 'CTO', '技术总监', 2, 1, 1, NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
 INSERT INTO `sys_post` VALUES (3, 'DEV', '开发工程师', 3, 1, 1, NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
 INSERT INTO `sys_post` VALUES (4, 'TEST', '测试工程师', 4, 1, 1, NULL, '2025-06-25 16:34:16', '2025-06-25 16:34:16', 1, NULL, 0, NULL);
+INSERT INTO `sys_post` VALUES (5, 'test111', 'test', 0, 1, 0, '', '2025-07-09 16:10:42', '2025-07-09 16:31:42', 1, NULL, 1, '2025-07-09 16:31:42');
+INSERT INTO `sys_post` VALUES (6, '2323', 'test1213', 0, 1, 0, '', '2025-07-09 16:30:04', '2025-07-09 16:31:40', 1, 1, 1, '2025-07-09 16:31:40');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -780,6 +817,7 @@ CREATE TABLE `sys_user`  (
   `real_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '真实姓名',
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '邮箱',
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '手机号',
+  `open_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '微信OpenId，用于小程序登录',
   `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像URL',
   `gender` tinyint(1) NULL DEFAULT 0 COMMENT '性别：0-未知，1-男，2-女',
   `birthday` date NULL DEFAULT NULL COMMENT '生日',
@@ -803,13 +841,14 @@ CREATE TABLE `sys_user`  (
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_user_type`(`user_type` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
-  INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE
+  INDEX `idx_is_deleted`(`is_deleted` ASC) USING BTREE,
+  INDEX `idx_open_id`(`open_id` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', 'http://150.158.49.140:9000/test/upload/2025/07/04/7af03b4667b14d4ba3f274a194365c19.jpeg', 0, '2025-07-03', 1, 1, 125, '2025-07-08 14:26:59', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-08 14:26:58', 1, 1, 0, NULL);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '超级管理员', '系统管理员', 'admin@mars.com', '184****8369', NULL, 'http://150.158.49.140:9000/test/upload/2025/07/08/6a6007c5eea44aca847344b0ea689c36.jpg', 0, '2025-07-03', 1, 1, 127, '2025-07-09 16:25:08', '0:0:0:0:0:0:0:1', '2025-07-04 11:19:05', '系统默认超级管理员', '2025-06-25 16:34:16', '2025-07-09 16:25:08', 1, 1, 0, NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_dept

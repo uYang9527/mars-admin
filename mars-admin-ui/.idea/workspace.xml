@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SnailJobConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/request/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/request/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/typings/components.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/typings/components.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/doc/mars_admin.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/doc/mars_admin.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-prod.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/test/java/com/mars/admin/mapper/BasePlusMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
