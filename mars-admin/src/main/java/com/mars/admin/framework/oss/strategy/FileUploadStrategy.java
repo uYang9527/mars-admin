@@ -1,9 +1,11 @@
 package com.mars.admin.framework.oss.strategy;
 
+import com.mars.admin.common.response.FilePreviewInfo;
 import com.mars.admin.common.response.FileUploadResult;
 import com.mars.admin.entity.SysOssConfig;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -56,4 +58,24 @@ public interface FileUploadStrategy {
      * @return 预签名URL
      */
     String getPresignedUrl(String fileName, SysOssConfig config, int expireTime);
+    
+    /**
+     * 获取文件下载流
+     *
+     * @param fileName 文件名
+     * @param config OSS配置
+     * @return 文件输入流
+     * @throws IOException IO异常
+     */
+    InputStream getFileInputStream(String fileName, SysOssConfig config) throws IOException;
+    
+    /**
+     * 获取文件预览信息
+     *
+     * @param fileName 文件名
+     * @param config OSS配置
+     * @return 预览信息
+     * @throws IOException IO异常
+     */
+    FilePreviewInfo getPreviewInfo(String fileName, String originalName, String contentType, long size, SysOssConfig config) throws IOException;
 } 

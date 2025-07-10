@@ -1,5 +1,6 @@
 package com.mars.admin.framework.oss.strategy.impl;
 
+import com.mars.admin.common.response.FilePreviewInfo;
 import com.mars.admin.common.response.FileUploadResult;
 import com.mars.admin.entity.SysOssConfig;
 import com.mars.admin.framework.oss.strategy.FileUploadStrategy;
@@ -11,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,6 +169,67 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
         return buildAccessUrl(filePath);
     }
 
+    @Override
+    public InputStream getFileInputStream(String fileName, SysOssConfig config) throws IOException {
+        String fullPath = getNormalizedPath(uploadPath, fileName);
+        log.debug("获取文件流: {}", fullPath);
+        
+        File file = new File(fullPath);
+        if (!file.exists() || !file.isFile()) {
+            log.error("文件不存在: {}", fullPath);
+            throw new IOException("文件不存在: " + fileName);
+        }
+        
+        return new FileInputStream(file);
+    }
+    
+    @Override
+    public FilePreviewInfo getPreviewInfo(String fileName, String originalName, String contentType, long size, SysOssConfig config) throws IOException {
+        String fullPath = getNormalizedPath(uploadPath, fileName);
+        File file = new File(fullPath);
+        if (!file.exists() || !file.isFile()) {
+            log.error("文件不存在: {}", fullPath);
+            throw new IOException("文件不存在: " + fileName);
+        }
+        
+        // 构建URL
+        String url = buildAccessUrl(fileName);
+        
+        // 判断文件类型，确定预览类型
+        FilePreviewInfo previewInfo = new FilePreviewInfo()
+                .setPreviewUrl(url)
+                .setContentType(contentType)
+                .setOriginalName(originalName)
+                .setSize(size);
+        
+        // 设置预览类型
+        if (isImageFile(contentType)) {
+            // 图片直接预览
+            previewInfo.setPreviewType(1);
+        } else if (isPdfFile(contentType)) {
+            // PDF直接预览
+            previewInfo.setPreviewType(3);
+        } else if (isOfficeFile(contentType)) {
+            // Office文档需要预览服务
+            previewInfo.setPreviewType(2);
+            previewInfo.setNeedConvert(true);
+        } else if (isVideoFile(contentType)) {
+            // 视频文件
+            previewInfo.setPreviewType(4);
+        } else if (isAudioFile(contentType)) {
+            // 音频文件
+            previewInfo.setPreviewType(5);
+        } else if (isTextFile(contentType, originalName)) {
+            // 文本文件
+            previewInfo.setPreviewType(6);
+        } else {
+            // 不支持预览
+            previewInfo.setPreviewType(0);
+        }
+        
+        return previewInfo;
+    }
+    
     private String generateFileName(String originalName) {
         String extension = FileUtils.getFileExtension(originalName);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -240,5 +303,77 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
         // 将Windows风格的路径分隔符替换为URL路径分隔符
         String normalizedPath = filePath.replace(File.separator, "/");
         return baseUrl + "/file/" + normalizedPath;
+    }
+    
+    /**
+     * 判断是否为图片文件
+     */
+    private boolean isImageFile(String contentType) {
+        return contentType != null && contentType.startsWith("image/");
+    }
+    
+    /**
+     * 判断是否为PDF文件
+     */
+    private boolean isPdfFile(String contentType) {
+        return contentType != null && contentType.equals("application/pdf");
+    }
+    
+    /**
+     * 判断是否为Office文件
+     */
+    private boolean isOfficeFile(String contentType) {
+        if (contentType == null) return false;
+        return contentType.contains("word") || 
+               contentType.contains("excel") ||
+               contentType.contains("powerpoint") ||
+               contentType.contains("ms-excel") ||
+               contentType.contains("ms-word") ||
+               contentType.contains("ms-powerpoint") ||
+               contentType.contains("openxmlformats");
+    }
+    
+    /**
+     * 判断是否为视频文件
+     */
+    private boolean isVideoFile(String contentType) {
+        return contentType != null && contentType.startsWith("video/");
+    }
+    
+    /**
+     * 判断是否为音频文件
+     */
+    private boolean isAudioFile(String contentType) {
+        return contentType != null && contentType.startsWith("audio/");
+    }
+
+    /**
+     * 判断是否为文本文件
+     */
+    private boolean isTextFile(String contentType, String fileName) {
+        // 根据内容类型判断
+        if (contentType != null && (
+                contentType.equals("text/plain") || 
+                contentType.equals("text/html") || 
+                contentType.equals("text/css") || 
+                contentType.equals("text/javascript") || 
+                contentType.equals("application/json") || 
+                contentType.equals("application/xml"))) {
+            return true;
+        }
+        
+        // 根据文件扩展名判断
+        if (fileName != null) {
+            String lowerName = fileName.toLowerCase();
+            return lowerName.endsWith(".txt") || 
+                   lowerName.endsWith(".log") || 
+                   lowerName.endsWith(".ini") || 
+                   lowerName.endsWith(".json") || 
+                   lowerName.endsWith(".xml") || 
+                   lowerName.endsWith(".md") || 
+                   lowerName.endsWith(".csv");
+        }
+        
+        return false;
     }
 } 
