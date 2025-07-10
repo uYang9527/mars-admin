@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17b782a9-92e6-4338-94de-b1712551d840" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SnailJobConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/job/TestAnnoJobExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/MarsAdminStarter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/anno/MarsAdminStarter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/MyBatisFlexConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/MyBatisFlexConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/common/enums/EnableEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mars-admin/src/main/java/com/mars/admin/framework/config/SnailJobConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/controller/SqlLogController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../mars-admin/target/classes/com/mars/admin/framework/util/SqlCopyUtil.class" afterDir="false" />
     </list>
@@ -41,14 +36,14 @@
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/java-code/mars-admin/mars-admin-ui&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/java-code4/mars-admin/mars-admin-ui&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\java-code\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\java-code4\\mars-admin\\mars-admin-ui\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -61,8 +56,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
-        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -86,6 +81,7 @@
       <workItem from="1751684261402" duration="1114000" />
       <workItem from="1751944836425" duration="2066000" />
       <workItem from="1751953400260" duration="2880000" />
+      <workItem from="1751986211484" duration="2646000" />
     </task>
     <servers />
   </component>
