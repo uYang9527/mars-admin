@@ -1,6 +1,7 @@
 package com.mars.admin.framework.aspect;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mars.admin.entity.SysOperLog;
 import com.mars.admin.entity.SysUser;
@@ -159,7 +160,7 @@ public class OperationLogAspect {
         LogData logData = collectLogData(joinPoint, operationLog, request, result, e);
         
         // 异步保存到数据库
-        saveOperationLogAsync(logData);
+        SpringUtil.getBean(OperationLogAspect.class).saveOperationLogAsync(logData);
     }
 
     /**
