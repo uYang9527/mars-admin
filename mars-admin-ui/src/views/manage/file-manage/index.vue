@@ -208,7 +208,7 @@ async function handlePreview(file: any) {
           window.$message?.info('Office文档预览需要集成第三方预览服务');
         } else {
           previewFile.value = {...file, previewUrl: previewInfo.previewUrl, previewType: previewInfo.previewType};
-          previewVisible.value = true;
+  previewVisible.value = true;
         }
         break;
       case 4: // 视频预览

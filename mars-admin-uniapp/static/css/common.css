@@ -1,10 +1,8 @@
 /* 通用样式文件 - 精致版 */
-
 /* 重置样式 */
 * {
   box-sizing: border-box;
 }
-
 page {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -498,13 +496,219 @@ page {
   .container {
     padding: 15rpx;
   }
-  
+
   .card {
     padding: 20rpx;
   }
-  
+
   .btn {
     padding: 15rpx 30rpx;
     font-size: 26rpx;
   }
-} 
+}
+
+/* ==================== Mars Admin 专用样式 ==================== */
+
+/* 页面容器 */
+.ma-page {
+  min-height: 100vh;
+  background-color: #f5f6fa;
+}
+
+.ma-page-content {
+  padding-bottom: 30rpx;
+}
+
+/* 导航栏样式 */
+.ma-navbar-gradient {
+  background: linear-gradient(45deg, #2979ff, #007AFF);
+}
+
+/* 卡片样式增强 */
+.ma-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ma-card-hover:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* 列表项样式 */
+.ma-list-item {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.ma-list-item:active {
+  background-color: #f8f9fa;
+  transform: scale(0.98);
+}
+
+/* 状态样式 */
+.ma-status-success {
+  color: #19be6b;
+  background-color: #f0f9ff;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+.ma-status-warning {
+  color: #ff9900;
+  background-color: #fff7e6;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+.ma-status-error {
+  color: #fa3534;
+  background-color: #fff2f0;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+.ma-status-info {
+  color: #909399;
+  background-color: #f4f4f5;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+/* 徽章样式 */
+.ma-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 8rpx;
+  background-color: #fa3534;
+  color: #ffffff;
+  font-size: 20rpx;
+  border-radius: 16rpx;
+  line-height: 1;
+}
+
+.ma-badge-dot {
+  width: 16rpx;
+  height: 16rpx;
+  background-color: #fa3534;
+  border-radius: 50%;
+  min-width: auto;
+  padding: 0;
+}
+
+/* 分割线 */
+.ma-divider {
+  height: 1rpx;
+  background-color: #ebeef5;
+  margin: 30rpx 0;
+}
+
+.ma-divider-text {
+  position: relative;
+  text-align: center;
+  color: #909399;
+  font-size: 24rpx;
+  background-color: #f5f6fa;
+  padding: 0 20rpx;
+}
+
+.ma-divider-text::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background-color: #ebeef5;
+  z-index: -1;
+}
+
+/* 加载状态 */
+.ma-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+  color: #909399;
+  font-size: 28rpx;
+}
+
+.ma-loading-spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid #ebeef5;
+  border-top-color: #2979ff;
+  border-radius: 50%;
+  animation: ma-spin 1s linear infinite;
+  margin-right: 20rpx;
+}
+
+@keyframes ma-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 空状态样式 */
+.ma-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 30rpx;
+  color: #909399;
+}
+
+.ma-empty-icon {
+  font-size: 120rpx;
+  color: #c0c4cc;
+  margin-bottom: 30rpx;
+}
+
+.ma-empty-text {
+  font-size: 28rpx;
+  color: #909399;
+}
+
+/* 工具类扩展 */
+.ma-safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.ma-safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.ma-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ma-ellipsis-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.ma-clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ma-clickable:active {
+  opacity: 0.7;
+  transform: scale(0.98);
+}

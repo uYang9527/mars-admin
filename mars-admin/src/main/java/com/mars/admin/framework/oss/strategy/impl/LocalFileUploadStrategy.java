@@ -229,7 +229,7 @@ public class LocalFileUploadStrategy implements FileUploadStrategy {
         
         return previewInfo;
     }
-    
+
     private String generateFileName(String originalName) {
         String extension = FileUtils.getFileExtension(originalName);
         String uuid = UUID.randomUUID().toString().replace("-", "");

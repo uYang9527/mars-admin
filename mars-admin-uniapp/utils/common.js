@@ -386,4 +386,11 @@ export const clearStorage = () => {
   } catch (error) {
     console.error('清空存储失败:', error)
   }
-} 
+}
+
+// 重新导出其他工具模块
+export * from './storage'
+export * from './permission'
+export * from './device'
+export * from './mock'
+export * from './interaction'

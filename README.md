@@ -1006,10 +1006,20 @@ A:
 - **邮箱**: wqexpore@163.com
 - **官网**: [https://www.marsadmin.cn](https://www.marsadmin.cn)
 
-### 技术交流
-- **QQ群**: [待建立]
-- **微信群**: [待建立]
-- **技术博客**: [待建立]
+### 技术交流渠道
+
+为方便大家交流技术问题，我们提供以下官方渠道：
+
+#### 即时沟通
+- **QQ交流群**  
+  <img src="/docs/images/qq.png" style="width: 180px; border: 1px solid #eee; padding: 8px; margin: 10px 0;" alt="QQ群二维码">
+
+- **微信交流群**  
+  <img src="/docs/images/weixin.png" style="width: 180px; border: 1px solid #eee; padding: 8px; margin: 10px 0;" alt="微信群二维码">
+
+#### 资源分享
+- **技术博客**  
+  [建设中，敬请期待]
 
 ### 商务合作
 - **定制开发**: 支持功能定制和二次开发

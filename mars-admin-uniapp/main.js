@@ -1,50 +1,21 @@
 import App from './App'
-
-// #ifndef VUE3
 import Vue from 'vue'
+import uView from 'uview-ui'
+
 Vue.config.productionTip = false
+
 App.mpType = 'app'
 
-try {
-  function isPromise(obj) {
-    return (
-      !!obj &&
-      (typeof obj === "object" || typeof obj === "function") &&
-      typeof obj.then === "function"
-    );
-  }
+// 使用uView UI
+Vue.use(uView)
 
-  // 统一 vue2 API Promise 化返回格式与 vue3 保持一致
-  uni.addInterceptor({
-    returnValue(res) {
-      if (!isPromise(res)) {
-        return res;
-      }
-      return new Promise((resolve, reject) => {
-        res.then((res) => {
-          if (res[0]) {
-            reject(res[0]);
-          } else {
-            resolve(res[1]);
-          }
-        });
-      });
-    },
-  });
-} catch (error) { }
+// 引入uView提供的对uni api的封装
+uni.$u.setConfig({
+  // 修改默认单位为rpx
+  unit: 'rpx'
+})
 
 const app = new Vue({
   ...App
 })
 app.$mount()
-// #endif
-
-// #ifdef VUE3
-import { createSSRApp } from 'vue'
-export function createApp() {
-  const app = createSSRApp(App)
-  return {
-    app
-  }
-}
-// #endif

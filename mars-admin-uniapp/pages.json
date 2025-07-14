@@ -4,72 +4,130 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "首页",
-        "navigationBarBackgroundColor": "#ffffff",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/organization/organization",
-      "style": {
-        "navigationBarTitleText": "组织",
-        "navigationBarBackgroundColor": "#ffffff",
-        "navigationBarTextStyle": "black"
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#f5f6fa"
       }
     },
     {
       "path": "pages/message/message",
       "style": {
         "navigationBarTitleText": "消息",
-        "navigationBarBackgroundColor": "#ffffff",
-        "navigationBarTextStyle": "black"
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#f5f6fa"
+      }
+    },
+    {
+      "path": "pages/organization/organization",
+      "style": {
+        "navigationBarTitleText": "组织架构",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#f5f6fa"
       }
     },
     {
       "path": "pages/profile/profile",
       "style": {
-        "navigationBarTitleText": "我的",
-        "navigationBarBackgroundColor": "#ffffff",
-        "navigationBarTextStyle": "black"
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#f5f6fa"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom",
+        "backgroundColor": "#ffffff"
       }
     }
   ],
+  "subPackages": [
+    {
+      "root": "pages-sub",
+      "pages": []
+    }
+  ],
   "globalStyle": {
-    "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "企业小程序",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "Mars Admin",
     "navigationBarBackgroundColor": "#ffffff",
-    "backgroundColor": "#f8f8f8"
+    "navigationBarHeight": "44px",
+    "backgroundColor": "#f5f6fa",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50,
+    "app-plus": {
+      "background": "#f5f6fa",
+      "titleNView": {
+        "buttons": []
+      },
+      "subNVues": []
+    },
+    "h5": {
+      "pullToRefresh": {
+        "color": "#2979ff"
+      }
+    },
+    "mp-weixin": {
+      "backgroundTextStyle": "dark",
+      "backgroundColor": "#f5f6fa"
+    }
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#515151",
+    "color": "#909399",
+    "selectedColor": "#2979ff",
+    "borderStyle": "white",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "height": "50px",
+    "fontSize": "10px",
+    "iconWidth": "24px",
+    "spacing": "3px",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
         "iconPath": "static/images/home.png",
-        "selectedIconPath": "static/images/home-active.png"
-      },
-      {
-        "pagePath": "pages/organization/organization",
-        "text": "组织",
-        "iconPath": "static/images/organization.png",
-        "selectedIconPath": "static/images/organization-active.png"
+        "selectedIconPath": "static/images/home-active.png",
+        "text": "首页"
       },
       {
         "pagePath": "pages/message/message",
-        "text": "消息",
         "iconPath": "static/images/message.png",
-        "selectedIconPath": "static/images/message-active.png"
+        "selectedIconPath": "static/images/message-active.png",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/organization/organization",
+        "iconPath": "static/images/organization.png",
+        "selectedIconPath": "static/images/organization-active.png",
+        "text": "组织"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的",
-		
         "iconPath": "static/images/profile.png",
-        "selectedIconPath": "static/images/profile-active.png"
+        "selectedIconPath": "static/images/profile-active.png",
+        "text": "我的"
       }
     ]
-  }
-} 
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+      "^u-(.+)--(.+)": "uview-ui/components/u-$1/u-$1.vue",
+      "^business-(.*)": "@/components/business/$1/$1.vue"
+    }
+  },
+  "condition": {
+    "current": 0,
+    "list": []
+  },
+  "uniIdRouter": {}
+}

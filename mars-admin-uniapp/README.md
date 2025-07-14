@@ -64,6 +64,43 @@ mars-admin-uniapp/
 └── README.md               # 项目说明
 ```
 
+```
+mars-admin-uniapp/
+├── api/                    # API接口管理
+│   ├── config.js          # API配置
+│   ├── index.js           # API统一导出
+│   └── modules/           # API模块
+│       ├── user.js        # 用户相关API
+│       └── home.js        # 首页相关API
+├── components/            # 组件库
+│   ├── common/           # 通用组件
+│   │   ├── ma-navbar/    # 导航栏组件
+│   │   ├── ma-card/      # 卡片组件
+│   │   └── ma-empty/     # 空状态组件
+│   └── business/         # 业务组件
+│       └── work-item/    # 工作动态组件
+├── mixins/               # 混入
+│   └── common/
+│       └── page.js       # 页面通用混入
+└── mock/                 # 模拟数据
+├── pages/                    # 页面文件
+│   ├── index/               # 首页
+|   ├── login/            # 登录页面
+│   ├── organization/        # 组织架构
+│   ├── message/            # 消息中心
+│   └── profile/            # 个人中心
+├── store/                # 状态管理
+├── static/                  # 静态资源
+│   ├── css/                # 样式文件
+│   └── images/             # 图片资源
+├── utils/                   # 工具函数
+├── App.vue                  # 应用入口
+├── pages.json              # 页面配置
+├── manifest.json           # 应用配置
+└── README.md               # 项目说明
+
+```
+
 ## 🚀 快速开始
 
 ### 环境要求

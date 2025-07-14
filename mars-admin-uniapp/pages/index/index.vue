@@ -1,541 +1,623 @@
 <template>
-  <view class="container">
-    <!-- 头部轮播图 -->
-    <view class="banner-section">
-      <swiper class="banner-swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
-        <swiper-item v-for="(item, index) in bannerList" :key="index">
-          <image :src="item.image" class="banner-image" mode="aspectFill"></image>
-        </swiper-item>
-      </swiper>
-    </view>
+  <view class="page-container">
+    <!-- uView官方导航栏 -->
+    <u-navbar
+      title="Mars Admin"
+      :bgColor="navbarConfig.background"
+      :fixed="true"
+      :placeholder="true"
+      :safeAreaInsetTop="true"
+      :titleStyle="{ color: '#ffffff' }"
+    >
+      <template #right>
+        <view class="navbar-right" @click="goToMessage">
+          <u-icon name="bell" size="28" color="#ffffff"></u-icon>
+          <u-badge :count="unreadCount" :isDot="true" :offset="[0, -4]"></u-badge>
+        </view>
+      </template>
+    </u-navbar>
 
-    <!-- 快捷功能 -->
-    <view class="quick-menu">
-      <view class="quick-title">快捷功能</view>
-      <view class="quick-grid">
-        <view class="quick-item" v-for="(item, index) in quickMenuList" :key="index" @click="handleQuickMenu(item)">
-          <view class="quick-icon">
-            <image :src="item.icon" class="icon-image"></image>
-          </view>
-          <text class="quick-text">{{ item.name }}</text>
+    <!-- 页面内容 -->
+    <view class="page-content">
+      <!-- 搜索框 -->
+      <view class="search-section">
+        <view class="search-container">
+          <u-search
+            v-model="searchKeyword"
+            placeholder="搜索应用、文件、同事..."
+            :showAction="false"
+            height="44"
+            animation
+            shape="round"
+            bgColor="#f8f9fa"
+            borderColor="transparent"
+            clearabled
+            @click="handleSearchClick"
+            @change="handleSearchChange"
+          >
+            <template #prefix>
+              <u-icon name="search" size="18" color="#999"></u-icon>
+            </template>
+          </u-search>
         </view>
       </view>
-    </view>
 
-    <!-- 公司公告 -->
-    <view class="notice-section">
-      <view class="section-header">
-        <text class="section-title">公司公告</text>
-        <text class="section-more" @click="goToNoticeList">更多</text>
+      <!-- 头部轮播图 -->
+      <view class="banner-section">
+        <u-swiper
+          v-if="bannerList.length"
+          :list="bannerList"
+          keyName="image"
+          indicator
+          indicatorMode="dot"
+          circular
+          height="180"
+          radius="16"
+          :interval="4000"
+          @click="handleBannerClick"
+        ></u-swiper>
+        <u-empty v-else icon="photo" text="暂无轮播图" marginTop="50" marginBottom="50"></u-empty>
       </view>
-      <view class="notice-list">
-        <view class="notice-item" v-for="(item, index) in noticeList" :key="index" @click="goToNoticeDetail(item)">
-          <view class="notice-content">
-            <text class="notice-title">{{ item.title }}</text>
-            <text class="notice-time">{{ item.time }}</text>
-          </view>
-          <view class="notice-arrow">
-            <text class="arrow-icon">></text>
+
+      <!-- 快捷功能 -->
+      <view class="quick-section">
+        <view class="section-title">
+          <text class="title-text">快捷功能</text>
+          <text class="subtitle-text">常用应用入口</text>
+        </view>
+        <view v-if="quickMenuList.length" class="quick-grid">
+          <view
+            v-for="(item, index) in quickMenuList"
+            :key="index"
+            class="quick-item"
+            @click="handleQuickMenu(item)"
+          >
+            <view class="quick-icon-wrapper" :style="{ backgroundColor: `${item.color}15` }">
+              <u-icon :name="item.icon" size="28" :color="item.color"></u-icon>
+              <u-badge v-if="item.badge" :count="item.badge" :offset="[6, -6]"></u-badge>
+            </view>
+            <text class="quick-text">{{ item.name }}</text>
           </view>
         </view>
+        <u-empty v-else icon="list" text="暂无快捷功能" marginTop="30" marginBottom="30"></u-empty>
       </view>
-    </view>
 
-    <!-- 工作动态 -->
-    <view class="work-section">
-      <view class="section-header">
-        <text class="section-title">工作动态</text>
-        <text class="section-more" @click="goToWorkList">更多</text>
-      </view>
-      <view class="work-list">
-        <view class="work-item" v-for="(item, index) in workList" :key="index" @click="goToWorkDetail(item)">
-          <view class="work-avatar">
-            <image :src="item.avatar" class="avatar-image"></image>
+      <!-- 工作动态 -->
+      <view class="content-section">
+        <view class="section-header">
+          <view class="header-left">
+            <text class="section-title">工作动态</text>
+            <text class="section-subtitle">最新工作进展</text>
           </view>
-          <view class="work-content">
-            <text class="work-name">{{ item.name }}</text>
-            <text class="work-desc">{{ item.description }}</text>
-            <text class="work-time">{{ item.time }}</text>
+          <view class="header-right" @click="goToWorkList">
+            <text class="more-text">查看更多</text>
+            <u-icon name="arrow-right" size="14" color="#999"></u-icon>
           </view>
         </view>
-      </view>
-    </view>
 
-    <!-- 统计数据 -->
-    <view class="stats-section">
-      <view class="section-title">数据统计</view>
-      <view class="stats-grid">
-        <view class="stats-item" v-for="(item, index) in statsList" :key="index">
-          <text class="stats-number">{{ item.number }}</text>
-          <text class="stats-label">{{ item.label }}</text>
+        <view v-if="workList.length" class="work-list">
+          <work-item
+            v-for="(item, index) in workList"
+            :key="index"
+            :item="item"
+            @click="goToWorkDetail"
+          ></work-item>
         </view>
+        <u-empty v-else icon="file-text" text="暂无工作动态" marginTop="30" marginBottom="30"></u-empty>
       </view>
+
+      <!-- 公司公告 -->
+      <view class="content-section">
+        <view class="section-header">
+          <view class="header-left">
+            <text class="section-title">公司公告</text>
+            <text class="section-subtitle">重要通知信息</text>
+          </view>
+          <view class="header-right" @click="goToNoticeList">
+            <text class="more-text">查看更多</text>
+            <u-icon name="arrow-right" size="14" color="#999"></u-icon>
+          </view>
+        </view>
+
+        <view v-if="noticeList.length" class="notice-list">
+          <view v-for="(item, index) in noticeList" :key="index" class="notice-item" @click="goToNoticeDetail(item)">
+            <view class="notice-content">
+              <view class="notice-header">
+                <text class="notice-title">{{ item.title }}</text>
+                <u-tag :text="item.type" type="primary" size="mini" plain shape="circle"></u-tag>
+              </view>
+              <text class="notice-desc">{{ item.content }}</text>
+              <view class="notice-meta">
+                <text class="notice-time">{{ item.time }}</text>
+                <u-icon name="arrow-right" size="12" color="#ccc"></u-icon>
+              </view>
+            </view>
+          </view>
+        </view>
+        <u-empty v-else icon="bell" text="暂无公告" marginTop="30" marginBottom="30"></u-empty>
+      </view>
+
+      <!-- 统计数据 -->
+      <view class="stats-section">
+        <view class="section-title">
+          <text class="title-text">数据统计</text>
+          <text class="subtitle-text">实时数据展示</text>
+        </view>
+        <view v-if="statsData.length" class="stats-grid">
+          <view v-for="(item, index) in statsData" :key="index" class="stats-item">
+            <view class="stats-content">
+              <text class="stats-number">{{ item.value }}</text>
+              <text class="stats-label">{{ item.label }}</text>
+            </view>
+            <view class="stats-icon" :style="{ backgroundColor: `${item.color}15` }">
+              <u-icon :name="item.icon" size="20" :color="item.color"></u-icon>
+            </view>
+          </view>
+        </view>
+        <u-empty v-else icon="data" text="暂无统计数据" marginTop="30" marginBottom="30"></u-empty>
+      </view>
+
+      <!-- 底部安全区域 -->
+      <u-gap height="50" bgColor="transparent"></u-gap>
+      <u-safe-bottom></u-safe-bottom>
     </view>
   </view>
 </template>
 
 <script>
+import api from '@/api'
+import { showLoading, hideLoading, showError } from '@/utils/common'
+
 export default {
   data() {
     return {
-      bannerList: [
-        {
-          image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=400&fit=crop&crop=center',
-          title: '企业文化'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop&crop=center',
-          title: '团队建设'
-        },
-        {
-          image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop&crop=center',
-          title: '业务发展'
-        }
-      ],
-      quickMenuList: [
-        {
-          name: '考勤打卡',
-          icon: 'https://img.icons8.com/fluency/96/000000/clock.png',
-          action: 'attendance'
-        },
-        {
-          name: '请假申请',
-          icon: 'https://img.icons8.com/fluency/96/000000/calendar.png',
-          action: 'leave'
-        },
-        {
-          name: '报销申请',
-          icon: 'https://img.icons8.com/fluency/96/000000/money-bag.png',
-          action: 'expense'
-        },
-        {
-          name: '工作汇报',
-          icon: 'https://img.icons8.com/fluency/96/000000/report-card.png',
-          action: 'report'
-        },
-        {
-          name: '会议室预订',
-          icon: 'https://img.icons8.com/fluency/96/000000/conference-call.png',
-          action: 'meeting'
-        },
-        {
-          name: '通讯录',
-          icon: 'https://img.icons8.com/fluency/96/000000/contacts.png',
-          action: 'contacts'
-        },
-        {
-          name: '文件管理',
-          icon: 'https://img.icons8.com/fluency/96/000000/menu.png',
-          action: 'files'
-        },
-        {
-          name: '更多',
-          icon: 'https://img.icons8.com/fluency/96/000000/menu.png',
-          action: 'more'
-        }
-      ],
-      noticeList: [
-        {
-          id: 1,
-          title: '关于2024年春节放假安排的通知',
-          time: '2024-01-15'
-        },
-        {
-          id: 2,
-          title: '公司年度表彰大会即将召开',
-          time: '2024-01-10'
-        },
-        {
-          id: 3,
-          title: '新员工入职培训安排',
-          time: '2024-01-08'
-        }
-      ],
-      workList: [
-        {
-          id: 1,
-          name: '张三',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face&auto=format&q=80',
-          description: '完成了产品需求分析报告',
-          time: '2小时前'
-        },
-        {
-          id: 2,
-          name: '李四',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&auto=format&q=80',
-          description: '提交了项目进度汇报',
-          time: '4小时前'
-        },
-        {
-          id: 3,
-          name: '王五',
-          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face&auto=format&q=80',
-          description: '完成了客户需求调研',
-          time: '6小时前'
-        }
-      ],
-      statsList: [
-        {
-          number: '1,234',
-          label: '员工总数'
-        },
-        {
-          number: '56',
-          label: '部门数量'
-        },
-        {
-          number: '89%',
-          label: '出勤率'
-        },
-        {
-          number: '23',
-          label: '项目数量'
-        }
-      ]
+      // 导航栏配置
+      navbarConfig: {
+        background: 'linear-gradient(45deg, #2979ff, #007AFF)',
+      },
+      searchKeyword: '',
+      unreadCount: 8,
+      loading: false,
+      // 页面数据
+      bannerList: [],
+      quickMenuList: [],
+      noticeList: [],
+      workList: [],
+      statsData: []
     }
   },
   onLoad() {
-    this.loadData();
+    this.loadHomeData();
   },
   onPullDownRefresh() {
-    this.loadData();
-    setTimeout(() => {
-      uni.stopPullDownRefresh();
-    }, 1000);
+    // 下拉刷新
+    this.loadHomeData(true);
+  },
+  onShow() {
+    // 页面显示时刷新未读消息数
+    this.getUnreadCount();
   },
   methods: {
-    loadData() {
-      // 模拟加载数据
-      console.log('加载首页数据');
+    // 加载首页数据
+    async loadHomeData(isRefresh = false) {
+      try {
+        if (!isRefresh) {
+          this.loading = true;
+          showLoading('加载中...');
+        }
+
+        const res = await api.home.getHomeData();
+        if (res.code === 200) {
+          const { bannerList, quickMenuList, noticeList, workList, statsData } = res.data;
+          this.bannerList = bannerList || [];
+          this.quickMenuList = quickMenuList || [];
+          this.noticeList = noticeList || [];
+          this.workList = workList || [];
+          this.statsData = statsData || [];
+        } else {
+          showError(res.message || '加载失败');
+        }
+      } catch (error) {
+        console.error('加载首页数据失败:', error);
+        showError('加载失败，请稍后重试');
+      } finally {
+        this.loading = false;
+        hideLoading();
+        if (isRefresh) {
+          uni.stopPullDownRefresh();
+        }
+      }
     },
+
+    // 获取未读消息数
+    async getUnreadCount() {
+      // 这里可以调用API获取未读消息数
+      // const res = await api.message.getUnreadCount();
+      // this.unreadCount = res.data || 0;
+    },
+    // 搜索框点击事件
+    handleSearchClick() {
+      uni.showToast({
+        title: '进入搜索页面',
+        icon: 'none'
+      });
+      // TODO: 跳转到搜索页面
+      // uni.navigateTo({
+      //   url: '/pages/search/search'
+      // });
+    },
+
+    // 搜索内容变化
+    handleSearchChange(value) {
+      console.log('搜索内容:', value);
+      // TODO: 实现搜索功能
+    },
+
+    // 轮播图点击事件
+    handleBannerClick(index) {
+      const banner = this.bannerList[index];
+      if (banner) {
+        uni.showToast({
+          title: `点击了${banner.title}`,
+          icon: 'none'
+        });
+        // TODO: 根据banner类型跳转到不同页面
+      }
+    },
+
+    // 快捷菜单点击事件
     handleQuickMenu(item) {
-      console.log('点击快捷功能:', item.name);
       uni.showToast({
         title: `点击了${item.name}`,
         icon: 'none'
       });
+
+      // 根据action跳转到不同页面
+      switch (item.action) {
+        case 'attendance':
+          // TODO: 跳转到考勤打卡页面
+          break;
+        case 'leave':
+          // TODO: 跳转到请假申请页面
+          break;
+        case 'expense':
+          // TODO: 跳转到报销申请页面
+          break;
+        case 'report':
+          // TODO: 跳转到工作汇报页面
+          break;
+        case 'meeting':
+          // TODO: 跳转到会议室预订页面
+          break;
+        case 'contacts':
+          // TODO: 跳转到通讯录页面
+          break;
+        case 'files':
+          // TODO: 跳转到文件管理页面
+          break;
+        case 'more':
+          // TODO: 跳转到更多应用页面
+          break;
+        default:
+          console.log('未知的快捷菜单:', item.action);
+      }
     },
-    goToNoticeList() {
-      uni.navigateTo({
-        url: '/pages/notice/notice-list'
+    // 跳转到消息页面
+    goToMessage() {
+      uni.switchTab({
+        url: '/pages/message/message'
       });
     },
-    goToNoticeDetail(item) {
-      uni.navigateTo({
-        url: `/pages/notice/notice-detail?id=${item.id}`
-      });
-    },
+
+    // 跳转到工作动态列表页
     goToWorkList() {
-      uni.navigateTo({
-        url: '/pages/work/work-list'
+      uni.showToast({
+        title: '跳转到工作动态列表',
+        icon: 'none'
       });
+      // TODO: 跳转到工作动态列表页面
+      // uni.navigateTo({
+      //   url: '/pages/work/list'
+      // });
     },
+
+    // 跳转到工作动态详情页
     goToWorkDetail(item) {
-      uni.navigateTo({
-        url: `/pages/work/work-detail?id=${item.id}`
+      uni.showToast({
+        title: `查看${item.name}的工作动态`,
+        icon: 'none'
       });
+      // TODO: 跳转到工作动态详情页面
+      // uni.navigateTo({
+      //   url: `/pages/work/detail?id=${item.id}`
+      // });
+    },
+
+    // 跳转到公告列表
+    goToNoticeList() {
+      uni.showToast({
+        title: '跳转到公告列表',
+        icon: 'none'
+      });
+      // TODO: 跳转到公告列表页面
+      // uni.navigateTo({
+      //   url: '/pages/notice/list'
+      // });
+    },
+
+    // 跳转到公告详情
+    goToNoticeDetail(item) {
+      uni.showToast({
+        title: `查看公告:${item.title}`,
+        icon: 'none'
+      });
+      // TODO: 跳转到公告详情页面
+      // uni.navigateTo({
+      //   url: `/pages/notice/detail?id=${item.id}`
+      // });
     }
   }
 }
 </script>
 
-<style scoped>
-.container {
-  padding: 0;
-  background: transparent;
+<style lang="scss" scoped>
+.page-container {
   min-height: 100vh;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-/* 轮播图样式 - 精致版 */
+.page-content {
+  padding-bottom: 30rpx;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 10rpx;
+}
+
+// 搜索区域
+.search-section {
+  padding: 20rpx 30rpx 30rpx;
+
+  .search-container {
+    background: #ffffff;
+    border-radius: 24rpx;
+    padding: 8rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  }
+}
+
+// 轮播图区域
 .banner-section {
-  margin-bottom: 24rpx;
-  overflow: hidden;
+  padding: 0 30rpx 30rpx;
 }
 
-.banner-swiper {
-  height: 320rpx;
-  border-radius: 0 0 24rpx 24rpx;
-  overflow: hidden;
-}
-
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.banner-image:hover {
-  transform: scale(1.05);
-}
-
-/* 快捷功能样式 - 精致版 */
-.quick-menu {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10rpx);
-  padding: 32rpx;
-  margin: 0 16rpx 24rpx;
+// 通用区域样式
+.quick-section,
+.content-section,
+.stats-section {
+  margin: 0 30rpx 30rpx;
+  background: #ffffff;
   border-radius: 20rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
-  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  padding: 30rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, 0.06);
 }
 
-.quick-title {
-  font-size: 34rpx;
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 32rpx;
+// 标题样式
+.section-title {
+  margin-bottom: 30rpx;
+
+  .title-text {
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 8rpx;
+  }
+
+  .subtitle-text {
+    font-size: 26rpx;
+    color: #999;
+    display: block;
+  }
 }
 
+// 区域头部
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30rpx;
+
+  .header-left {
+    flex: 1;
+  }
+
+  .section-title {
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8rpx;
+  }
+
+  .section-subtitle {
+    font-size: 26rpx;
+    color: #999;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    padding: 8rpx 16rpx;
+    border-radius: 20rpx;
+    background: #f8f9fa;
+
+    .more-text {
+      font-size: 26rpx;
+      color: #666;
+      margin-right: 8rpx;
+    }
+  }
+}
+
+// 快捷菜单样式
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24rpx;
+  gap: 20rpx;
 }
 
 .quick-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24rpx 16rpx;
+  padding: 20rpx 10rpx;
   border-radius: 16rpx;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+
+  &:active {
+    transform: scale(0.95);
+    background: #f8f9fa;
+  }
 }
 
-.quick-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.quick-item:hover::before {
-  opacity: 1;
-}
-
-.quick-item:hover {
-  transform: translateY(-4rpx);
-}
-
-.quick-icon {
+.quick-icon-wrapper {
+  position: relative;
   width: 88rpx;
   height: 88rpx;
-  margin-bottom: 12rpx;
-  position: relative;
-  z-index: 1;
-}
+  border-radius: 22rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16rpx;
+  transition: all 0.3s ease;
 
-.icon-image {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 4rpx 8rpx rgba(0, 0, 0, 0.1));
+  &:active {
+    transform: scale(0.9);
+  }
 }
 
 .quick-text {
   font-size: 24rpx;
-  color: #2c3e50;
+  color: #333;
   text-align: center;
   font-weight: 500;
-  position: relative;
-  z-index: 1;
 }
 
-/* 公告样式 - 精致版 */
-.notice-section, .work-section {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10rpx);
-  padding: 32rpx;
-  margin: 0 16rpx 24rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
-  border: 1rpx solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.notice-section:hover, .work-section:hover {
-  transform: translateY(-2rpx);
-  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.15);
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32rpx;
-}
-
-.section-title {
-  font-size: 34rpx;
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.section-more {
-  font-size: 28rpx;
-  color: #667eea;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.section-more:hover {
-  color: #764ba2;
-}
-
+// 公告列表样式
 .notice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
+  .notice-item {
+    padding: 24rpx;
+    margin-bottom: 20rpx;
+    background: #f8f9fa;
+    border-radius: 16rpx;
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:active {
+      transform: scale(0.98);
+      background: #f0f0f0;
+    }
+  }
+
+  .notice-content {
+    flex: 1;
+  }
+
+  .notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12rpx;
+  }
+
+  .notice-title {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+    flex: 1;
+    margin-right: 20rpx;
+  }
+
+  .notice-desc {
+    font-size: 26rpx;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 16rpx;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .notice-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .notice-time {
+    font-size: 24rpx;
+    color: #999;
+  }
 }
 
-.notice-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.notice-content {
-  flex: 1;
-}
-
-.notice-title {
-  font-size: 28rpx;
-  color: #333333;
-  display: block;
-  margin-bottom: 10rpx;
-}
-
-.notice-time {
-  font-size: 24rpx;
-  color: #999999;
-}
-
-.notice-arrow {
-  margin-left: 20rpx;
-}
-
-.arrow-icon {
-  font-size: 28rpx;
-  color: #cccccc;
-}
-
-/* 工作动态样式 */
-.work-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.work-item {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.work-avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-right: 20rpx;
-  overflow: hidden;
-}
-
-.avatar-image {
-  width: 100%;
-  height: 100%;
-}
-
-.work-content {
-  flex: 1;
-}
-
-.work-name {
-  font-size: 28rpx;
-  color: #333333;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 10rpx;
-}
-
-.work-desc {
-  font-size: 26rpx;
-  color: #666666;
-  display: block;
-  margin-bottom: 10rpx;
-}
-
-.work-time {
-  font-size: 24rpx;
-  color: #999999;
-}
-
-/* 统计数据样式 - 精致版 */
-.stats-section {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10rpx);
-  padding: 32rpx;
-  margin: 0 16rpx 24rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
-  border: 1rpx solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stats-section:hover {
-  transform: translateY(-2rpx);
-  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.15);
-}
-
+// 统计数据样式
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24rpx;
-  margin-top: 32rpx;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
 }
 
 .stats-item {
-  text-align: center;
-  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 24rpx;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   border-radius: 16rpx;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  }
 }
 
-.stats-item:hover {
-  transform: translateY(-4rpx);
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+.stats-content {
+  flex: 1;
 }
 
 .stats-number {
   font-size: 40rpx;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1a1a1a;
+  margin-bottom: 8rpx;
   display: block;
-  margin-bottom: 12rpx;
 }
 
 .stats-label {
-  font-size: 24rpx;
-  color: #2c3e50;
+  font-size: 26rpx;
+  color: #666;
   font-weight: 500;
-  color: #666666;
+}
+
+.stats-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20rpx;
 }
 </style> 
