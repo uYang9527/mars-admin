@@ -1011,11 +1011,10 @@ A:
 为方便大家交流技术问题，我们提供以下官方渠道：
 
 #### 即时沟通
-- **QQ交流群**  
-  <img src="/docs/images/qq.png" style="width: 180px; border: 1px solid #eee; padding: 8px; margin: 10px 0;" alt="QQ群二维码">
 
-- **微信交流群**  
-  <img src="/docs/images/weixin.png" style="width: 180px; border: 1px solid #eee; padding: 8px; margin: 10px 0;" alt="微信群二维码">
+| QQ交流群 | 微信交流群 |
+|---------|----------|
+| ![QQ群二维码](docs/images/qq.png) | ![微信群二维码](docs/images/weixin.png) |
 
 #### 资源分享
 - **技术博客**  
