@@ -26,7 +26,7 @@ public class AsyncConfig {
      * 操作日志专用线程池
      * 采用独立线程池，避免影响其他异步任务
      */
-    @Bean("threadPoolTaskExecutor")
+    @Bean("operationLogExecutor")
     public Executor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         
