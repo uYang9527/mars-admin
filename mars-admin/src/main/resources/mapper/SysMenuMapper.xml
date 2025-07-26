@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysMenuMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysMenuMapper">
 
     <!-- 菜单基础信息结果映射 -->
-    <resultMap id="SysMenuResult" type="com.mars.admin.entity.SysMenu">
+    <resultMap id="SysMenuResult" type="com.mars.admin.modules.system.entity.SysMenu">
         <id property="id" column="menu_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="menuName" column="menu_name"/>
@@ -33,7 +33,7 @@
     </resultMap>
 
     <!-- 分页查询菜单列表 -->
-    <select id="selectMenuList" parameterType="com.mars.admin.entity.SysMenu" resultMap="SysMenuResult">
+    <select id="selectMenuList" parameterType="com.mars.admin.modules.system.entity.SysMenu" resultMap="SysMenuResult">
         SELECT
             m.id as menu_id,
             m.parent_id,
@@ -226,11 +226,11 @@
         FROM sys_menu m
         LEFT JOIN sys_role_menu rm ON m.id = rm.menu_id
         LEFT JOIN sys_user_role ur ON rm.role_id = ur.role_id
-        WHERE m.is_deleted = 0 
-          AND m.status = 1 
-          AND m.perms IS NOT NULL 
+        WHERE m.is_deleted = 0
+          AND m.status = 1
+          AND m.perms IS NOT NULL
           AND m.perms != ''
           AND ur.user_id = #{userId}
     </select>
 
-</mapper> 
+</mapper>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysPostMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysPostMapper">
 
     <!-- 岗位基础信息结果映射 -->
-    <resultMap id="SysPostResult" type="com.mars.admin.entity.SysPost">
+    <resultMap id="SysPostResult" type="com.mars.admin.modules.system.entity.SysPost">
         <id property="id" column="post_id"/>
         <result property="postCode" column="post_code"/>
         <result property="postName" column="post_name"/>
@@ -20,7 +20,7 @@
     </resultMap>
 
     <!-- 分页查询岗位列表 -->
-    <select id="selectPostList" parameterType="com.mars.admin.entity.SysPost" resultMap="SysPostResult">
+    <select id="selectPostList" parameterType="com.mars.admin.modules.system.entity.SysPost" resultMap="SysPostResult">
         SELECT
             p.id as post_id,
             p.post_code,
@@ -71,4 +71,4 @@
         ORDER BY p.post_sort ASC
     </select>
 
-</mapper> 
+</mapper>

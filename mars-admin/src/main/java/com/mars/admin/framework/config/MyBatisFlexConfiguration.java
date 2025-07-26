@@ -1,8 +1,7 @@
 package com.mars.admin.framework.config;
 
-import com.mars.admin.controller.SqlLogController;
+import com.mars.admin.modules.base.controller.SqlLogController;
 import com.mars.admin.framework.listener.EntityLogicDeleteListener;
-import com.mars.admin.framework.util.SqlCopyUtil;
 import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.logicdelete.LogicDeleteProcessor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@MapperScan(basePackages = "com.mars.admin.mapper", 
+@MapperScan(basePackages = "com.mars.admin.mapper",
            annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class MyBatisFlexConfiguration {
 

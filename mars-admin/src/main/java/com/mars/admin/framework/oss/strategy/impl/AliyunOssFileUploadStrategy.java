@@ -8,7 +8,7 @@ import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.mars.admin.common.response.FileUploadResult;
 import com.mars.admin.common.response.FilePreviewInfo;
-import com.mars.admin.entity.SysOssConfig;
+import com.mars.admin.modules.system.entity.SysOssConfig;
 import com.mars.admin.framework.oss.strategy.FileUploadStrategy;
 import com.mars.admin.framework.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -43,11 +43,11 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
         OSS ossClient = null;
         try {
             ossClient = createOssClient(config);
-            
+
             String originalName = file.getOriginalFilename();
             String fileName = generateFileName(originalName);
             String objectName = buildObjectName(fileName, config);
-            
+
             // 创建上传Object的Metadata
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
@@ -55,15 +55,15 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
             metadata.setCacheControl("no-cache");
             metadata.setHeader("Pragma", "no-cache");
             metadata.setContentDisposition("inline;filename=" + originalName);
-            
+
             // 上传文件
             PutObjectRequest putObjectRequest = new PutObjectRequest(
                 config.getBucketName(), objectName, file.getInputStream(), metadata);
             ossClient.putObject(putObjectRequest);
-            
+
             // 构建访问URL
             String url = buildAccessUrl(config, objectName);
-            
+
             return new FileUploadResult()
                     .setFileName(fileName)
                     .setOriginalName(originalName)
@@ -74,7 +74,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
                     .setContentType(file.getContentType())
                     .setConfigKey(config.getConfigKey())
                     .setUploadStatus(1);
-                    
+
         } catch (Exception e) {
             log.error("阿里云OSS文件上传失败", e);
             throw new RuntimeException("阿里云OSS文件上传失败: " + e.getMessage());
@@ -90,28 +90,28 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
         OSS ossClient = null;
         try {
             ossClient = createOssClient(config);
-            
+
             String objectName = buildObjectName(fileName, config);
-            
+
             // 创建上传Object的Metadata
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(contentType);
             metadata.setCacheControl("no-cache");
             metadata.setHeader("Pragma", "no-cache");
             metadata.setContentDisposition("inline;filename=" + fileName);
-            
+
             // 上传文件
             PutObjectRequest putObjectRequest = new PutObjectRequest(
                 config.getBucketName(), objectName, inputStream, metadata);
             ossClient.putObject(putObjectRequest);
-            
+
             // 获取文件信息
             com.aliyun.oss.model.ObjectMetadata objMetadata = ossClient.getObjectMetadata(config.getBucketName(), objectName);
             long size = objMetadata.getContentLength();
-            
+
             // 构建访问URL
             String url = buildAccessUrl(config, objectName);
-            
+
             return new FileUploadResult()
                     .setFileName(fileName)
                     .setOriginalName(fileName)
@@ -122,7 +122,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
                     .setContentType(contentType)
                     .setConfigKey(config.getConfigKey())
                     .setUploadStatus(1);
-                    
+
         } catch (Exception e) {
             log.error("阿里云OSS文件流上传失败", e);
             throw new RuntimeException("阿里云OSS文件流上传失败: " + e.getMessage());
@@ -157,10 +157,10 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
         try {
             ossClient = createOssClient(config);
             String objectName = config.getPrefix() + "/" + fileName;
-            
+
             // 设置过期时间
             Date expiration = new Date(System.currentTimeMillis() + expireTime * 1000L);
-            
+
             return ossClient.generatePresignedUrl(config.getBucketName(), objectName, expiration).toString();
         } catch (Exception e) {
             log.error("获取阿里云OSS预签名URL失败: {}", fileName, e);
@@ -177,7 +177,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
         OSS ossClient = null;
         try {
             ossClient = createOssClient(config);
-            
+
             // 获取文件流
             OSSObject ossObject = ossClient.getObject(config.getBucketName(), fileName);
             return ossObject.getObjectContent();
@@ -196,28 +196,28 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
         OSS ossClient = null;
         try {
             ossClient = createOssClient(config);
-            
+
             // 检查文件是否存在
             boolean exists = ossClient.doesObjectExist(config.getBucketName(), fileName);
             if (!exists) {
                 log.error("阿里云OSS文件不存在: {}", fileName);
                 throw new IOException("文件不存在: " + fileName);
             }
-            
+
             // 获取签名URL，默认10分钟有效期
             Date expiration = new Date(System.currentTimeMillis() + 10 * 60 * 1000);
             GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(config.getBucketName(), fileName);
             request.setExpiration(expiration);
             URL signedUrl = ossClient.generatePresignedUrl(request);
             String url = signedUrl.toString();
-            
+
             // 构建预览信息
             FilePreviewInfo previewInfo = new FilePreviewInfo()
                     .setPreviewUrl(url)
                     .setContentType(contentType)
                     .setOriginalName(originalName)
                     .setSize(size);
-            
+
             // 设置预览类型
             if (isImageFile(contentType)) {
                 // 图片直接预览
@@ -242,7 +242,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
                 // 不支持预览
                 previewInfo.setPreviewType(0);
             }
-            
+
             return previewInfo;
         } catch (Exception e) {
             log.error("获取阿里云OSS预览信息失败: {}", e.getMessage(), e);
@@ -260,27 +260,27 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
     private boolean isTextFile(String contentType, String fileName) {
         // 根据内容类型判断
         if (contentType != null && (
-                contentType.equals("text/plain") || 
-                contentType.equals("text/html") || 
-                contentType.equals("text/css") || 
-                contentType.equals("text/javascript") || 
-                contentType.equals("application/json") || 
+                contentType.equals("text/plain") ||
+                contentType.equals("text/html") ||
+                contentType.equals("text/css") ||
+                contentType.equals("text/javascript") ||
+                contentType.equals("application/json") ||
                 contentType.equals("application/xml"))) {
             return true;
         }
-        
+
         // 根据文件扩展名判断
         if (fileName != null) {
             String lowerName = fileName.toLowerCase();
-            return lowerName.endsWith(".txt") || 
-                   lowerName.endsWith(".log") || 
-                   lowerName.endsWith(".ini") || 
-                   lowerName.endsWith(".json") || 
-                   lowerName.endsWith(".xml") || 
-                   lowerName.endsWith(".md") || 
+            return lowerName.endsWith(".txt") ||
+                   lowerName.endsWith(".log") ||
+                   lowerName.endsWith(".ini") ||
+                   lowerName.endsWith(".json") ||
+                   lowerName.endsWith(".xml") ||
+                   lowerName.endsWith(".md") ||
                    lowerName.endsWith(".csv");
         }
-        
+
         return false;
     }
 
@@ -295,7 +295,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
                 endpoint = "http://" + endpoint.replace("https://", "");
             }
         }
-        
+
         return new OSSClientBuilder().build(endpoint, config.getAccessKey(), config.getSecretKey());
     }
 
@@ -321,12 +321,12 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
                 baseUrl = "http://" + config.getBucketName() + "." + endpoint.replace("https://", "").replace("http://", "");
             }
         }
-        
+
         // 确保URL以/结尾
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
-        
+
         return baseUrl + objectName;
     }
 
@@ -349,7 +349,7 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
      */
     private boolean isOfficeFile(String contentType) {
         if (contentType == null) return false;
-        return contentType.contains("word") || 
+        return contentType.contains("word") ||
                contentType.contains("excel") ||
                contentType.contains("powerpoint") ||
                contentType.contains("ms-excel") ||
@@ -371,4 +371,4 @@ public class AliyunOssFileUploadStrategy implements FileUploadStrategy {
     private boolean isAudioFile(String contentType) {
         return contentType != null && contentType.startsWith("audio/");
     }
-} 
+}

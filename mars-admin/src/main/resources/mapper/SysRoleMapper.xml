@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysRoleMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysRoleMapper">
 
     <!-- 角色基础信息结果映射 -->
-    <resultMap id="SysRoleResult" type="com.mars.admin.entity.SysRole">
+    <resultMap id="SysRoleResult" type="com.mars.admin.modules.system.entity.SysRole">
         <id property="id" column="role_id"/>
         <result property="roleName" column="role_name"/>
         <result property="roleCode" column="role_code"/>
@@ -25,7 +25,7 @@
     </resultMap>
 
     <!-- 分页查询角色列表 -->
-    <select id="selectRoleList" parameterType="com.mars.admin.entity.SysRole" resultMap="SysRoleResult">
+    <select id="selectRoleList" parameterType="com.mars.admin.modules.system.entity.SysRole" resultMap="SysRoleResult">
         SELECT
             r.id as role_id,
             r.role_name,
@@ -141,4 +141,4 @@
         ORDER BY r.role_sort ASC
     </select>
 
-</mapper> 
+</mapper>

@@ -152,14 +152,14 @@ public class OptimizedUserService {
 
 ```xml
 <!-- 优化的用户查询Mapper -->
-<mapper namespace="com.mars.admin.mapper.SysUserMapper">
-    
+<mapper namespace="com.mars.admin.modules.system.mapper.SysUserMapper">
+
     <!-- 优化的用户列表查询 -->
     <select id="selectUserListOptimized" parameterType="SysUser" resultMap="SysUserResult">
-        SELECT 
-            u.user_id, u.user_name, u.nick_name, u.email, u.avatar, 
-            u.phonenumber, u.sex, u.status, u.create_time,
-            d.dept_name, d.leader
+        SELECT
+        u.user_id, u.user_name, u.nick_name, u.email, u.avatar,
+        u.phonenumber, u.sex, u.status, u.create_time,
+        d.dept_name, d.leader
         FROM sys_user u
         LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
         WHERE u.del_flag = '0'
@@ -183,32 +183,32 @@ public class OptimizedUserService {
         </if>
         <if test="deptId != null and deptId != 0">
             AND (u.dept_id = #{deptId} OR u.dept_id IN (
-                SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET(#{deptId}, ancestors)
+            SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET(#{deptId}, ancestors)
             ))
         </if>
         <!-- 数据范围过滤 -->
         ${params.dataScope}
         ORDER BY u.user_id DESC
     </select>
-    
+
     <!-- 批量查询用户 -->
     <select id="selectUsersByIds" resultMap="SysUserResult">
-        SELECT 
-            u.user_id, u.user_name, u.nick_name, u.email, u.avatar, 
-            u.phonenumber, u.sex, u.status, u.create_time,
-            d.dept_name, d.leader
+        SELECT
+        u.user_id, u.user_name, u.nick_name, u.email, u.avatar,
+        u.phonenumber, u.sex, u.status, u.create_time,
+        d.dept_name, d.leader
         FROM sys_user u
         LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
-        WHERE u.del_flag = '0' 
+        WHERE u.del_flag = '0'
         AND u.user_id IN
         <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
     </select>
-    
+
     <!-- 统计查询优化 -->
     <select id="countUserByCondition" parameterType="SysUser" resultType="int">
-        SELECT COUNT(1) 
+        SELECT COUNT(1)
         FROM sys_user u
         <if test="deptId != null and deptId != 0">
             LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
@@ -222,7 +222,7 @@ public class OptimizedUserService {
         </if>
         <if test="deptId != null and deptId != 0">
             AND (u.dept_id = #{deptId} OR u.dept_id IN (
-                SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET(#{deptId}, ancestors)
+            SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET(#{deptId}, ancestors)
             ))
         </if>
     </select>

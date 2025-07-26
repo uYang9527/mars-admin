@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysLoginInfoMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysLoginInfoMapper">
 
     <!-- 登录日志基础信息结果映射 -->
-    <resultMap id="SysLoginInfoResult" type="com.mars.admin.entity.SysLoginInfo">
+    <resultMap id="SysLoginInfoResult" type="com.mars.admin.modules.system.entity.SysLoginInfo">
         <id property="id" column="id"/>
         <result property="userName" column="user_name"/>
         <result property="ipaddr" column="ipaddr"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <!-- 分页查询登录日志列表 -->
-    <select id="selectLoginInfoList" parameterType="com.mars.admin.entity.SysLoginInfo" resultMap="SysLoginInfoResult">
+    <select id="selectLoginInfoList" parameterType="com.mars.admin.modules.system.entity.SysLoginInfo" resultMap="SysLoginInfoResult">
         SELECT
             li.id,
             li.user_name,
@@ -46,4 +46,4 @@
         DELETE FROM sys_logininfor
     </delete>
 
-</mapper> 
+</mapper>

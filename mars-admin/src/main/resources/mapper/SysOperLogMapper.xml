@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysOperLogMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysOperLogMapper">
 
     <!-- 操作日志基础信息结果映射 -->
-    <resultMap id="SysOperLogResult" type="com.mars.admin.entity.SysOperLog">
+    <resultMap id="SysOperLogResult" type="com.mars.admin.modules.system.entity.SysOperLog">
         <id property="id" column="oper_id"/>
         <result property="title" column="title"/>
         <result property="businessType" column="business_type"/>
@@ -24,7 +24,7 @@
     </resultMap>
 
     <!-- 分页查询操作日志列表 -->
-    <select id="selectOperLogList" parameterType="com.mars.admin.entity.SysOperLog" resultMap="SysOperLogResult">
+    <select id="selectOperLogList" parameterType="com.mars.admin.modules.system.entity.SysOperLog" resultMap="SysOperLogResult">
         SELECT
             ol.id as oper_id,
             ol.title,
@@ -65,4 +65,4 @@
         DELETE FROM sys_oper_log
     </delete>
 
-</mapper> 
+</mapper>

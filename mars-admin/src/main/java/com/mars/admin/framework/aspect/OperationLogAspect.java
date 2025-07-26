@@ -2,12 +2,12 @@ package com.mars.admin.framework.aspect;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mars.admin.entity.SysOperLog;
-import com.mars.admin.entity.SysUser;
+import com.mars.admin.modules.system.entity.SysOperLog;
+import com.mars.admin.modules.system.entity.SysUser;
 import com.mars.admin.framework.common.annotation.OperationLog;
 import com.mars.admin.framework.util.IpUtils;
-import com.mars.admin.service.ISysOperLogService;
-import com.mars.admin.service.ISysUserService;
+import com.mars.admin.modules.system.service.ISysOperLogService;
+import com.mars.admin.modules.system.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -83,7 +83,7 @@ public class OperationLogAspect {
             }
 
             HttpServletRequest request = attributes.getRequest();
-            
+
             // 获取操作
             OperationLog operationLog = getAnnotationLog(joinPoint);
             if (operationLog == null) {
@@ -114,7 +114,7 @@ public class OperationLogAspect {
             }
 
             HttpServletRequest request = attributes.getRequest();
-            
+
             // 获取操作
             OperationLog operationLog = getAnnotationLog(joinPoint);
             if (operationLog == null) {
@@ -153,11 +153,11 @@ public class OperationLogAspect {
      * @param result        返回结果
      * @param e             异常对象
      */
-    private void handleLogAsync(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request, 
+    private void handleLogAsync(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request,
                                Object result, Throwable e) {
         // 预先收集所有需要的数据，避免在异步线程中访问请求上下文
         LogData logData = collectLogData(joinPoint, operationLog, request, result, e);
-        
+
         // 异步保存到数据库
         saveOperationLogAsync(logData);
     }
@@ -166,50 +166,50 @@ public class OperationLogAspect {
      * 收集日志数据
      * 在主线程中收集所有必要的数据，避免在异步线程中访问可能已经失效的上下文
      */
-    private LogData collectLogData(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request, 
+    private LogData collectLogData(JoinPoint joinPoint, OperationLog operationLog, HttpServletRequest request,
                                   Object result, Throwable e) {
         long startTime = System.currentTimeMillis();
-        
+
         LogData logData = new LogData();
-        
+
         // 获取当前用户信息
         SysUser currentUser = getCurrentUser();
-        
+
         // 基本信息
         logData.status = (e == null ? 0 : 1);  // 操作状态：0=正常,1=异常
         logData.operIp = IpUtils.getIpAddr(request);
         logData.operUrl = request.getRequestURI();
         logData.requestMethod = request.getMethod();
-        
+
         if (currentUser != null) {
             logData.operName = currentUser.getUsername();
             logData.deptName = getDeptName(currentUser);
         }
-        
+
         if (e != null) {
             logData.errorMsg = substring(e.getMessage(), 0, 2000);
         }
-        
+
         // 方法信息
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         logData.method = className + "." + methodName + "()";
-        
+
         // 注解信息
         logData.title = operationLog.title();
         logData.businessType = operationLog.businessType().ordinal();
         logData.operatorType = operationLog.operatorType().ordinal();
-        
+
         // 参数和返回值处理
         if (operationLog.isSaveRequestData()) {
             Map<String, Object> paramsMap = getRequestParams(joinPoint, operationLog.excludeParamNames());
             logData.operParam = substring(toJsonString(paramsMap), 0, 2000);
         }
-        
+
         if (operationLog.isSaveResponseData() && result != null) {
             logData.jsonResult = substring(toJsonString(result), 0, 2000);
         }
-        
+
         // 处理操作描述（支持SpEL表达式）
         if (!operationLog.description().isEmpty()) {
             try {
@@ -224,11 +224,11 @@ public class OperationLogAspect {
                 logData.operParam = "描述解析失败: " + operationLog.description();
             }
         }
-        
+
         // 计算耗时
         logData.costTime = System.currentTimeMillis() - startTime;
         logData.operTime = LocalDateTime.now();
-        
+
         return logData;
     }
 
@@ -258,16 +258,16 @@ public class OperationLogAspect {
             operLog.setJsonResult(logData.jsonResult);
             operLog.setCostTime(logData.costTime);
             operLog.setOperTime(logData.operTime);
-            
+
             // 保存到数据库
             operLogService.insertOperLog(operLog);
-            
+
             log.debug("异步保存操作日志成功: {}", logData.title);
-            
+
         } catch (Exception exp) {
             log.error("异步保存操作日志失败: {}, 错误: {}", logData.title, exp.getMessage(), exp);
         }
-        
+
         return CompletableFuture.completedFuture(null);
     }
 
@@ -328,7 +328,7 @@ public class OperationLogAspect {
         try {
             Expression expression = parser.parseExpression("");
             EvaluationContext context = new StandardEvaluationContext();
-            
+
             // 设置方法参数
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             String[] paramNames = signature.getParameterNames();
@@ -336,13 +336,13 @@ public class OperationLogAspect {
             for (int i = 0; i < paramNames.length; i++) {
                 context.setVariable(paramNames[i], args[i]);
             }
-            
+
             // 设置返回结果
             context.setVariable("result", result);
-            
+
             // 设置当前用户
             context.setVariable("currentUser", getCurrentUser());
-            
+
             return expression.getValue(context, String.class);
         } catch (Exception e) {
             log.warn("SpEL表达式解析失败: {}", e.getMessage());
@@ -435,4 +435,4 @@ public class OperationLogAspect {
         Long costTime;
         LocalDateTime operTime;
     }
-} 
+}

@@ -210,7 +210,7 @@ file:
 
 **解决方案**：
 1. **后端开发**：
-   - 创建实体类：`com.mars.admin.entity.YourEntity`
+   - 创建实体类：`com.mars.admin.modules.system.entity.YourEntity`
    - 创建Mapper接口：`com.mars.admin.mapper.YourMapper`
    - 创建Service接口和实现：`com.mars.admin.service.YourService`
    - 创建Controller：`com.mars.admin.controller.YourController`

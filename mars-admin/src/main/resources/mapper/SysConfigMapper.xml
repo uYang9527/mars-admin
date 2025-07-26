@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysConfigMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysConfigMapper">
 
     <!-- 系统配置基础信息结果映射 -->
-    <resultMap id="SysConfigResult" type="com.mars.admin.entity.SysConfig">
+    <resultMap id="SysConfigResult" type="com.mars.admin.modules.system.entity.SysConfig">
         <id property="id" column="config_id"/>
         <result property="configName" column="config_name"/>
         <result property="configKey" column="config_key"/>
@@ -19,7 +19,7 @@
     </resultMap>
 
     <!-- 分页查询配置列表 -->
-    <select id="selectConfigList" parameterType="com.mars.admin.entity.SysConfig" resultMap="SysConfigResult">
+    <select id="selectConfigList" parameterType="com.mars.admin.modules.system.entity.SysConfig" resultMap="SysConfigResult">
         SELECT
             c.id as config_id,
             c.config_name,
@@ -47,4 +47,4 @@
         ORDER BY c.create_time DESC
     </select>
 
-</mapper> 
+</mapper>

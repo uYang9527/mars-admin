@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysDeptMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysDeptMapper">
 
     <!-- 部门基础信息结果映射 -->
-    <resultMap id="SysDeptResult" type="com.mars.admin.entity.SysDept">
+    <resultMap id="SysDeptResult" type="com.mars.admin.modules.system.entity.SysDept">
         <id property="id" column="dept_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="ancestors" column="ancestors"/>
@@ -25,7 +25,7 @@
     </resultMap>
 
     <!-- 分页查询部门列表 -->
-    <select id="selectDeptList" parameterType="com.mars.admin.entity.SysDept" resultMap="SysDeptResult">
+    <select id="selectDeptList" parameterType="com.mars.admin.modules.system.entity.SysDept" resultMap="SysDeptResult">
         SELECT
             d.id as dept_id,
             d.parent_id,
@@ -142,4 +142,4 @@
         ORDER BY d.parent_id ASC, d.order_num ASC
     </select>
 
-</mapper> 
+</mapper>

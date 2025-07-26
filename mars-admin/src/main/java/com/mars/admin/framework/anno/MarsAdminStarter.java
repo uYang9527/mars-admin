@@ -15,6 +15,6 @@ import java.lang.annotation.*;
 @EnableCaching
 @SpringBootApplication
 @EnableConfigurationProperties
-@MapperScan("com.mars.admin.mapper")
+@MapperScan("com.mars.admin.modules.*.mapper")
 public @interface MarsAdminStarter {
 }

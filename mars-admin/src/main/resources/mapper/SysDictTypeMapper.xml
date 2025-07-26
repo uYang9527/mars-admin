@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysDictTypeMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysDictTypeMapper">
 
     <!-- 字典类型基础信息结果映射 -->
-    <resultMap id="SysDictTypeResult" type="com.mars.admin.entity.SysDictType">
+    <resultMap id="SysDictTypeResult" type="com.mars.admin.modules.system.entity.SysDictType">
         <id property="id" column="dict_type_id"/>
         <result property="dictName" column="dict_name"/>
         <result property="dictType" column="dict_type"/>
@@ -18,7 +18,7 @@
     </resultMap>
 
     <!-- 分页查询字典类型列表 -->
-    <select id="selectDictTypeList" parameterType="com.mars.admin.entity.SysDictType" resultMap="SysDictTypeResult">
+    <select id="selectDictTypeList" parameterType="com.mars.admin.modules.system.entity.SysDictType" resultMap="SysDictTypeResult">
         SELECT
             dt.id as dict_type_id,
             dt.dict_name,
@@ -63,4 +63,4 @@
         WHERE dt.id = #{dictTypeId} AND dt.is_deleted = 0
     </select>
 
-</mapper> 
+</mapper>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mars.admin.mapper.SysDictDataMapper">
+<mapper namespace="com.mars.admin.modules.system.mapper.SysDictDataMapper">
 
     <!-- 字典数据基础信息结果映射 -->
-    <resultMap id="SysDictDataResult" type="com.mars.admin.entity.SysDictData">
+    <resultMap id="SysDictDataResult" type="com.mars.admin.modules.system.entity.SysDictData">
         <id property="id" column="dict_data_id"/>
         <result property="dictSort" column="dict_sort"/>
         <result property="dictLabel" column="dict_label"/>
@@ -23,7 +23,7 @@
     </resultMap>
 
     <!-- 分页查询字典数据列表 -->
-    <select id="selectDictDataList" parameterType="com.mars.admin.entity.SysDictData" resultMap="SysDictDataResult">
+    <select id="selectDictDataList" parameterType="com.mars.admin.modules.system.entity.SysDictData" resultMap="SysDictDataResult">
         SELECT
             dd.id as dict_data_id,
             dd.dict_sort,
@@ -79,4 +79,4 @@
         ORDER BY dd.dict_sort ASC
     </select>
 
-</mapper> 
+</mapper>

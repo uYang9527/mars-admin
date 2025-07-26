@@ -5,11 +5,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.mars.admin.common.enums.LoginType;
 import com.mars.admin.common.request.LoginRequest;
 import com.mars.admin.common.response.LoginResponse;
-import com.mars.admin.entity.SysUser;
+import com.mars.admin.modules.system.entity.SysUser;
 import com.mars.admin.framework.exception.BusinessException;
 import com.mars.admin.framework.strategy.LoginStrategy;
-import com.mars.admin.mapper.SysUserMapper;
-import com.mars.admin.service.ISysLoginInfoService;
+import com.mars.admin.modules.system.mapper.SysUserMapper;
+import com.mars.admin.modules.system.service.ISysLoginInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -95,7 +95,7 @@ public class PcLoginStrategy implements LoginStrategy {
     @Override
     public boolean validateLoginRequest(LoginRequest loginRequest) {
         // PC端登录需要用户名和密码
-        return StringUtils.hasText(loginRequest.getUsername()) 
+        return StringUtils.hasText(loginRequest.getUsername())
             && StringUtils.hasText(loginRequest.getPassword());
     }
 
@@ -173,4 +173,4 @@ public class PcLoginStrategy implements LoginStrategy {
         // 这里可以从request中获取IP，为了简化暂时返回固定值
         return "127.0.0.1";
     }
-} 
+}

@@ -5,7 +5,7 @@
 ## 文件列表
 
 ### 1. SysUserMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysUserMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysUserMapper`
 **主要功能**:
 - 用户详情查询（包含角色、部门、岗位信息）
 - 用户列表分页查询
@@ -21,7 +21,7 @@
 - `updateUserLoginInfo`: 更新用户登录信息
 
 ### 2. SysRoleMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysRoleMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysRoleMapper`
 **主要功能**:
 - 角色列表查询
 - 根据用户ID查询角色列表
@@ -35,7 +35,7 @@
 - `selectRolesByMenuId`: 根据菜单ID查询角色
 
 ### 3. SysDeptMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysDeptMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysDeptMapper`
 **主要功能**:
 - 部门列表查询
 - 根据用户ID查询部门列表
@@ -49,7 +49,7 @@
 - `selectDeptTree`: 查询部门树结构
 
 ### 4. SysPostMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysPostMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysPostMapper`
 **主要功能**:
 - 岗位列表查询
 - 根据用户ID查询岗位列表
@@ -59,7 +59,7 @@
 - `selectPostsByUserId`: 根据用户ID查询岗位（用于getCurrentUser）
 
 ### 5. SysMenuMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysMenuMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysMenuMapper`
 **主要功能**:
 - 菜单列表查询
 - 根据用户ID查询菜单列表
@@ -73,7 +73,7 @@
 - `selectChildrenByParentId`: 查询子菜单
 
 ### 6. SysConfigMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysConfigMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysConfigMapper`
 **主要功能**:
 - 系统配置列表查询
 
@@ -81,7 +81,7 @@
 - `selectConfigList`: 分页查询配置列表
 
 ### 7. SysDictTypeMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysDictTypeMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysDictTypeMapper`
 **主要功能**:
 - 字典类型列表查询
 - 字典类型详情查询
@@ -91,7 +91,7 @@
 - `selectDictTypeDetailById`: 查询字典类型详情
 
 ### 8. SysDictDataMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysDictDataMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysDictDataMapper`
 **主要功能**:
 - 字典数据列表查询
 - 根据字典类型查询字典数据
@@ -101,7 +101,7 @@
 - `selectDictDataByType`: 根据字典类型查询字典数据
 
 ### 9. SysOperLogMapper.xml
-**对应接口**: `com.mars.admin.mapper.SysOperLogMapper`
+**对应接口**: `com.mars.admin.modules.system.mapper.SysOperLogMapper`
 **主要功能**:
 - 操作日志列表查询
 

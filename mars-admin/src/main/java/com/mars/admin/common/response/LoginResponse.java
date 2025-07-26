@@ -1,6 +1,6 @@
 package com.mars.admin.common.response;
 
-import com.mars.admin.entity.SysUser;
+import com.mars.admin.modules.system.entity.SysUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -50,4 +50,4 @@ public class LoginResponse {
         this.userInfo = userInfo;
         this.extraInfo = extraInfo;
     }
-} 
+}

@@ -5,11 +5,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.mars.admin.common.enums.LoginType;
 import com.mars.admin.common.request.LoginRequest;
 import com.mars.admin.common.response.LoginResponse;
-import com.mars.admin.entity.SysUser;
+import com.mars.admin.modules.system.entity.SysUser;
 import com.mars.admin.framework.exception.BusinessException;
 import com.mars.admin.framework.strategy.LoginStrategy;
-import com.mars.admin.mapper.SysUserMapper;
-import com.mars.admin.service.ISysLoginInfoService;
+import com.mars.admin.modules.system.mapper.SysUserMapper;
+import com.mars.admin.modules.system.service.ISysLoginInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -111,7 +111,7 @@ public class AppLoginStrategy implements LoginStrategy {
     @Override
     public boolean validateLoginRequest(LoginRequest loginRequest) {
         // APP登录需要手机号和验证码
-        return StringUtils.hasText(loginRequest.getMobile()) 
+        return StringUtils.hasText(loginRequest.getMobile())
             && StringUtils.hasText(loginRequest.getCaptcha());
     }
 
@@ -130,7 +130,7 @@ public class AppLoginStrategy implements LoginStrategy {
 
         String cacheKey = CAPTCHA_KEY_PREFIX + mobile;
         String cachedCaptcha = redisTemplate.opsForValue().get(cacheKey);
-        
+
         return captcha.equals(cachedCaptcha);
     }
 
@@ -140,7 +140,7 @@ public class AppLoginStrategy implements LoginStrategy {
     private SysUser findOrCreateUser(String mobile, LoginRequest loginRequest) {
         // 首先尝试通过手机号查找用户
         SysUser user = sysUserMapper.selectByPhone(mobile);
-        
+
         if (user == null) {
             // 如果用户不存在，创建新用户
             user = createNewUser(mobile, loginRequest);
@@ -148,7 +148,7 @@ public class AppLoginStrategy implements LoginStrategy {
             // 如果用户存在，更新设备信息
             updateDeviceInfo(user, loginRequest);
         }
-        
+
         return user;
     }
 
@@ -209,11 +209,11 @@ public class AppLoginStrategy implements LoginStrategy {
         try {
             user.setLastLoginTime(LocalDateTime.now());
             user.setLastLoginIp(getClientIp());
-            
+
             // 更新登录次数
             Integer loginCount = user.getLoginCount();
             user.setLoginCount(loginCount == null ? 1 : loginCount + 1);
-            
+
             sysUserMapper.update(user);
         } catch (Exception e) {
             log.error("更新用户登录信息失败", e);
@@ -254,15 +254,15 @@ public class AppLoginStrategy implements LoginStrategy {
         try {
             // 生成6位随机验证码
             String captcha = generateCaptcha();
-            
+
             // 存储到Redis，设置过期时间
             String cacheKey = CAPTCHA_KEY_PREFIX + mobile;
             redisTemplate.opsForValue().set(cacheKey, captcha, CAPTCHA_EXPIRE_TIME, TimeUnit.MINUTES);
-            
+
             // 这里应该调用短信服务发送验证码
             // 为了演示，只是打印日志
             log.info("发送验证码到手机号 {}: {}", mobile, captcha);
-            
+
             return true;
         } catch (Exception e) {
             log.error("发送验证码失败", e);
@@ -284,4 +284,4 @@ public class AppLoginStrategy implements LoginStrategy {
         // 这里可以从request中获取IP，为了简化暂时返回固定值
         return "127.0.0.1";
     }
-} 
+}

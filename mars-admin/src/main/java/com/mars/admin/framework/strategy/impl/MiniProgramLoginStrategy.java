@@ -7,11 +7,11 @@ import com.alibaba.fastjson2.JSONObject;
 import com.mars.admin.common.enums.LoginType;
 import com.mars.admin.common.request.LoginRequest;
 import com.mars.admin.common.response.LoginResponse;
-import com.mars.admin.entity.SysUser;
+import com.mars.admin.modules.system.entity.SysUser;
 import com.mars.admin.framework.exception.BusinessException;
 import com.mars.admin.framework.strategy.LoginStrategy;
-import com.mars.admin.mapper.SysUserMapper;
-import com.mars.admin.service.ISysLoginInfoService;
+import com.mars.admin.modules.system.mapper.SysUserMapper;
+import com.mars.admin.modules.system.service.ISysLoginInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +62,7 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
 
         // 2. 获取微信用户信息
         String openId = getOpenIdFromWechat(loginRequest.getWxCode());
-        
+
         // 3. 查询或创建用户
         SysUser user = findOrCreateUser(openId, loginRequest);
 
@@ -156,7 +156,7 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
     private SysUser findOrCreateUser(String openId, LoginRequest loginRequest) {
         // 首先尝试通过openId查找用户
         SysUser user = sysUserMapper.selectByOpenId(openId);
-        
+
         if (user == null) {
             // 如果用户不存在，创建新用户
             user = createNewUser(openId, loginRequest);
@@ -164,7 +164,7 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
             // 如果用户存在，更新用户信息
             updateUserInfo(user, loginRequest);
         }
-        
+
         return user;
     }
 
@@ -209,12 +209,12 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
                 JSONObject userInfo = JSON.parseObject(loginRequest.getWxUserInfo());
                 String nickName = userInfo.getString("nickName");
                 String avatarUrl = userInfo.getString("avatarUrl");
-                
+
                 if (StringUtils.hasText(nickName) && !nickName.equals(user.getNickname())) {
                     user.setNickname(nickName);
                     needUpdate = true;
                 }
-                
+
                 if (StringUtils.hasText(avatarUrl) && !avatarUrl.equals(user.getAvatar())) {
                     user.setAvatar(avatarUrl);
                     needUpdate = true;
@@ -282,4 +282,4 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
         // 这里可以从request中获取IP，为了简化暂时返回固定值
         return "127.0.0.1";
     }
-} 
+}
