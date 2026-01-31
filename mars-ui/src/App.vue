@@ -5,6 +5,7 @@
         <n-dialog-provider>
           <GlobalApiProvider />
           <router-view />
+          <Watermark />
         </n-dialog-provider>
       </n-message-provider>
     </n-loading-bar-provider>
@@ -16,6 +17,7 @@ import type { GlobalThemeOverrides } from 'naive-ui'
 import { useMessage, useDialog, useLoadingBar } from 'naive-ui'
 import { defineComponent, computed, onMounted } from 'vue'
 import { useThemeStore } from '@/stores/theme'
+import Watermark from '@/components/Watermark/index.vue'
 
 const themeStore = useThemeStore()
 

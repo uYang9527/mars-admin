@@ -42,6 +42,18 @@
                 <n-form-item label="ICP备案号">
                   <n-input v-model:value="configs.system.icp" placeholder="请输入ICP备案号" />
                 </n-form-item>
+                <n-divider />
+                <n-form-item label="启用水印">
+                  <n-switch v-model:value="configs.system.watermarkEnabled" />
+                  <span class="form-hint">开启后页面将显示用户名水印</span>
+                </n-form-item>
+                <n-form-item label="水印内容" v-if="configs.system.watermarkEnabled">
+                  <n-select v-model:value="configs.system.watermarkType" :options="watermarkTypeOptions" style="width: 200px" />
+                </n-form-item>
+                <n-form-item label="水印透明度" v-if="configs.system.watermarkEnabled">
+                  <n-slider v-model:value="configs.system.watermarkOpacity" :min="0.01" :max="0.3" :step="0.01" style="width: 200px" />
+                  <span class="form-hint" style="margin-left: 12px">{{ (configs.system.watermarkOpacity * 100).toFixed(0) }}%</span>
+                </n-form-item>
               </n-form>
             </template>
 
@@ -516,7 +528,7 @@ const saving = ref(false)
 
 // 所有配置数据
 const configs = reactive<Record<string, any>>({
-  system: { siteName: '', siteDescription: '', siteLogo: '', copyright: '', icp: '' },
+  system: { siteName: '', siteDescription: '', siteLogo: '', copyright: '', icp: '', watermarkEnabled: true, watermarkType: 'username', watermarkOpacity: 0.1 },
   register: { enabled: true, verifyEmail: false, verifyPhone: false, defaultRole: 'user', needAudit: false },
   login: { captchaEnabled: false, captchaType: 'image', maxRetryCount: 5, lockTime: 30, rememberMe: true, singleLogin: false },
   password: { minLength: 6, maxLength: 20, requireUppercase: false, requireLowercase: false, requireNumber: false, requireSpecial: false, expireDays: 0 },
@@ -565,6 +577,13 @@ const captchaTypeOptions = [
   { label: '图片验证码', value: 'image' },
   { label: '滑块验证码', value: 'slider' },
   { label: '短信验证码', value: 'sms' }
+]
+
+const watermarkTypeOptions = [
+  { label: '用户名', value: 'username' },
+  { label: '用户名+时间', value: 'username_time' },
+  { label: '站点名称', value: 'sitename' },
+  { label: '自定义文本', value: 'custom' }
 ]
 
 const smsProviderOptions = [
@@ -735,9 +754,17 @@ async function handleSave() {
     await configGroupApi.save(activeTab.value, configs[activeTab.value])
     message.success('保存成功')
 
-    // 如果是系统配置，刷新站点信息
+    // 如果是系统配置，立即更新站点信息和水印配置
     if (activeTab.value === 'system') {
-      await siteStore.loadConfig()
+      // 直接更新 store 值，让水印立即生效
+      siteStore.siteName = configs.system.siteName || 'Mars Admin'
+      siteStore.siteDescription = configs.system.siteDescription || ''
+      siteStore.siteLogo = configs.system.siteLogo || ''
+      siteStore.copyright = configs.system.copyright || ''
+      siteStore.icp = configs.system.icp || ''
+      siteStore.watermarkEnabled = configs.system.watermarkEnabled !== false
+      siteStore.watermarkType = configs.system.watermarkType || 'username'
+      siteStore.watermarkOpacity = configs.system.watermarkOpacity || 0.1
     }
   } catch (error) {
     // 错误已在拦截器处理

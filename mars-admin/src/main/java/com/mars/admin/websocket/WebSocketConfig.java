@@ -15,17 +15,26 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final MessageWebSocketHandler messageWebSocketHandler;
+    private final SshWebSocketHandler sshWebSocketHandler;
     private final WebSocketHandshakeInterceptor handshakeInterceptor;
 
     public WebSocketConfig(MessageWebSocketHandler messageWebSocketHandler,
+                          SshWebSocketHandler sshWebSocketHandler,
                           WebSocketHandshakeInterceptor handshakeInterceptor) {
         this.messageWebSocketHandler = messageWebSocketHandler;
+        this.sshWebSocketHandler = sshWebSocketHandler;
         this.handshakeInterceptor = handshakeInterceptor;
     }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        // 消息 WebSocket
         registry.addHandler(messageWebSocketHandler, "/ws/message")
+                .addInterceptors(handshakeInterceptor)
+                .setAllowedOrigins("*");
+        
+        // SSH 终端 WebSocket
+        registry.addHandler(sshWebSocketHandler, "/ws/ssh")
                 .addInterceptors(handshakeInterceptor)
                 .setAllowedOrigins("*");
     }

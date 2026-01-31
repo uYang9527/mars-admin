@@ -135,6 +135,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/monitor/server/index.vue'),
         meta: { title: '服务监控', icon: 'DesktopOutline' }
       },
+      {
+        path: 'monitor/server-manager',
+        name: 'ServerManager',
+        component: () => import('@/views/monitor/server-manager/index.vue'),
+        meta: { title: '服务器管理', icon: 'ServerOutline' }
+      },
         {
             path: 'test/test',
             name: 'Test',

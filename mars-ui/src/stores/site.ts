@@ -16,6 +16,10 @@ export const useSiteStore = defineStore('site', () => {
   const copyright = ref('')
   // ICP 备案号
   const icp = ref('')
+  // 水印配置
+  const watermarkEnabled = ref(true)
+  const watermarkType = ref('username')
+  const watermarkOpacity = ref(0.1)
   // 是否已加载
   const loaded = ref(false)
 
@@ -31,6 +35,10 @@ export const useSiteStore = defineStore('site', () => {
         siteLogo.value = config.system.siteLogo || ''
         copyright.value = config.system.copyright || ''
         icp.value = config.system.icp || ''
+        // 水印配置，默认开启
+        watermarkEnabled.value = config.system.watermarkEnabled !== false
+        watermarkType.value = config.system.watermarkType || 'username'
+        watermarkOpacity.value = config.system.watermarkOpacity || 0.1
       }
       loaded.value = true
     } catch (error) {
@@ -44,6 +52,9 @@ export const useSiteStore = defineStore('site', () => {
     siteLogo,
     copyright,
     icp,
+    watermarkEnabled,
+    watermarkType,
+    watermarkOpacity,
     loaded,
     loadConfig
   }
