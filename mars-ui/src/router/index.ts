@@ -134,7 +134,13 @@ const routes: RouteRecordRaw[] = [
         name: 'MonitorServer',
         component: () => import('@/views/monitor/server/index.vue'),
         meta: { title: '服务监控', icon: 'DesktopOutline' }
-      }
+      },
+        {
+            path: 'test/test',
+            name: 'Test',
+            component: () => import('@/views/test/test/index.vue'),
+            meta: { title: '测试菜单', icon: 'StarOutline' }
+        }
     ]
   },
   {

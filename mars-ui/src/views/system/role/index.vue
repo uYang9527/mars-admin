@@ -89,6 +89,7 @@
               :checked-keys="menuIds"
               checkable
               cascade
+              check-strategy="all"
               selectable
               block-line
               @update:checked-keys="handleMenuCheck"

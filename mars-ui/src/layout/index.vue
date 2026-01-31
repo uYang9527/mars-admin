@@ -299,6 +299,7 @@ import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
 import { noticeApi, chatApi } from '@/api/message'
+import { iconMap as externalIconMap } from '@/utils/icons'
 
 const route = useRoute()
 const router = useRouter()
@@ -492,6 +493,9 @@ const iconMap: Record<string, any> = {
   ChatbubbleOutline
 }
 
+// 合并外部图标映射（已在顶部导入）
+Object.assign(iconMap, externalIconMap)
+
 // 渲染图标
 function renderIcon(iconName?: string) {
   if (!iconName) return undefined
@@ -500,73 +504,40 @@ function renderIcon(iconName?: string) {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
 
-// 菜单配置
+// 将后台菜单数据转换为 Naive UI 菜单格式
+function convertMenus(menus: typeof userStore.menus): MenuOption[] {
+  return menus
+    .filter(menu => menu.visible === 1 && menu.type !== 3) // 过滤隐藏菜单和按钮
+    .sort((a, b) => a.sort - b.sort) // 按排序字段排序
+    .map(menu => {
+      const option: MenuOption = {
+        label: menu.name,
+        key: menu.path || `/menu-${menu.id}`,
+        icon: renderIcon(menu.icon)
+      }
+      if (menu.children && menu.children.length > 0) {
+        const children = convertMenus(menu.children)
+        if (children.length > 0) {
+          option.children = children
+        }
+      }
+      return option
+    })
+}
+
+// 菜单配置 - 从后台动态获取
 const menuOptions = computed<MenuOption[]>(() => {
-  return [
-    {
-      label: '首页',
-      key: '/dashboard',
-      icon: renderIcon('HomeOutline')
-    },
-    {
-      label: '系统管理',
-      key: '/system',
-      icon: renderIcon('SettingsOutline'),
-      children: [
-        { label: '用户管理', key: '/system/user', icon: renderIcon('PersonOutline') },
-        { label: '角色管理', key: '/system/role', icon: renderIcon('PeopleOutline') },
-        { label: '菜单管理', key: '/system/menu', icon: renderIcon('MenuOutline') },
-        { label: '字典管理', key: '/system/dict', icon: renderIcon('BookOutline') },
-        { label: '系统配置', key: '/system/config', icon: renderIcon('SettingsSharp') }
-      ]
-    },
-    {
-      label: '组织管理',
-      key: '/org',
-      icon: renderIcon('BusinessOutline'),
-      children: [
-        { label: '部门管理', key: '/org/dept', icon: renderIcon('GitNetworkOutline') },
-        { label: '岗位管理', key: '/org/post', icon: renderIcon('IdCardOutline') }
-      ]
-    },
-    {
-      label: '系统日志',
-      key: '/log',
-      icon: renderIcon('DocumentTextOutline'),
-      children: [
-        { label: '操作日志', key: '/log/operlog', icon: renderIcon('ListOutline') },
-        { label: '登录日志', key: '/log/loginlog', icon: renderIcon('LogInOutline') }
-      ]
-    },
-    {
-      label: '文件管理',
-      key: '/file',
-      icon: renderIcon('FolderOpenOutline'),
-      children: [
-        { label: '文件列表', key: '/system/file', icon: renderIcon('DocumentOutline') }
-      ]
-    },
-    {
-      label: '消息中心',
-      key: '/message',
-      icon: renderIcon('NotificationsOutline'),
-      children: [
-        { label: '系统通知', key: '/message/notice', icon: renderIcon('NotificationsOutline') },
-        { label: '即时聊天', key: '/message/chat', icon: renderIcon('ChatbubbleOutline') }
-      ]
-    },
-    {
-      label: '系统监控',
-      key: '/monitor',
-      icon: renderIcon('PulseOutline'),
-      children: [
-        { label: '在线用户', key: '/monitor/online', icon: renderIcon('PeopleCircleOutline') },
-        { label: '定时任务', key: '/monitor/job', icon: renderIcon('TimerOutline') },
-        { label: '缓存监控', key: '/monitor/cache', icon: renderIcon('ServerOutline') },
-        { label: '服务监控', key: '/monitor/server', icon: renderIcon('DesktopOutline') }
-      ]
-    }
-  ]
+  // 添加首页菜单
+  const homeMenu: MenuOption = {
+    label: '首页',
+    key: '/dashboard',
+    icon: renderIcon('HomeOutline')
+  }
+  
+  // 从 userStore 获取动态菜单
+  const dynamicMenus = convertMenus(userStore.menus)
+  
+  return [homeMenu, ...dynamicMenus]
 })
 
 // 当前激活菜单

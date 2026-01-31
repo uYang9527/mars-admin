@@ -94,7 +94,7 @@
           <n-input v-model:value="formData.permission" placeholder="请输入权限标识，如：sys:user:add" />
         </n-form-item>
         <n-form-item v-if="formData.type !== 3" label="图标" path="icon">
-          <n-input v-model:value="formData.icon" placeholder="请输入图标名称" />
+          <IconSelect v-model="formData.icon" />
         </n-form-item>
         <n-form-item label="排序" path="sort">
           <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
@@ -124,9 +124,11 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, computed } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeSelectOption } from 'naive-ui'
+import { NButton, NTag, NSpace, NIcon, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeSelectOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { menuApi, type SysMenu } from '@/api/system'
+import IconSelect from '@/components/IconSelect.vue'
+import { getIconComponent } from '@/utils/icons'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -186,7 +188,24 @@ const columns: DataTableColumns<SysMenu> = [
       return h(NTag, { type: info.type, size: 'small' }, { default: () => info.text })
     }
   },
-  { title: '图标', key: 'icon', width: 120 },
+  {
+    title: '图标',
+    key: 'icon',
+    width: 120,
+    render(row) {
+      if (!row.icon) return '-'
+      const iconComponent = getIconComponent(row.icon)
+      if (iconComponent) {
+        return h(NSpace, { align: 'center' }, {
+          default: () => [
+            h(NIcon, { size: 18 }, { default: () => h(iconComponent) }),
+            h('span', { style: { fontSize: '12px', color: '#666' } }, row.icon)
+          ]
+        })
+      }
+      return row.icon
+    }
+  },
   { title: '路由地址', key: 'path', width: 180 },
   { title: '组件路径', key: 'component', width: 200 },
   { title: '权限标识', key: 'permission', width: 150 },
@@ -267,7 +286,7 @@ const formData = reactive<SysMenu>({
 
 const rules: FormRules = {
   name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
-  type: [{ required: true, message: '请选择菜单类型', trigger: 'change' }]
+  type: [{ required: true, type: 'number', message: '请选择菜单类型', trigger: 'change' }]
 }
 
 // 加载数据

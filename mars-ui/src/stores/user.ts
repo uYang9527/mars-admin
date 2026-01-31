@@ -21,6 +21,8 @@ export const useUserStore = defineStore('user', () => {
     const res = await authApi.login(params)
     token.value = res.token
     user.value = res.user
+    // 登录成功后立即获取用户信息（包含菜单、权限等）
+    await getInfo()
     return res
   }
   
