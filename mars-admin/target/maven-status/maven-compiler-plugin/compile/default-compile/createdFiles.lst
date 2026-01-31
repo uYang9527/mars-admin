@@ -1,0 +1,9 @@
+com\mars\admin\controller\AuthController$PasswordRequest.class
+com\mars\admin\controller\SysMenuController.class
+com\mars\admin\controller\AuthController.class
+com\mars\admin\controller\SysUserController$UserRequest.class
+com\mars\admin\controller\SysUserController.class
+com\mars\admin\MarsAdminApplication.class
+com\mars\admin\controller\SysRoleController$RoleRequest.class
+com\mars\admin\controller\SysRoleController.class
+com\mars\admin\controller\AuthController$LoginRequest.class

@@ -1,0 +1,115 @@
+package com.mars.system.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mars.common.exception.BusinessException;
+import com.mars.common.result.PageResult;
+import com.mars.system.entity.SysRole;
+import com.mars.system.entity.SysRoleMenu;
+import com.mars.system.mapper.SysMenuMapper;
+import com.mars.system.mapper.SysRoleMapper;
+import com.mars.system.mapper.SysRoleMenuMapper;
+import com.mars.system.service.SysRoleService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+
+/**
+ * 角色服务实现
+ */
+@Service
+@RequiredArgsConstructor
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+
+    private final SysRoleMenuMapper roleMenuMapper;
+    private final SysMenuMapper menuMapper;
+
+    @Override
+    public PageResult<SysRole> page(Integer page, Integer pageSize, String name, Integer status) {
+        Page<SysRole> pageParam = new Page<>(page, pageSize);
+        LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.hasText(name), SysRole::getName, name)
+                .eq(status != null, SysRole::getStatus, status)
+                .orderByAsc(SysRole::getSort);
+        return PageResult.of(this.page(pageParam, wrapper));
+    }
+
+    @Override
+    public SysRole getDetail(Long id) {
+        return this.getById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void create(SysRole role, List<Long> menuIds) {
+        // 检查角色编码是否存在
+        if (this.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, role.getCode())) != null) {
+            throw new BusinessException("角色编码已存在");
+        }
+        this.save(role);
+        // 保存角色菜单关联
+        saveRoleMenus(role.getId(), menuIds);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(SysRole role, List<Long> menuIds) {
+        SysRole existRole = this.getById(role.getId());
+        if (existRole == null) {
+            throw new BusinessException("角色不存在");
+        }
+        // 检查角色编码是否存在
+        SysRole byCode = this.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, role.getCode()));
+        if (byCode != null && !byCode.getId().equals(role.getId())) {
+            throw new BusinessException("角色编码已存在");
+        }
+        this.updateById(role);
+        // 更新角色菜单关联
+        roleMenuMapper.deleteByRoleId(role.getId());
+        saveRoleMenus(role.getId(), menuIds);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
+        this.removeById(id);
+        roleMenuMapper.deleteByRoleId(id);
+    }
+
+    @Override
+    public List<SysRole> listEnabled() {
+        return this.list(new LambdaQueryWrapper<SysRole>()
+                .eq(SysRole::getStatus, 1)
+                .orderByAsc(SysRole::getSort));
+    }
+
+    @Override
+    public List<SysRole> listByUserId(Long userId) {
+        return baseMapper.selectRolesByUserId(userId);
+    }
+
+    @Override
+    public List<Long> getMenuIds(Long roleId) {
+        return menuMapper.selectMenuIdsByRoleId(roleId);
+    }
+
+    @Override
+    public SysRole getByCode(String code) {
+        return this.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, code));
+    }
+
+    private void saveRoleMenus(Long roleId, List<Long> menuIds) {
+        if (menuIds != null && !menuIds.isEmpty()) {
+            for (Long menuId : menuIds) {
+                SysRoleMenu roleMenu = new SysRoleMenu();
+                roleMenu.setRoleId(roleId);
+                roleMenu.setMenuId(menuId);
+                roleMenuMapper.insert(roleMenu);
+            }
+        }
+    }
+}

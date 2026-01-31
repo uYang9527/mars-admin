@@ -1,6 +1,6 @@
-# Mars System
-
 <div align="center">
+
+# Mars Admin
 
 ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=openjdk)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green?style=flat-square&logo=springboot)
@@ -18,7 +18,7 @@
 
 ## 项目简介
 
-Mars System 是一个开箱即用的企业级后台管理系统，采用前后端分离架构，提供完整的权限管理、系统监控、消息推送等功能。项目代码规范、结构清晰，适合作为企业后台管理系统的基础框架。
+Mars Admin 是一个开箱即用的企业级后台管理系统，采用前后端分离架构，提供完整的权限管理、系统监控、消息推送等功能。项目代码规范、结构清晰，适合作为企业后台管理系统的基础框架。
 
 ## 技术栈
 
@@ -123,6 +123,32 @@ mars-system
 - **短信服务** - 支持阿里云/腾讯云短信（策略工厂模式）
 - **支付服务** - 支持微信支付/支付宝（策略工厂模式）
 - **推送服务** - 支持极光/友盟/个推（策略工厂模式）
+
+## 系统截图
+
+### 登录页面
+![登录](doc/登录.png)
+
+### 控制台首页
+![首页](doc/首页.png)
+
+### 用户管理
+![用户管理](doc/用户管理.png)
+
+### 系统配置
+![系统配置](doc/系统配置.png)
+
+### 即时聊天
+![即时聊天](doc/即时聊天.png)
+
+### 系统通知
+![系统通知](doc/系统通知.png)
+
+### 文件管理
+![文件列表](doc/文件列表.png)
+
+### 服务监控
+![服务监控](doc/服务监控.png)
 
 ## 快速开始
 

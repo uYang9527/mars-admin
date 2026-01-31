@@ -1,0 +1,1116 @@
+<template>
+  <n-layout :has-sider="layoutConfig.siderPosition !== 'top'" class="layout" :class="layoutConfig.siderPosition === 'top' ? 'layout-top' : ''">
+    <!-- 侧边栏（左侧/右侧模式） -->
+    <n-layout-sider
+      v-if="layoutConfig.siderPosition !== 'top'"
+      bordered
+      collapse-mode="width"
+      :collapsed-width="64"
+      :width="240"
+      :collapsed="collapsed"
+      show-trigger
+      :position="layoutConfig.siderPosition === 'right' ? 'right' : 'left'"
+      @collapse="collapsed = true"
+      @expand="collapsed = false"
+      class="layout-sider"
+      :class="[`theme-${layoutConfig.theme}`, layoutConfig.siderPosition === 'right' ? 'sider-right' : '']"
+    >
+      <!-- Logo -->
+      <div class="logo" :class="{ 'logo-collapsed': collapsed }">
+        <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
+        <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+        <transition name="fade">
+          <span v-if="!collapsed" class="logo-text">{{ siteName }}</span>
+        </transition>
+      </div>
+
+      <!-- 菜单 -->
+      <n-menu
+        :collapsed="collapsed"
+        :collapsed-width="64"
+        :collapsed-icon-size="22"
+        :options="menuOptions"
+        :value="activeMenu"
+        @update:value="handleMenuClick"
+        class="layout-menu"
+      />
+    </n-layout-sider>
+
+    <!-- 主内容区 -->
+    <n-layout>
+      <!-- 顶部导航 -->
+      <n-layout-header bordered class="layout-header" :class="`theme-${layoutConfig.theme}`">
+        <!-- 顶部菜单模式下的Logo -->
+        <div v-if="layoutConfig.siderPosition === 'top'" class="header-logo">
+          <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
+          <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+          <span class="logo-text">{{ siteName }}</span>
+        </div>
+
+        <!-- 顶部菜单模式下的菜单 -->
+        <div v-if="layoutConfig.siderPosition === 'top'" class="header-menu">
+          <n-menu
+            mode="horizontal"
+            :options="menuOptions"
+            :value="activeMenu"
+            @update:value="handleMenuClick"
+          />
+        </div>
+
+        <div v-else class="header-left">
+          <n-breadcrumb>
+            <n-breadcrumb-item v-for="item in breadcrumbs" :key="item.path">
+              {{ item.title }}
+            </n-breadcrumb-item>
+          </n-breadcrumb>
+        </div>
+
+        <div class="header-right">
+          <!-- 菜单搜索 -->
+          <n-popover trigger="click" placement="bottom" :width="400" v-model:show="searchVisible">
+            <template #trigger>
+              <div class="header-icon" title="搜索菜单">
+                <n-icon size="20"><SearchOutline /></n-icon>
+              </div>
+            </template>
+            <div class="search-panel">
+              <n-input
+                v-model:value="searchKeyword"
+                placeholder="搜索菜单..."
+                clearable
+                autofocus
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <n-icon><SearchOutline /></n-icon>
+                </template>
+              </n-input>
+              <div class="search-results" v-if="searchResults.length > 0">
+                <div
+                  v-for="item in searchResults"
+                  :key="item.key"
+                  class="search-result-item"
+                  @click="goToMenu(item)"
+                >
+                  <n-icon size="16" class="result-icon">
+                    <component :is="iconMap[item.iconName] || MenuOutline" />
+                  </n-icon>
+                  <span class="result-label">{{ item.label }}</span>
+                  <span class="result-path">{{ item.path }}</span>
+                </div>
+              </div>
+              <n-empty v-else-if="searchKeyword" description="未找到匹配菜单" size="small" style="padding: 20px 0" />
+            </div>
+          </n-popover>
+
+          <!-- 全屏 -->
+          <div class="header-icon" @click="toggleFullscreen" :title="isFullscreen ? '退出全屏' : '全屏'">
+            <n-icon size="20">
+              <ContractOutline v-if="isFullscreen" />
+              <ExpandOutline v-else />
+            </n-icon>
+          </div>
+
+          <!-- 换肤设置 -->
+          <n-popover trigger="click" placement="bottom-end" :width="300">
+            <template #trigger>
+              <div class="header-icon" title="主题设置">
+                <n-icon size="20"><ColorPaletteOutline /></n-icon>
+              </div>
+            </template>
+            <div class="theme-panel">
+              <div class="theme-section">
+                <div class="theme-title">菜单位置</div>
+                <div class="layout-options">
+                  <div
+                    class="layout-option"
+                    :class="{ active: layoutConfig.siderPosition === 'left' }"
+                    @click="setLayoutPosition('left')"
+                  >
+                    <div class="layout-preview layout-left">
+                      <div class="preview-sider"></div>
+                      <div class="preview-main"></div>
+                    </div>
+                    <span>左侧菜单</span>
+                  </div>
+                  <div
+                    class="layout-option"
+                    :class="{ active: layoutConfig.siderPosition === 'right' }"
+                    @click="setLayoutPosition('right')"
+                  >
+                    <div class="layout-preview layout-right">
+                      <div class="preview-main"></div>
+                      <div class="preview-sider"></div>
+                    </div>
+                    <span>右侧菜单</span>
+                  </div>
+                  <div
+                    class="layout-option"
+                    :class="{ active: layoutConfig.siderPosition === 'top' }"
+                    @click="setLayoutPosition('top')"
+                  >
+                    <div class="layout-preview layout-top">
+                      <div class="preview-header"></div>
+                      <div class="preview-content"></div>
+                    </div>
+                    <span>顶部菜单</span>
+                  </div>
+                </div>
+              </div>
+              <div class="theme-section">
+                <div class="theme-title">主题风格</div>
+                <div class="theme-colors">
+                  <div
+                    v-for="theme in themeOptions"
+                    :key="theme.value"
+                    class="theme-color"
+                    :class="{ active: layoutConfig.theme === theme.value }"
+                    :style="{ background: theme.color }"
+                    @click="setTheme(theme.value)"
+                  >
+                    <n-icon v-if="layoutConfig.theme === theme.value" color="#fff"><CheckmarkOutline /></n-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </n-popover>
+
+          <!-- 消息通知 -->
+          <n-popover trigger="click" placement="bottom-end" :width="320">
+            <template #trigger>
+              <n-badge :value="messageStore.totalUnread()" :max="99" :show-zero="false">
+                <div class="header-icon" @click="loadUnreadCount" title="消息通知">
+                  <n-icon size="20"><NotificationsOutline /></n-icon>
+                </div>
+              </n-badge>
+            </template>
+            <div class="message-popover">
+              <div class="message-tabs">
+                <n-tabs v-model:value="messageTab" type="line" size="small">
+                  <n-tab-pane name="notice" tab="通知">
+                    <template #tab>
+                      <n-badge :value="messageStore.noticeCount" :max="99" :offset="[10, -4]">
+                        通知
+                      </n-badge>
+                    </template>
+                  </n-tab-pane>
+                  <n-tab-pane name="chat" tab="消息">
+                    <template #tab>
+                      <n-badge :value="messageStore.chatCount" :max="99" :offset="[10, -4]">
+                        消息
+                      </n-badge>
+                    </template>
+                  </n-tab-pane>
+                </n-tabs>
+              </div>
+              <div class="message-list">
+                <div v-for="item in messageStore.notifications.slice(0, 5)" :key="item.id" class="message-item">
+                  <div class="message-title">{{ item.title }}</div>
+                  <div class="message-content">{{ item.content }}</div>
+                </div>
+                <n-empty v-if="messageStore.notifications.length === 0" description="暂无消息" size="small" />
+              </div>
+              <div class="message-footer">
+                <n-button text type="primary" @click="goToMessage">查看全部</n-button>
+              </div>
+            </div>
+          </n-popover>
+
+          <n-dropdown :options="userOptions" @select="handleUserAction">
+            <div class="user-info">
+              <n-avatar
+                round
+                size="small"
+                :src="userStore.avatar || undefined"
+              >
+                {{ userStore.nickname?.charAt(0) || 'U' }}
+              </n-avatar>
+              <span class="user-name">{{ userStore.nickname }}</span>
+              <n-icon size="16">
+                <ChevronDownOutline />
+              </n-icon>
+            </div>
+          </n-dropdown>
+        </div>
+      </n-layout-header>
+
+      <!-- 内容区 -->
+      <n-layout-content class="layout-content">
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </n-layout-content>
+    </n-layout>
+
+    <!-- 个人信息弹窗 -->
+    <ProfileModal v-model:show="showProfileModal" />
+
+    <!-- 修改密码弹窗 -->
+    <PasswordModal v-model:show="showPasswordModal" />
+
+    <!-- 消息通知弹窗 -->
+    <MessageNotification />
+  </n-layout>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, h, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { NIcon, useMessage, useDialog, type MenuOption } from 'naive-ui'
+import {
+  HomeOutline,
+  SettingsOutline,
+  PersonOutline,
+  PeopleOutline,
+  MenuOutline,
+  LogOutOutline,
+  KeyOutline,
+  ChevronDownOutline,
+  BookOutline,
+  BusinessOutline,
+  GitNetworkOutline,
+  IdCardOutline,
+  DocumentTextOutline,
+  ListOutline,
+  LogInOutline,
+  PulseOutline,
+  PeopleCircleOutline,
+  TimerOutline,
+  ServerOutline,
+  DesktopOutline,
+  SettingsSharp,
+  FolderOpenOutline,
+  DocumentOutline,
+  CloudOutline,
+  NotificationsOutline,
+  ChatbubbleOutline,
+  SearchOutline,
+  ExpandOutline,
+  ContractOutline,
+  ColorPaletteOutline,
+  CheckmarkOutline
+} from '@vicons/ionicons5'
+import { useUserStore } from '@/stores/user'
+import { useMessageStore } from '@/stores/message'
+import { useSiteStore } from '@/stores/site'
+import ProfileModal from '@/components/ProfileModal.vue'
+import PasswordModal from '@/components/PasswordModal.vue'
+import MessageNotification from '@/components/MessageNotification.vue'
+import { noticeApi, chatApi } from '@/api/message'
+
+const route = useRoute()
+const router = useRouter()
+const message = useMessage()
+const dialog = useDialog()
+const userStore = useUserStore()
+const messageStore = useMessageStore()
+const siteStore = useSiteStore()
+
+// 站点配置
+const siteName = computed(() => siteStore.siteName || 'Mars Admin')
+const siteLogo = computed(() => siteStore.siteLogo)
+
+// 注册全局message
+window.$message = message
+
+const collapsed = ref(false)
+const showProfileModal = ref(false)
+const showPasswordModal = ref(false)
+const messageTab = ref('notice')
+
+// 搜索相关
+const searchVisible = ref(false)
+const searchKeyword = ref('')
+const searchResults = ref<Array<{ key: string; label: string; path: string; iconName: string }>>([])
+
+// 全屏相关
+const isFullscreen = ref(false)
+
+// 布局配置
+const layoutConfig = ref({
+  siderPosition: localStorage.getItem('layout-position') || 'left', // left, right, top
+  theme: localStorage.getItem('layout-theme') || 'light' // dark, light, blue, green, purple
+})
+
+// 主题选项
+const themeOptions = [
+  { value: 'dark', color: '#001529' },
+  { value: 'light', color: '#ffffff' },
+  { value: 'blue', color: '#1890ff' },
+  { value: 'green', color: '#18a058' },
+  { value: 'purple', color: '#722ed1' }
+]
+
+// 初始化WebSocket和加载未读数
+onMounted(() => {
+  messageStore.initWebSocket()
+  loadUnreadCount()
+  // 监听全屏变化
+  document.addEventListener('fullscreenchange', handleFullscreenChange)
+})
+
+// 加载未读数量
+async function loadUnreadCount() {
+  try {
+    const [noticeCount, chatCount] = await Promise.all([
+      noticeApi.getUnreadCount(),
+      chatApi.getUnreadCount()
+    ])
+    messageStore.setUnreadCount(noticeCount, chatCount)
+  } catch (error) {
+    // 忽略错误
+  }
+}
+
+// 跳转到消息页面
+function goToMessage() {
+  if (messageTab.value === 'notice') {
+    router.push('/message/notice')
+  } else {
+    router.push('/message/chat')
+  }
+}
+
+// 搜索菜单
+function handleSearch() {
+  if (!searchKeyword.value.trim()) {
+    searchResults.value = []
+    return
+  }
+
+  const keyword = searchKeyword.value.toLowerCase()
+  const results: Array<{ key: string; label: string; path: string; iconName: string }> = []
+
+  // 遍历菜单获取所有可搜索项
+  function searchMenu(options: any[], parentPath: string = '') {
+    for (const item of options) {
+      const label = item.label as string
+      if (label.toLowerCase().includes(keyword)) {
+        if (!item.children) {
+          results.push({
+            key: item.key,
+            label: label,
+            path: parentPath ? `${parentPath} / ${label}` : label,
+            iconName: getIconName(item.key)
+          })
+        }
+      }
+      if (item.children) {
+        searchMenu(item.children, parentPath ? `${parentPath} / ${label}` : label)
+      }
+    }
+  }
+
+  searchMenu(menuOptions.value)
+  searchResults.value = results.slice(0, 10)
+}
+
+// 获取图标名称
+function getIconName(key: string): string {
+  const iconMapping: Record<string, string> = {
+    '/dashboard': 'HomeOutline',
+    '/system/user': 'PersonOutline',
+    '/system/role': 'PeopleOutline',
+    '/system/menu': 'MenuOutline',
+    '/system/dict': 'BookOutline',
+    '/system/config': 'SettingsSharp',
+    '/org/dept': 'GitNetworkOutline',
+    '/org/post': 'IdCardOutline',
+    '/log/operlog': 'ListOutline',
+    '/log/loginlog': 'LogInOutline',
+    '/system/file': 'DocumentOutline',
+    '/message/notice': 'NotificationsOutline',
+    '/message/chat': 'ChatbubbleOutline',
+    '/monitor/online': 'PeopleCircleOutline',
+    '/monitor/job': 'TimerOutline',
+    '/monitor/cache': 'ServerOutline',
+    '/monitor/server': 'DesktopOutline'
+  }
+  return iconMapping[key] || 'MenuOutline'
+}
+
+// 跳转到菜单
+function goToMenu(item: { key: string }) {
+  router.push(item.key)
+  searchVisible.value = false
+  searchKeyword.value = ''
+  searchResults.value = []
+}
+
+// 切换全屏
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+}
+
+// 监听全屏变化
+function handleFullscreenChange() {
+  isFullscreen.value = !!document.fullscreenElement
+}
+
+// 设置布局位置
+function setLayoutPosition(position: string) {
+  layoutConfig.value.siderPosition = position
+  localStorage.setItem('layout-position', position)
+}
+
+// 设置主题
+function setTheme(theme: string) {
+  layoutConfig.value.theme = theme
+  localStorage.setItem('layout-theme', theme)
+}
+
+// 图标映射
+const iconMap: Record<string, any> = {
+  HomeOutline,
+  SettingsOutline,
+  PersonOutline,
+  PeopleOutline,
+  MenuOutline,
+  BookOutline,
+  BusinessOutline,
+  GitNetworkOutline,
+  IdCardOutline,
+  DocumentTextOutline,
+  ListOutline,
+  LogInOutline,
+  PulseOutline,
+  PeopleCircleOutline,
+  TimerOutline,
+  ServerOutline,
+  DesktopOutline,
+  SettingsSharp,
+  FolderOpenOutline,
+  DocumentOutline,
+  CloudOutline,
+  NotificationsOutline,
+  ChatbubbleOutline
+}
+
+// 渲染图标
+function renderIcon(iconName?: string) {
+  if (!iconName) return undefined
+  const icon = iconMap[iconName]
+  if (!icon) return undefined
+  return () => h(NIcon, null, { default: () => h(icon) })
+}
+
+// 菜单配置
+const menuOptions = computed<MenuOption[]>(() => {
+  return [
+    {
+      label: '首页',
+      key: '/dashboard',
+      icon: renderIcon('HomeOutline')
+    },
+    {
+      label: '系统管理',
+      key: '/system',
+      icon: renderIcon('SettingsOutline'),
+      children: [
+        { label: '用户管理', key: '/system/user', icon: renderIcon('PersonOutline') },
+        { label: '角色管理', key: '/system/role', icon: renderIcon('PeopleOutline') },
+        { label: '菜单管理', key: '/system/menu', icon: renderIcon('MenuOutline') },
+        { label: '字典管理', key: '/system/dict', icon: renderIcon('BookOutline') },
+        { label: '系统配置', key: '/system/config', icon: renderIcon('SettingsSharp') }
+      ]
+    },
+    {
+      label: '组织管理',
+      key: '/org',
+      icon: renderIcon('BusinessOutline'),
+      children: [
+        { label: '部门管理', key: '/org/dept', icon: renderIcon('GitNetworkOutline') },
+        { label: '岗位管理', key: '/org/post', icon: renderIcon('IdCardOutline') }
+      ]
+    },
+    {
+      label: '系统日志',
+      key: '/log',
+      icon: renderIcon('DocumentTextOutline'),
+      children: [
+        { label: '操作日志', key: '/log/operlog', icon: renderIcon('ListOutline') },
+        { label: '登录日志', key: '/log/loginlog', icon: renderIcon('LogInOutline') }
+      ]
+    },
+    {
+      label: '文件管理',
+      key: '/file',
+      icon: renderIcon('FolderOpenOutline'),
+      children: [
+        { label: '文件列表', key: '/system/file', icon: renderIcon('DocumentOutline') }
+      ]
+    },
+    {
+      label: '消息中心',
+      key: '/message',
+      icon: renderIcon('NotificationsOutline'),
+      children: [
+        { label: '系统通知', key: '/message/notice', icon: renderIcon('NotificationsOutline') },
+        { label: '即时聊天', key: '/message/chat', icon: renderIcon('ChatbubbleOutline') }
+      ]
+    },
+    {
+      label: '系统监控',
+      key: '/monitor',
+      icon: renderIcon('PulseOutline'),
+      children: [
+        { label: '在线用户', key: '/monitor/online', icon: renderIcon('PeopleCircleOutline') },
+        { label: '定时任务', key: '/monitor/job', icon: renderIcon('TimerOutline') },
+        { label: '缓存监控', key: '/monitor/cache', icon: renderIcon('ServerOutline') },
+        { label: '服务监控', key: '/monitor/server', icon: renderIcon('DesktopOutline') }
+      ]
+    }
+  ]
+})
+
+// 当前激活菜单
+const activeMenu = computed(() => route.path)
+
+// 面包屑
+const breadcrumbs = computed(() => {
+  const items: Array<{ path: string; title: string }> = []
+  if (route.path === '/dashboard') {
+    items.push({ path: '/dashboard', title: '首页' })
+  } else if (route.path.startsWith('/system')) {
+    items.push({ path: '/system', title: '系统管理' })
+    if (route.path === '/system/user') {
+      items.push({ path: '/system/user', title: '用户管理' })
+    } else if (route.path === '/system/role') {
+      items.push({ path: '/system/role', title: '角色管理' })
+    } else if (route.path === '/system/menu') {
+      items.push({ path: '/system/menu', title: '菜单管理' })
+    }
+  }
+  return items
+})
+
+// 用户下拉选项
+const userOptions = [
+  {
+    label: '个人信息',
+    key: 'profile',
+    icon: () => h(NIcon, null, { default: () => h(PersonOutline) })
+  },
+  {
+    label: '修改密码',
+    key: 'password',
+    icon: () => h(NIcon, null, { default: () => h(KeyOutline) })
+  },
+  {
+    type: 'divider',
+    key: 'd1'
+  },
+  {
+    label: '退出登录',
+    key: 'logout',
+    icon: () => h(NIcon, null, { default: () => h(LogOutOutline) })
+  }
+]
+
+// 菜单点击
+function handleMenuClick(key: string) {
+  router.push(key)
+}
+
+// 用户操作
+function handleUserAction(key: string) {
+  if (key === 'logout') {
+    dialog.warning({
+      title: '提示',
+      content: '确定要退出登录吗？',
+      positiveText: '确定',
+      negativeText: '取消',
+      onPositiveClick: () => {
+        userStore.logout()
+        message.success('已退出登录')
+      }
+    })
+  } else if (key === 'profile') {
+    showProfileModal.value = true
+  } else if (key === 'password') {
+    showPasswordModal.value = true
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.layout {
+  height: 100vh;
+}
+
+.layout-sider {
+  background: #FFFFFF;
+
+  :deep(.n-layout-sider-scroll-container) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.logo {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  border-bottom: 1px solid #E5E7EB;
+  transition: all 0.3s;
+
+  &.logo-collapsed {
+    padding: 0 16px;
+    justify-content: center;
+  }
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #111827 0%, #374151 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.layout-menu {
+  flex: 1;
+  padding: 12px 8px;
+}
+
+.layout-header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: #FFFFFF;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #F3F4F6;
+  }
+}
+
+.message-popover {
+  margin: -12px;
+}
+
+.message-tabs {
+  padding: 0 12px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.message-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.message-list .message-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.message-list .message-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.message-list .message-content {
+  font-size: 12px;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-footer {
+  padding: 12px 16px;
+  text-align: center;
+  border-top: 1px solid #e8e8e8;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #F3F4F6;
+  }
+}
+
+.user-name {
+  font-size: 14px;
+  color: #1F2937;
+  font-weight: 500;
+}
+
+.layout-content {
+  background: #F3F4F6;
+  overflow: auto;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 搜索面板 */
+.search-panel {
+  margin: -12px;
+  padding: 12px;
+}
+
+.search-results {
+  margin-top: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.result-icon {
+  margin-right: 10px;
+  color: #666;
+}
+
+.result-label {
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.result-path {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 主题设置面板 */
+.theme-panel {
+  margin: -12px;
+  padding: 16px;
+}
+
+.theme-section {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.theme-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.layout-options {
+  display: flex;
+  gap: 12px;
+}
+
+.layout-option {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+
+  span {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  &.active span {
+    color: #18a058;
+  }
+}
+
+.layout-preview {
+  height: 48px;
+  border: 2px solid #e8e8e8;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+
+  .layout-option.active & {
+    border-color: #18a058;
+  }
+}
+
+.layout-left {
+  .preview-sider {
+    width: 30%;
+    background: #001529;
+  }
+  .preview-main {
+    flex: 1;
+    background: #f5f5f5;
+  }
+}
+
+.layout-right {
+  .preview-main {
+    flex: 1;
+    background: #f5f5f5;
+  }
+  .preview-sider {
+    width: 30%;
+    background: #001529;
+  }
+}
+
+.layout-top {
+  flex-direction: column;
+
+  .preview-header {
+    height: 30%;
+    background: #001529;
+  }
+  .preview-content {
+    flex: 1;
+    background: #f5f5f5;
+  }
+}
+
+.theme-colors {
+  display: flex;
+  gap: 12px;
+}
+
+.theme-color {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border-color: #18a058;
+  }
+}
+
+/* 右侧菜单样式 */
+.sider-right {
+  order: 1;
+}
+
+/* 顶部布局样式 */
+.layout-top {
+  flex-direction: column;
+
+  .layout-header {
+    flex-wrap: nowrap;
+  }
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 24px;
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #111827 0%, #374151 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+  }
+}
+
+.header-menu {
+  flex: 1;
+  overflow: hidden;
+
+  :deep(.n-menu) {
+    background: transparent;
+  }
+}
+
+/* 主题风格 */
+.theme-dark {
+  background: #001529 !important;
+
+  .logo-text {
+    color: #fff;
+  }
+
+  :deep(.n-menu) {
+    background: #001529;
+    --n-item-text-color: rgba(255, 255, 255, 0.65);
+    --n-item-text-color-hover: #fff;
+    --n-item-text-color-active: #fff;
+    --n-item-icon-color: rgba(255, 255, 255, 0.65);
+    --n-item-icon-color-hover: #fff;
+    --n-item-icon-color-active: #fff;
+    --n-item-color-active: #18a058;
+  }
+}
+
+.theme-light {
+  background: #fff !important;
+  border-right: 1px solid #e8e8e8;
+
+  .logo-text {
+    color: #333;
+  }
+
+  :deep(.n-menu) {
+    background: #fff;
+  }
+}
+
+.theme-blue {
+  background: #1890ff !important;
+
+  .logo-text {
+    color: #fff;
+  }
+
+  :deep(.n-menu) {
+    background: #1890ff;
+    --n-item-text-color: rgba(255, 255, 255, 0.85);
+    --n-item-text-color-hover: #fff;
+    --n-item-text-color-active: #fff;
+    --n-item-icon-color: rgba(255, 255, 255, 0.85);
+    --n-item-icon-color-hover: #fff;
+    --n-item-icon-color-active: #fff;
+    --n-item-color-active: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.theme-green {
+  background: #18a058 !important;
+
+  .logo-text {
+    color: #fff;
+  }
+
+  :deep(.n-menu) {
+    background: #18a058;
+    --n-item-text-color: rgba(255, 255, 255, 0.85);
+    --n-item-text-color-hover: #fff;
+    --n-item-text-color-active: #fff;
+    --n-item-icon-color: rgba(255, 255, 255, 0.85);
+    --n-item-icon-color-hover: #fff;
+    --n-item-icon-color-active: #fff;
+    --n-item-color-active: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.theme-purple {
+  background: #722ed1 !important;
+
+  .logo-text {
+    color: #fff;
+  }
+
+  :deep(.n-menu) {
+    background: #722ed1;
+    --n-item-text-color: rgba(255, 255, 255, 0.85);
+    --n-item-text-color-hover: #fff;
+    --n-item-text-color-active: #fff;
+    --n-item-icon-color: rgba(255, 255, 255, 0.85);
+    --n-item-icon-color-hover: #fff;
+    --n-item-icon-color-active: #fff;
+    --n-item-color-active: rgba(255, 255, 255, 0.2);
+  }
+}
+</style>

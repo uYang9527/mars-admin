@@ -1,0 +1,5 @@
+com\mars\common\result\PageResult.class
+com\mars\common\result\Result.class
+com\mars\common\exception\BusinessException.class
+com\mars\common\entity\BaseEntity.class
+com\mars\common\exception\GlobalExceptionHandler.class

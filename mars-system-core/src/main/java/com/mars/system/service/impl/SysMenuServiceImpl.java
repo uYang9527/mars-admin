@@ -1,0 +1,106 @@
+package com.mars.system.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mars.common.exception.BusinessException;
+import com.mars.system.entity.SysMenu;
+import com.mars.system.mapper.SysMenuMapper;
+import com.mars.system.service.SysMenuService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * 菜单服务实现
+ */
+@Service
+@RequiredArgsConstructor
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
+    @Override
+    public List<SysMenu> tree(String name, Integer status) {
+        LambdaQueryWrapper<SysMenu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.hasText(name), SysMenu::getName, name)
+                .eq(status != null, SysMenu::getStatus, status)
+                .orderByAsc(SysMenu::getSort);
+        List<SysMenu> menus = this.list(wrapper);
+        return buildTree(menus);
+    }
+
+    @Override
+    public List<SysMenu> getUserMenuTree(Long userId) {
+        List<SysMenu> menus = baseMapper.selectMenusByUserId(userId);
+        // 只返回目录和菜单类型，不返回按钮
+        menus = menus.stream()
+                .filter(menu -> menu.getType() != 3)
+                .collect(Collectors.toList());
+        return buildTree(menus);
+    }
+
+    @Override
+    public void create(SysMenu menu) {
+        if (menu.getParentId() == null) {
+            menu.setParentId(0L);
+        }
+        this.save(menu);
+    }
+
+    @Override
+    public void update(SysMenu menu) {
+        SysMenu existMenu = this.getById(menu.getId());
+        if (existMenu == null) {
+            throw new BusinessException("菜单不存在");
+        }
+        if (menu.getParentId() != null && menu.getParentId().equals(menu.getId())) {
+            throw new BusinessException("上级菜单不能选择自己");
+        }
+        this.updateById(menu);
+    }
+
+    @Override
+    public void delete(Long id) {
+        // 检查是否有子菜单
+        long count = this.count(new LambdaQueryWrapper<SysMenu>().eq(SysMenu::getParentId, id));
+        if (count > 0) {
+            throw new BusinessException("存在子菜单，无法删除");
+        }
+        this.removeById(id);
+    }
+
+    @Override
+    public List<SysMenu> listAll() {
+        return this.list(new LambdaQueryWrapper<SysMenu>().orderByAsc(SysMenu::getSort));
+    }
+
+    /**
+     * 构建菜单树
+     */
+    private List<SysMenu> buildTree(List<SysMenu> menus) {
+        List<SysMenu> tree = new ArrayList<>();
+        for (SysMenu menu : menus) {
+            if (menu.getParentId() == null || menu.getParentId() == 0) {
+                menu.setChildren(getChildren(menu.getId(), menus));
+                tree.add(menu);
+            }
+        }
+        return tree;
+    }
+
+    /**
+     * 递归获取子菜单
+     */
+    private List<SysMenu> getChildren(Long parentId, List<SysMenu> menus) {
+        List<SysMenu> children = new ArrayList<>();
+        for (SysMenu menu : menus) {
+            if (parentId.equals(menu.getParentId())) {
+                menu.setChildren(getChildren(menu.getId(), menus));
+                children.add(menu);
+            }
+        }
+        return children.isEmpty() ? null : children;
+    }
+}
