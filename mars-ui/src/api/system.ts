@@ -1,0 +1,277 @@
+import { request } from '@/utils/request'
+
+// 分页结果
+export interface PageResult<T> {
+  list: T[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+// ==================== 首页统计 ====================
+export interface DashboardStats {
+  userCount: number
+  roleCount: number
+  menuCount: number
+  permissionCount: number
+}
+
+export const dashboardApi = {
+  getStats(): Promise<DashboardStats> {
+    return request({ url: '/dashboard/stats', method: 'get' })
+  }
+}
+
+// ==================== 用户管理 ====================
+export interface SysUser {
+  id?: number
+  username: string
+  password?: string
+  nickname: string
+  avatar?: string
+  email?: string
+  phone?: string
+  gender?: number
+  status: number
+  remark?: string
+  createTime?: string
+}
+
+export interface UserDetailResult {
+  user: SysUser
+  roleIds: number[]
+}
+
+export const userApi = {
+  page(params: { page: number; pageSize: number; username?: string; status?: number }): Promise<PageResult<SysUser>> {
+    return request({ url: '/sys/user/page', method: 'get', params })
+  },
+  
+  detail(id: number): Promise<UserDetailResult> {
+    return request({ url: `/sys/user/${id}`, method: 'get' })
+  },
+  
+  create(data: { user: SysUser; roleIds: number[] }): Promise<void> {
+    return request({ url: '/sys/user', method: 'post', data })
+  },
+  
+  update(data: { user: SysUser; roleIds: number[] }): Promise<void> {
+    return request({ url: '/sys/user', method: 'put', data })
+  },
+  
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/user/${id}`, method: 'delete' })
+  },
+  
+  resetPassword(id: number): Promise<void> {
+    return request({ url: `/sys/user/${id}/reset-password`, method: 'post' })
+  }
+}
+
+// ==================== 角色管理 ====================
+export interface SysRole {
+  id?: number
+  name: string
+  code: string
+  sort: number
+  status: number
+  remark?: string
+  createTime?: string
+}
+
+export interface RoleDetailResult {
+  role: SysRole
+  menuIds: number[]
+}
+
+export const roleApi = {
+  page(params: { page: number; pageSize: number; name?: string; status?: number }): Promise<PageResult<SysRole>> {
+    return request({ url: '/sys/role/page', method: 'get', params })
+  },
+  
+  list(): Promise<SysRole[]> {
+    return request({ url: '/sys/role/list', method: 'get' })
+  },
+  
+  detail(id: number): Promise<RoleDetailResult> {
+    return request({ url: `/sys/role/${id}`, method: 'get' })
+  },
+  
+  create(data: { role: SysRole; menuIds: number[] }): Promise<void> {
+    return request({ url: '/sys/role', method: 'post', data })
+  },
+  
+  update(data: { role: SysRole; menuIds: number[] }): Promise<void> {
+    return request({ url: '/sys/role', method: 'put', data })
+  },
+  
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/role/${id}`, method: 'delete' })
+  }
+}
+
+// ==================== 菜单管理 ====================
+export interface SysMenu {
+  id?: number
+  parentId: number
+  name: string
+  type: number
+  path?: string
+  component?: string
+  permission?: string
+  icon?: string
+  sort: number
+  visible: number
+  status: number
+  children?: SysMenu[]
+}
+
+export const menuApi = {
+  tree(params?: { name?: string; status?: number }): Promise<SysMenu[]> {
+    return request({ url: '/sys/menu/tree', method: 'get', params })
+  },
+  
+  list(): Promise<SysMenu[]> {
+    return request({ url: '/sys/menu/list', method: 'get' })
+  },
+  
+  detail(id: number): Promise<SysMenu> {
+    return request({ url: `/sys/menu/${id}`, method: 'get' })
+  },
+  
+  create(data: SysMenu): Promise<void> {
+    return request({ url: '/sys/menu', method: 'post', data })
+  },
+  
+  update(data: SysMenu): Promise<void> {
+    return request({ url: '/sys/menu', method: 'put', data })
+  },
+  
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/menu/${id}`, method: 'delete' })
+  }
+}
+
+// ==================== 文件管理 ====================
+export interface SysFile {
+  id?: number
+  originalName: string
+  fileName: string
+  filePath: string
+  url: string
+  fileSize: number
+  fileType: string
+  fileSuffix: string
+  storageType: string
+  bucketName?: string
+  createBy?: string
+  createTime?: string
+  remark?: string
+}
+
+export const fileApi = {
+  page(params: { page: number; pageSize: number; originalName?: string; fileType?: string }): Promise<PageResult<SysFile>> {
+    return request({ url: '/sys/file/page', method: 'get', params })
+  },
+  
+  detail(id: number): Promise<SysFile> {
+    return request({ url: `/sys/file/${id}`, method: 'get' })
+  },
+  
+  upload(file: File, path?: string): Promise<SysFile> {
+    const formData = new FormData()
+    formData.append('file', file)
+    if (path) {
+      formData.append('path', path)
+    }
+    return request({
+      url: '/sys/file/upload',
+      method: 'post',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  },
+  
+  uploadImage(file: File): Promise<SysFile> {
+    const formData = new FormData()
+    formData.append('file', file)
+    return request({
+      url: '/sys/file/upload/image',
+      method: 'post',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  },
+  
+  getDownloadUrl(id: number): string {
+    return `/api/sys/file/download/${id}`
+  },
+  
+  getPreviewUrl(id: number): string {
+    return `/api/sys/file/preview/${id}`
+  },
+  
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/file/${id}`, method: 'delete' })
+  },
+  
+  deleteBatch(ids: number[]): Promise<void> {
+    return request({ url: '/sys/file/batch', method: 'delete', data: ids })
+  }
+}
+
+// ==================== 文件配置管理 ====================
+export interface SysFileConfig {
+  id?: number
+  name: string
+  storageType: string
+  master: number
+  domain: string
+  basePath?: string
+  bucketName?: string
+  accessKey?: string
+  secretKey?: string
+  endpoint?: string
+  region?: string
+  status: number
+  remark?: string
+  createTime?: string
+}
+
+export const fileConfigApi = {
+  page(params: { page: number; pageSize: number; name?: string; storageType?: string }): Promise<PageResult<SysFileConfig>> {
+    return request({ url: '/sys/file-config/page', method: 'get', params })
+  },
+  
+  list(): Promise<SysFileConfig[]> {
+    return request({ url: '/sys/file-config/list', method: 'get' })
+  },
+  
+  detail(id: number): Promise<SysFileConfig> {
+    return request({ url: `/sys/file-config/${id}`, method: 'get' })
+  },
+  
+  getMaster(): Promise<SysFileConfig> {
+    return request({ url: '/sys/file-config/master', method: 'get' })
+  },
+  
+  create(data: SysFileConfig): Promise<void> {
+    return request({ url: '/sys/file-config', method: 'post', data })
+  },
+  
+  update(data: SysFileConfig): Promise<void> {
+    return request({ url: '/sys/file-config', method: 'put', data })
+  },
+  
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/file-config/${id}`, method: 'delete' })
+  },
+  
+  setMaster(id: number): Promise<void> {
+    return request({ url: `/sys/file-config/master/${id}`, method: 'put' })
+  },
+  
+  testConfig(data: SysFileConfig): Promise<boolean> {
+    return request({ url: '/sys/file-config/test', method: 'post', data })
+  }
+}
