@@ -159,16 +159,18 @@
               </div>
               <div class="theme-section">
                 <div class="theme-title">主题风格</div>
-                <div class="theme-colors">
+                <div class="theme-modes">
                   <div
                     v-for="theme in themeOptions"
                     :key="theme.value"
-                    class="theme-color"
+                    class="theme-mode"
                     :class="{ active: layoutConfig.theme === theme.value }"
-                    :style="{ background: theme.color }"
                     @click="setTheme(theme.value)"
                   >
-                    <n-icon v-if="layoutConfig.theme === theme.value" color="#fff"><CheckmarkOutline /></n-icon>
+                    <div class="theme-mode-preview" :style="{ background: theme.color }">
+                      <n-icon v-if="layoutConfig.theme === theme.value" :color="theme.value === 'light' ? '#18a058' : '#fff'"><CheckmarkOutline /></n-icon>
+                    </div>
+                    <span>{{ theme.label }}</span>
                   </div>
                 </div>
               </div>
@@ -295,6 +297,7 @@ import {
 import { useUserStore } from '@/stores/user'
 import { useMessageStore } from '@/stores/message'
 import { useSiteStore } from '@/stores/site'
+import { useThemeStore } from '@/stores/theme'
 import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
@@ -308,6 +311,7 @@ const dialog = useDialog()
 const userStore = useUserStore()
 const messageStore = useMessageStore()
 const siteStore = useSiteStore()
+const themeStore = useThemeStore()
 
 // 站点配置
 const siteName = computed(() => siteStore.siteName || 'Mars Admin')
@@ -329,19 +333,16 @@ const searchResults = ref<Array<{ key: string; label: string; path: string; icon
 // 全屏相关
 const isFullscreen = ref(false)
 
-// 布局配置
-const layoutConfig = ref({
-  siderPosition: localStorage.getItem('layout-position') || 'left', // left, right, top
-  theme: localStorage.getItem('layout-theme') || 'light' // dark, light, blue, green, purple
-})
+// 布局配置 - 使用 theme store
+const layoutConfig = computed(() => ({
+  siderPosition: themeStore.siderPosition,
+  theme: themeStore.mode
+}))
 
-// 主题选项
+// 主题选项（仅黑白两种）
 const themeOptions = [
-  { value: 'dark', color: '#001529' },
-  { value: 'light', color: '#ffffff' },
-  { value: 'blue', color: '#1890ff' },
-  { value: 'green', color: '#18a058' },
-  { value: 'purple', color: '#722ed1' }
+  { value: 'dark' as const, color: '#001529', label: '暗色主题' },
+  { value: 'light' as const, color: '#ffffff', label: '亮色主题' }
 ]
 
 // 初始化WebSocket和加载未读数
@@ -455,15 +456,13 @@ function handleFullscreenChange() {
 }
 
 // 设置布局位置
-function setLayoutPosition(position: string) {
-  layoutConfig.value.siderPosition = position
-  localStorage.setItem('layout-position', position)
+function setLayoutPosition(position: 'left' | 'right' | 'top') {
+  themeStore.setSiderPosition(position)
 }
 
 // 设置主题
-function setTheme(theme: string) {
-  layoutConfig.value.theme = theme
-  localStorage.setItem('layout-theme', theme)
+function setTheme(theme: 'dark' | 'light') {
+  themeStore.setMode(theme)
 }
 
 // 图标映射
@@ -506,6 +505,9 @@ function renderIcon(iconName?: string) {
 
 // 将后台菜单数据转换为 Naive UI 菜单格式
 function convertMenus(menus: typeof userStore.menus): MenuOption[] {
+  if (!menus || !Array.isArray(menus)) {
+    return []
+  }
   return menus
     .filter(menu => menu.visible === 1 && menu.type !== 3) // 过滤隐藏菜单和按钮
     .sort((a, b) => a.sort - b.sort) // 按排序字段排序
@@ -617,11 +619,16 @@ function handleUserAction(key: string) {
 
 .layout-sider {
   background: #FFFFFF;
+  transition: background-color 0.3s;
 
   :deep(.n-layout-sider-scroll-container) {
     display: flex;
     flex-direction: column;
   }
+}
+
+body.dark-theme .layout-sider {
+  background: #18181c;
 }
 
 .logo {
@@ -637,6 +644,10 @@ function handleUserAction(key: string) {
     padding: 0 16px;
     justify-content: center;
   }
+}
+
+body.dark-theme .logo {
+  border-bottom-color: #3f3f46;
 }
 
 .logo-img {
@@ -666,6 +677,11 @@ function handleUserAction(key: string) {
   font-weight: 700;
   color: #111827;
   white-space: nowrap;
+  transition: color 0.3s;
+}
+
+body.dark-theme .logo-text {
+  color: #ffffffd1;
 }
 
 .layout-menu {
@@ -679,7 +695,14 @@ function handleUserAction(key: string) {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: #FFFFFF;
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  transition: background-color 0.3s;
+}
+
+body.dark-theme .layout-header {
+  background: #18181c !important;
+  border-bottom: 1px solid #3f3f46 !important;
 }
 
 .header-left {
@@ -705,6 +728,12 @@ function handleUserAction(key: string) {
 
   &:hover {
     background: #F3F4F6;
+  }
+}
+
+body.dark-theme .header-icon {
+  &:hover {
+    background: #3f3f46;
   }
 }
 
@@ -768,15 +797,30 @@ function handleUserAction(key: string) {
   }
 }
 
+body.dark-theme .user-info {
+  &:hover {
+    background: #3f3f46;
+  }
+}
+
 .user-name {
   font-size: 14px;
   color: #1F2937;
   font-weight: 500;
 }
 
+body.dark-theme .user-name {
+  color: #ffffffd1;
+}
+
 .layout-content {
   background: #F3F4F6;
   overflow: auto;
+  transition: background-color 0.3s;
+}
+
+body.dark-theme .layout-content {
+  background: #101014;
 }
 
 .fade-enter-active,
@@ -851,6 +895,10 @@ function handleUserAction(key: string) {
   margin-bottom: 12px;
 }
 
+body.dark-theme .theme-title {
+  color: #ffffffd1;
+}
+
 .layout-options {
   display: flex;
   gap: 12px;
@@ -881,7 +929,15 @@ function handleUserAction(key: string) {
   overflow: hidden;
 
   .layout-option.active & {
-    border-color: #18a058;
+    border-color: #60a5fa;
+  }
+}
+
+body.dark-theme .layout-preview {
+  border-color: #3f3f46;
+  
+  .layout-option.active & {
+    border-color: #60a5fa;
   }
 }
 
@@ -920,29 +976,62 @@ function handleUserAction(key: string) {
   }
 }
 
-.theme-colors {
+.theme-modes {
   display: flex;
-  gap: 12px;
+  gap: 16px;
 }
 
-.theme-color {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
+.theme-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
+
+  span {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  &.active span {
+    color: #18a058;
+    font-weight: 500;
+  }
+}
+
+.theme-mode-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid transparent;
+  border: 2px solid #e8e8e8;
   transition: all 0.2s;
 
-  &:hover {
-    transform: scale(1.1);
+  .theme-mode:hover & {
+    transform: scale(1.05);
   }
 
-  &.active {
-    border-color: #18a058;
+  .theme-mode.active & {
+    border-color: #60a5fa;
   }
+}
+
+body.dark-theme .theme-mode-preview {
+  border-color: #3f3f46;
+  
+  .theme-mode.active & {
+    border-color: #60a5fa;
+  }
+}
+
+body.dark-theme .theme-mode span {
+  color: #ffffffa6;
+}
+
+body.dark-theme .theme-mode.active span {
+  color: #60a5fa;
 }
 
 /* 右侧菜单样式 */
@@ -1028,60 +1117,48 @@ function handleUserAction(key: string) {
   }
 }
 
-.theme-blue {
-  background: #1890ff !important;
+// 暗色主题下的侧边栏样式覆盖
+body.dark-theme .layout-sider {
+  background: #18181c !important;
+  border-right-color: #3f3f46 !important;
+}
+
+body.dark-theme .theme-light {
+  background: #18181c !important;
+  border-right: 1px solid #3f3f46;
 
   .logo-text {
+    color: #ffffffd1;
+  }
+
+  .logo-icon {
+    background: linear-gradient(135deg, #3f3f46 0%, #52525b 100%);
     color: #fff;
   }
 
   :deep(.n-menu) {
-    background: #1890ff;
-    --n-item-text-color: rgba(255, 255, 255, 0.85);
+    background: #18181c;
+    --n-item-text-color: rgba(255, 255, 255, 0.65);
     --n-item-text-color-hover: #fff;
     --n-item-text-color-active: #fff;
-    --n-item-icon-color: rgba(255, 255, 255, 0.85);
+    --n-item-icon-color: rgba(255, 255, 255, 0.65);
     --n-item-icon-color-hover: #fff;
     --n-item-icon-color-active: #fff;
-    --n-item-color-active: rgba(255, 255, 255, 0.2);
+    --n-item-color-hover: #27272a;
+    --n-item-color-active: #27272a;
+    --n-item-color-active-hover: #3f3f46;
+    --n-arrow-color: rgba(255, 255, 255, 0.5);
+    --n-arrow-color-hover: rgba(255, 255, 255, 0.8);
+    --n-arrow-color-active: rgba(255, 255, 255, 0.8);
   }
 }
 
-.theme-green {
-  background: #18a058 !important;
-
-  .logo-text {
-    color: #fff;
-  }
+body.dark-theme .theme-dark {
+  background: #101014 !important;
 
   :deep(.n-menu) {
-    background: #18a058;
-    --n-item-text-color: rgba(255, 255, 255, 0.85);
-    --n-item-text-color-hover: #fff;
-    --n-item-text-color-active: #fff;
-    --n-item-icon-color: rgba(255, 255, 255, 0.85);
-    --n-item-icon-color-hover: #fff;
-    --n-item-icon-color-active: #fff;
-    --n-item-color-active: rgba(255, 255, 255, 0.2);
+    background: #101014;
   }
 }
 
-.theme-purple {
-  background: #722ed1 !important;
-
-  .logo-text {
-    color: #fff;
-  }
-
-  :deep(.n-menu) {
-    background: #722ed1;
-    --n-item-text-color: rgba(255, 255, 255, 0.85);
-    --n-item-text-color-hover: #fff;
-    --n-item-text-color-active: #fff;
-    --n-item-icon-color: rgba(255, 255, 255, 0.85);
-    --n-item-icon-color-hover: #fff;
-    --n-item-icon-color-active: #fff;
-    --n-item-color-active: rgba(255, 255, 255, 0.2);
-  }
-}
 </style>

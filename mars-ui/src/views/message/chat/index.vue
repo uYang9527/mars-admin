@@ -2165,4 +2165,5 @@ onMounted(async () => {
   color: #d03050;
   font-size: 12px;
 }
+
 </style>

@@ -1333,4 +1333,5 @@ function goRegister() {
     padding: 32px;
   }
 }
+
 </style>

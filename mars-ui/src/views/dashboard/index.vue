@@ -1,22 +1,46 @@
 <template>
   <div class="page-container">
-    <!-- 欢迎卡片 -->
-    <n-card class="welcome-card">
-      <div class="welcome-content">
-        <div class="welcome-text">
-          <h1 class="welcome-title">
-            欢迎回来，{{ userStore.nickname }} 👋
-          </h1>
-          <p class="welcome-desc">
-            这是您的管理控制台，您可以在这里管理系统的各项功能
-          </p>
+    <!-- 欢迎区域 -->
+    <div class="welcome-section">
+      <!-- 左侧欢迎信息 -->
+      <div class="welcome-info">
+        <div class="welcome-header">
+          <n-avatar round :size="56" :src="userStore.avatar || undefined">
+            {{ userStore.nickname?.charAt(0) || 'U' }}
+          </n-avatar>
+          <div class="welcome-text">
+            <h1 class="welcome-title">
+              {{ getGreeting() }}，{{ userStore.nickname }} 👋
+            </h1>
+            <p class="welcome-desc">
+              这是您的管理控制台，您可以在这里管理系统的各项功能
+            </p>
+          </div>
         </div>
         <div class="welcome-time">
           <div class="time-display">{{ currentTime }}</div>
           <div class="date-display">{{ currentDate }}</div>
         </div>
       </div>
-    </n-card>
+      <!-- 右侧轮播Banner -->
+      <div class="welcome-banner">
+        <n-carousel autoplay :interval="5000" dot-type="line" show-arrow="hover" class="banner-carousel">
+          <div v-for="(banner, index) in banners" :key="index" class="banner-item" :style="{ background: banner.bgColor }">
+            <div class="banner-content">
+              <div class="banner-text">
+                <h3 class="banner-title">{{ banner.title }}</h3>
+                <p class="banner-subtitle">{{ banner.subtitle }}</p>
+              </div>
+              <div class="banner-icon">
+                <n-icon :size="64" :color="banner.iconColor">
+                  <component :is="banner.icon" />
+                </n-icon>
+              </div>
+            </div>
+          </div>
+        </n-carousel>
+      </div>
+    </div>
 
     <!-- 统计卡片 -->
     <div class="stat-cards">
@@ -109,33 +133,29 @@
             </div>
             <div class="author-info">
               <h3 class="author-name">程序员Mars</h3>
-              <p class="author-desc">全栈开发工程师，热爱开源，专注于后台管理系统的开发与优化。</p>
+              <p class="author-desc">8年全栈开发工程师，抖音技术博主，专注于后台管理系统的开发与优化。</p>
               <div class="author-links">
                 <n-space>
-                  <n-tag type="info" :bordered="false">
-                    <template #icon>
-                      <n-icon>
-                        <LogoGithub/>
-                      </n-icon>
+                  <a href="https://gitee.com/Marsfactory/mars-admin" target="_blank" class="author-link">
+                    <n-icon size="16"><LogoGitlab/></n-icon>
+                    <span>Gitee</span>
+                  </a>
+                  <a href="https://mars-coder.cn/" target="_blank" class="author-link">
+                    <n-icon size="16"><Globe/></n-icon>
+                    <span>火星编程导航</span>
+                  </a>
+                  <n-popover trigger="hover" placement="top">
+                    <template #trigger>
+                      <span class="author-link">
+                        <n-icon size="16"><ChatbubbleOutline/></n-icon>
+                        <span>微信</span>
+                      </span>
                     </template>
-                    GitHub
-                  </n-tag>
-                  <n-tag type="success" :bordered="false">
-                    <template #icon>
-                      <n-icon>
-                        <Globe/>
-                      </n-icon>
-                    </template>
-                    博客
-                  </n-tag>
-                  <n-tag type="warning" :bordered="false">
-                    <template #icon>
-                      <n-icon>
-                        <Mail/>
-                      </n-icon>
-                    </template>
-                    联系我
-                  </n-tag>
+                    <div class="wechat-info">
+                      <n-icon size="16" color="#07C160"><LogoWechat/></n-icon>
+                      <span>Mars8377</span>
+                    </div>
+                  </n-popover>
                 </n-space>
               </div>
             </div>
@@ -182,6 +202,8 @@ import {
   MenuOutline,
   ShieldCheckmarkOutline,
   LogoGithub,
+  LogoGitlab,
+  LogoWechat,
   Globe,
   Mail,
   Star,
@@ -189,7 +211,12 @@ import {
   DocumentText,
   SettingsOutline,
   TimerOutline,
-  ServerOutline
+  ServerOutline,
+  RocketOutline,
+  SparklesOutline,
+  CodeSlashOutline,
+  CloudOutline,
+  ChatbubbleOutline
 } from '@vicons/ionicons5'
 import {useUserStore} from '@/stores/user'
 import {dashboardApi} from '@/api/system'
@@ -200,6 +227,50 @@ const userStore = useUserStore()
 const currentTime = ref('')
 const currentDate = ref('')
 const loading = ref(true)
+
+// 获取问候语
+function getGreeting() {
+  const hour = new Date().getHours()
+  if (hour < 6) return '夜深了'
+  if (hour < 9) return '早上好'
+  if (hour < 12) return '上午好'
+  if (hour < 14) return '中午好'
+  if (hour < 18) return '下午好'
+  if (hour < 22) return '晚上好'
+  return '夜深了'
+}
+
+// 轮播Banner数据
+const banners = [
+  {
+    title: 'Mars Admin',
+    subtitle: '现代化后台管理系统',
+    bgColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    icon: markRaw(RocketOutline),
+    iconColor: 'rgba(255,255,255,0.3)'
+  },
+  {
+    title: '技术栈',
+    subtitle: 'Spring Boot 3 + Vue 3',
+    bgColor: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    icon: markRaw(CodeSlashOutline),
+    iconColor: 'rgba(255,255,255,0.3)'
+  },
+  {
+    title: '开源免费',
+    subtitle: '持续更新 · 文档完善',
+    bgColor: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    icon: markRaw(SparklesOutline),
+    iconColor: 'rgba(255,255,255,0.3)'
+  },
+  {
+    title: '云端部署',
+    subtitle: '支持 Docker 一键部署',
+    bgColor: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    icon: markRaw(CloudOutline),
+    iconColor: 'rgba(255,255,255,0.3)'
+  }
+]
 
 // 统计数据
 const stats = ref([
@@ -282,9 +353,22 @@ const shortcuts = [
 // 更新日志
 const changelog = [
   {
+    version: 'v1.0.1',
+    date: '2026-01-31',
+    type: 'success' as const,
+    changes: [
+      '新增暗黑主题模式，支持一键切换',
+      '优化首页布局，新增轮播 Banner',
+      '新增邮件配置及测试发送功能',
+      '新增接口加密功能（全局/部分加密）',
+      '新增 RSA 密钥自动生成功能',
+      '优化即时聊天页面暗黑模式适配'
+    ]
+  },
+  {
     version: 'v1.0.0',
     date: '2026-01-29',
-    type: 'success' as const,
+    type: 'info' as const,
     changes: [
       '新增文件存储策略工厂（本地/MinIO/OSS/COS）',
       '新增推送服务策略工厂（极光/友盟/个推）',
@@ -359,48 +443,141 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.welcome-card {
+// 欢迎区域
+.welcome-section {
+  display: flex;
+  gap: 20px;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #313a3d 0%, #55595d 100%);
-
-  :deep(.n-card__content) {
-    padding: 32px;
-  }
 }
 
-.welcome-content {
+.welcome-info {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.welcome-header {
+  display: flex;
   align-items: center;
+  gap: 16px;
+}
+
+.welcome-text {
+  flex: 1;
 }
 
 .welcome-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  color: #FFFFFF;
-  margin-bottom: 8px;
+  color: #111827;
+  margin: 0 0 6px 0;
 }
 
 .welcome-desc {
-  font-size: 15px;
-  color: #9CA3AF;
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
 }
 
 .welcome-time {
-  text-align: right;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .time-display {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #111827;
   font-variant-numeric: tabular-nums;
 }
 
 .date-display {
   font-size: 14px;
-  color: #9CA3AF;
-  margin-top: 4px;
+  color: #6B7280;
+}
+
+// 轮播Banner
+.welcome-banner {
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.banner-carousel {
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+
+  :deep(.n-carousel__slides) {
+    height: 100%;
+  }
+
+  :deep(.n-carousel__slide) {
+    height: 100%;
+  }
+
+  :deep(.n-carousel__dots) {
+    bottom: 12px;
+  }
+
+  :deep(.n-carousel__dot) {
+    background: rgba(255, 255, 255, 0.5);
+
+    &.n-carousel__dot--active {
+      background: #fff;
+    }
+  }
+
+  :deep(.n-carousel__arrow) {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+.banner-item {
+  height: 100%;
+  min-height: 140px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.banner-text {
+  flex: 1;
+}
+
+.banner-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px 0;
+}
+
+.banner-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.banner-icon {
+  opacity: 0.6;
 }
 
 .stat-cards {
@@ -561,6 +738,33 @@ onUnmounted(() => {
   margin-top: 8px;
 }
 
+.author-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #374151;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e5e7eb;
+    color: #111827;
+  }
+}
+
+.wechat-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
 .project-info {
   margin-top: 4px;
 }
@@ -586,6 +790,18 @@ onUnmounted(() => {
 }
 
 @media (max-width: 1200px) {
+  .welcome-section {
+    flex-direction: column;
+  }
+
+  .welcome-banner {
+    width: 100%;
+  }
+
+  .banner-item {
+    min-height: 120px;
+  }
+
   .stat-cards {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -603,14 +819,15 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .welcome-content {
+  .welcome-header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+    text-align: center;
   }
 
   .welcome-time {
-    text-align: left;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
   }
 
   .stat-cards {
@@ -632,4 +849,5 @@ onUnmounted(() => {
     flex-wrap: wrap;
   }
 }
+
 </style>

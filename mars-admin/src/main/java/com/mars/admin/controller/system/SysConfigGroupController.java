@@ -2,6 +2,7 @@ package com.mars.admin.controller.system;
 
 import com.mars.common.result.Result;
 import com.mars.system.entity.SysConfigGroup;
+import com.mars.system.service.EmailService;
 import com.mars.system.service.SysConfigGroupService;
 import com.mars.system.service.SystemConfigHelper;
 import com.mars.system.service.pay.PayServiceFactory;
@@ -24,6 +25,7 @@ public class SysConfigGroupController {
     private final SysConfigGroupService configGroupService;
     private final SystemConfigHelper configHelper;
     private final PayServiceFactory payServiceFactory;
+    private final EmailService emailService;
     
     /**
      * 获取所有配置分组
@@ -135,5 +137,36 @@ public class SysConfigGroupController {
     @Data
     public static class TestPaymentRequest {
         private String type; // wechat 或 alipay
+    }
+    
+    /**
+     * 测试发送邮件
+     */
+    @PostMapping("/test-email")
+    public Result<Void> testEmail(@RequestBody TestEmailRequest request) {
+        try {
+            emailService.sendTestMail(request.getTo());
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+    
+    @Data
+    public static class TestEmailRequest {
+        private String to; // 收件人邮箱
+    }
+    
+    /**
+     * 生成RSA密钥对
+     */
+    @PostMapping("/generate-keys")
+    public Result<Map<String, String>> generateKeys() {
+        try {
+            Map<String, String> keyPair = com.mars.common.util.RsaUtils.generateKeyPair();
+            return Result.ok(keyPair);
+        } catch (Exception e) {
+            return Result.fail("生成密钥失败: " + e.getMessage());
+        }
     }
 }

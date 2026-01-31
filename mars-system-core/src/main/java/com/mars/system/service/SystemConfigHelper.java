@@ -326,6 +326,21 @@ public class SystemConfigHelper {
     }
 
     /**
+     * 获取加密范围
+     * @return "global" 全局加密, "partial" 部分加密(默认)
+     */
+    public String getEncryptScope() {
+        return getString(GROUP_SECURITY, "encryptScope", "partial");
+    }
+
+    /**
+     * 是否全局加密
+     */
+    public boolean isGlobalEncrypt() {
+        return "global".equals(getEncryptScope());
+    }
+
+    /**
      * 是否启用XSS过滤
      */
     public boolean isXssFilterEnabled() {
@@ -409,6 +424,82 @@ public class SystemConfigHelper {
      */
     public String getSmsTencentTemplateId() {
         return getString(GROUP_SMS, "tencentTemplateId", "");
+    }
+
+    // ============ 邮件配置 ============
+
+    /**
+     * 是否启用邮件
+     */
+    public boolean isEmailEnabled() {
+        return getBoolean(GROUP_EMAIL, "enabled");
+    }
+
+    /**
+     * 获取SMTP服务器
+     */
+    public String getEmailHost() {
+        return getString(GROUP_EMAIL, "host", "");
+    }
+
+    /**
+     * 获取邮件端口
+     */
+    public int getEmailPort() {
+        return getInt(GROUP_EMAIL, "port", 465);
+    }
+
+    /**
+     * 获取邮件用户名
+     */
+    public String getEmailUsername() {
+        return getString(GROUP_EMAIL, "username", "");
+    }
+
+    /**
+     * 获取邮件密码/授权码
+     */
+    public String getEmailPassword() {
+        return getString(GROUP_EMAIL, "password", "");
+    }
+
+    /**
+     * 获取发件人名称
+     */
+    public String getEmailFromName() {
+        return getString(GROUP_EMAIL, "fromName", "");
+    }
+
+    /**
+     * 是否启用SSL
+     */
+    public boolean isEmailSsl() {
+        return getBoolean(GROUP_EMAIL, "ssl", true);
+    }
+
+    // ============ 邮件模板配置 ============
+
+    private static final String GROUP_EMAIL_TEMPLATE = "emailTemplate";
+
+    /**
+     * 获取验证码邮件模板
+     */
+    public String getEmailTemplateVerifyCode() {
+        return getString(GROUP_EMAIL_TEMPLATE, "verifyCode", "您的验证码是：{code}，有效期{expire}分钟。");
+    }
+
+    /**
+     * 获取重置密码邮件模板
+     */
+    public String getEmailTemplateResetPassword() {
+        return getString(GROUP_EMAIL_TEMPLATE, "resetPassword", "您正在重置密码，验证码：{code}，有效期{expire}分钟。");
+    }
+
+    /**
+     * 获取欢迎邮件模板
+     */
+    public String getEmailTemplateWelcome() {
+        return getString(GROUP_EMAIL_TEMPLATE, "welcome", "欢迎注册{siteName}，您的账号已创建成功。");
     }
 
     // ============ 系统配置 ============

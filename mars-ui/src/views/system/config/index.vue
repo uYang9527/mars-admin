@@ -140,6 +140,15 @@
                 <n-form-item label="SSL加密">
                   <n-switch v-model:value="configs.email.ssl" />
                 </n-form-item>
+                <n-divider />
+                <n-form-item label="测试邮件">
+                  <n-input-group>
+                    <n-input v-model:value="testEmailAddress" placeholder="输入收件人邮箱" style="width: 280px" />
+                    <n-button type="primary" @click="handleTestEmail" :loading="emailTesting" :disabled="!configs.email.enabled">
+                      发送测试邮件
+                    </n-button>
+                  </n-input-group>
+                </n-form-item>
               </n-form>
             </template>
 
@@ -427,11 +436,38 @@
             <template v-else-if="group.groupCode === 'security'">
               <n-form :model="configs.security" label-placement="left" label-width="150">
                 <n-form-item label="接口加密">
-                  <n-switch v-model:value="configs.security.encryptEnabled" />
+                  <n-switch v-model:value="configs.security.encryptEnabled" @update:value="handleEncryptChange" />
                 </n-form-item>
-                <n-form-item label="RSA公钥" v-if="configs.security.encryptEnabled">
-                  <n-input v-model:value="configs.security.encryptPublicKey" type="textarea" :rows="3" readonly />
-                </n-form-item>
+                <template v-if="configs.security.encryptEnabled">
+                  <n-form-item label="加密范围">
+                    <n-radio-group v-model:value="configs.security.encryptScope">
+                      <n-space>
+                        <n-radio value="partial">
+                          <span>部分加密</span>
+                          <span class="form-hint">（仅加密带 @EncryptResponse 注解的接口）</span>
+                        </n-radio>
+                        <n-radio value="global">
+                          <span>全局加密</span>
+                          <span class="form-hint">（所有接口返回都加密）</span>
+                        </n-radio>
+                      </n-space>
+                    </n-radio-group>
+                  </n-form-item>
+                  <n-form-item label="RSA公钥">
+                    <n-input v-model:value="configs.security.encryptPublicKey" type="textarea" :rows="3" readonly placeholder="点击下方按钮生成密钥" />
+                  </n-form-item>
+                  <n-form-item label="RSA私钥">
+                    <n-input v-model:value="configs.security.encryptPrivateKey" type="textarea" :rows="3" readonly placeholder="点击下方按钮生成密钥" />
+                  </n-form-item>
+                  <n-form-item label="生成密钥">
+                    <n-button type="primary" @click="handleGenerateKeys" :loading="generatingKeys">
+                      {{ configs.security.encryptPublicKey ? '重新生成密钥' : '生成RSA密钥对' }}
+                    </n-button>
+                    <span class="form-hint" v-if="!configs.security.encryptPublicKey" style="color: #f5222d">
+                      请先生成密钥才能使用接口加密功能
+                    </span>
+                  </n-form-item>
+                </template>
                 <n-form-item label="XSS过滤">
                   <n-switch v-model:value="configs.security.xssFilter" />
                 </n-form-item>
@@ -520,7 +556,7 @@ const configs = reactive<Record<string, any>>({
     wechatPay: { enabled: false, mchId: '', appId: '', apiV3Key: '', privateKey: '', certSerialNo: '', notifyUrl: '' },
     alipay: { enabled: false, appId: '', privateKey: '', publicKey: '', signType: 'RSA2', gatewayUrl: 'https://openapi.alipay.com/gateway.do', notifyUrl: '', returnUrl: '' }
   },
-  security: { encryptEnabled: false, encryptPublicKey: '', encryptPrivateKey: '', xssFilter: true, sqlInject: true },
+  security: { encryptEnabled: false, encryptScope: 'partial', encryptPublicKey: '', encryptPrivateKey: '', xssFilter: true, sqlInject: true },
   other: {}
 })
 
@@ -554,6 +590,60 @@ const alipayGatewayOptions = [
   { label: '正式环境', value: 'https://openapi.alipay.com/gateway.do' },
   { label: '沙箱环境', value: 'https://openapi-sandbox.dl.alipaydev.com/gateway.do' }
 ]
+
+// 邮件测试相关
+const emailTesting = ref(false)
+const testEmailAddress = ref('')
+
+// 密钥生成相关
+const generatingKeys = ref(false)
+
+// 开启加密时检查是否有密钥
+function handleEncryptChange(enabled: boolean) {
+  if (enabled && !configs.security.encryptPublicKey) {
+    message.warning('请生成RSA密钥对后再保存配置')
+  }
+}
+
+// 生成RSA密钥对
+async function handleGenerateKeys() {
+  generatingKeys.value = true
+  try {
+    const keys = await configGroupApi.generateKeys()
+    configs.security.encryptPublicKey = keys.publicKey
+    configs.security.encryptPrivateKey = keys.privateKey
+    message.success('密钥生成成功，请点击保存配置')
+  } catch (error: any) {
+    message.error(error.message || '生成密钥失败')
+  } finally {
+    generatingKeys.value = false
+  }
+}
+
+// 测试发送邮件
+async function handleTestEmail() {
+  if (!testEmailAddress.value) {
+    message.warning('请输入收件人邮箱')
+    return
+  }
+  
+  // 简单的邮箱格式验证
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(testEmailAddress.value)) {
+    message.warning('请输入正确的邮箱格式')
+    return
+  }
+  
+  emailTesting.value = true
+  try {
+    await configGroupApi.testEmail(testEmailAddress.value)
+    message.success('测试邮件发送成功，请查收')
+  } catch (error: any) {
+    message.error(error.message || '发送测试邮件失败')
+  } finally {
+    emailTesting.value = false
+  }
+}
 
 // 支付测试相关
 const paymentTesting = ref(false)

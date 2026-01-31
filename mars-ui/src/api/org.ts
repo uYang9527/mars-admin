@@ -174,5 +174,13 @@ export const configGroupApi = {
   // 测试支付
   testPayment(type: 'wechat' | 'alipay'): Promise<{ orderNo: string; qrcode?: string; payUrl?: string }> {
     return request({ url: '/sys/config-group/test-payment', method: 'post', data: { type } })
+  },
+  // 测试发送邮件
+  testEmail(to: string): Promise<void> {
+    return request({ url: '/sys/config-group/test-email', method: 'post', data: { to } })
+  },
+  // 生成RSA密钥对
+  generateKeys(): Promise<{ publicKey: string; privateKey: string }> {
+    return request({ url: '/sys/config-group/generate-keys', method: 'post' })
   }
 }

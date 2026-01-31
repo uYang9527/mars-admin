@@ -54,12 +54,14 @@ export const useUserStore = defineStore('user', () => {
   
   // 检查权限
   function hasPermission(permission: string): boolean {
+    if (!roles.value || !permissions.value) return false
     if (roles.value.includes('admin')) return true
     return permissions.value.includes(permission)
   }
   
   // 检查角色
   function hasRole(role: string): boolean {
+    if (!roles.value) return false
     return roles.value.includes(role)
   }
   

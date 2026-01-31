@@ -28,8 +28,9 @@ public class SaTokenConfig implements WebMvcConfigurer {
                         "/auth/captcha",                // 图片验证码
                         "/auth/sms-code",               // 短信验证码
                         "/error",
-                        "/api/crypto/config",           // 加密配置
+                        "/crypto/**",                   // 加密配置
                         "/sys/config-group/public",     // 公开配置
+                        "/file/**",                     // 文件访问
                         "/files/**"                     // 文件访问
                     )
                     .check(r -> StpUtil.checkLogin());
