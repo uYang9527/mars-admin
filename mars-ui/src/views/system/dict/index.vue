@@ -30,7 +30,7 @@
       
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd">
+        <n-button v-if="hasPermission('sys:dict:add')" type="primary" @click="handleAdd">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增字典
         </n-button>
@@ -71,7 +71,7 @@
     <!-- 字典数据弹窗 -->
     <n-modal v-model:show="dataModalVisible" title="字典数据" preset="card" style="width: 900px" :mask-closable="false">
       <div class="table-toolbar">
-        <n-button type="primary" size="small" @click="handleAddData">
+        <n-button v-if="hasPermission('sys:dict:add')" type="primary" size="small" @click="handleAddData">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增数据
         </n-button>
@@ -119,9 +119,14 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { dictTypeApi, dictDataApi, type SysDictType, type SysDictData } from '@/api/org'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+
+// 权限检查
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 const searchForm = reactive({ dictName: '', dictType: '', status: null as number | null })
 const statusOptions = [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }]
@@ -147,11 +152,14 @@ const columns: DataTableColumns<SysDictType> = [
   { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   { title: '操作', key: 'actions', width: 220, fixed: 'right', render(row) {
-    return h(NSpace, null, { default: () => [
-      h(NButton, { size: 'small', onClick: () => handleViewData(row) }, { default: () => '字典数据' }),
-      h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
-      h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
-    ]})
+    const buttons = [h(NButton, { size: 'small', onClick: () => handleViewData(row) }, { default: () => '字典数据' })]
+    if (hasPermission('sys:dict:edit')) {
+      buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
+    }
+    if (hasPermission('sys:dict:delete')) {
+      buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+    }
+    return h(NSpace, null, { default: () => buttons })
   }}
 ]
 
@@ -194,10 +202,14 @@ const dataColumns: DataTableColumns<SysDictData> = [
   }},
   { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
   { title: '操作', key: 'actions', width: 150, render(row) {
-    return h(NSpace, null, { default: () => [
-      h(NButton, { size: 'small', onClick: () => handleEditData(row) }, { default: () => '编辑' }),
-      h(NButton, { size: 'small', type: 'error', onClick: () => handleDeleteData(row) }, { default: () => '删除' })
-    ]})
+    const buttons = []
+    if (hasPermission('sys:dict:edit')) {
+      buttons.push(h(NButton, { size: 'small', onClick: () => handleEditData(row) }, { default: () => '编辑' }))
+    }
+    if (hasPermission('sys:dict:delete')) {
+      buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDeleteData(row) }, { default: () => '删除' }))
+    }
+    return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
   }}
 ]
 

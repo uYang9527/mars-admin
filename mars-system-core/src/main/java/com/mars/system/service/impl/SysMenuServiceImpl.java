@@ -38,7 +38,46 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         menus = menus.stream()
                 .filter(menu -> menu.getType() != 3)
                 .collect(Collectors.toList());
+        
+        // 自动补充缺失的父级菜单，确保树结构完整
+        menus = fillParentMenus(menus);
+        
         return buildTree(menus);
+    }
+    
+    /**
+     * 补充缺失的父级菜单
+     */
+    private List<SysMenu> fillParentMenus(List<SysMenu> menus) {
+        // 获取已有菜单的ID集合
+        java.util.Set<Long> existIds = menus.stream()
+                .map(SysMenu::getId)
+                .collect(Collectors.toSet());
+        
+        // 收集需要补充的父级ID
+        java.util.Set<Long> parentIds = new java.util.HashSet<>();
+        for (SysMenu menu : menus) {
+            Long parentId = menu.getParentId();
+            while (parentId != null && parentId != 0 && !existIds.contains(parentId)) {
+                parentIds.add(parentId);
+                // 继续查找上级
+                SysMenu parent = this.getById(parentId);
+                if (parent != null) {
+                    existIds.add(parentId); // 防止重复添加
+                    parentId = parent.getParentId();
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        // 查询并添加缺失的父级菜单
+        if (!parentIds.isEmpty()) {
+            List<SysMenu> parentMenus = this.listByIds(parentIds);
+            menus.addAll(parentMenus);
+        }
+        
+        return menus;
     }
 
     @Override

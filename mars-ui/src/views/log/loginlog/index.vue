@@ -25,7 +25,7 @@
       </div>
       
       <div class="table-toolbar">
-        <n-button type="error" @click="handleClean">
+        <n-button v-if="hasPermission('sys:loginlog:delete')" type="error" @click="handleClean">
           <template #icon><n-icon><TrashOutline /></n-icon></template>
           清空日志
         </n-button>
@@ -42,9 +42,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, TrashOutline } from '@vicons/ionicons5'
 import { loginLogApi, type SysLoginLog } from '@/api/monitor'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 const searchForm = reactive({ username: '', status: null as number | null })
 const statusOptions = [{ label: '成功', value: 0 }, { label: '失败', value: 1 }]
@@ -65,7 +68,9 @@ const columns: DataTableColumns<SysLoginLog> = [
   { title: '提示信息', key: 'msg', ellipsis: { tooltip: true } },
   { title: '登录时间', key: 'loginTime', width: 180 },
   { title: '操作', key: 'actions', width: 80, fixed: 'right', render(row) {
-    return h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
+    return hasPermission('sys:loginlog:delete') 
+      ? h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
+      : '-'
   }}
 ]
 

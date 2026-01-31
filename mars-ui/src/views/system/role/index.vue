@@ -33,7 +33,7 @@
       
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd">
+        <n-button v-if="hasPermission('sys:role:add')" type="primary" @click="handleAdd">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增角色
         </n-button>
@@ -93,6 +93,7 @@
               selectable
               block-line
               @update:checked-keys="handleMenuCheck"
+              @update:indeterminate-keys="handleIndeterminateChange"
             />
           </div>
         </n-form-item>
@@ -115,9 +116,14 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { roleApi, menuApi, type SysRole, type SysMenu } from '@/api/system'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+
+// 权限检查
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 // 搜索表单
 const searchForm = reactive({
@@ -172,20 +178,14 @@ const columns: DataTableColumns<SysRole> = [
     width: 150,
     fixed: 'right',
     render(row) {
-      return h(NSpace, null, {
-        default: () => [
-          h(
-            NButton,
-            { size: 'small', onClick: () => handleEdit(row) },
-            { default: () => '编辑' }
-          ),
-          h(
-            NButton,
-            { size: 'small', type: 'error', onClick: () => handleDelete(row) },
-            { default: () => '删除' }
-          )
-        ]
-      })
+      const buttons = []
+      if (hasPermission('sys:role:edit')) {
+        buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
+      }
+      if (hasPermission('sys:role:delete')) {
+        buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+      }
+      return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
     }
   }
 ]
@@ -273,9 +273,15 @@ function handlePageSizeChange(pageSize: number) {
   loadData()
 }
 
-// 菜单选择
+// 菜单选择 - 同时记录半选的父节点
+const halfCheckedKeys = ref<number[]>([])
+
 function handleMenuCheck(keys: number[]) {
   menuIds.value = keys
+}
+
+function handleIndeterminateChange(keys: number[]) {
+  halfCheckedKeys.value = keys
 }
 
 // 新增
@@ -293,13 +299,31 @@ function handleAdd() {
   modalVisible.value = true
 }
 
+// 获取所有叶子节点ID
+function getLeafNodeIds(nodes: TreeOption[]): number[] {
+  const leafIds: number[] = []
+  function traverse(items: TreeOption[]) {
+    for (const item of items) {
+      if (item.children && item.children.length > 0) {
+        traverse(item.children)
+      } else {
+        leafIds.push(item.key as number)
+      }
+    }
+  }
+  traverse(nodes)
+  return leafIds
+}
+
 // 编辑
 async function handleEdit(row: SysRole) {
   modalTitle.value = '编辑角色'
   try {
     const res = await roleApi.detail(row.id!)
     Object.assign(formData, res.role)
-    menuIds.value = res.menuIds
+    // 只选中叶子节点，父节点会自动计算半选状态
+    const leafIds = getLeafNodeIds(menuTreeData.value)
+    menuIds.value = res.menuIds.filter((id: number) => leafIds.includes(id))
     modalVisible.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -312,9 +336,12 @@ async function handleSubmit() {
     await formRef.value?.validate()
     submitLoading.value = true
     
+    // 合并选中的节点和半选的父节点
+    const allMenuIds = [...new Set([...menuIds.value, ...halfCheckedKeys.value])]
+    
     const data = {
       role: { ...formData },
-      menuIds: menuIds.value
+      menuIds: allMenuIds
     }
     
     if (formData.id) {

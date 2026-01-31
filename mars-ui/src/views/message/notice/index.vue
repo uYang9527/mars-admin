@@ -42,7 +42,7 @@
       
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd">
+        <n-button v-if="hasPermission('sys:notice:add')" type="primary" @click="handleAdd">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增通知
         </n-button>
@@ -128,9 +128,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { noticeApi, type SysNotice } from '@/api/message'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 // 搜索表单
 const searchForm = reactive({
@@ -197,14 +200,17 @@ const columns: DataTableColumns<SysNotice> = [
     width: 250,
     fixed: 'right',
     render(row) {
-      return h(NSpace, null, {
-        default: () => [
-          h(NButton, { size: 'small', onClick: () => handleView(row) }, { default: () => '查看' }),
-          h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
-          row.status === 0 ? h(NButton, { size: 'small', type: 'info', onClick: () => handlePublish(row) }, { default: () => '发布' }) : null,
-          h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
-        ].filter(Boolean)
-      })
+      const buttons = [h(NButton, { size: 'small', onClick: () => handleView(row) }, { default: () => '查看' })]
+      if (hasPermission('sys:notice:edit')) {
+        buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
+        if (row.status === 0) {
+          buttons.push(h(NButton, { size: 'small', type: 'info', onClick: () => handlePublish(row) }, { default: () => '发布' }))
+        }
+      }
+      if (hasPermission('sys:notice:delete')) {
+        buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+      }
+      return h(NSpace, null, { default: () => buttons })
     }
   }
 ]

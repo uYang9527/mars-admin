@@ -28,7 +28,7 @@
       </div>
       
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd">
+        <n-button v-if="hasPermission('sys:post:add')" type="primary" @click="handleAdd">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增岗位
         </n-button>
@@ -74,9 +74,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { postApi, type SysPost } from '@/api/org'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 const searchForm = reactive({ postCode: '', postName: '', status: null as number | null })
 const statusOptions = [{ label: '正常', value: 1 }, { label: '停用', value: 0 }]
@@ -95,10 +98,10 @@ const columns: DataTableColumns<SysPost> = [
   { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   { title: '操作', key: 'actions', width: 150, fixed: 'right', render(row) {
-    return h(NSpace, null, { default: () => [
-      h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }),
-      h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
-    ]})
+    const buttons = []
+    if (hasPermission('sys:post:edit')) buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
+    if (hasPermission('sys:post:delete')) buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+    return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
   }}
 ]
 

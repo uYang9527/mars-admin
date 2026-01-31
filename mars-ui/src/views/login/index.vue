@@ -291,7 +291,7 @@
             <n-icon size="20"><CloseOutline /></n-icon>
           </n-button>
         </div>
-        <div 
+        <div
           class="slider-puzzle-image"
           @mousemove="onSliderDragMove"
           @mouseup="onSliderDragEnd"
@@ -304,8 +304,8 @@
           <!-- 缺口位置 -->
           <div class="puzzle-slot" :style="{ left: sliderTargetX + 'px' }"></div>
           <!-- 拼图块 -->
-          <div 
-            class="puzzle-piece" 
+          <div
+            class="puzzle-piece"
             :class="{ verified: sliderVerified }"
             :style="{ left: sliderPuzzleX + 'px' }"
           >
@@ -316,7 +316,7 @@
           <div class="slider-track-bg">
             <div class="slider-track-progress" :style="{ width: sliderPuzzleX + 'px' }"></div>
           </div>
-          <div 
+          <div
             class="slider-handle"
             :class="{ dragging: sliderDragging, verified: sliderVerified }"
             :style="{ left: sliderPuzzleX + 'px' }"
@@ -394,7 +394,7 @@ async function loadPublicConfig() {
     captchaType.value = config.login?.captchaType || 'image'
     rememberMeEnabled.value = config.login?.rememberMe !== false
     registerEnabled.value = config.register?.enabled !== false
-    
+
     // 如果启用图片验证码，加载验证码
     if (captchaEnabled.value && captchaType.value === 'image') {
       await loadCaptcha()
@@ -462,13 +462,13 @@ function onSliderDragMove(e: MouseEvent | TouchEvent) {
 function onSliderDragEnd() {
   if (!sliderDragging.value || sliderVerified.value) return
   sliderDragging.value = false
-  
+
   // 检查是否在目标位置附近（误差 5px）
   if (Math.abs(sliderPuzzleX.value - sliderTargetX.value) < 8) {
     sliderVerified.value = true
     sliderPuzzleX.value = sliderTargetX.value // 对齐
     message.success('验证成功')
-    
+
     // 延迟关闭弹窗并执行登录
     setTimeout(() => {
       closeSliderModal()
@@ -489,12 +489,12 @@ async function sendSmsCode() {
     message.warning('请输入正确的手机号')
     return
   }
-  
+
   smsSending.value = true
   try {
     await authApi.sendSmsCode(smsPhone.value)
     message.success('验证码已发送，请查看控制台')
-    
+
     // 开始倒计时
     smsCountdown.value = 60
     const timer = setInterval(() => {
@@ -538,7 +538,7 @@ const loading = ref(false)
 
 const formData = reactive({
   username: 'admin',
-  password: '123456',
+  password: 'admin123',
   code: '',
   rememberMe: true
 })
@@ -556,15 +556,15 @@ async function handleLogin() {
       message.warning('请输入手机号')
       return
     }
-    
+
     await formRef.value?.validate()
-    
+
     // 如果是滑块验证码，先弹出验证弹窗
     if (captchaEnabled.value && captchaType.value === 'slider') {
       openSliderModal()
       return
     }
-    
+
     // 其他类型直接登录
     await doLogin()
   } catch (error: any) {
@@ -580,7 +580,7 @@ async function doLogin() {
       username: formData.username,
       password: formData.password
     }
-    
+
     // 根据验证码类型传递不同参数
     if (captchaEnabled.value) {
       if (captchaType.value === 'image') {
@@ -593,12 +593,12 @@ async function doLogin() {
         loginData.code = formData.code
       }
     }
-    
+
     // 如果启用记住我
     if (rememberMeEnabled.value) {
       loginData.rememberMe = formData.rememberMe
     }
-    
+
     await userStore.login(loginData)
     message.success('登录成功')
     const redirect = route.query.redirect as string
@@ -804,7 +804,7 @@ function goRegister() {
     justify-content: center;
     font-size: 18px;
   }
-  
+
   .feature-dot {
     width: 6px;
     height: 6px;
@@ -865,11 +865,11 @@ function goRegister() {
   align-items: center;
   gap: 12px;
   width: 100%;
-  
+
   .n-input {
     flex: 1;
   }
-  
+
   &.dark .captcha-img {
     border-color: rgba(255, 255, 255, 0.2);
   }
@@ -880,7 +880,7 @@ function goRegister() {
   border-radius: 6px;
   cursor: pointer;
   border: 1px solid #E5E7EB;
-  
+
   &:hover {
     opacity: 0.8;
   }
@@ -892,11 +892,11 @@ function goRegister() {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  
+
   &.dark {
     .register-link {
       color: rgba(255, 255, 255, 0.7);
-      
+
       &:hover {
         color: #fff;
       }
@@ -909,7 +909,7 @@ function goRegister() {
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -950,15 +950,15 @@ function goRegister() {
   height: 100%;
   background-size: cover;
   background-position: center;
-  
+
   &.puzzle-bg-0 {
     background-image: url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=200&fit=crop');
   }
-  
+
   &.puzzle-bg-1 {
     background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop');
   }
-  
+
   &.puzzle-bg-2 {
     background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=200&fit=crop');
   }
@@ -973,7 +973,7 @@ function goRegister() {
   background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -997,7 +997,7 @@ function goRegister() {
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.2s;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -1010,7 +1010,7 @@ function goRegister() {
     border-radius: 50%;
     overflow: hidden;
   }
-  
+
   &.verified {
     box-shadow: 0 0 0 3px #22c55e, 0 2px 10px rgba(0, 0, 0, 0.3);
   }
@@ -1024,15 +1024,15 @@ function goRegister() {
   position: absolute;
   top: -75px;
   left: 0;
-  
+
   &.puzzle-bg-0 {
     background-image: url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=200&fit=crop');
   }
-  
+
   &.puzzle-bg-1 {
     background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop');
   }
-  
+
   &.puzzle-bg-2 {
     background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=200&fit=crop');
   }
@@ -1078,16 +1078,16 @@ function goRegister() {
   z-index: 1;
   transition: background 0.2s, box-shadow 0.2s;
   color: #6b7280;
-  
+
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
-  
+
   &.dragging {
     cursor: grabbing;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   }
-  
+
   &.verified {
     background: #22c55e;
     color: #fff;
@@ -1109,13 +1109,13 @@ function goRegister() {
   border-top: 1px solid #f0f0f0;
   display: flex;
   justify-content: flex-start;
-  
+
   .n-button {
     display: flex;
     align-items: center;
     gap: 4px;
     color: #6b7280;
-    
+
     &:hover {
       color: #111827;
     }
@@ -1127,11 +1127,11 @@ function goRegister() {
   display: flex;
   gap: 12px;
   width: 100%;
-  
+
   .n-input {
     flex: 1;
   }
-  
+
   .n-button {
     flex-shrink: 0;
     width: 120px;
@@ -1149,7 +1149,7 @@ function goRegister() {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(17, 24, 39, 0.5) 0%, transparent 100%);
@@ -1198,7 +1198,7 @@ function goRegister() {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
 }
@@ -1209,29 +1209,29 @@ function goRegister() {
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 25px 80px -20px rgba(0, 0, 0, 0.5);
-  
+
   .login-banner {
     background: transparent;
-    
+
     .banner-logo .logo-icon {
       background: rgba(255, 255, 255, 0.15);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
+
     .banner-logo .logo-text,
     .banner-title {
       color: #fff;
     }
-    
+
     .banner-desc {
       color: rgba(255, 255, 255, 0.7);
     }
-    
+
     .banner-features .feature-item {
       color: rgba(255, 255, 255, 0.8);
     }
-    
+
     .banner-features .feature-dot {
       width: 6px;
       height: 6px;
@@ -1239,12 +1239,12 @@ function goRegister() {
       border-radius: 50%;
       flex-shrink: 0;
     }
-    
+
     .decoration-circle {
       border-color: rgba(255, 255, 255, 0.08);
     }
   }
-  
+
   .login-form-wrapper {
     background: transparent;
   }
@@ -1255,21 +1255,21 @@ function goRegister() {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(16px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   .login-form {
     .form-title {
       color: #fff;
     }
-    
+
     .form-subtitle {
       color: rgba(255, 255, 255, 0.6);
     }
   }
-  
+
   :deep(.n-form-item-label) {
     color: rgba(255, 255, 255, 0.8) !important;
   }
-  
+
   :deep(.n-input) {
     --n-color: rgba(255, 255, 255, 0.08);
     --n-color-focus: rgba(255, 255, 255, 0.12);
@@ -1279,32 +1279,32 @@ function goRegister() {
     --n-text-color: #fff;
     --n-placeholder-color: rgba(255, 255, 255, 0.4);
     --n-caret-color: #fff;
-    
+
     .n-input__prefix {
       color: rgba(255, 255, 255, 0.5);
     }
-    
+
     .n-input__eye {
       color: rgba(255, 255, 255, 0.5);
-      
+
       &:hover {
         color: rgba(255, 255, 255, 0.8);
       }
     }
   }
-  
+
   :deep(.n-checkbox) {
     --n-text-color: rgba(255, 255, 255, 0.8);
   }
-  
+
   .login-options .register-link {
     color: rgba(255, 255, 255, 0.6);
-    
+
     &:hover {
       color: #fff;
     }
   }
-  
+
   .captcha-img {
     border: 1px solid rgba(255, 255, 255, 0.15);
   }

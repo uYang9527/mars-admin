@@ -33,7 +33,7 @@
       
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd">
+        <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增用户
         </n-button>
@@ -122,9 +122,14 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, type SysUser, type SysRole } from '@/api/system'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+
+// 权限检查
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 // 搜索表单
 const searchForm = reactive({
@@ -178,25 +183,33 @@ const columns: DataTableColumns<SysUser> = [
     width: 200,
     fixed: 'right',
     render(row) {
-      return h(NSpace, null, {
-        default: () => [
+      const buttons = []
+      if (hasPermission('sys:user:edit')) {
+        buttons.push(
           h(
             NButton,
             { size: 'small', onClick: () => handleEdit(row) },
             { default: () => '编辑' }
-          ),
+          )
+        )
+        buttons.push(
           h(
             NButton,
             { size: 'small', onClick: () => handleResetPassword(row) },
             { default: () => '重置密码' }
-          ),
+          )
+        )
+      }
+      if (hasPermission('sys:user:delete')) {
+        buttons.push(
           h(
             NButton,
             { size: 'small', type: 'error', onClick: () => handleDelete(row) },
             { default: () => '删除' }
           )
-        ]
-      })
+        )
+      }
+      return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
     }
   }
 ]

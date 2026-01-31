@@ -28,7 +28,7 @@
       </div>
       
       <div class="table-toolbar">
-        <n-button type="error" @click="handleClean">
+        <n-button v-if="hasPermission('sys:operlog:delete')" type="error" @click="handleClean">
           <template #icon><n-icon><TrashOutline /></n-icon></template>
           清空日志
         </n-button>
@@ -70,9 +70,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, TrashOutline } from '@vicons/ionicons5'
 import { operLogApi, type SysOperLog } from '@/api/monitor'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 const searchForm = reactive({ title: '', operName: '', status: null as number | null })
 const statusOptions = [{ label: '正常', value: 0 }, { label: '异常', value: 1 }]
@@ -100,10 +103,11 @@ const columns: DataTableColumns<SysOperLog> = [
   { title: '耗时', key: 'costTime', width: 80, render(row) { return h('span', {}, `${row.costTime}ms`) }},
   { title: '操作时间', key: 'operTime', width: 180 },
   { title: '操作', key: 'actions', width: 120, fixed: 'right', render(row) {
-    return h(NSpace, null, { default: () => [
-      h(NButton, { size: 'small', onClick: () => handleDetail(row) }, { default: () => '详情' }),
-      h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
-    ]})
+    const buttons = [h(NButton, { size: 'small', onClick: () => handleDetail(row) }, { default: () => '详情' })]
+    if (hasPermission('sys:operlog:delete')) {
+      buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+    }
+    return h(NSpace, null, { default: () => buttons })
   }}
 ]
 

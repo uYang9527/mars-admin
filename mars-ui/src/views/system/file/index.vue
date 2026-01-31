@@ -51,6 +51,7 @@
       <div class="table-toolbar">
         <n-space>
           <n-upload
+            v-if="hasPermission('sys:file:upload')"
             :custom-request="handleUpload"
             :show-file-list="false"
             :multiple="true"
@@ -106,9 +107,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, NIcon, useMessage, useDialog, type DataTableColumns, type UploadCustomRequestOptions } from 'naive-ui'
 import { SearchOutline, RefreshOutline, CloudUploadOutline, TrashOutline, EyeOutline, DownloadOutline, DocumentOutline } from '@vicons/ionicons5'
 import { fileApi, type SysFile } from '@/api/system'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 // 搜索表单
 const searchForm = reactive({
@@ -234,19 +238,20 @@ const columns: DataTableColumns<SysFile> = [
     width: 180,
     fixed: 'right',
     render(row) {
-      return h(NSpace, null, {
-        default: () => [
-          h(NButton, { size: 'small', quaternary: true, onClick: () => handlePreview(row) }, {
-            default: () => [h(NIcon, null, { default: () => h(EyeOutline) }), ' 预览']
-          }),
-          h(NButton, { size: 'small', quaternary: true, onClick: () => handleDownload(row) }, {
-            default: () => [h(NIcon, null, { default: () => h(DownloadOutline) }), ' 下载']
-          }),
-          h(NButton, { size: 'small', quaternary: true, type: 'error', onClick: () => handleDelete(row) }, {
-            default: () => [h(NIcon, null, { default: () => h(TrashOutline) }), ' 删除']
-          })
-        ]
-      })
+      const buttons = [
+        h(NButton, { size: 'small', quaternary: true, onClick: () => handlePreview(row) }, {
+          default: () => [h(NIcon, null, { default: () => h(EyeOutline) }), ' 预览']
+        }),
+        h(NButton, { size: 'small', quaternary: true, onClick: () => handleDownload(row) }, {
+          default: () => [h(NIcon, null, { default: () => h(DownloadOutline) }), ' 下载']
+        })
+      ]
+      if (hasPermission('sys:file:delete')) {
+        buttons.push(h(NButton, { size: 'small', quaternary: true, type: 'error', onClick: () => handleDelete(row) }, {
+          default: () => [h(NIcon, null, { default: () => h(TrashOutline) }), ' 删除']
+        }))
+      }
+      return h(NSpace, null, { default: () => buttons })
     }
   }
 ]

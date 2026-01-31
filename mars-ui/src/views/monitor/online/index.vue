@@ -18,9 +18,12 @@ import { ref, h, onMounted } from 'vue'
 import { NButton, NSpace, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { RefreshOutline } from '@vicons/ionicons5'
 import { onlineApi, type OnlineUser } from '@/api/monitor'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 const tableData = ref<OnlineUser[]>([])
 const loading = ref(false)
@@ -31,9 +34,9 @@ const columns: DataTableColumns<OnlineUser> = [
   { title: '登录时间', key: 'loginTime', width: 180 },
   { title: '最后访问时间', key: 'lastAccessTime', width: 180 },
   { title: '操作', key: 'actions', width: 100, fixed: 'right', render(row) {
-    return h(NSpace, null, { default: () => [
-      h(NButton, { size: 'small', type: 'error', onClick: () => handleForceLogout(row) }, { default: () => '强退' })
-    ]})
+    return hasPermission('monitor:online:forceLogout')
+      ? h(NButton, { size: 'small', type: 'error', onClick: () => handleForceLogout(row) }, { default: () => '强退' })
+      : '-'
   }}
 ]
 

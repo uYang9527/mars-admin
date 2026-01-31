@@ -33,7 +33,7 @@
       
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button type="primary" @click="handleAdd()">
+        <n-button v-if="hasPermission('sys:menu:add')" type="primary" @click="handleAdd()">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增菜单
         </n-button>
@@ -129,9 +129,14 @@ import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { menuApi, type SysMenu } from '@/api/system'
 import IconSelect from '@/components/IconSelect.vue'
 import { getIconComponent } from '@/utils/icons'
+import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
+const userStore = useUserStore()
+
+// 权限检查
+const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
 // 搜索表单
 const searchForm = reactive({
@@ -241,25 +246,17 @@ const columns: DataTableColumns<SysMenu> = [
     width: 200,
     fixed: 'right',
     render(row) {
-      return h(NSpace, null, {
-        default: () => [
-          row.type !== 3 && h(
-            NButton,
-            { size: 'small', onClick: () => handleAdd(row.id) },
-            { default: () => '新增' }
-          ),
-          h(
-            NButton,
-            { size: 'small', onClick: () => handleEdit(row) },
-            { default: () => '编辑' }
-          ),
-          h(
-            NButton,
-            { size: 'small', type: 'error', onClick: () => handleDelete(row) },
-            { default: () => '删除' }
-          )
-        ].filter(Boolean)
-      })
+      const buttons = []
+      if (row.type !== 3 && hasPermission('sys:menu:add')) {
+        buttons.push(h(NButton, { size: 'small', onClick: () => handleAdd(row.id) }, { default: () => '新增' }))
+      }
+      if (hasPermission('sys:menu:edit')) {
+        buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
+      }
+      if (hasPermission('sys:menu:delete')) {
+        buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
+      }
+      return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
     }
   }
 ]
