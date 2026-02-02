@@ -278,7 +278,17 @@ public class SystemConfigHelper {
      * 获取允许的文件类型
      */
     public String getStorageAllowTypes() {
-        return getString(GROUP_STORAGE, "allowTypes", "jpg,jpeg,png,gif,pdf,doc,docx");
+        // 支持常见的图片、文档、视频、音频、压缩包、代码等文件类型
+        return getString(GROUP_STORAGE, "allowTypes", 
+            "jpg,jpeg,png,gif,webp,bmp,ico,svg," +  // 图片
+            "pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,rtf,csv," +  // 文档
+            "mp4,avi,mov,wmv,flv,mkv,webm,m4v," +  // 视频
+            "mp3,wav,ogg,flac,aac,m4a," +  // 音频
+            "zip,rar,7z,tar,gz,bz2," +  // 压缩包
+            "json,xml,yaml,yml,ini,conf,cfg,properties," +  // 配置文件
+            "js,ts,vue,jsx,tsx,css,scss,less,html,htm," +  // 前端
+            "java,py,go,rs,c,cpp,h,hpp,cs,php,rb,swift,kt," +  // 后端
+            "sql,sh,bat,ps1,log");  // 其他
     }
 
     /**

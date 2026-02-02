@@ -15,9 +15,24 @@ public interface SysFileService {
     Page<SysFile> page(Integer page, Integer pageSize, String originalName, String fileType);
 
     /**
+     * 分页查询文件列表（支持分组和类型过滤）
+     * @param page 页码
+     * @param pageSize 每页数量
+     * @param groupId 分组ID（null表示查询未分组，-1表示查询全部）
+     * @param fileCategory 文件类别（image/video/other）
+     * @param originalName 文件名搜索
+     */
+    Page<SysFile> pageByGroup(Integer page, Integer pageSize, Long groupId, String fileCategory, String originalName);
+
+    /**
      * 上传文件
      */
     SysFile upload(MultipartFile file, String path);
+
+    /**
+     * 上传文件到指定分组
+     */
+    SysFile upload(MultipartFile file, String path, Long groupId);
 
     /**
      * 上传图片
@@ -43,4 +58,14 @@ public interface SysFileService {
      * 批量删除文件
      */
     void deleteBatch(Long[] ids);
+
+    /**
+     * 移动文件到分组
+     */
+    void moveToGroup(Long[] fileIds, Long groupId);
+
+    /**
+     * 重命名文件
+     */
+    void rename(Long id, String newName);
 }

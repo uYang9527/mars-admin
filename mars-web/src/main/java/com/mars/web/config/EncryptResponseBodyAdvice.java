@@ -43,7 +43,8 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             "/auth/captcha",      // 验证码接口
             "/auth/sms-code",     // 短信验证码接口
             "/sys/config-group/public",  // 公开配置接口
-            "/file/"              // 文件接口
+            "/file/",             // 文件接口
+            "/sys/file/"          // 系统文件接口
     );
 
     @Override
@@ -69,6 +70,11 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                                   ServerHttpRequest request, ServerHttpResponse response) {
         try {
             if (body == null) {
+                return body;
+            }
+
+            // 如果是 byte[] 类型，不加密（文件下载等场景）
+            if (body instanceof byte[]) {
                 return body;
             }
 

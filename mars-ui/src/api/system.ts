@@ -152,6 +152,43 @@ export const menuApi = {
   }
 }
 
+// ==================== 文件分组管理 ====================
+export interface SysFileGroup {
+  id?: number
+  name: string
+  sort?: number
+  fileCount?: number
+  createBy?: string
+  createTime?: string
+}
+
+export interface FileGroupListResult {
+  groups: SysFileGroup[]
+  ungroupedCount: number
+}
+
+export const fileGroupApi = {
+  list(): Promise<FileGroupListResult> {
+    return request({ url: '/sys/file-group/list', method: 'get' })
+  },
+
+  detail(id: number): Promise<SysFileGroup> {
+    return request({ url: `/sys/file-group/${id}`, method: 'get' })
+  },
+
+  create(data: SysFileGroup): Promise<void> {
+    return request({ url: '/sys/file-group', method: 'post', data })
+  },
+
+  update(data: SysFileGroup): Promise<void> {
+    return request({ url: '/sys/file-group', method: 'put', data })
+  },
+
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/file-group/${id}`, method: 'delete' })
+  }
+}
+
 // ==================== 文件管理 ====================
 export interface SysFile {
   id?: number
@@ -164,6 +201,7 @@ export interface SysFile {
   fileSuffix: string
   storageType: string
   bucketName?: string
+  groupId?: number
   createBy?: string
   createTime?: string
   remark?: string
@@ -173,16 +211,29 @@ export const fileApi = {
   page(params: { page: number; pageSize: number; originalName?: string; fileType?: string }): Promise<PageResult<SysFile>> {
     return request({ url: '/sys/file/page', method: 'get', params })
   },
+
+  pageByGroup(params: { 
+    page: number
+    pageSize: number
+    groupId?: number | null
+    fileCategory?: string
+    originalName?: string 
+  }): Promise<PageResult<SysFile>> {
+    return request({ url: '/sys/file/page-by-group', method: 'get', params })
+  },
   
   detail(id: number): Promise<SysFile> {
     return request({ url: `/sys/file/${id}`, method: 'get' })
   },
   
-  upload(file: File, path?: string): Promise<SysFile> {
+  upload(file: File, path?: string, groupId?: number | null): Promise<SysFile> {
     const formData = new FormData()
     formData.append('file', file)
     if (path) {
       formData.append('path', path)
+    }
+    if (groupId !== undefined && groupId !== null && groupId > 0) {
+      formData.append('groupId', groupId.toString())
     }
     return request({
       url: '/sys/file/upload',
@@ -210,6 +261,10 @@ export const fileApi = {
   getPreviewUrl(id: number): string {
     return `/api/sys/file/preview/${id}`
   },
+
+  getTextContent(id: number): Promise<string> {
+    return request({ url: `/sys/file/text/${id}`, method: 'get' })
+  },
   
   delete(id: number): Promise<void> {
     return request({ url: `/sys/file/${id}`, method: 'delete' })
@@ -217,6 +272,14 @@ export const fileApi = {
   
   deleteBatch(ids: number[]): Promise<void> {
     return request({ url: '/sys/file/batch', method: 'delete', data: ids })
+  },
+
+  moveToGroup(fileIds: number[], groupId: number | null): Promise<void> {
+    return request({ url: '/sys/file/move', method: 'post', data: { fileIds, groupId } })
+  },
+
+  rename(id: number, newName: string): Promise<void> {
+    return request({ url: `/sys/file/${id}/rename`, method: 'put', data: { newName } })
   }
 }
 

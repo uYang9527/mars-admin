@@ -541,7 +541,7 @@ const configs = reactive<Record<string, any>>({
     domain: 'http://localhost:8080',
     localPath: './uploads', 
     maxSize: 10, 
-    allowTypes: 'jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx',
+    allowTypes: 'jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,mp4,avi,mov,wmv,flv,mkv,mp3,wav,ogg,zip,rar,7z',
     // MinIO配置
     minioEndpoint: '',
     minioAccessKey: '',

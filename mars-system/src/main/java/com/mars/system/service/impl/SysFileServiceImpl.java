@@ -2,6 +2,7 @@ package com.mars.system.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mars.system.entity.SysFile;
 import com.mars.system.mapper.SysFileMapper;
@@ -52,8 +53,49 @@ public class SysFileServiceImpl implements SysFileService {
     }
 
     @Override
+    public Page<SysFile> pageByGroup(Integer page, Integer pageSize, Long groupId, String fileCategory, String originalName) {
+        Page<SysFile> pageParam = new Page<>(page, pageSize);
+        LambdaQueryWrapper<SysFile> wrapper = new LambdaQueryWrapper<>();
+        
+        // 分组过滤：-1表示全部，null表示未分组，其他表示指定分组
+        if (groupId != null && groupId != -1) {
+            wrapper.eq(SysFile::getGroupId, groupId);
+        } else if (groupId == null) {
+            wrapper.isNull(SysFile::getGroupId);
+        }
+        // groupId == -1 时不添加分组条件，查询全部
+        
+        // 文件类别过滤
+        if (StringUtils.hasText(fileCategory)) {
+            switch (fileCategory) {
+                case "image" -> wrapper.likeRight(SysFile::getFileType, "image/");
+                case "video" -> wrapper.likeRight(SysFile::getFileType, "video/");
+                case "audio" -> wrapper.likeRight(SysFile::getFileType, "audio/");
+                case "other" -> wrapper.and(w -> w
+                        .notLike(SysFile::getFileType, "image/")
+                        .notLike(SysFile::getFileType, "video/")
+                        .notLike(SysFile::getFileType, "audio/"));
+            }
+        }
+        
+        // 文件名搜索
+        if (StringUtils.hasText(originalName)) {
+            wrapper.like(SysFile::getOriginalName, originalName);
+        }
+        
+        wrapper.orderByDesc(SysFile::getCreateTime);
+        return fileMapper.selectPage(pageParam, wrapper);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public SysFile upload(MultipartFile file, String path) {
+        return upload(file, path, null);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public SysFile upload(MultipartFile file, String path, Long groupId) {
         // 验证文件大小
         configHelper.validateFileSize(file.getSize());
         
@@ -85,6 +127,7 @@ public class SysFileServiceImpl implements SysFileService {
             sysFile.setFileType(file.getContentType());
             sysFile.setFileSuffix(suffix);
             sysFile.setStorageType(storage.getStorageType());
+            sysFile.setGroupId(groupId);
             sysFile.setCreateBy(StpUtil.getLoginIdAsString());
             sysFile.setCreateTime(LocalDateTime.now());
             
@@ -152,6 +195,28 @@ public class SysFileServiceImpl implements SysFileService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteBatch(Long[] ids) {
         Arrays.stream(ids).forEach(this::delete);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void moveToGroup(Long[] fileIds, Long groupId) {
+        if (fileIds == null || fileIds.length == 0) {
+            return;
+        }
+        fileMapper.update(null, new LambdaUpdateWrapper<SysFile>()
+                .in(SysFile::getId, Arrays.asList(fileIds))
+                .set(SysFile::getGroupId, groupId));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void rename(Long id, String newName) {
+        SysFile file = fileMapper.selectById(id);
+        if (file == null) {
+            throw new RuntimeException("文件不存在");
+        }
+        file.setOriginalName(newName);
+        fileMapper.updateById(file);
     }
 
     /**

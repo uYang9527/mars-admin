@@ -25,7 +25,8 @@
       <!-- 右侧轮播Banner -->
       <div class="welcome-banner">
         <n-carousel autoplay :interval="5000" dot-type="line" show-arrow="hover" class="banner-carousel">
-          <div v-for="(banner, index) in banners" :key="index" class="banner-item" :style="{ background: banner.bgColor }">
+          <div v-for="(banner, index) in banners" :key="index" class="banner-item"
+               :style="{ background: banner.bgColor }">
             <div class="banner-content">
               <div class="banner-text">
                 <h3 class="banner-title">{{ banner.title }}</h3>
@@ -33,7 +34,7 @@
               </div>
               <div class="banner-icon">
                 <n-icon :size="64" :color="banner.iconColor">
-                  <component :is="banner.icon" />
+                  <component :is="banner.icon"/>
                 </n-icon>
               </div>
             </div>
@@ -133,15 +134,19 @@
             </div>
             <div class="author-info">
               <h3 class="author-name">程序员Mars</h3>
-              <p class="author-desc">8年全栈开发工程师，抖音技术博主，专注于后台管理系统的开发与优化。</p>
+              <p class="author-desc">开源作者全栈开发，抖音技术博主，专注于后台管理系统的开发与优化。</p>
               <div class="author-links">
                 <n-space>
                   <a href="https://gitee.com/Marsfactory/mars-admin" target="_blank" class="author-link">
-                    <n-icon size="16"><LogoGitlab/></n-icon>
+                    <n-icon size="16">
+                      <LogoGitlab/>
+                    </n-icon>
                     <span>Gitee</span>
                   </a>
                   <a href="https://mars-coder.cn/" target="_blank" class="author-link">
-                    <n-icon size="16"><Globe/></n-icon>
+                    <n-icon size="16">
+                      <Globe/>
+                    </n-icon>
                     <span>火星编程导航</span>
                   </a>
                   <n-popover trigger="hover" placement="top">
@@ -152,7 +157,9 @@
                       </span>
                     </template>
                     <div class="wechat-info">
-                      <n-icon size="16" color="#07C160"><LogoWechat/></n-icon>
+                      <n-icon size="16" color="#07C160">
+                        <LogoWechat/>
+                      </n-icon>
                       <span>Mars8377</span>
                     </div>
                   </n-popover>
@@ -245,7 +252,7 @@ const banners = [
   {
     title: 'Mars Admin',
     subtitle: '现代化后台管理系统',
-    bgColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    bgColor: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     icon: markRaw(RocketOutline),
     iconColor: 'rgba(255,255,255,0.3)'
   },

@@ -65,6 +65,11 @@ public class SysFile implements Serializable {
     private String bucketName;
 
     /**
+     * 分组ID
+     */
+    private Long groupId;
+
+    /**
      * 创建者
      */
     @TableField(fill = FieldFill.INSERT)
