@@ -129,17 +129,27 @@ service.interceptors.request.use(
   }
 )
 
+// 防止重复 logout
+let isLoggingOut = false
+
 // 响应拦截器
 service.interceptors.response.use(
   async (response: AxiosResponse<ApiResponse>) => {
     const res = response.data
     
     if (res.code !== 200) {
-      window.$message?.error(res.message || '请求失败')
+      // logout 接口返回 401 时不显示错误消息（避免干扰）
+      const isLogoutRequest = response.config.url?.includes('/auth/logout')
+      if (!isLogoutRequest) {
+        window.$message?.error(res.message || '请求失败')
+      }
       
-      if (res.code === 401) {
+      // 401 未授权，跳转登录（防止重复调用）
+      if (res.code === 401 && !isLoggingOut && !isLogoutRequest) {
+        isLoggingOut = true
         const userStore = useUserStore()
-        userStore.logout()
+        await userStore.logout()
+        isLoggingOut = false
       }
       
       return Promise.reject(new Error(res.message || '请求失败'))

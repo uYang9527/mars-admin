@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.mars</groupId>
-        <artifactId>mars-system</artifactId>
+        <artifactId>mars-admin</artifactId>
         <version>1.0.0</version>
     </parent>
 

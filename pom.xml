@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mars</groupId>
-    <artifactId>mars-system</artifactId>
+    <artifactId>mars-admin</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>Mars System</name>
+    <name>Mars Admin</name>
     <description>通用管理系统 - RBAC权限管理</description>
 
     <modules>
         <module>mars-common</module>
-        <module>mars-system-core</module>
+        <module>mars-system</module>
         <module>mars-job</module>
-        <module>mars-admin</module>
+        <module>mars-web</module>
     </modules>
 
     <properties>
@@ -82,7 +82,7 @@
             </dependency>
             <dependency>
                 <groupId>com.mars</groupId>
-                <artifactId>mars-system-core</artifactId>
+                <artifactId>mars-system</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

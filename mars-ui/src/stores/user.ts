@@ -38,18 +38,24 @@ export const useUserStore = defineStore('user', () => {
   
   // 退出登录
   async function logout() {
-    try {
-      await authApi.logout()
-    } catch (error) {
-      // 忽略错误
-    } finally {
-      token.value = null
-      user.value = null
-      roles.value = []
-      permissions.value = []
-      menus.value = []
-      router.push('/login')
+    // 先清除本地状态，再发送请求（避免 logout 请求带过期 token 触发 401 循环）
+    const hadToken = !!token.value
+    token.value = null
+    user.value = null
+    roles.value = []
+    permissions.value = []
+    menus.value = []
+    
+    // 只有之前有 token 时才发送 logout 请求
+    if (hadToken) {
+      try {
+        await authApi.logout()
+      } catch (error) {
+        // 忽略错误
+      }
     }
+    
+    router.push('/login')
   }
   
   // 检查权限
