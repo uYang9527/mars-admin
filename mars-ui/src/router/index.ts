@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import type { MenuInfo } from '@/api/auth'
 
-// 静态路由
+// 动态导入所有页面组件
+const modules = import.meta.glob('/src/views/**/*.vue')
+
+// 路由配置
 const routes: RouteRecordRaw[] = [
   {
     path: '/login',
@@ -58,7 +62,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/system/config/index.vue'),
         meta: { title: '系统配置', icon: 'SettingsSharp' }
       },
-      // 文件管理
       {
         path: 'system/file',
         name: 'SystemFile',
@@ -70,6 +73,12 @@ const routes: RouteRecordRaw[] = [
         name: 'SystemFileConfig',
         component: () => import('@/views/system/file-config/index.vue'),
         meta: { title: '文件配置', icon: 'CloudOutline' }
+      },
+      {
+        path: 'system/customer',
+        name: 'Customer',
+        component: () => import('@/views/system/customer/index.vue'),
+        meta: { title: '客户管理', icon: 'StarOutline' }
       },
       // 消息中心
       {
@@ -141,12 +150,19 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/monitor/server-manager/index.vue'),
         meta: { title: '服务器管理', icon: 'ServerOutline' }
       },
-        {
-            path: 'test/test',
-            name: 'Test',
-            component: () => import('@/views/test/test/index.vue'),
-            meta: { title: '测试菜单', icon: 'StarOutline' }
-        }
+      {
+        path: 'test/test',
+        name: 'Test',
+        component: () => import('@/views/test/test/index.vue'),
+        meta: { title: '测试菜单', icon: 'StarOutline' }
+      },
+      // 开发工具
+      {
+        path: 'tool/gen',
+        name: 'ToolGen',
+        component: () => import('@/views/tool/gen/index.vue'),
+        meta: { title: '代码生成', icon: 'CodeSlashOutline' }
+      }
     ]
   },
   {
@@ -162,29 +178,107 @@ const router = createRouter({
   routes
 })
 
+// 已添加的动态路由
+const addedRouteNames = new Set<string>()
+
+/**
+ * 根据菜单动态添加新路由（只添加静态路由中没有的）
+ */
+export function addDynamicRoutes(menus: MenuInfo[]) {
+  console.log('[动态路由] 开始处理菜单:', menus)
+  
+  const addRoutes = (menuList: MenuInfo[]) => {
+    for (const menu of menuList) {
+      // 只处理菜单类型(type=2)，且有 path 和 component
+      if (menu.type === 2 && menu.path && menu.component) {
+        const routeName = 'Dynamic-' + menu.id
+        
+        // 检查是否已经有同路径的静态路由
+        const existingRoutes = router.getRoutes()
+        const menuPath = menu.path.startsWith('/') ? menu.path.slice(1) : menu.path
+        const pathExists = existingRoutes.some(r => r.path === '/' + menuPath || r.path === menuPath)
+        
+        if (pathExists) {
+          console.log(`[动态路由] 跳过(已存在): ${menuPath}`)
+          continue
+        }
+        
+        if (addedRouteNames.has(routeName)) {
+          console.log(`[动态路由] 跳过(已添加): ${menuPath}`)
+          continue
+        }
+        
+        // 处理 component 路径（去掉开头的斜杠）
+        const componentName = menu.component.startsWith('/') ? menu.component.slice(1) : menu.component
+        const componentPath = `/src/views/${componentName}.vue`
+        const component = modules[componentPath]
+        
+        console.log(`[动态路由] 处理: path=${menuPath}, component=${componentPath}, 组件存在=${!!component}`)
+        
+        if (component) {
+          router.addRoute('Layout', {
+            path: menuPath,
+            name: routeName,
+            component: component,
+            meta: {
+              title: menu.name,
+              icon: menu.icon,
+              permission: menu.permission
+            }
+          })
+          addedRouteNames.add(routeName)
+          console.log(`[动态路由] ✓ 添加成功: ${menuPath}`)
+        } else {
+          console.warn(`[动态路由] ✗ 组件不存在: ${componentPath}`)
+        }
+      }
+      
+      // 递归处理子菜单
+      if (menu.children && menu.children.length > 0) {
+        addRoutes(menu.children)
+      }
+    }
+  }
+  
+  addRoutes(menus)
+  console.log('[动态路由] 当前所有路由:', router.getRoutes().map(r => r.path))
+}
+
+/**
+ * 重置动态路由
+ */
+export function resetRouter() {
+  addedRouteNames.forEach(name => {
+    if (router.hasRoute(name)) {
+      router.removeRoute(name)
+    }
+  })
+  addedRouteNames.clear()
+}
+
 // 路由守卫
 router.beforeEach(async (to, _from, next) => {
   const userStore = useUserStore()
 
-  // 设置页面标题
   document.title = `${to.meta.title || ''} - Mars Admin`
 
-  // 不需要认证的页面直接放行
   if (to.meta.requiresAuth === false) {
     next()
     return
   }
 
-  // 检查是否登录
   if (!userStore.token) {
     next({ name: 'Login', query: { redirect: to.fullPath } })
     return
   }
 
-  // 获取用户信息
   if (!userStore.user) {
     try {
       await userStore.getInfo()
+      // 添加动态路由（只添加新的，不影响已有的）
+      addDynamicRoutes(userStore.menus)
+      next({ ...to, replace: true })
+      return
     } catch (error) {
       userStore.logout()
       next({ name: 'Login' })

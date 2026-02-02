@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authApi, type LoginParams, type UserInfo, type MenuInfo } from '@/api/auth'
-import router from '@/router'
+import router, { resetRouter } from '@/router'
 
 export const useUserStore = defineStore('user', () => {
   // 状态
@@ -45,6 +45,9 @@ export const useUserStore = defineStore('user', () => {
     roles.value = []
     permissions.value = []
     menus.value = []
+    
+    // 重置路由
+    resetRouter()
     
     // 只有之前有 token 时才发送 logout 请求
     if (hadToken) {

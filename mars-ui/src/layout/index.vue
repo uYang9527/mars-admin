@@ -512,9 +512,14 @@ function convertMenus(menus: typeof userStore.menus): MenuOption[] {
     .filter(menu => menu.visible === 1 && menu.type !== 3) // 过滤隐藏菜单和按钮
     .sort((a, b) => a.sort - b.sort) // 按排序字段排序
     .map(menu => {
+      // 确保菜单路径是绝对路径（以 / 开头）
+      let menuPath = menu.path || `/menu-${menu.id}`
+      if (menuPath && !menuPath.startsWith('/') && menu.type === 2) {
+        menuPath = '/' + menuPath
+      }
       const option: MenuOption = {
         label: menu.name,
-        key: menu.path || `/menu-${menu.id}`,
+        key: menuPath,
         icon: renderIcon(menu.icon)
       }
       if (menu.children && menu.children.length > 0) {
