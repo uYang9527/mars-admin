@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
 
 import java.lang.management.*;
 import java.net.InetAddress;
@@ -41,9 +42,18 @@ public class MonitorController {
                 if (session != null) {
                     OnlineUser user = new OnlineUser();
                     user.setTokenId(sessionId);
-                    user.setUserId(session.getId().toString());
-                    user.setLoginTime(formatTime(session.getCreateTime()));
-                    user.setLastAccessTime(formatTime(session.getCreateTime()));
+                    user.setLoginName(getSessionString(session, "loginName"));
+                    user.setDeptName(getSessionString(session, "deptName"));
+                    user.setIpaddr(getSessionString(session, "ipaddr"));
+                    user.setLoginLocation(getSessionString(session, "loginLocation"));
+                    user.setBrowser(getSessionString(session, "browser"));
+                    user.setOs(getSessionString(session, "os"));
+                    user.setStatus(getSessionInt(session, "status", 1));
+                    long loginTime = getSessionLong(session, "loginTime", session.getCreateTime());
+                    long lastAccessTime = getSessionLong(session, "lastAccessTime", loginTime);
+                    user.setLoginTime(formatTime(loginTime));
+                    user.setLastAccessTime(formatTime(lastAccessTime));
+                    user.setTokenValue(getTokenValue(session));
                     onlineUsers.add(user);
                 }
             } catch (Exception e) {
@@ -59,7 +69,20 @@ public class MonitorController {
     @DeleteMapping("/online/{tokenId}")
     @SaCheckPermission("monitor:online:forceLogout")
     public Result<Void> forceLogout(@PathVariable String tokenId) {
-        StpUtil.kickoutByTokenValue(tokenId);
+        String tokenValue = tokenId;
+        try {
+            SaSession session = StpUtil.getSessionBySessionId(tokenId);
+            if (session != null) {
+                String sessionToken = getTokenValue(session);
+                if (StringUtils.hasText(sessionToken)) {
+                    tokenValue = sessionToken;
+                }
+            }
+        } catch (Exception e) {
+            // 忽略非法的sessionId
+        }
+        StpUtil.logoutByTokenValue(tokenValue);
+        StpUtil.kickoutByTokenValue(tokenValue);
         return Result.ok();
     }
 
@@ -219,11 +242,63 @@ public class MonitorController {
         return String.format("%d天%d小时%d分%d秒", days, hours, minutes, secs);
     }
 
+    private String getSessionString(SaSession session, String key) {
+        Object value = session.get(key);
+        return value == null ? "" : String.valueOf(value);
+    }
+
+    private int getSessionInt(SaSession session, String key, int defaultValue) {
+        Object value = session.get(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        try {
+            return value instanceof Number ? ((Number) value).intValue() : Integer.parseInt(value.toString());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    private long getSessionLong(SaSession session, String key, long defaultValue) {
+        Object value = session.get(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        try {
+            return value instanceof Number ? ((Number) value).longValue() : Long.parseLong(value.toString());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    private String getTokenValue(SaSession session) {
+        String token = session.getToken();
+        if (StringUtils.hasText(token)) {
+            return token;
+        }
+        Object loginId = session.getLoginId();
+        if (loginId == null) {
+            return "";
+        }
+        try {
+            return StpUtil.getTokenValueByLoginId(loginId);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     @Data
     public static class OnlineUser {
         private String tokenId;
-        private String userId;
+        private String loginName;
+        private String deptName;
+        private String ipaddr;
+        private String loginLocation;
+        private String browser;
+        private String os;
+        private Integer status;
         private String loginTime;
         private String lastAccessTime;
+        private String tokenValue;
     }
 }

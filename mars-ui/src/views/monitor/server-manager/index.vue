@@ -755,3 +755,51 @@ onUnmounted(() => {
   }
 }
 </style>
+
+<style lang="scss">
+body.dark-theme .server-icon {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+body.dark-theme .server-icon.online {
+  background: #064e3b;
+  color: #34d399;
+}
+
+body.dark-theme .server-name {
+  color: #e4e4e7;
+}
+
+body.dark-theme .server-host {
+  color: #71717a;
+}
+
+body.dark-theme .server-details {
+  background: #27272a;
+}
+
+body.dark-theme .detail-item .label {
+  color: #71717a;
+}
+
+body.dark-theme .detail-item .value {
+  color: #a1a1aa;
+}
+
+body.dark-theme .terminal-modal-content {
+  background: #18181c;
+}
+
+body.dark-theme .terminal-modal-header {
+  border-bottom-color: #3f3f46;
+}
+
+body.dark-theme .terminal-title {
+  color: #e4e4e7;
+}
+
+body.dark-theme .terminal-modal-footer {
+  border-top-color: #3f3f46;
+}
+</style>

@@ -59,9 +59,16 @@ export const loginLogApi = {
 // ==================== 在线用户 ====================
 export interface OnlineUser {
   tokenId: string
-  userId: string
+  loginName?: string
+  deptName?: string
+  ipaddr?: string
+  loginLocation?: string
+  browser?: string
+  os?: string
+  status?: number
   loginTime: string
   lastAccessTime: string
+  tokenValue?: string
 }
 
 export const onlineApi = {

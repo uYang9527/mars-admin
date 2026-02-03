@@ -1,5 +1,6 @@
 package com.mars.web.controller.auth;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
@@ -220,6 +221,15 @@ public class AuthController {
 
         // 登录
         StpUtil.login(user.getId());
+        // 记录在线会话信息
+        SaSession session = StpUtil.getSession();
+        session.set("loginName", user.getUsername());
+        session.set("ipaddr", ip);
+        session.set("loginLocation", IpUtils.getAddressByIp(ip));
+        session.set("browser", browser);
+        session.set("os", os);
+        session.set("status", 1);
+        session.set("loginTime", System.currentTimeMillis());
         // 记录登录成功日志
         loginLogService.recordLog(request.getUsername(), 0, "登录成功", ip, browser, os);
         // 返回token和用户信息
