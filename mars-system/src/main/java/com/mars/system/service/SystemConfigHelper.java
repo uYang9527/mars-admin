@@ -29,6 +29,8 @@ public class SystemConfigHelper {
     public static final String GROUP_STORAGE = "storage";
     public static final String GROUP_PUSH = "push";
     public static final String GROUP_SECURITY = "security";
+    public static final String GROUP_WECHAT_MINIPROGRAM = "wechatMiniProgram";
+    public static final String GROUP_WECHAT_MP = "wechatMp";
 
     /**
      * 获取配置JSON
@@ -670,5 +672,86 @@ public class SystemConfigHelper {
      */
     public String getStorageTencentRegion() {
         return getString(GROUP_STORAGE, "tencentRegion", "");
+    }
+
+    // ============ 微信小程序配置 ============
+
+    /**
+     * 是否启用小程序
+     */
+    public boolean isMiniProgramEnabled() {
+        return getBoolean(GROUP_WECHAT_MINIPROGRAM, "enabled");
+    }
+
+    /**
+     * 获取小程序AppID
+     */
+    public String getMiniProgramAppId() {
+        return getString(GROUP_WECHAT_MINIPROGRAM, "appId", "");
+    }
+
+    /**
+     * 获取小程序AppSecret
+     */
+    public String getMiniProgramAppSecret() {
+        return getString(GROUP_WECHAT_MINIPROGRAM, "appSecret", "");
+    }
+
+    // ============ 微信公众号配置 ============
+
+    /**
+     * 是否启用公众号
+     */
+    public boolean isWechatMpEnabled() {
+        return getBoolean(GROUP_WECHAT_MP, "enabled");
+    }
+
+    /**
+     * 获取公众号AppID
+     */
+    public String getWechatMpAppId() {
+        return getString(GROUP_WECHAT_MP, "appId", "");
+    }
+
+    /**
+     * 获取公众号AppSecret
+     */
+    public String getWechatMpAppSecret() {
+        return getString(GROUP_WECHAT_MP, "appSecret", "");
+    }
+
+    /**
+     * 获取公众号Token
+     */
+    public String getWechatMpToken() {
+        return getString(GROUP_WECHAT_MP, "token", "");
+    }
+
+    /**
+     * 获取公众号AES Key
+     */
+    public String getWechatMpAesKey() {
+        return getString(GROUP_WECHAT_MP, "aesKey", "");
+    }
+
+    /**
+     * 获取公众号回调URL
+     */
+    public String getWechatMpCallbackUrl() {
+        return getString(GROUP_WECHAT_MP, "callbackUrl", "");
+    }
+
+    /**
+     * 获取公众号OAuth回调URL
+     */
+    public String getWechatMpOAuthRedirectUrl() {
+        return getString(GROUP_WECHAT_MP, "oauthRedirectUrl", "");
+    }
+
+    /**
+     * 获取公众号菜单配置
+     */
+    public String getWechatMpMenuConfig() {
+        return getString(GROUP_WECHAT_MP, "menuConfig", "");
     }
 }

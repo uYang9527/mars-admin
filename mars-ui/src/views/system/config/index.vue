@@ -358,6 +358,208 @@
               </n-collapse>
             </template>
 
+            <!-- 小程序配置 -->
+            <template v-else-if="group.groupCode === 'wechatMiniProgram'">
+              <n-form :model="configs.wechatMiniProgram" label-placement="left" label-width="120">
+                <n-form-item label="启用小程序">
+                  <n-switch v-model:value="configs.wechatMiniProgram.enabled" />
+                </n-form-item>
+                <n-form-item label="AppID">
+                  <n-input v-model:value="configs.wechatMiniProgram.appId" placeholder="请输入小程序AppID" />
+                </n-form-item>
+                <n-form-item label="AppSecret">
+                  <n-input v-model:value="configs.wechatMiniProgram.appSecret" type="password" show-password-on="click" placeholder="请输入小程序AppSecret" />
+                </n-form-item>
+                <n-divider />
+                <n-alert type="info" title="使用说明" :bordered="false">
+                  <p>1. 小程序登录接口: POST /api/wechat/miniprogram/login</p>
+                  <p>2. 获取手机号接口: POST /api/wechat/miniprogram/phone</p>
+                  <p>3. 前端需要调用 wx.login() 获取 code 后传给后端</p>
+                </n-alert>
+              </n-form>
+            </template>
+
+            <!-- 公众号配置 -->
+            <template v-else-if="group.groupCode === 'wechatMp'">
+              <n-form :model="configs.wechatMp" label-placement="left" label-width="150">
+                <n-form-item label="启用公众号">
+                  <n-switch v-model:value="configs.wechatMp.enabled" />
+                </n-form-item>
+                <n-form-item label="AppID">
+                  <n-input v-model:value="configs.wechatMp.appId" placeholder="请输入公众号AppID" />
+                </n-form-item>
+                <n-form-item label="AppSecret">
+                  <n-input v-model:value="configs.wechatMp.appSecret" type="password" show-password-on="click" placeholder="请输入公众号AppSecret" />
+                </n-form-item>
+                <n-form-item label="Token">
+                  <n-input v-model:value="configs.wechatMp.token" placeholder="请输入服务器配置Token" />
+                </n-form-item>
+                <n-form-item label="EncodingAESKey">
+                  <n-input v-model:value="configs.wechatMp.aesKey" placeholder="请输入消息加解密密钥（可选）" />
+                </n-form-item>
+                <n-form-item label="回调URL">
+                  <n-input v-model:value="configs.wechatMp.callbackUrl" placeholder="如: https://api.example.com/api/wechat/callback" />
+                  <span class="form-hint">需配置到微信公众号后台</span>
+                </n-form-item>
+                <n-form-item label="OAuth回调URL">
+                  <n-input v-model:value="configs.wechatMp.oauthRedirectUrl" placeholder="如: https://www.example.com/login" />
+                  <span class="form-hint">网页授权登录后的回调地址</span>
+                </n-form-item>
+                
+                <n-divider>自定义菜单配置</n-divider>
+                <div class="menu-editor">
+                  <div class="menu-preview">
+                    <div class="phone-frame">
+                      <div class="phone-screen">
+                        <div class="chat-area"></div>
+                        <div class="menu-bar">
+                          <div 
+                            v-for="(menu, index) in menuList" 
+                            :key="index" 
+                            class="menu-item"
+                            :class="{ active: selectedMenuIndex === index && selectedSubIndex === -1 }"
+                            @click="selectMenu(index)"
+                          >
+                            <span class="menu-name">{{ menu.name || '菜单名称' }}</span>
+                            <div v-if="menu.sub_button && menu.sub_button.length > 0" class="sub-menu-list">
+                              <div 
+                                v-for="(sub, subIndex) in menu.sub_button" 
+                                :key="subIndex"
+                                class="sub-menu-item"
+                                :class="{ active: selectedMenuIndex === index && selectedSubIndex === subIndex }"
+                                @click.stop="selectSubMenu(index, subIndex)"
+                              >
+                                {{ sub.name || '子菜单' }}
+                              </div>
+                              <div 
+                                v-if="menu.sub_button.length < 5"
+                                class="sub-menu-item add-sub"
+                                @click.stop="addSubMenu(index)"
+                              >
+                                +
+                              </div>
+                            </div>
+                          </div>
+                          <div 
+                            v-if="menuList.length < 3" 
+                            class="menu-item add-menu"
+                            @click="addMenu"
+                          >
+                            <n-icon size="20"><AddOutline /></n-icon>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="menu-config" v-if="selectedMenuIndex >= 0">
+                    <n-card size="small" :title="selectedSubIndex >= 0 ? '子菜单配置' : '一级菜单配置'">
+                      <template #header-extra>
+                        <n-button size="small" type="error" quaternary @click="deleteCurrentMenu">
+                          <template #icon><n-icon><TrashOutline /></n-icon></template>
+                          删除
+                        </n-button>
+                      </template>
+                      
+                      <n-form label-placement="left" label-width="80" size="small">
+                        <n-form-item label="菜单名称">
+                          <n-input 
+                            v-model:value="currentMenu.name" 
+                            placeholder="最多4个汉字或8个字母"
+                            :maxlength="selectedSubIndex >= 0 ? 16 : 8"
+                          />
+                        </n-form-item>
+                        
+                        <n-form-item label="菜单类型" v-if="!hasSubMenu">
+                          <n-select 
+                            v-model:value="currentMenu.type" 
+                            :options="menuTypeOptions"
+                            @update:value="handleMenuTypeChange"
+                          />
+                        </n-form-item>
+                        
+                        <template v-if="!hasSubMenu">
+                          <n-form-item label="网页链接" v-if="currentMenu.type === 'view'">
+                            <n-input v-model:value="currentMenu.url" placeholder="https://" />
+                          </n-form-item>
+                          
+                          <n-form-item label="事件KEY" v-if="currentMenu.type === 'click'">
+                            <n-input v-model:value="currentMenu.key" placeholder="用于消息接口推送" />
+                          </n-form-item>
+                          
+                          <template v-if="currentMenu.type === 'miniprogram'">
+                            <n-form-item label="小程序AppID">
+                              <n-input v-model:value="currentMenu.appid" placeholder="小程序的AppID" />
+                            </n-form-item>
+                            <n-form-item label="小程序路径">
+                              <n-input v-model:value="currentMenu.pagepath" placeholder="pages/index/index" />
+                            </n-form-item>
+                            <n-form-item label="备用网页">
+                              <n-input v-model:value="currentMenu.url" placeholder="不支持小程序时打开的网页" />
+                            </n-form-item>
+                          </template>
+                        </template>
+                        
+                        <n-form-item v-if="selectedSubIndex === -1 && !currentMenu.type">
+                          <n-alert type="info" :bordered="false">
+                            一级菜单有子菜单时，不能设置跳转动作
+                          </n-alert>
+                        </n-form-item>
+                        
+                        <n-form-item v-if="selectedSubIndex === -1 && (!currentMenu.sub_button || currentMenu.sub_button.length === 0)">
+                          <n-button size="small" @click="addSubMenu(selectedMenuIndex)">
+                            <template #icon><n-icon><AddOutline /></n-icon></template>
+                            添加子菜单
+                          </n-button>
+                        </n-form-item>
+                      </n-form>
+                    </n-card>
+                  </div>
+                  
+                  <div class="menu-config menu-empty" v-else>
+                    <n-empty description="点击左侧菜单进行编辑" />
+                  </div>
+                </div>
+                
+                <n-form-item label="菜单操作" style="margin-top: 16px;">
+                  <n-space>
+                    <n-button type="primary" @click="handleSyncMenu" :loading="menuSyncing" :disabled="!configs.wechatMp.enabled || menuList.length === 0">
+                      同步菜单到微信
+                    </n-button>
+                    <n-button @click="handleGetMenu" :loading="menuLoading" :disabled="!configs.wechatMp.enabled">
+                      获取当前菜单
+                    </n-button>
+                    <n-button type="error" @click="handleDeleteMenu" :disabled="!configs.wechatMp.enabled">
+                      删除菜单
+                    </n-button>
+                    <n-button @click="showMenuJson = true">
+                      查看JSON
+                    </n-button>
+                  </n-space>
+                </n-form-item>
+                
+                <!-- JSON预览弹窗 -->
+                <n-modal v-model:show="showMenuJson" preset="card" title="菜单JSON" style="width: 600px">
+                  <n-input 
+                    :value="menuJsonPreview" 
+                    type="textarea" 
+                    :rows="15" 
+                    readonly
+                  />
+                  <template #footer>
+                    <n-button @click="copyMenuJson">复制JSON</n-button>
+                  </template>
+                </n-modal>
+
+                <n-divider />
+                <n-alert type="info" title="使用说明" :bordered="false">
+                  <p>1. 公众号OAuth登录: 先调用 GET /api/wechat/mp/oauth-url 获取授权链接</p>
+                  <p>2. 用户授权后回调到 oauthRedirectUrl，携带 code 参数</p>
+                  <p>3. 前端用 code 调用 POST /api/wechat/mp/oauth-login 完成登录</p>
+                </n-alert>
+              </n-form>
+            </template>
+
             <!-- 支付配置 -->
             <template v-else-if="group.groupCode === 'payment'">
               <n-collapse>
@@ -511,11 +713,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
 import { useMessage, type UploadCustomRequestOptions } from 'naive-ui'
-import { ImageOutline, CloseOutline } from '@vicons/ionicons5'
+import { ImageOutline, CloseOutline, AddOutline, TrashOutline } from '@vicons/ionicons5'
 import { configGroupApi, type SysConfigGroup } from '@/api/org'
 import { fileApi } from '@/api/system'
+import { wechatApi } from '@/api/wechat'
 import { useSiteStore } from '@/stores/site'
 
 const message = useMessage()
@@ -563,6 +766,21 @@ const configs = reactive<Record<string, any>>({
     wechat: { enabled: false, appId: '', appSecret: '' },
     alipay: { enabled: false, appId: '', privateKey: '', publicKey: '' },
     github: { enabled: false, clientId: '', clientSecret: '' }
+  },
+  wechatMiniProgram: {
+    enabled: false,
+    appId: '',
+    appSecret: ''
+  },
+  wechatMp: {
+    enabled: false,
+    appId: '',
+    appSecret: '',
+    token: '',
+    aesKey: '',
+    callbackUrl: '',
+    oauthRedirectUrl: '',
+    menuConfig: ''
   },
   payment: {
     wechatPay: { enabled: false, mchId: '', appId: '', apiV3Key: '', privateKey: '', certSerialNo: '', notifyUrl: '' },
@@ -664,6 +882,282 @@ async function handleTestEmail() {
   }
 }
 
+// 公众号菜单操作相关
+const menuSyncing = ref(false)
+const menuLoading = ref(false)
+const showMenuJson = ref(false)
+
+// 菜单编辑器相关
+interface MenuItem {
+  name: string
+  type?: string
+  url?: string
+  key?: string
+  appid?: string
+  pagepath?: string
+  sub_button?: MenuItem[]
+}
+
+const menuList = ref<MenuItem[]>([])
+const selectedMenuIndex = ref(-1)
+const selectedSubIndex = ref(-1)
+
+// 菜单类型选项
+const menuTypeOptions = [
+  { label: '跳转网页', value: 'view' },
+  { label: '点击推事件', value: 'click' },
+  { label: '跳转小程序', value: 'miniprogram' }
+]
+
+// 当前选中的菜单
+const currentMenu = computed(() => {
+  if (selectedMenuIndex.value < 0) return {} as MenuItem
+  const menu = menuList.value[selectedMenuIndex.value]
+  if (selectedSubIndex.value >= 0 && menu.sub_button) {
+    return menu.sub_button[selectedSubIndex.value]
+  }
+  return menu
+})
+
+// 是否有子菜单
+const hasSubMenu = computed(() => {
+  if (selectedMenuIndex.value < 0 || selectedSubIndex.value >= 0) return false
+  const menu = menuList.value[selectedMenuIndex.value]
+  return menu.sub_button && menu.sub_button.length > 0
+})
+
+// 菜单JSON预览
+const menuJsonPreview = computed(() => {
+  const data = { button: menuList.value.map(formatMenuForApi) }
+  return JSON.stringify(data, null, 2)
+})
+
+// 格式化菜单数据用于API
+function formatMenuForApi(menu: MenuItem): any {
+  const result: any = { name: menu.name }
+  
+  if (menu.sub_button && menu.sub_button.length > 0) {
+    result.sub_button = menu.sub_button.map(formatMenuForApi)
+  } else if (menu.type) {
+    result.type = menu.type
+    if (menu.type === 'view') {
+      result.url = menu.url || ''
+    } else if (menu.type === 'click') {
+      result.key = menu.key || ''
+    } else if (menu.type === 'miniprogram') {
+      result.appid = menu.appid || ''
+      result.pagepath = menu.pagepath || ''
+      result.url = menu.url || ''
+    }
+  }
+  
+  return result
+}
+
+// 选择菜单
+function selectMenu(index: number) {
+  selectedMenuIndex.value = index
+  selectedSubIndex.value = -1
+}
+
+// 选择子菜单
+function selectSubMenu(menuIndex: number, subIndex: number) {
+  selectedMenuIndex.value = menuIndex
+  selectedSubIndex.value = subIndex
+}
+
+// 添加菜单
+function addMenu() {
+  if (menuList.value.length >= 3) {
+    message.warning('最多只能添加3个一级菜单')
+    return
+  }
+  menuList.value.push({
+    name: '菜单' + (menuList.value.length + 1),
+    type: 'view',
+    url: ''
+  })
+  selectedMenuIndex.value = menuList.value.length - 1
+  selectedSubIndex.value = -1
+}
+
+// 添加子菜单
+function addSubMenu(menuIndex: number) {
+  const menu = menuList.value[menuIndex]
+  if (!menu.sub_button) {
+    menu.sub_button = []
+  }
+  if (menu.sub_button.length >= 5) {
+    message.warning('最多只能添加5个子菜单')
+    return
+  }
+  // 添加子菜单时，清除父菜单的类型设置
+  delete menu.type
+  delete menu.url
+  delete menu.key
+  delete menu.appid
+  delete menu.pagepath
+  
+  menu.sub_button.push({
+    name: '子菜单' + (menu.sub_button.length + 1),
+    type: 'view',
+    url: ''
+  })
+  selectedMenuIndex.value = menuIndex
+  selectedSubIndex.value = menu.sub_button.length - 1
+}
+
+// 删除当前菜单
+function deleteCurrentMenu() {
+  if (selectedMenuIndex.value < 0) return
+  
+  if (selectedSubIndex.value >= 0) {
+    // 删除子菜单
+    const menu = menuList.value[selectedMenuIndex.value]
+    if (menu.sub_button) {
+      menu.sub_button.splice(selectedSubIndex.value, 1)
+      // 如果没有子菜单了，给父菜单设置默认类型
+      if (menu.sub_button.length === 0) {
+        delete menu.sub_button
+        menu.type = 'view'
+        menu.url = ''
+      }
+    }
+    selectedSubIndex.value = -1
+  } else {
+    // 删除一级菜单
+    menuList.value.splice(selectedMenuIndex.value, 1)
+    selectedMenuIndex.value = -1
+    selectedSubIndex.value = -1
+  }
+}
+
+// 菜单类型变更
+function handleMenuTypeChange(type: string) {
+  if (selectedSubIndex.value >= 0) {
+    const menu = menuList.value[selectedMenuIndex.value]
+    if (menu.sub_button) {
+      const subMenu = menu.sub_button[selectedSubIndex.value]
+      // 清除其他类型的字段
+      delete subMenu.url
+      delete subMenu.key
+      delete subMenu.appid
+      delete subMenu.pagepath
+    }
+  } else {
+    const menu = menuList.value[selectedMenuIndex.value]
+    delete menu.url
+    delete menu.key
+    delete menu.appid
+    delete menu.pagepath
+  }
+}
+
+// 复制JSON
+function copyMenuJson() {
+  navigator.clipboard.writeText(menuJsonPreview.value)
+  message.success('已复制到剪贴板')
+}
+
+// 从配置解析菜单列表
+function parseMenuFromConfig() {
+  try {
+    if (configs.wechatMp.menuConfig) {
+      const data = JSON.parse(configs.wechatMp.menuConfig)
+      if (data.button) {
+        menuList.value = data.button
+      } else if (data.menu && data.menu.button) {
+        menuList.value = data.menu.button
+      }
+    }
+  } catch (e) {
+    console.error('解析菜单配置失败', e)
+  }
+}
+
+// 同步菜单到微信
+async function handleSyncMenu() {
+  if (menuList.value.length === 0) {
+    message.warning('请先添加菜单')
+    return
+  }
+  
+  // 验证菜单
+  for (const menu of menuList.value) {
+    if (!menu.name) {
+      message.warning('菜单名称不能为空')
+      return
+    }
+    if (menu.sub_button && menu.sub_button.length > 0) {
+      for (const sub of menu.sub_button) {
+        if (!sub.name) {
+          message.warning('子菜单名称不能为空')
+          return
+        }
+        if (!sub.type) {
+          message.warning(`子菜单"${sub.name}"请选择菜单类型`)
+          return
+        }
+      }
+    } else if (!menu.type) {
+      message.warning(`菜单"${menu.name}"请选择菜单类型或添加子菜单`)
+      return
+    }
+  }
+  
+  menuSyncing.value = true
+  try {
+    const menuData = JSON.stringify({ button: menuList.value.map(formatMenuForApi) })
+    await wechatApi.syncMenu(menuData)
+    // 保存到配置
+    configs.wechatMp.menuConfig = menuData
+    message.success('菜单同步成功')
+  } catch (error: any) {
+    message.error(error.message || '菜单同步失败')
+  } finally {
+    menuSyncing.value = false
+  }
+}
+
+// 获取当前菜单
+async function handleGetMenu() {
+  menuLoading.value = true
+  try {
+    const result = await wechatApi.getMenu()
+    if (result) {
+      const data = JSON.parse(result)
+      if (data.menu && data.menu.button) {
+        menuList.value = data.menu.button
+      } else if (data.button) {
+        menuList.value = data.button
+      }
+      configs.wechatMp.menuConfig = JSON.stringify({ button: menuList.value }, null, 2)
+      message.success('获取菜单成功')
+    } else {
+      message.info('当前没有配置菜单')
+      menuList.value = []
+    }
+  } catch (error: any) {
+    message.error(error.message || '获取菜单失败')
+  } finally {
+    menuLoading.value = false
+  }
+}
+
+// 删除菜单
+async function handleDeleteMenu() {
+  try {
+    await wechatApi.deleteMenu()
+    menuList.value = []
+    configs.wechatMp.menuConfig = ''
+    selectedMenuIndex.value = -1
+    selectedSubIndex.value = -1
+    message.success('菜单删除成功')
+  } catch (error: any) {
+    message.error(error.message || '删除菜单失败')
+  }
+}
+
 // 支付测试相关
 const paymentTesting = ref(false)
 const showPaymentModal = ref(false)
@@ -737,6 +1231,11 @@ async function loadConfig(groupCode: string) {
       }
       deepMergeReactive(configs[groupCode], value)
     }
+    
+    // 如果是公众号配置，自动获取当前菜单
+    if (groupCode === 'wechatMp') {
+      await loadWechatMpMenu()
+    }
   } catch (error) {
     console.error('加载配置失败:', error)
   }
@@ -801,6 +1300,23 @@ async function handleLogoUpload(options: UploadCustomRequestOptions) {
 onMounted(() => {
   loadGroups()
 })
+
+// 记录是否已加载过菜单
+const menuLoaded = ref(false)
+
+// 加载公众号菜单
+async function loadWechatMpMenu() {
+  if (menuLoaded.value) return
+  menuLoaded.value = true
+  
+  // 先尝试从微信获取当前菜单
+  try {
+    await handleGetMenu()
+  } catch (e) {
+    // 获取失败则从本地配置解析
+    parseMenuFromConfig()
+  }
+}
 </script>
 
 <style scoped>
@@ -888,6 +1404,143 @@ onMounted(() => {
 
 :deep(.n-collapse-item__header-main) {
   font-weight: 500;
+}
+
+/* 菜单编辑器样式 */
+.menu-editor {
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.menu-preview {
+  flex-shrink: 0;
+}
+
+.phone-frame {
+  width: 320px;
+  height: 500px;
+  background: #f5f5f5;
+  border-radius: 24px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: #ededed;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-area {
+  flex: 1;
+  background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+}
+
+.menu-bar {
+  display: flex;
+  background: #fafafa;
+  border-top: 1px solid #e0e0e0;
+  min-height: 50px;
+}
+
+.menu-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e0e0e0;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  padding: 0 8px;
+  
+  &:last-child {
+    border-right: none;
+  }
+  
+  &:hover {
+    background: #f0f0f0;
+  }
+  
+  &.active {
+    background: #e6f7ff;
+    color: #1890ff;
+  }
+  
+  &.add-menu {
+    color: #999;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+}
+
+.menu-name {
+  font-size: 13px;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.3;
+}
+
+.sub-menu-list {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  display: none;
+}
+
+.menu-item:hover .sub-menu-list,
+.menu-item.active .sub-menu-list {
+  display: block;
+}
+
+.sub-menu-item {
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: #f0f0f0;
+  }
+  
+  &.active {
+    background: #e6f7ff;
+    color: #1890ff;
+  }
+  
+  &.add-sub {
+    color: #999;
+    font-size: 16px;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+}
+
+.menu-config {
+  flex: 1;
+  min-width: 300px;
+}
+
+.menu-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  border-radius: 8px;
+  min-height: 200px;
 }
 
 .payment-test-modal {

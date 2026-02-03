@@ -23,15 +23,18 @@ public class SaTokenConfig implements WebMvcConfigurer {
             // 登录校验
             SaRouter.match("/**")
                     .notMatch(
-                        "/auth/login", 
-                        "/auth/register",               // 用户注册
-                        "/auth/captcha",                // 图片验证码
-                        "/auth/sms-code",               // 短信验证码
-                        "/error",
-                        "/crypto/**",                   // 加密配置
-                        "/sys/config-group/public",     // 公开配置
-                        "/file/**",                     // 文件访问
-                        "/files/**"                     // 文件访问
+                            "/auth/login",
+                            "/auth/register",               // 用户注册
+                            "/auth/captcha",                // 图片验证码
+                            "/auth/sms-code",               // 短信验证码
+                            "/api/mall/home",        // 小程序首页
+                            "/api/mall/login",        // 小程序登录
+                            "/api/mall/loginByPhone",        // 小程序登录
+                            "/error",
+                            "/crypto/**",                   // 加密配置
+                            "/sys/config-group/public",     // 公开配置
+                            "/file/**",                     // 文件访问
+                            "/files/**"                     // 文件访问
                     )
                     .check(r -> StpUtil.checkLogin());
         })).addPathPatterns("/**");

@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 03/02/2026 09:28:51
+ Date: 03/02/2026 16:27:35
 */
 
 SET NAMES utf8mb4;
@@ -135,6 +135,352 @@ INSERT INTO `gen_table_column` VALUES (30, 3, 'deleted', '删除标记', 'tinyin
 INSERT INTO `gen_table_column` VALUES (31, 3, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 8);
 INSERT INTO `gen_table_column` VALUES (32, 3, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 9);
 INSERT INTO `gen_table_column` VALUES (33, 3, 'image', 'image', 'varchar(255)', 'String', 'image', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'imageUpload', '', 6);
+
+-- ----------------------------
+-- Table structure for mall_address
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_address`;
+CREATE TABLE `mall_address`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '地址ID',
+  `member_id` bigint NOT NULL COMMENT '会员ID',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
+  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
+  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
+  `district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
+  `detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
+  `postal_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮政编码',
+  `is_default` tinyint NOT NULL DEFAULT 0 COMMENT '是否默认(0-否 1-是)',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收货地址表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_address
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_banner
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_banner`;
+CREATE TABLE `mall_banner`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '轮播图ID',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
+  `subtitle` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
+  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片地址',
+  `link_type` tinyint NOT NULL DEFAULT 0 COMMENT '链接类型(0-无 1-商品 2-分类 3-外链)',
+  `link_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '链接值',
+  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'home' COMMENT '位置(home-首页)',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_position`(`position` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '轮播图表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_banner
+-- ----------------------------
+INSERT INTO `mall_banner` VALUES (1, '有机牛油果 5折起', '新品上市', 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop', 1, '1', 'home', 1, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_banner` VALUES (2, '秋季水果节', '满199减50', 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?q=80&w=1000&auto=format&fit=crop', 2, '1', 'home', 2, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+
+-- ----------------------------
+-- Table structure for mall_cart
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_cart`;
+CREATE TABLE `mall_cart`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '购物车ID',
+  `member_id` bigint NOT NULL COMMENT '会员ID',
+  `product_id` bigint NOT NULL COMMENT '商品ID',
+  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
+  `quantity` int NOT NULL DEFAULT 1 COMMENT '数量',
+  `selected` tinyint NOT NULL DEFAULT 1 COMMENT '是否选中(0-否 1-是)',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_member_product_sku`(`member_id` ASC, `product_id` ASC, `sku_id` ASC) USING BTREE,
+  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
+  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '购物车表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_cart
+-- ----------------------------
+INSERT INTO `mall_cart` VALUES (1, 3, 1, 1, 2, 1, '2026-02-03 16:08:55', '2026-02-03 16:08:55');
+
+-- ----------------------------
+-- Table structure for mall_category
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_category`;
+CREATE TABLE `mall_category`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父分类ID',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
+  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图标',
+  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图片',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE,
+  INDEX `idx_sort`(`sort` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_category
+-- ----------------------------
+INSERT INTO `mall_category` VALUES (1, 0, '新鲜水果', 'fa-apple-alt', NULL, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_category` VALUES (2, 0, '时令蔬菜', 'fa-carrot', NULL, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_category` VALUES (3, 0, '海鲜水产', 'fa-fish', NULL, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_category` VALUES (4, 0, '肉禽蛋品', 'fa-drumstick-bite', NULL, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_category` VALUES (5, 0, '乳品烘焙', 'fa-cheese', NULL, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_category` VALUES (6, 0, '粮油调味', 'fa-wheat-awn', NULL, 6, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+
+-- ----------------------------
+-- Table structure for mall_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_coupon`;
+CREATE TABLE `mall_coupon`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '优惠券名称',
+  `type` tinyint NOT NULL DEFAULT 1 COMMENT '类型(1-满减券 2-折扣券 3-无门槛券)',
+  `amount` decimal(10, 2) NOT NULL COMMENT '优惠金额/折扣',
+  `min_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '最低消费金额',
+  `total_count` int NOT NULL DEFAULT 0 COMMENT '发放总量(0-不限)',
+  `receive_count` int NOT NULL DEFAULT 0 COMMENT '已领取数量',
+  `use_count` int NOT NULL DEFAULT 0 COMMENT '已使用数量',
+  `per_limit` int NOT NULL DEFAULT 1 COMMENT '每人限领数量',
+  `start_time` datetime NOT NULL COMMENT '开始时间',
+  `end_time` datetime NOT NULL COMMENT '结束时间',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_coupon
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_favorite
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_favorite`;
+CREATE TABLE `mall_favorite`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '收藏ID',
+  `member_id` bigint NOT NULL COMMENT '会员ID',
+  `product_id` bigint NOT NULL COMMENT '商品ID',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_member_product`(`member_id` ASC, `product_id` ASC) USING BTREE,
+  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品收藏表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_favorite
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_member
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_member`;
+CREATE TABLE `mall_member`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '微信openId',
+  `union_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '微信unionId',
+  `nickname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '昵称',
+  `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
+  `gender` tinyint NULL DEFAULT 0 COMMENT '性别(0-未知 1-男 2-女)',
+  `birthday` date NULL DEFAULT NULL COMMENT '生日',
+  `points` int NOT NULL DEFAULT 0 COMMENT '积分',
+  `balance` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '余额',
+  `level` tinyint NOT NULL DEFAULT 1 COMMENT '会员等级(1-普通 2-银卡 3-金卡 4-钻石)',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
+  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_open_id`(`open_id` ASC) USING BTREE,
+  INDEX `idx_phone`(`phone` ASC) USING BTREE,
+  INDEX `idx_union_id`(`union_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商城会员表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_member
+-- ----------------------------
+INSERT INTO `mall_member` VALUES (3, 'opzUF43XlvnVUw5S9qS2cI6L7p9M', NULL, 'Mars', 'http://tmp/eEJVcFP9vatD5c93d5c9b774a7413682c69382756288.jpeg', '18483678377', 0, NULL, 0, 0.00, 1, 1, '2026-02-03 16:24:29', 0, '2026-02-03 16:05:17', '2026-02-03 16:24:29');
+
+-- ----------------------------
+-- Table structure for mall_member_coupon
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_member_coupon`;
+CREATE TABLE `mall_member_coupon`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `member_id` bigint NOT NULL COMMENT '会员ID',
+  `coupon_id` bigint NOT NULL COMMENT '优惠券ID',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态(0-未使用 1-已使用 2-已过期)',
+  `use_time` datetime NULL DEFAULT NULL COMMENT '使用时间',
+  `order_id` bigint NULL DEFAULT NULL COMMENT '使用订单ID',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领取时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
+  INDEX `idx_coupon_id`(`coupon_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员优惠券表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_member_coupon
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_order
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_order`;
+CREATE TABLE `mall_order`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
+  `member_id` bigint NOT NULL COMMENT '会员ID',
+  `total_amount` decimal(10, 2) NOT NULL COMMENT '订单总金额',
+  `pay_amount` decimal(10, 2) NOT NULL COMMENT '实付金额',
+  `freight_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '运费',
+  `discount_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '优惠金额',
+  `coupon_id` bigint NULL DEFAULT NULL COMMENT '优惠券ID',
+  `pay_type` tinyint NULL DEFAULT NULL COMMENT '支付方式(1-微信 2-支付宝)',
+  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
+  `pay_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '支付流水号',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态(0-待付款 1-待发货 2-待收货 3-已完成 4-已取消 5-已退款)',
+  `receiver_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
+  `receiver_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人电话',
+  `receiver_province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
+  `receiver_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
+  `receiver_district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
+  `receiver_detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
+  `delivery_company` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流公司',
+  `delivery_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流单号',
+  `delivery_time` datetime NULL DEFAULT NULL COMMENT '发货时间',
+  `receive_time` datetime NULL DEFAULT NULL COMMENT '收货时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单备注',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
+  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_order
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_order_item`;
+CREATE TABLE `mall_order_item`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单商品ID',
+  `order_id` bigint NOT NULL COMMENT '订单ID',
+  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
+  `product_id` bigint NOT NULL COMMENT '商品ID',
+  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
+  `product_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+  `product_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU名称',
+  `price` decimal(10, 2) NOT NULL COMMENT '商品单价',
+  `quantity` int NOT NULL COMMENT '购买数量',
+  `total_amount` decimal(10, 2) NOT NULL COMMENT '小计金额',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_order_id`(`order_id` ASC) USING BTREE,
+  INDEX `idx_order_no`(`order_no` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单商品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_order_item
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mall_product
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_product`;
+CREATE TABLE `mall_product`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '商品ID',
+  `category_id` bigint NOT NULL COMMENT '分类ID',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
+  `subtitle` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
+  `main_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主图',
+  `images` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '图片列表(JSON数组)',
+  `detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情(富文本)',
+  `price` decimal(10, 2) NOT NULL COMMENT '价格',
+  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
+  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
+  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
+  `unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '单位',
+  `weight` decimal(10, 2) NULL DEFAULT NULL COMMENT '重量(kg)',
+  `is_hot` tinyint NOT NULL DEFAULT 0 COMMENT '是否热门(0-否 1-是)',
+  `is_new` tinyint NOT NULL DEFAULT 0 COMMENT '是否新品(0-否 1-是)',
+  `is_recommend` tinyint NOT NULL DEFAULT 0 COMMENT '是否推荐(0-否 1-是)',
+  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-下架 1-上架)',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_category_id`(`category_id` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE,
+  INDEX `idx_sort`(`sort` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_product
+-- ----------------------------
+INSERT INTO `mall_product` VALUES (1, 1, '智利进口菠萝', '单果重约1.5kg', 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800\"]', '<p>金钻凤梨，自然成熟，果肉细腻，甜度高无酸涩感。</p>', 29.90, 39.90, 100, 56, '个', 1.50, 1, 0, 1, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product` VALUES (2, 1, '有机阳光草莓', '甜度15+ 500g/盒', 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=800\"]', '<p>精选有机草莓，甜蜜多汁。</p>', 45.00, 58.00, 200, 128, '盒', 0.50, 1, 1, 1, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product` VALUES (3, 1, '进口香蕉', '约1kg/份', 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800\"]', '<p>进口优质香蕉，香甜软糯。</p>', 12.90, 15.90, 500, 320, '份', 1.00, 0, 0, 1, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product` VALUES (4, 1, '新疆葡萄', '约500g/盒', 'https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=800\"]', '<p>新疆阳光葡萄，皮薄肉厚。</p>', 25.00, 32.00, 150, 89, '盒', 0.50, 0, 1, 0, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product` VALUES (5, 1, '进口柠檬', '约500g/份', 'https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=800\"]', '<p>进口柠檬，新鲜多汁。</p>', 9.90, 12.90, 300, 156, '份', 0.50, 0, 0, 0, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+
+-- ----------------------------
+-- Table structure for mall_product_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `mall_product_sku`;
+CREATE TABLE `mall_product_sku`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'SKU ID',
+  `product_id` bigint NOT NULL COMMENT '商品ID',
+  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'SKU名称',
+  `sku_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU图片',
+  `price` decimal(10, 2) NOT NULL COMMENT '价格',
+  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
+  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
+  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
+  `specs` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '规格属性(JSON)',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
+  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品SKU表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of mall_product_sku
+-- ----------------------------
+INSERT INTO `mall_product_sku` VALUES (1, 1, '单果 1.5kg', NULL, 29.90, 39.90, 80, 40, '{\"规格\": \"单果 1.5kg\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product_sku` VALUES (2, 1, '双果礼盒装', NULL, 55.00, 75.00, 20, 16, '{\"规格\": \"双果礼盒装\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `mall_product_sku` VALUES (3, 2, '500g/盒', NULL, 45.00, 58.00, 200, 128, '{\"规格\": \"500g/盒\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -754,7 +1100,7 @@ CREATE TABLE `sys_config_group`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_group_code`(`group_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置分组表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统配置分组表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config_group
@@ -766,11 +1112,13 @@ INSERT INTO `sys_config_group` VALUES (4, 'password', '密码配置', NULL, '{\"
 INSERT INTO `sys_config_group` VALUES (5, 'email', '邮件配置', NULL, '{\"host\":\"smtp.qq.com\",\"port\":465,\"username\":\"850994281@qq.com\",\"password\":\"pbfbulghhkqmbedj\",\"fromName\":\"Mars管理系统\",\"ssl\":true,\"enabled\":true}', 5, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 22:13:14');
 INSERT INTO `sys_config_group` VALUES (6, 'emailTemplate', '邮件模板', NULL, '{\"verifyCode\":\"您的验证码是：{code}，有效期{expire}分钟。\",\"resetPassword\":\"您正在重置密码，验证码：{code}，有效期{expire}分钟。\",\"welcome\":\"欢迎注册{siteName}，您的账号已创建成功。\"}', 6, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (7, 'sms', '短信配置', NULL, '{\"provider\":\"aliyun\",\"accessKeyId\":\"\",\"accessKeySecret\":\"\",\"signName\":\"\",\"enabled\":false}', 7, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
-INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"provider\":\"aliyun\",\"domain\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com\",\"localPath\":\"./uploads\",\"maxSize\":10,\"allowTypes\":\"jpg,jpeg,png,gif,webp,bmp,ico,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,xml,json,yaml,yml,html,htm,css,js,ts,vue,java,py,go,sql,sh,bat,mp4,avi,mov,wmv,flv,mkv,webm,mp3,wav,ogg,flac,aac,zip,rar,7z,tar,gz,apk,exe,dmg\",\"minioEndpoint\":\"\",\"minioAccessKey\":\"\",\"minioSecretKey\":\"\",\"minioBucket\":\"\",\"aliyunEndpoint\":\"https://oss-cn-beijing.aliyuncs.com\",\"aliyunAccessKey\":\"LTAI5tEPLV6eFkXgFiRcNAj1\",\"aliyunSecretKey\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"aliyunBucket\":\"mars-coder\",\"tencentSecretId\":\"\",\"tencentSecretKey\":\"\",\"tencentBucket\":\"\",\"tencentRegion\":\"\"}', 9, 1, NULL, '2026-01-31 14:38:29', '2026-02-02 17:02:01');
+INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"provider\":\"local\",\"domain\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com\",\"localPath\":\"./uploads\",\"maxSize\":10,\"allowTypes\":\"jpg,jpeg,png,gif,webp,bmp,ico,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,xml,json,yaml,yml,html,htm,css,js,ts,vue,java,py,go,sql,sh,bat,mp4,avi,mov,wmv,flv,mkv,webm,mp3,wav,ogg,flac,aac,zip,rar,7z,tar,gz,apk,exe,dmg\",\"minioEndpoint\":\"\",\"minioAccessKey\":\"\",\"minioSecretKey\":\"\",\"minioBucket\":\"\",\"aliyunEndpoint\":\"https://oss-cn-beijing.aliyuncs.com\",\"aliyunAccessKey\":\"LTAI5tEPLV6eFkXgFiRcNAj1\",\"aliyunSecretKey\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"aliyunBucket\":\"mars-coder\",\"tencentSecretId\":\"\",\"tencentSecretKey\":\"\",\"tencentBucket\":\"\",\"tencentRegion\":\"\"}', 9, 1, NULL, '2026-01-31 14:38:29', '2026-02-02 17:02:01');
 INSERT INTO `sys_config_group` VALUES (10, 'push', '推送配置', NULL, '{\r\n  \"enabled\": false,\r\n  \"provider\": \"console\",\r\n  \"appKey\": \"\",\r\n  \"masterSecret\": \"\"\r\n}', 10, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:26:34');
 INSERT INTO `sys_config_group` VALUES (11, 'thirdParty', '第三方配置', NULL, '{\"wechat\":{\"enabled\":false,\"appId\":\"\",\"appSecret\":\"\"},\"alipay\":{\"enabled\":false,\"appId\":\"\",\"privateKey\":\"\",\"publicKey\":\"\"},\"github\":{\"enabled\":false,\"clientId\":\"\",\"clientSecret\":\"\"}}', 11, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (12, 'payment', '支付配置', NULL, '{\r\n    \"wechatPay\": {\r\n        \"enabled\": true,\r\n        \"mchId\": \"1627500294\",\r\n        \"appId\": \"wxe97894ad8c7ef7e0\",\r\n        \"apiKey\": \"\",\r\n        \"apiV3Key\": \"lxpvkwojpnxafnoutgqowbecdwdsmpwq\",\r\n        \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDlGsA4SciJOYYq\\nTL+/hYlaRLkkJ060c+2MrOl7egozzwddhNLHRC0wasgGdQdbDI39mAm34I7mLdMV\\nlv10dgtKXgpQBHc9QPKy3bPFcgFrz7rxS0YcFrqmzzB69a0LVVfAsZE2SD/4yKc3\\nVFW8cLKQZKRYYm3gZGwN0rsJFVU3dfWgOaoNlBkc5bNIbY7j4aHeW7tJXOQCiig6\\nKj+Dh7r1/POzTciCfqVB1Vjf+VkFMuF6oyKLxMBzFzxvXCGw3PySL6HuY1g5xI7j\\nbNi+xfqtzxZEQAv1QjbfBjzygQXeLCpsuYGVFRRVdyNYxkV90FDVI8swLXpMh65b\\nYNgBGtn1AgMBAAECggEBAKlIx+mPk07aI2mUBkcU+7WofAjbxosN8eP1TBxBw9Ie\\nUnnmj/xPQvi4ng4vYP0E3NIaCmxE0DICgCs+ww7Pvm336LTRZ+3p1KsXqCLnp2cr\\nOh3bGfXdUZO6Gj9w0qlCKTInwn2SizpfwTbf6O3xc++/fbQVHs0kRrc8E5mVmr77\\n01aGIJvXxtQPfdn/R2TMBwqiN8pO5igILlDzNAEusXnfSDOp3rYsXwcnCxJqgnVm\\nydlo7JMU2iqRKSD09qeKFgb+Hbr9aJIQdcvjGBSNmF3MsCFgs/XIb47B4xvy2HBN\\nvIBRwBy08fFeih0GE+0IKr0LyAQ8naMjRTD8A6SbPE0CgYEA9HJ+qigfUPsh/Q+u\\nyyoZeIrsR1xoNVcwANwpWnChsic+B3V/D/pWMJxPv9wKRsVt/dc4kVht//j69tS8\\ny3BFoUxSfUuoK5hdhI8osk3wdVFOnrPPs57s2bMcPPF3Rd5iMvcRNqM1IENCpDAR\\n4zlrEqcMpGSNfaSVhFEyo0fvsV8CgYEA7+6gxxkZJD7DwoVUk8w0BJoq7pNUZc43\\nC0uI8EIRCWxSkd5ahruJjreJuFM1IQUmmqFgewdhEIdUjyORwgVQlo469uwqYPQ5\\n8RWMJcQVK8+QEWV/TdywO3P7oEFgFmVlII/h7Janz/ZlOFZ1X8ANVvpenqgeB2j+\\nl1JMVfjnUSsCgYAHmvRT6PGofFe/XtiKW6H1PSVCxx464p6MuEzVEoIFX/EvHDm6\\nzogV9RcKGhd7wjK83hBVfVHWz/FG8rF5BuIztYMvgMYXrSLjt+yFN6WOkNwIVgHV\\nTdGCqG7tennCg7u8aDFx6LwDZ/RP1WsJDcVGDEp5ZuN8ED3SoxAXQmqzswKBgCk3\\nOtM40oLRbVtq//5ro7vup9VX5bWfWQFNtnZfQwH1Y7G/GpnueVDU4omRcZz8f4cs\\nlaBMwjXOqY31NEK6Gv/h6usj4pvJGHL7mpmaN3DRNRRn9RhxAq0T3XPIBzORs2+G\\nh+7WanllADpPT9Zk7WW1mK90fcQUGzfvYUGbglEFAoGARffpCUANEp1oedOyUVRN\\nSKIvSRggxxqMuzSdnm7eGKDmm+kbA8Iig2C0jgcn4vQZpngbhlNsGrb26Bvdh8wE\\nTBtkcxSBjzsFBdE4kSdVqxnZeVezouWixvkxL4ax1xwczS9hyJlunDljsUb2PkwZ\\nBE39glMdpIqGYrpSTM3p6mI=\\n-----END PRIVATE KEY-----\",\r\n        \"certSerialNo\": \"2FD947564972A8536BDD750944C4796CDF3265EB\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/wechat\"\r\n    },\r\n    \"alipay\": {\r\n        \"enabled\": true,\r\n        \"appId\": \"2021005192689177\",\r\n        \"privateKey\": \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCc1KF+8tqemN/+k99xwIxtfrZ8Py7ZtSv6zoDa0Z9pW1IWpYmz+Zm1wtF3CTX5xApyyBTWQgK8Pb/oEz4u4zKzuwcZFX/IdfP2mWaMHRvWnDLunWqH8rQO+JOaWDvzA68lL02AfubuafQldXY+hdeOpt+t5Kj/OnC+o4z0qTAcM9uTpeX9Z8lttlcW9JtCATRP+klr52bRaOcACgh3MIJrQ3OteeiikvbVtZtw4u3X2h5tdRlCl2/youKO6/iZXGmAmtTGRU8Iy8iBAMI6Ow8K6XH5xHccTzTOx8xv1PZ2IszVvMVhLJDXaUg4DyVbhN8hrmKFmu1i9eBbdSZixkNpAgMBAAECggEAXDjFBqu0VxK6lS9Lc86wRSsAECvvVuIsjH2mVAZ0YTXsHZkWUpjyBGodVow6Czd2lWyGpD+I8Dy3frbiGBxOElZmpB96VtzVqyslnDr5xcdwQ9SZcnwL2cnesiI0joCaG5mnT2pQTd5MTUK3V6jIyv/iBJWzsvIgnln6Z1yeB9ai/3c5Lvu0/ZnhC7trqD73BB1x49E0AV90y0/C/IA+FLEKio9/xjgYweSvTiaYTCBKzQv74Oco54HDtd93rlavZUu7F1qdpOWAj903N1xf8A/fepcL8/qPdSZNoRbPr2NgPMZa70hLvnWDfIXRWoaOZ+lFnPtewI8FAaVX4mI3AQKBgQDO8GxdEunrmRuOXbv/JqTj0dG2lXT7kUvDdJ6QVr3HIsmyxkZXQsp/7QdXh/FdRBNFwkOirmClUqrvYq3CbytgjNdxmYdZQ2A/YXqDdTs8J2Li36hbkOPIFNyMZsjtYF39eosf2oF0/ydRSlMqW5B6jpUh5qCYVWkVtUjLuXaM2QKBgQDCAwMqd6Um9X50dKNIqY1X2ImLiRdLVaqn4/pTwylxxIrRO9f5jF7PnenDci809+Sc+yCcZarvdh1QbUE+YGhYOjj2WGaB9sS2TGDFzOguGs7m7hCIQPa6VEyP2I07kaZcpb+r5GqnT9U47mPRcLJe3zop+w3B7cW5JcdtOSCREQKBgQCbpbALzWcOIoncado2Dk3lYPJ4fy+O6/jtWTDOZb+2IQ9OHN3ZUk5XK+PizUgYm1RXmscefEQK9QPGrBT/cnhQ1X5SXmS0Gf4xjdMFP06/buxsskbCIFeDLVW5cLHeASaQufQckE/gvO1IsjudV2NzGv1Gk13lVhCFGGZZfPSS+QKBgG4y2dSAWx1y6d3p9mkqbW9NPms0djfDNAji9GgpfVvyoErSbA2BzsSs1H/AVtIGUCNefRp4oQwdEe+B70In7nzWrU43zhnZ+cf2QC16AxNVBNqktF1AUSRrB4XZIfeI9m6/csyHFJFuRhVtSuNG2PoMX3RC9oCFtv5AWDNQ9I+RAoGAZF1dQs826kCeptQHXnlgTGNNIX9jLGyfO2qysBOCcqwFIrcJpsb11Q1xLrQmju6EHzr4kAINp32Qd5fo/oCM25JuSiw+fK6CgkAEYjSr/9dD4KpGicHmsib3GyfPj850K2RwFz2RckwX+If/NgI3dIecMTgTJ0tfytaaeqFH4PY=\",\r\n        \"publicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiwci3m6eLWeR1kgfeWm/F0V1e68VWUyRB4N5mhnxryTHqiLeN8ilxN9Kn/Ute1C9cL3b4hfx3NYk7zt60QWP9ly8QJQOlqd1H7XsG16AlEpsIaN1SrMYWq16nAD6uwvMmK0nTdzhuNIKOfdC2YWyv3AJTWh0nCTddYV2D+eSH/Ui6xkfgK8pFn/X1Q0xjXvuZrsXxF+WTk5mymEy2u4Kp7/rD/lClfNAv68kOHe92iKj1VzhtROrSp5//xuvL2PA7FLMqo5olZpBmda3eMWgnvHNwvaJvHJENN2ubANwMPNkwMkQ7MKLCBI33fzEERxJBACrJCc6lo8t+wq3zDo/uwIDAQAB\",\r\n        \"signType\": \"RSA2\",\r\n        \"charset\": \"UTF-8\",\r\n        \"gatewayUrl\": \"https://openapi.alipay.com/gateway.do\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/alipay\",\r\n        \"returnUrl\": \"\"\r\n    }\r\n}', 12, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:13:21');
 INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
+INSERT INTO `sys_config_group` VALUES (15, 'wechatMiniProgram', '小程序配置', NULL, '{\"enabled\":true,\"appId\":\"wxe97894ad8c7ef7e0\",\"appSecret\":\"ef498f4264b2271eac752b36433aca63\"}', 14, 1, '微信小程序登录配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
+INSERT INTO `sys_config_group` VALUES (16, 'wechatMp', '公众号配置', NULL, '{\"enabled\":true,\"appId\":\"wx12721c4ea1370b36\",\"appSecret\":\"f860891f96df4fffe78f0424b913aedd\",\"token\":\"mars_coding_wechat_token1\",\"aesKey\":\"zBtP7b8qZKCSW2eU7Ozm6Jyapv5PCQu2Vxpj1v72qBP\",\"callbackUrl\":\"https://api.mars-coder.cn/api/wechat/callback\",\"oauthRedirectUrl\":\"http://localhost:3001/login\",\"menuConfig\":\"\"}', 15, 1, '微信公众号配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -909,7 +1257,6 @@ INSERT INTO `sys_file` VALUES (11, 'caa41ac5c974e4fa96b1df176aeba849.png', '6305
 INSERT INTO `sys_file` VALUES (12, 'd46297cfbd32ba4d300eaca236a934a2.mp4', '83e50180167b4f8c82aa0664c4d6bc81.mp4', '2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4', 'http://localhost:8080/files/2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4', 345989, 'video/mp4', '.mp4', 'local', '', NULL, '', '1', '2026-02-02 17:00:18');
 INSERT INTO `sys_file` VALUES (13, '222.yaml', 'fb28a3b6569746688514518c32bb0237.yaml', '2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', 'http://localhost:8080/files/2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', 6582, 'application/octet-stream', '.yaml', 'local', '', NULL, '', '1', '2026-02-02 17:02:45');
 INSERT INTO `sys_file` VALUES (14, '222.yaml', '8c501c0e2ffc42edb75a9c3b4491a918.yaml', '2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml', 'http://localhost:8080/files/2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml', 6582, 'application/octet-stream', '.yaml', 'local', '', 1, '', '1', '2026-02-02 17:02:51');
-INSERT INTO `sys_file` VALUES (15, '王先生简历.pdf', 'cd7d82145cf54c8abab1007437338f7f.pdf', '2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf', 'http://localhost:8080/files/2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf', 170770, 'application/pdf', '.pdf', 'local', '', 1, '', '1', '2026-02-02 17:03:06');
 INSERT INTO `sys_file` VALUES (16, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', 'de36558603754856be6984d6cdc0654a.jpg', 'images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg', 'http://localhost:8080/files/images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-02 23:40:00');
 INSERT INTO `sys_file` VALUES (17, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '13e1fb150b264caca201dbe58b74b69a.jpg', 'images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg', 'http://localhost:8080/files/images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-02 23:43:47');
 INSERT INTO `sys_file` VALUES (18, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', 'd53bc5adf9d94423ab00010afc726afd.jpg', 'images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg', 'http://localhost:8080/files/images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-02 23:48:03');
@@ -1366,7 +1713,7 @@ CREATE TABLE `sys_oper_log`  (
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 238 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 239 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1607,6 +1954,7 @@ INSERT INTO `sys_oper_log` VALUES (234, '上传图片', 1, 'com.mars.web.control
 INSERT INTO `sys_oper_log` VALUES (235, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":19,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":\"http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"deleted\":0,\"createTime\":\"2026-02-03T08:58:54\",\"updateTime\":\"2026-02-03T08:58:54\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:14', 0);
 INSERT INTO `sys_oper_log` VALUES (236, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/19', '127.0.0.1', '[19]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:22', 0);
 INSERT INTO `sys_oper_log` VALUES (237, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":29,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"filePath\":\"2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"url\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com/2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"aliyun\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T09:01:55.1847937\",\"remark\":null}}', 0, NULL, '2026-02-03 09:01:55', 0);
+INSERT INTO `sys_oper_log` VALUES (238, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/sys/file/batch', '127.0.0.1', '[15]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 10:24:00', 0);
 
 -- ----------------------------
 -- Table structure for sys_post

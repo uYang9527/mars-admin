@@ -11,6 +11,8 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,6 +42,10 @@ public class DecryptRequestBodyAdvice extends RequestBodyAdviceAdapter {
     @Override
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
                                            Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
+        if (isMiniProgramRequest()) {
+            return inputMessage;
+        }
+
         // 读取原始请求体（读取后流会被消耗，必须创建新的 HttpInputMessage）
         String body;
         try {
@@ -145,6 +151,18 @@ public class DecryptRequestBodyAdvice extends RequestBodyAdviceAdapter {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private boolean isMiniProgramRequest() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return false;
+        }
+        String path = attributes.getRequest().getRequestURI();
+        if (path == null) {
+            return false;
+        }
+        return path.startsWith("/api/mall/") || path.startsWith("/api/wechat/miniprogram/");
     }
 
     /**

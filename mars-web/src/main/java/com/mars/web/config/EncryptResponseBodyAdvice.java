@@ -42,6 +42,8 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             "/auth/register",     // 注册接口
             "/auth/captcha",      // 验证码接口
             "/auth/sms-code",     // 短信验证码接口
+            "/api/mall/",         // 小程序商城接口
+            "/api/wechat/miniprogram/", // 小程序登录相关接口
             "/sys/config-group/public",  // 公开配置接口
             "/file/",             // 文件接口
             "/sys/file/"          // 系统文件接口

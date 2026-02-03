@@ -63,4 +63,15 @@ public class PayServiceFactory {
     public Map<String, String> createTestOrder(String payType) {
         return getService(payType).createTestOrder();
     }
+    
+    /**
+     * 创建小程序支付订单
+     */
+    public Map<String, String> createMiniProgramPayOrder(String orderNo, java.math.BigDecimal amount, String description, String openId) {
+        PayService service = getService("wechat");
+        if (service instanceof WechatPayService wechatPayService) {
+            return wechatPayService.createMiniProgramOrder(orderNo, amount, description, openId);
+        }
+        throw new RuntimeException("微信支付服务不可用");
+    }
 }

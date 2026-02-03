@@ -1,0 +1,119 @@
+/* Font Awesome 图标字体 - Font Awesome Unicode 版本 */
+/* 使用 Font Awesome 官方 Unicode 编码 */
+
+/* 请先下载字体文件到此目录，参考 DOWNLOAD.md */
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('./fa-solid-900.woff2') format('woff2');
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('./fa-regular-400.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('./fa-brands-400.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* 基础样式 */
+.fa, .fas, .far, .fab {
+	font-family: 'FontAwesome' !important;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.fas {
+	font-weight: 900;
+}
+
+.far {
+	font-weight: 400;
+}
+
+.fab {
+	font-weight: 400;
+}
+
+/* 图标定义 - 使用 Font Awesome Unicode */
+.fa-home::before { content: "\f015"; }
+.fa-search::before { content: "\f002"; }
+.fa-shopping-cart::before { content: "\f07a"; }
+.fa-user::before { content: "\f007"; }
+.fa-th-large::before { content: "\f009"; }
+
+.fa-map-marker-alt::before { content: "\f3c5"; }
+.fa-bell::before { content: "\f0f3"; }
+.fa-apple-alt::before { content: "\f5d1"; }
+.fa-carrot::before { content: "\f787"; }
+.fa-fish::before { content: "\f578"; }
+.fa-drumstick-bite::before { content: "\f6d7"; }
+
+.fa-heart::before { content: "\f004"; }
+.fa-plus::before { content: "\f067"; }
+.fa-minus::before { content: "\f068"; }
+.fa-chevron-right::before { content: "\f054"; }
+.fa-chevron-left::before { content: "\f053"; }
+.fa-chevron-down::before { content: "\f078"; }
+.fa-arrow-left::before { content: "\f060"; }
+.fa-arrow-right::before { content: "\f061"; }
+
+.fa-check::before { content: "\f00c"; }
+.fa-check-circle::before { content: "\f058"; }
+.fa-circle::before { content: "\f111"; }
+.fa-times::before { content: "\f00d"; }
+
+.fa-share-alt::before { content: "\f1e0"; }
+.fa-truck-fast::before { content: "\f48b"; }
+.fa-store::before { content: "\f54e"; }
+.fa-gift::before { content: "\f06b"; }
+.fa-broom::before { content: "\f51a"; }
+
+.fa-cog::before { content: "\f013"; }
+.fa-qrcode::before { content: "\f029"; }
+.fa-ticket-alt::before { content: "\f3ff"; }
+.fa-star::before { content: "\f005"; }
+.fa-coins::before { content: "\f51e"; }
+.fa-wallet::before { content: "\f555"; }
+
+.fa-credit-card::before { content: "\f09d"; }
+.fa-box::before { content: "\f466"; }
+.fa-shipping-fast::before { content: "\f48b"; }
+.fa-comment-dots::before { content: "\f4ad"; }
+.fa-undo::before { content: "\f0e2"; }
+
+.fa-headset::before { content: "\f590"; }
+.fa-history::before { content: "\f1da"; }
+.fa-trash-alt::before { content: "\f2ed"; }
+
+.fa-weixin::before { content: "\f1d7"; }
+.fa-mobile-alt::before { content: "\f3cd"; }
+.fa-lock::before { content: "\f023"; }
+.fa-eye::before { content: "\f06e"; }
+.fa-eye-slash::before { content: "\f070"; }
+
+.fa-crown::before { content: "\f521"; }
+.fa-leaf::before { content: "\f06c"; }
+
+.fa-user-circle::before { content: "\f2bd"; }
+.fa-shield-alt::before { content: "\f3ed"; }
+.fa-key::before { content: "\f084"; }
+.fa-language::before { content: "\f1ab"; }
+.fa-info-circle::before { content: "\f05a"; }
+.fa-file-contract::before { content: "\f56c"; }
+.fa-user-shield::before { content: "\f505"; }
+
+.fa-alipay::before { content: "\f642"; }

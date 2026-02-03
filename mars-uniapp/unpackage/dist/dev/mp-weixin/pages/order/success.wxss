@@ -1,0 +1,118 @@
+/**
+ * GreenMall 全局样式变量
+ * 主题色: #059669
+ */
+/* 颜色变量 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 间距 */
+/* 圆角 */
+/* 字体大小 */
+/* 阴影 */
+/* 过渡 */
+/* Mixins */
+.page.data-v-2795c576 {
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.content.data-v-2795c576 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 88rpx);
+  padding: 64rpx 32rpx;
+  box-sizing: border-box;
+}
+.success-icon.data-v-2795c576 {
+  width: 192rpx;
+  height: 192rpx;
+  background: rgba(5, 150, 105, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 48rpx;
+  animation: bounce-2795c576 1s infinite;
+}
+.success-icon .fa.data-v-2795c576 {
+  font-size: 96rpx;
+  color: #059669;
+}
+@keyframes bounce-2795c576 {
+0%, 100% {
+    transform: translateY(0);
+}
+50% {
+    transform: translateY(-20rpx);
+}
+}
+.success-title.data-v-2795c576 {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16rpx;
+}
+.success-desc.data-v-2795c576 {
+  font-size: 28rpx;
+  color: #64748b;
+  margin-bottom: 80rpx;
+}
+.order-info.data-v-2795c576 {
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 64rpx;
+}
+.info-row.data-v-2795c576 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+}
+.info-row.data-v-2795c576:not(:last-child) {
+  margin-bottom: 16rpx;
+}
+.info-label.data-v-2795c576 {
+  color: #64748b;
+}
+.info-value.data-v-2795c576 {
+  color: #1e293b;
+  font-weight: 600;
+}
+.action-btns.data-v-2795c576 {
+  width: 100%;
+  display: flex;
+  gap: 32rpx;
+}
+.btn-secondary.data-v-2795c576, .btn-primary.data-v-2795c576 {
+  flex: 1;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 100rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+  box-sizing: border-box;
+}
+.btn-secondary.data-v-2795c576 {
+  background: #fff;
+  color: #64748b;
+  border: 2rpx solid #e2e8f0;
+}
+.btn-secondary.data-v-2795c576:active {
+  background: #f8fafc;
+}
+.btn-primary.data-v-2795c576 {
+  background: #059669;
+  color: #fff;
+  box-shadow: 0 16rpx 30rpx -6rpx rgba(5, 150, 105, 0.3);
+}
+.btn-primary.data-v-2795c576:active {
+  opacity: 0.9;
+}

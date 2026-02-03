@@ -1,0 +1,132 @@
+/**
+ * GreenMall 全局样式变量
+ * 主题色: #059669
+ */
+/* 颜色变量 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 间距 */
+/* 圆角 */
+/* 字体大小 */
+/* 阴影 */
+/* 过渡 */
+/* Mixins */
+.page.data-v-2dab939d {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+}
+.search-bar.data-v-2dab939d {
+  background: #fff;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.search-content.data-v-2dab939d {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 28rpx 32rpx 32rpx;
+}
+.search-content .fa-arrow-left.data-v-2dab939d {
+  font-size: 36rpx;
+  color: #1e293b;
+}
+.search-input.data-v-2dab939d {
+  flex: 1;
+  height: 80rpx;
+  background: #f1f5f9;
+  border-radius: 100rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  gap: 16rpx;
+}
+.search-input .fa.data-v-2dab939d {
+  font-size: 28rpx;
+  color: #94a3b8;
+}
+.search-input input.data-v-2dab939d {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1e293b;
+}
+.search-btn.data-v-2dab939d {
+  color: #059669;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+.content.data-v-2dab939d {
+  width: 100%;
+  height: calc(100vh - 160rpx);
+  padding: 40rpx 32rpx;
+  box-sizing: border-box;
+}
+.section.data-v-2dab939d {
+  margin-bottom: 48rpx;
+}
+.section-header.data-v-2dab939d {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+.section-title.data-v-2dab939d {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1e293b;
+}
+.fa-trash-alt.data-v-2dab939d {
+  font-size: 24rpx;
+  color: #94a3b8;
+}
+.tags.data-v-2dab939d {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.tag.data-v-2dab939d {
+  padding: 16rpx 32rpx;
+  background: #fff;
+  border-radius: 100rpx;
+  font-size: 24rpx;
+  color: #64748b;
+  transition: all 0.3s;
+}
+.tag.data-v-2dab939d:active {
+  background: rgba(5, 150, 105, 0.05);
+  color: #059669;
+}
+.history-list.data-v-2dab939d {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+.history-item.data-v-2dab939d {
+  background: #fff;
+  padding: 24rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.history-item.data-v-2dab939d:active {
+  background: #f8fafc;
+}
+.history-item .fa-history.data-v-2dab939d {
+  font-size: 28rpx;
+  color: #94a3b8;
+}
+.history-item .history-text.data-v-2dab939d {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1e293b;
+}
+.history-item .fa-arrow-right.data-v-2dab939d {
+  font-size: 24rpx;
+  color: #cbd5e1;
+}
