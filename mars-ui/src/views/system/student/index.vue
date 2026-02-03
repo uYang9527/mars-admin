@@ -7,9 +7,6 @@
           <n-form-item label="学生ID">
             <n-input v-model:value="searchForm.id" placeholder="请输入学生ID" clearable />
           </n-form-item>
-          <n-form-item label="姓名">
-            <n-input v-model:value="searchForm.name" placeholder="请输入姓名" clearable />
-          </n-form-item>
           <n-form-item>
             <n-space>
               <n-button type="primary" @click="handleSearch">
@@ -67,6 +64,9 @@
         <n-form-item label="地址" path="address">
           <n-input v-model:value="formData.address" placeholder="请输入地址" />
         </n-form-item>
+        <n-form-item label="image" path="image">
+          <ImageUpload v-model="formData.image" />
+        </n-form-item>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -83,6 +83,7 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NSpace, NIcon, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, TrashOutline, CreateOutline } from '@vicons/ionicons5'
 import { studentApi, type Student } from '@/api/student'
+import ImageUpload from '@/components/ImageUpload.vue'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -90,7 +91,6 @@ const dialog = useDialog()
 // 搜索表单
 const searchForm = reactive({
   id:  null as number | null,
-  name: '',
 })
 
 // 表格数据
@@ -109,12 +109,14 @@ const pagination = reactive({
 const modalVisible = ref(false)
 const modalTitle = ref('')
 const formRef = ref()
-const formData = reactive<Student>({
+const defaultFormData: Student = {
   name: '',
   phone: '',
   idCard: '',
   address: '',
-})
+  image: '',
+}
+const formData = reactive<Student>({ ...defaultFormData })
 
 // 表单校验规则
 const formRules = {
@@ -131,6 +133,17 @@ const columns: DataTableColumns<Student> = [
   { title: '身份证号', key: 'idCard' },
   { title: '地址', key: 'address' },
   { title: '备注', key: 'remark' },
+  { 
+    title: 'image', 
+    key: 'image',
+    width: 100,
+    render(row) {
+      return row.image ? h('img', { 
+        src: row.image, 
+        style: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' } 
+      }) : '-'
+    }
+  },
   { title: '创建时间', key: 'createTime', width: 180 },
   { title: '更新时间', key: 'updateTime', width: 180 },
   {
@@ -160,7 +173,6 @@ async function loadData() {
       page: pagination.page,
       pageSize: pagination.pageSize,
       id: searchForm.id || undefined,
-      name: searchForm.name || undefined,
     })
     tableData.value = res.list
     pagination.itemCount = res.total
@@ -178,8 +190,6 @@ function handleSearch() {
 // 重置
 function handleReset() {
   searchForm.id =  null
-
-  searchForm.name = ''
 
   handleSearch()
 }
@@ -204,9 +214,7 @@ function handleCheck(keys: Array<string | number>) {
 // 新增
 function handleAdd() {
   modalTitle.value = '新增学生管理'
-  Object.keys(formData).forEach(key => {
-    (formData as any)[key] = undefined
-  })
+  Object.assign(formData, defaultFormData)
   modalVisible.value = true
 }
 
@@ -221,11 +229,13 @@ function handleEdit(row: Student) {
 async function handleSubmit() {
   await formRef.value?.validate()
   try {
-    if (formData.id) {
-      await studentApi.update(formData)
+    const submitData = { ...formData } as Student
+    submitData.image = formData.image ?? ''
+    if (submitData.id) {
+      await studentApi.update(submitData)
       message.success('修改成功')
     } else {
-      await studentApi.create(formData)
+      await studentApi.create(submitData)
       message.success('新增成功')
     }
     modalVisible.value = false

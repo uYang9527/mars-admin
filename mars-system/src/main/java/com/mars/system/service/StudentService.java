@@ -7,14 +7,14 @@ import com.mars.system.entity.Student;
  * 学生管理 Service
  * 
  * @author Mars
- * @date 2026-02-02
+ * @date 2026-02-03
  */
 public interface StudentService {
 
     /**
      * 分页查询
      */
-    Page<Student> page(Integer page, Integer pageSize, Long id, String name);
+    Page<Student> page(Integer page, Integer pageSize, Long id);
 
     /**
      * 根据ID查询

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * 学生管理
  * 
  * @author Mars
- * @date 2026-02-02
+ * @date 2026-02-03
  */
 @RestController
 @RequestMapping("/system/student")
@@ -31,9 +31,8 @@ public class StudentController {
     public Result<PageResult<Student>> page(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) Long id,
-            @RequestParam(required = false) String name) {
-        var result = studentService.page(page, pageSize, id, name);
+            @RequestParam(required = false) Long id) {
+        var result = studentService.page(page, pageSize, id);
         return Result.ok(PageResult.of(result));
     }
 

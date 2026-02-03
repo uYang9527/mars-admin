@@ -86,9 +86,7 @@
         </n-form-item>
 #elseif($column.htmlType == 'imageUpload')
         <n-form-item label="${column.columnComment}" path="${column.javaField}">
-          <n-upload action="/api/sys/file/upload/image" :max="1" list-type="image-card">
-            上传图片
-          </n-upload>
+          <ImageUpload v-model="formData.${column.javaField}" />
         </n-form-item>
 #end
 #end
@@ -109,6 +107,12 @@ import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NSpace, NIcon, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, TrashOutline, CreateOutline } from '@vicons/ionicons5'
 import { ${classname}Api, type ${className} } from '@/api/${businessName}'
+#foreach($column in $columns)
+#if($column.htmlType == 'imageUpload')
+import ImageUpload from '@/components/ImageUpload.vue'
+#break
+#end
+#end
 
 const message = useMessage()
 const dialog = useDialog()
@@ -138,13 +142,14 @@ const pagination = reactive({
 const modalVisible = ref(false)
 const modalTitle = ref('')
 const formRef = ref()
-const formData = reactive<${className}>({
+const defaultFormData: ${className} = {
 #foreach($column in $columns)
 #if($column.isInsert == 1 || $column.isEdit == 1)
   ${column.javaField}: #if($column.javaType == 'String')''#elseif($column.javaType == 'Integer' || $column.javaType == 'Long')undefined#else undefined#end,
 #end
 #end
-})
+}
+const formData = reactive<${className}>({ ...defaultFormData })
 
 // 表单校验规则
 const formRules = {
@@ -160,7 +165,21 @@ const columns: DataTableColumns<${className}> = [
   { type: 'selection' },
 #foreach($column in $columns)
 #if($column.isList == 1)
+#if($column.htmlType == 'imageUpload')
+  { 
+    title: '${column.columnComment}', 
+    key: '${column.javaField}',
+    width: 100,
+    render(row) {
+      return row.${column.javaField} ? h('img', { 
+        src: row.${column.javaField}, 
+        style: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px' } 
+      }) : '-'
+    }
+  },
+#else
   { title: '${column.columnComment}', key: '${column.javaField}'#if($column.javaField == 'createTime' || $column.javaField == 'updateTime'), width: 180#end },
+#end
 #end
 #end
   {
@@ -239,9 +258,7 @@ function handleCheck(keys: Array<string | number>) {
 // 新增
 function handleAdd() {
   modalTitle.value = '新增${functionName}'
-  Object.keys(formData).forEach(key => {
-    (formData as any)[key] = undefined
-  })
+  Object.assign(formData, defaultFormData)
   modalVisible.value = true
 }
 
@@ -256,11 +273,17 @@ function handleEdit(row: ${className}) {
 async function handleSubmit() {
   await formRef.value?.validate()
   try {
-    if (formData.${pkColumn.javaField}) {
-      await ${classname}Api.update(formData)
+    const submitData = { ...formData } as ${className}
+#foreach($column in $columns)
+#if($column.htmlType == 'imageUpload')
+    submitData.${column.javaField} = formData.${column.javaField} ?? ''
+#end
+#end
+    if (submitData.${pkColumn.javaField}) {
+      await ${classname}Api.update(submitData)
       message.success('修改成功')
     } else {
-      await ${classname}Api.create(formData)
+      await ${classname}Api.create(submitData)
       message.success('新增成功')
     }
     modalVisible.value = false

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 学生管理
  * 
  * @author Mars
- * @date 2026-02-02
+ * @date 2026-02-03
  */
 @Data
 @TableName("student")
@@ -35,6 +35,9 @@ public class Student implements Serializable {
 
     /** 备注 */
     private String remark;
+
+    /** image */
+    private String image;
 
     /** 删除标记 */
     private Integer deleted;

@@ -16,7 +16,7 @@ import java.util.Arrays;
  * 学生管理 Service 实现
  * 
  * @author Mars
- * @date 2026-02-02
+ * @date 2026-02-03
  */
 @Service
 @RequiredArgsConstructor
@@ -25,14 +25,11 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
 
     @Override
-    public Page<Student> page(Integer page, Integer pageSize, Long id, String name) {
+    public Page<Student> page(Integer page, Integer pageSize, Long id) {
         Page<Student> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
         if (id != null) {
             wrapper.eq(Student::getId, id);
-        }
-        if (StringUtils.hasText(name)) {
-            wrapper.eq(Student::getName, name);
         }
         wrapper.orderByDesc(Student::getId);
         return studentMapper.selectPage(pageParam, wrapper);

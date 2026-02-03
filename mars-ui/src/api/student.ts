@@ -14,6 +14,8 @@ export interface Student {
 
   remark?:  string
 
+  image?:  string
+
   deleted?: number
 
   createTime?:  string
@@ -25,7 +27,7 @@ export interface Student {
 // 学生管理 API
 export const studentApi = {
   // 分页查询
-  page(params: { page: number; pageSize: number; id?: number; name?:  string }) {
+  page(params: { page: number; pageSize: number; id?: number }) {
     return request({ url: '/system/student/page', method: 'get', params })
   },
 
