@@ -1,10 +1,13 @@
 <template>
-  <div class="file-manager" @dragover.prevent="handleDragOver" @dragleave.prevent="handleDragLeave" @drop.prevent="handleDrop">
+  <div class="file-manager" @dragover.prevent="handleDragOver" @dragleave.prevent="handleDragLeave"
+       @drop.prevent="handleDrop">
     <!-- 拖拽上传遮罩 -->
     <Transition name="fade">
       <div v-if="isDragging" class="drag-overlay">
         <div class="drag-content">
-          <n-icon size="64" color="#fff"><CloudUploadOutline /></n-icon>
+          <n-icon size="64" color="#fff">
+            <CloudUploadOutline/>
+          </n-icon>
           <h3>松开鼠标上传文件</h3>
           <p>支持多文件同时上传</p>
         </div>
@@ -15,11 +18,11 @@
     <div class="sidebar">
       <!-- 文件类型标签 -->
       <div class="type-tabs">
-        <div 
-          v-for="tab in typeTabs" 
-          :key="tab.value"
-          :class="['type-tab', { active: activeType === tab.value }]"
-          @click="activeType = tab.value; loadFiles()"
+        <div
+            v-for="tab in typeTabs"
+            :key="tab.value"
+            :class="['type-tab', { active: activeType === tab.value }]"
+            @click="activeType = tab.value; loadFiles()"
         >
           {{ tab.label }}
         </div>
@@ -27,44 +30,54 @@
 
       <!-- 分组列表 -->
       <div class="group-list">
-        <div 
-          :class="['group-item', { active: activeGroupId === -1 }]"
-          @click="selectGroup(-1)"
+        <div
+            :class="['group-item', { active: activeGroupId === -1 }]"
+            @click="selectGroup(-1)"
         >
-          <n-icon><FolderOutline /></n-icon>
+          <n-icon>
+            <FolderOutline/>
+          </n-icon>
           <span class="group-name">全部</span>
         </div>
-        <div 
-          :class="['group-item', { active: activeGroupId === null }]"
-          @click="selectGroup(null)"
+        <div
+            :class="['group-item', { active: activeGroupId === null }]"
+            @click="selectGroup(null)"
         >
-          <n-icon><FolderOutline /></n-icon>
+          <n-icon>
+            <FolderOutline/>
+          </n-icon>
           <span class="group-name">未分组</span>
           <span v-if="ungroupedCount > 0" class="group-count">{{ ungroupedCount }}</span>
         </div>
-        <div 
-          v-for="group in groups" 
-          :key="group.id"
-          :class="['group-item', { active: activeGroupId === group.id }]"
-          @click="selectGroup(group.id!)"
-          @contextmenu.prevent="showGroupMenu($event, group)"
+        <div
+            v-for="group in groups"
+            :key="group.id"
+            :class="['group-item', { active: activeGroupId === group.id }]"
+            @click="selectGroup(group.id!)"
+            @contextmenu.prevent="showGroupMenu($event, group)"
         >
-          <n-icon><FolderOutline /></n-icon>
+          <n-icon>
+            <FolderOutline/>
+          </n-icon>
           <span class="group-name">{{ group.name }}</span>
           <span v-if="group.fileCount && group.fileCount > 0" class="group-count">{{ group.fileCount }}</span>
-          <n-dropdown 
-            trigger="click" 
-            :options="groupMenuOptions" 
-            @select="(key: string) => handleGroupAction(key, group)"
+          <n-dropdown
+              trigger="click"
+              :options="groupMenuOptions"
+              @select="(key: string) => handleGroupAction(key, group)"
           >
-            <n-icon class="group-more" @click.stop><EllipsisHorizontalOutline /></n-icon>
+            <n-icon class="group-more" @click.stop>
+              <EllipsisHorizontalOutline/>
+            </n-icon>
           </n-dropdown>
         </div>
       </div>
 
       <!-- 新增分组按钮 -->
       <div class="add-group" @click="showGroupModal = true">
-        <n-icon><AddOutline /></n-icon>
+        <n-icon>
+          <AddOutline/>
+        </n-icon>
         新增分组
       </div>
     </div>
@@ -75,13 +88,17 @@
       <div class="toolbar">
         <div class="toolbar-left">
           <n-upload
-            v-if="hasPermission('sys:file:upload')"
-            :custom-request="handleUpload"
-            :show-file-list="false"
-            :multiple="true"
+              v-if="hasPermission('sys:file:upload')"
+              :custom-request="handleUpload"
+              :show-file-list="false"
+              :multiple="true"
           >
             <n-button type="primary">
-              <template #icon><n-icon><CloudUploadOutline /></n-icon></template>
+              <template #icon>
+                <n-icon>
+                  <CloudUploadOutline/>
+                </n-icon>
+              </template>
               上传
             </n-button>
           </n-upload>
@@ -93,23 +110,33 @@
           </n-button>
         </div>
         <div class="toolbar-right">
-          <n-input 
-            v-model:value="searchName" 
-            placeholder="请输入文件名称" 
-            clearable
-            style="width: 200px"
-            @keyup.enter="loadFiles"
+          <n-input
+              v-model:value="searchName"
+              placeholder="请输入文件名称"
+              clearable
+              style="width: 200px"
+              @keyup.enter="loadFiles"
           >
             <template #suffix>
-              <n-icon style="cursor: pointer" @click="loadFiles"><SearchOutline /></n-icon>
+              <n-icon style="cursor: pointer" @click="loadFiles">
+                <SearchOutline/>
+              </n-icon>
             </template>
           </n-input>
           <n-button-group>
             <n-button :type="viewMode === 'list' ? 'primary' : 'default'" @click="viewMode = 'list'">
-              <template #icon><n-icon><ListOutline /></n-icon></template>
+              <template #icon>
+                <n-icon>
+                  <ListOutline/>
+                </n-icon>
+              </template>
             </n-button>
             <n-button :type="viewMode === 'grid' ? 'primary' : 'default'" @click="viewMode = 'grid'">
-              <template #icon><n-icon><GridOutline /></n-icon></template>
+              <template #icon>
+                <n-icon>
+                  <GridOutline/>
+                </n-icon>
+              </template>
             </n-button>
           </n-button-group>
         </div>
@@ -117,38 +144,38 @@
 
       <!-- 全选 -->
       <div class="select-all">
-        <n-checkbox 
-          :checked="isAllSelected" 
-          :indeterminate="isIndeterminate"
-          @update:checked="handleSelectAll"
+        <n-checkbox
+            :checked="isAllSelected"
+            :indeterminate="isIndeterminate"
+            @update:checked="handleSelectAll"
         >
           全选
         </n-checkbox>
       </div>
 
       <!-- 文件列表 -->
-      <n-spin :show="loading">
+      <n-spin :show="loading" class="file-content">
         <div v-if="files.length === 0" class="empty-state">
-          <n-empty description="无数据~" />
+          <n-empty description="无数据~"/>
         </div>
-        
+
         <!-- 平铺视图 -->
         <div v-else-if="viewMode === 'grid'" class="file-grid">
-          <div 
-            v-for="file in files" 
-            :key="file.id"
-            :class="['file-card', { selected: selectedIds.includes(file.id!) }]"
-            @click="toggleSelect(file)"
+          <div
+              v-for="file in files"
+              :key="file.id"
+              :class="['file-card', { selected: selectedIds.includes(file.id!) }]"
+              @click="toggleSelect(file)"
           >
             <div class="file-checkbox" @click.stop>
-              <n-checkbox :checked="selectedIds.includes(file.id!)" @update:checked="toggleSelect(file)" />
+              <n-checkbox :checked="selectedIds.includes(file.id!)" @update:checked="toggleSelect(file)"/>
             </div>
             <div class="file-preview" @click.stop="handlePreview(file)">
-              <img v-if="isImage(file)" :src="file.url" alt="" />
-              <video v-else-if="isVideo(file)" :src="file.url" />
+              <img v-if="isImage(file)" :src="file.url" alt=""/>
+              <video v-else-if="isVideo(file)" :src="file.url"/>
               <div v-else class="file-icon">
                 <n-icon size="48" :color="getFileIconColor(file)">
-                  <component :is="getFileIcon(file)" />
+                  <component :is="getFileIcon(file)"/>
                 </n-icon>
               </div>
             </div>
@@ -165,19 +192,19 @@
 
         <!-- 列表视图 -->
         <div v-else class="file-list">
-          <div 
-            v-for="file in files" 
-            :key="file.id"
-            :class="['file-row', { selected: selectedIds.includes(file.id!) }]"
-            @click="toggleSelect(file)"
+          <div
+              v-for="file in files"
+              :key="file.id"
+              :class="['file-row', { selected: selectedIds.includes(file.id!) }]"
+              @click="toggleSelect(file)"
           >
             <div class="file-checkbox" @click.stop>
-              <n-checkbox :checked="selectedIds.includes(file.id!)" @update:checked="toggleSelect(file)" />
+              <n-checkbox :checked="selectedIds.includes(file.id!)" @update:checked="toggleSelect(file)"/>
             </div>
             <div class="file-preview-small" @click.stop="handlePreview(file)">
-              <img v-if="isImage(file)" :src="file.url" alt="" />
+              <img v-if="isImage(file)" :src="file.url" alt=""/>
               <n-icon v-else size="32" :color="getFileIconColor(file)">
-                <component :is="getFileIcon(file)" />
+                <component :is="getFileIcon(file)"/>
               </n-icon>
             </div>
             <div class="file-info">
@@ -201,19 +228,19 @@
       <div class="pagination">
         <span>共 {{ pagination.itemCount }} 条</span>
         <n-pagination
-          v-model:page="pagination.page"
-          :page-count="Math.ceil(pagination.itemCount / pagination.pageSize)"
-          :page-slot="5"
-          @update:page="loadFiles"
+            v-model:page="pagination.page"
+            :page-count="Math.ceil(pagination.itemCount / pagination.pageSize)"
+            :page-slot="5"
+            @update:page="loadFiles"
         />
         <span>前往</span>
-        <n-input-number 
-          v-model:value="gotoPage" 
-          :min="1" 
-          :max="Math.ceil(pagination.itemCount / pagination.pageSize)"
-          size="small"
-          style="width: 60px"
-          @keyup.enter="pagination.page = gotoPage || 1; loadFiles()"
+        <n-input-number
+            v-model:value="gotoPage"
+            :min="1"
+            :max="Math.ceil(pagination.itemCount / pagination.pageSize)"
+            size="small"
+            style="width: 60px"
+            @keyup.enter="pagination.page = gotoPage || 1; loadFiles()"
         />
         <span>页</span>
       </div>
@@ -223,7 +250,7 @@
     <n-modal v-model:show="showGroupModal" preset="dialog" :title="editingGroup ? '编辑分组' : '新增分组'">
       <n-form :model="groupForm">
         <n-form-item label="分组名称" required>
-          <n-input v-model:value="groupForm.name" placeholder="请输入分组名称" />
+          <n-input v-model:value="groupForm.name" placeholder="请输入分组名称"/>
         </n-form-item>
       </n-form>
       <template #action>
@@ -238,10 +265,10 @@
     <n-modal v-model:show="showMoveModal" preset="dialog" title="移动到分组">
       <n-form>
         <n-form-item label="目标分组">
-          <n-select 
-            v-model:value="moveTargetGroupId" 
-            :options="moveGroupOptions" 
-            placeholder="请选择分组"
+          <n-select
+              v-model:value="moveTargetGroupId"
+              :options="moveGroupOptions"
+              placeholder="请选择分组"
           />
         </n-form-item>
       </n-form>
@@ -257,7 +284,7 @@
     <n-modal v-model:show="showRenameModal" preset="dialog" title="重命名">
       <n-form>
         <n-form-item label="文件名">
-          <n-input v-model:value="renameValue" placeholder="请输入新文件名" />
+          <n-input v-model:value="renameValue" placeholder="请输入新文件名"/>
         </n-form-item>
       </n-form>
       <template #action>
@@ -272,26 +299,28 @@
     <n-modal v-model:show="previewVisible" preset="card" title="文件预览" :style="previewModalStyle">
       <div class="preview-container">
         <!-- 图片预览 -->
-        <img v-if="isImage(previewFile)" :src="previewUrl" alt="预览" class="preview-image" />
+        <img v-if="isImage(previewFile)" :src="previewUrl" alt="预览" class="preview-image"/>
         <!-- 视频预览 -->
-        <video v-else-if="isVideo(previewFile)" :src="previewUrl" controls class="preview-video" />
+        <video v-else-if="isVideo(previewFile)" :src="previewUrl" controls class="preview-video"/>
         <!-- 音频预览 -->
-        <audio v-else-if="isAudio(previewFile)" :src="previewUrl" controls />
+        <audio v-else-if="isAudio(previewFile)" :src="previewUrl" controls/>
         <!-- PDF预览 -->
-        <iframe v-else-if="isPdf(previewFile)" :src="previewUrl" class="preview-pdf" />
+        <iframe v-else-if="isPdf(previewFile)" :src="previewUrl" class="preview-pdf"/>
         <!-- 文本/代码预览 -->
         <div v-else-if="isText(previewFile)" class="preview-text">
           <n-spin :show="textLoading">
-            <n-code :code="previewText" :language="getCodeLanguage(previewFile)" show-line-numbers />
+            <n-code :code="previewText" :language="getCodeLanguage(previewFile)" show-line-numbers/>
           </n-spin>
         </div>
         <!-- Office文档预览 (使用微软在线查看器) -->
         <div v-else-if="isOffice(previewFile)" class="preview-office">
-          <iframe :src="getOfficePreviewUrl(previewFile)" class="preview-office-frame" />
+          <iframe :src="getOfficePreviewUrl(previewFile)" class="preview-office-frame"/>
         </div>
         <!-- 其他文件 -->
         <div v-else class="preview-other">
-          <n-icon size="64"><DocumentOutline /></n-icon>
+          <n-icon size="64">
+            <DocumentOutline/>
+          </n-icon>
           <p>{{ previewFile?.originalName }}</p>
           <p class="preview-tip">该文件类型暂不支持预览</p>
           <n-button type="primary" @click="handleDownload(previewFile!)">下载文件</n-button>
@@ -302,15 +331,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, h } from 'vue'
-import { useMessage, useDialog, type UploadCustomRequestOptions } from 'naive-ui'
-import { 
+import {ref, reactive, computed, onMounted, h} from 'vue'
+import {useMessage, useDialog, type UploadCustomRequestOptions} from 'naive-ui'
+import {
   CloudUploadOutline, SearchOutline, ListOutline, GridOutline, FolderOutline,
   AddOutline, EllipsisHorizontalOutline, DocumentOutline, DocumentTextOutline,
   ImageOutline, VideocamOutline, MusicalNotesOutline, CodeSlashOutline
 } from '@vicons/ionicons5'
-import { fileApi, fileGroupApi, type SysFile, type SysFileGroup } from '@/api/system'
-import { useUserStore } from '@/stores/user'
+import {fileApi, fileGroupApi, type SysFile, type SysFileGroup} from '@/api/system'
+import {useUserStore} from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -319,9 +348,9 @@ const hasPermission = (permission: string) => userStore.hasPermission(permission
 
 // 文件类型标签
 const typeTabs = [
-  { label: '图片', value: 'image' },
-  { label: '视频', value: 'video' },
-  { label: '文件', value: 'other' }
+  {label: '图片', value: 'image'},
+  {label: '视频', value: 'video'},
+  {label: '文件', value: 'other'}
 ]
 const activeType = ref('image')
 
@@ -350,7 +379,7 @@ const gotoPage = ref<number | null>(1)
 // 分组弹窗
 const showGroupModal = ref(false)
 const editingGroup = ref<SysFileGroup | null>(null)
-const groupForm = reactive({ name: '' })
+const groupForm = reactive({name: ''})
 
 // 移动弹窗
 const showMoveModal = ref(false)
@@ -370,14 +399,14 @@ const textLoading = ref(false)
 
 // 预览弹窗样式（根据文件类型调整大小）
 const previewModalStyle = computed(() => {
-  if (!previewFile.value) return { width: '800px' }
+  if (!previewFile.value) return {width: '800px'}
   if (isPdf(previewFile.value) || isOffice(previewFile.value)) {
-    return { width: '90vw', height: '90vh' }
+    return {width: '90vw', height: '90vh'}
   }
   if (isText(previewFile.value)) {
-    return { width: '900px', maxHeight: '80vh' }
+    return {width: '900px', maxHeight: '80vh'}
   }
-  return { width: '800px' }
+  return {width: '800px'}
 })
 
 // 拖拽上传
@@ -386,15 +415,15 @@ let dragCounter = 0
 
 // 分组菜单选项
 const groupMenuOptions = [
-  { label: '编辑', key: 'edit' },
-  { label: '删除', key: 'delete' }
+  {label: '编辑', key: 'edit'},
+  {label: '删除', key: 'delete'}
 ]
 
 // 移动分组选项
 const moveGroupOptions = computed(() => {
   return [
-    { label: '未分组', value: null },
-    ...groups.value.map(g => ({ label: g.name, value: g.id }))
+    {label: '未分组', value: null},
+    ...groups.value.map(g => ({label: g.name, value: g.id}))
   ]
 })
 
@@ -500,10 +529,10 @@ async function handleSaveGroup() {
   }
   try {
     if (editingGroup.value) {
-      await fileGroupApi.update({ id: editingGroup.value.id, name: groupForm.name })
+      await fileGroupApi.update({id: editingGroup.value.id, name: groupForm.name})
       message.success('更新成功')
     } else {
-      await fileGroupApi.create({ name: groupForm.name })
+      await fileGroupApi.create({name: groupForm.name})
       message.success('创建成功')
     }
     showGroupModal.value = false
@@ -526,7 +555,7 @@ function getUploadGroupId(): number | null {
 
 // 上传
 async function handleUpload(options: UploadCustomRequestOptions) {
-  const { file, onFinish, onError } = options
+  const {file, onFinish, onError} = options
   try {
     await fileApi.upload(file.file as File, undefined, getUploadGroupId())
     message.success('上传成功')
@@ -574,7 +603,7 @@ async function handlePreview(file: SysFile) {
   previewFile.value = file
   previewUrl.value = fileApi.getPreviewUrl(file.id!)
   previewText.value = ''
-  
+
   // 如果是文本文件，获取内容
   if (isText(file)) {
     textLoading.value = true
@@ -587,7 +616,7 @@ async function handlePreview(file: SysFile) {
       textLoading.value = false
     }
   }
-  
+
   previewVisible.value = true
 }
 
@@ -705,8 +734,8 @@ function isText(file: SysFile | null): boolean {
     '.js', '.ts', '.vue', '.jsx', '.tsx', '.css', '.scss', '.less', '.html', '.htm',
     '.java', '.py', '.go', '.rs', '.c', '.cpp', '.h', '.hpp', '.cs', '.php', '.rb', '.swift', '.kt',
     '.sql', '.sh', '.bat', '.ps1', '.log', '.csv']
-  return textTypes.some(t => file.fileType?.startsWith(t)) || 
-         textSuffixes.includes(file.fileSuffix?.toLowerCase() || '')
+  return textTypes.some(t => file.fileType?.startsWith(t)) ||
+      textSuffixes.includes(file.fileSuffix?.toLowerCase() || '')
 }
 
 function isPreviewable(file: SysFile): boolean {
@@ -780,6 +809,7 @@ onMounted(() => {
 .file-manager {
   display: flex;
   height: calc(100vh - 120px);
+  min-height: calc(100vh - 120px);
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
@@ -792,7 +822,6 @@ onMounted(() => {
   border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  background: #f9fafb;
 }
 
 .type-tabs {
@@ -891,6 +920,28 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
+}
+
+.file-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-content :deep(.n-spin-container) {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-content :deep(.n-spin-content) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .toolbar {
@@ -925,6 +976,7 @@ onMounted(() => {
 .file-grid {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
   padding: 16px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -1020,6 +1072,7 @@ onMounted(() => {
 .file-list {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .file-row {
@@ -1093,6 +1146,8 @@ onMounted(() => {
   border-top: 1px solid #e5e7eb;
   font-size: 14px;
   color: #6b7280;
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 /* 预览 */
