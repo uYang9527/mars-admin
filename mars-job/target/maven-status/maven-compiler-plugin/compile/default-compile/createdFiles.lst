@@ -1,2 +1,16 @@
-com\mars\job\task\SampleTask.class
+com\mars\job\mapper\SysJobMapper.class
+com\mars\job\util\ScheduleUtils.class
+com\mars\job\service\impl\SysJobServiceImpl.class
+com\mars\job\util\AbstractQuartzJob.class
 com\mars\job\config\ScheduleConfig.class
+com\mars\job\util\QuartzJobExecution.class
+com\mars\job\util\SpringUtils.class
+com\mars\job\entity\SysJobLog.class
+com\mars\job\mapper\SysJobLogMapper.class
+com\mars\job\util\QuartzDisallowConcurrentExecution.class
+com\mars\job\service\SysJobLogService.class
+com\mars\job\service\SysJobService.class
+com\mars\job\entity\SysJob.class
+com\mars\job\util\JobInvokeUtil.class
+com\mars\job\task\SampleTask.class
+com\mars\job\service\impl\SysJobLogServiceImpl.class

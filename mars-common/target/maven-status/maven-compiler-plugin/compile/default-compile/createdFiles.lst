@@ -1,4 +1,5 @@
 com\mars\common\result\PageResult.class
+com\mars\common\util\RsaUtils.class
 com\mars\common\result\Result.class
 com\mars\common\exception\BusinessException.class
 com\mars\common\entity\BaseEntity.class

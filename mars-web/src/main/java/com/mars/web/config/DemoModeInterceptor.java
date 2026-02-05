@@ -29,6 +29,7 @@ public class DemoModeInterceptor implements HandlerInterceptor {
      */
     private static final List<String> WHITE_LIST = Arrays.asList(
             "/api/auth/login",          // 登录
+            "/api/auth/register",       // 注册
             "/api/auth/logout",         // 登出
             "/api/auth/captcha",        // 验证码
             "/api/auth/sms-code",       // 短信验证码

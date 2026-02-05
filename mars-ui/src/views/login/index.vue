@@ -537,8 +537,8 @@ const formRef = ref<FormInst | null>(null)
 const loading = ref(false)
 
 const formData = reactive({
-  username: 'admin',
-  password: 'admin123',
+  username: '',
+  password: '',
   code: '',
   rememberMe: true
 })

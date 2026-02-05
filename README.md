@@ -10,9 +10,19 @@
 
 **基于 Spring Boot 3 + Vue 3 的现代化后台管理系统**
 
-[在线演示](#) · [开发文档](#) · [问题反馈](https://github.com/marsfactory/mars-system/issues)
+[在线预览](https://marsadmin.mars-coder.cn/) · [开发文档](#开发指南) · [问题反馈](https://github.com/marsfactory/mars-system/issues)
 
 </div>
+
+## 在线演示
+
+**演示地址：** [https://marsadmin.mars-coder.cn/](https://marsadmin.mars-coder.cn/)
+
+| 账号 | 密码 | 说明 |
+|------|------|------|
+| admin | admin123 | 管理员账号（演示模式，部分操作受限） |
+
+> 也可以自行注册账号体验完整功能
 
 ---
 
@@ -205,7 +215,8 @@ npm run dev
 | 账号 | 密码 | 说明 |
 |------|------|------|
 | admin | admin123 | 超级管理员 |
-| test | test123 | 测试账号 |
+
+> 支持自行注册账号体验
 
 ## 系统截图
 
