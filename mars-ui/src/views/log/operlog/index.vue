@@ -47,10 +47,14 @@
         <n-descriptions-item label="请求地址" :span="2">{{ detailData.operUrl }}</n-descriptions-item>
         <n-descriptions-item label="方法名称" :span="2">{{ detailData.method }}</n-descriptions-item>
         <n-descriptions-item label="请求参数" :span="2">
-          <n-code :code="detailData.operParam || ''" language="json" />
+          <div class="code-container">
+            <n-code :code="formatJson(detailData.operParam)" language="json" word-wrap />
+          </div>
         </n-descriptions-item>
         <n-descriptions-item label="返回参数" :span="2">
-          <n-code :code="detailData.jsonResult || ''" language="json" />
+          <div class="code-container">
+            <n-code :code="formatJson(detailData.jsonResult)" language="json" word-wrap />
+          </div>
         </n-descriptions-item>
         <n-descriptions-item label="操作状态">
           <n-tag :type="detailData.status === 0 ? 'success' : 'error'" size="small">{{ detailData.status === 0 ? '正常' : '异常' }}</n-tag>
@@ -130,6 +134,18 @@ function handleDetail(row: SysOperLog) {
   detailVisible.value = true
 }
 
+// 格式化 JSON 字符串
+function formatJson(jsonStr: string | undefined | null): string {
+  if (!jsonStr) return ''
+  try {
+    const obj = JSON.parse(jsonStr)
+    return JSON.stringify(obj, null, 2)
+  } catch {
+    // 如果不是有效的 JSON，直接返回原字符串
+    return jsonStr
+  }
+}
+
 function handleDelete(row: SysOperLog) {
   dialog.warning({
     title: '提示', content: '确定要删除该日志吗？', positiveText: '确定', negativeText: '取消',
@@ -146,3 +162,19 @@ function handleClean() {
 
 onMounted(() => loadData())
 </script>
+
+<style scoped>
+.code-container {
+  max-height: 200px;
+  overflow: auto;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+.code-container :deep(.n-code) {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+</style>

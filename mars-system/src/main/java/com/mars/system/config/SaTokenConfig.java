@@ -20,24 +20,23 @@ public class SaTokenConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SaInterceptor(handler -> {
-            // 登录校验
-            SaRouter.match("/**")
+            // 登录校验 - 只拦截 /api/** 路径
+            SaRouter.match("/api/**")
                     .notMatch(
-                            "/auth/login",
-                            "/auth/register",               // 用户注册
-                            "/auth/captcha",                // 图片验证码
-                            "/auth/sms-code",               // 短信验证码
-                            "/api/mall/home",        // 小程序首页
-                            "/api/mall/login",        // 小程序登录
-                            "/api/mall/loginByPhone",        // 小程序登录
-                            "/error",
-                            "/crypto/**",                   // 加密配置
-                            "/sys/config-group/public",     // 公开配置
-                            "/file/**",                     // 文件访问
-                            "/files/**"                     // 文件访问
+                            "/api/auth/login",
+                            "/api/auth/register",           // 用户注册
+                            "/api/auth/captcha",            // 图片验证码
+                            "/api/auth/sms-code",           // 短信验证码
+                            "/api/mall/home",               // 小程序首页
+                            "/api/mall/login",              // 小程序登录
+                            "/api/mall/loginByPhone",       // 小程序登录
+                            "/api/crypto/**",               // 加密配置
+                            "/api/sys/config-group/public", // 公开配置
+                            "/api/file/**",                 // 文件访问
+                            "/api/files/**"                 // 文件访问
                     )
                     .check(r -> StpUtil.checkLogin());
-        })).addPathPatterns("/**");
+        })).addPathPatterns("/api/**");  // 只拦截 API 路径，不拦截静态资源
     }
 
     /**

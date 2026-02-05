@@ -13,8 +13,5 @@ public class MarsWebApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MarsWebApplication.class, args);
-        System.out.println("=================================");
-        System.out.println("    Mars Admin 启动成功!");
-        System.out.println("=================================");
     }
 }

@@ -110,6 +110,7 @@ async function decryptResponseData(data: string): Promise<any> {
 }
 
 // 创建axios实例
+// 后端 API 统一使用 /api 前缀
 const service: AxiosInstance = axios.create({
   baseURL: '/api',
   timeout: 30000

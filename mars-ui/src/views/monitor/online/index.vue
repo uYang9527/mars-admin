@@ -32,7 +32,6 @@ const columns: DataTableColumns<OnlineUser> = [
   { title: '序号', key: 'index', width: 60, render: (_row, index) => index + 1 },
   { title: '会话编号', key: 'tokenId', ellipsis: { tooltip: true }, minWidth: 180 },
   { title: '登录名称', key: 'loginName', width: 100 },
-  { title: '部门名称', key: 'deptName', width: 120 },
   { title: '主机', key: 'ipaddr', width: 130 },
   { title: '登录地点', key: 'loginLocation', width: 140 },
   { title: '浏览器', key: 'browser', width: 120 },
