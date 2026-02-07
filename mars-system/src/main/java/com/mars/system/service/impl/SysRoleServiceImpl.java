@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mars.common.exception.BusinessException;
 import com.mars.common.result.PageResult;
+import com.mars.system.config.StpInterfaceImpl;
 import com.mars.system.entity.SysRole;
 import com.mars.system.entity.SysRoleMenu;
 import com.mars.system.mapper.SysMenuMapper;
 import com.mars.system.mapper.SysRoleMapper;
 import com.mars.system.mapper.SysRoleMenuMapper;
+import com.mars.system.mapper.SysUserRoleMapper;
 import com.mars.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     private final SysRoleMenuMapper roleMenuMapper;
     private final SysMenuMapper menuMapper;
+    private final SysUserRoleMapper userRoleMapper;
 
     @Override
     public PageResult<SysRole> page(Integer page, Integer pageSize, String name, Integer status) {
@@ -71,11 +74,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 更新角色菜单关联
         roleMenuMapper.deleteByRoleId(role.getId());
         saveRoleMenus(role.getId(), menuIds);
+        // 角色权限变更，清除该角色下所有用户的权限缓存
+        clearCacheByRoleId(role.getId());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
+        // 先清除缓存（删除关联前查询受影响用户）
+        clearCacheByRoleId(id);
         this.removeById(id);
         roleMenuMapper.deleteByRoleId(id);
     }
@@ -100,6 +107,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public SysRole getByCode(String code) {
         return this.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, code));
+    }
+
+    /**
+     * 清除指定角色下所有用户的权限缓存
+     */
+    private void clearCacheByRoleId(Long roleId) {
+        List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(roleId);
+        if (userIds != null) {
+            userIds.forEach(StpInterfaceImpl::clearPermissionCache);
+        }
     }
 
     private void saveRoleMenus(Long roleId, List<Long> menuIds) {

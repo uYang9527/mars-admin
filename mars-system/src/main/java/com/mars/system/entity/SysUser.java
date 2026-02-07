@@ -1,5 +1,6 @@
 package com.mars.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mars.common.entity.BaseEntity;
 import lombok.Data;
@@ -12,6 +13,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_user")
 public class SysUser extends BaseEntity {
+
+    /**
+     * 部门ID
+     */
+    private Long deptId;
+
+    /**
+     * 部门名称（非数据库字段）
+     */
+    @TableField(exist = false)
+    private String deptName;
 
     /**
      * 用户名

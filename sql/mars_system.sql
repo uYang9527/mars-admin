@@ -2321,4 +2321,36 @@ CREATE TABLE `t_order`  (
 -- Records of t_order
 -- ----------------------------
 
+-- ----------------------------
+-- Token配置：为已有的 security 配置分组追加 Token 相关字段
+-- 如果是全新安装可忽略此段；如果是已有数据库请执行以下 UPDATE
+-- ----------------------------
+UPDATE `sys_config_group`
+SET `config_value` = JSON_SET(
+    COALESCE(`config_value`, '{}'),
+    '$.tokenName', 'Authorization',
+    '$.tokenTimeout', 86400,
+    '$.tokenActiveTimeout', 86400,
+    '$.tokenIsConcurrent', TRUE,
+    '$.tokenIsShare', TRUE,
+    '$.tokenStyle', 'uuid',
+    '$.tokenIsLog', FALSE,
+    '$.tokenIsReadBody', FALSE,
+    '$.tokenIsReadCookie', FALSE,
+    '$.tokenIsReadHeader', TRUE,
+    '$.tokenIsPrint', TRUE,
+    '$.tokenIsWriteHeader', FALSE
+)
+WHERE `group_code` = 'security'
+  AND JSON_EXTRACT(`config_value`, '$.tokenName') IS NULL;
+
+-- ----------------------------
+-- 修复本地存储文件URL：将绝对路径转为相对路径
+-- 本地文件通过 FileAccessController(/api/files/**) 端点访问
+-- ----------------------------
+UPDATE `sys_file`
+SET `url` = CONCAT('/api/files/', `file_path`)
+WHERE `storage_type` = 'local'
+  AND `url` NOT LIKE '/api/files/%';
+
 SET FOREIGN_KEY_CHECKS = 1;

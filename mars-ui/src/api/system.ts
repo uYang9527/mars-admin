@@ -25,6 +25,8 @@ export const dashboardApi = {
 // ==================== 用户管理 ====================
 export interface SysUser {
   id?: number
+  deptId?: number | null
+  deptName?: string
   username: string
   password?: string
   nickname: string
@@ -43,7 +45,7 @@ export interface UserDetailResult {
 }
 
 export const userApi = {
-  page(params: { page: number; pageSize: number; username?: string; status?: number }): Promise<PageResult<SysUser>> {
+  page(params: { page: number; pageSize: number; username?: string; status?: number; deptId?: number }): Promise<PageResult<SysUser>> {
     return request({ url: '/sys/user/page', method: 'get', params })
   },
   
@@ -65,6 +67,14 @@ export const userApi = {
   
   resetPassword(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}/reset-password`, method: 'post' })
+  },
+
+  approve(id: number): Promise<void> {
+    return request({ url: `/sys/user/${id}/approve`, method: 'post' })
+  },
+
+  reject(id: number): Promise<void> {
+    return request({ url: `/sys/user/${id}/reject`, method: 'post' })
   }
 }
 

@@ -18,7 +18,6 @@ public class LocalFileStorage implements FileStorage {
     public static final String STORAGE_TYPE = "local";
 
     private String basePath;
-    private String domain;
 
     @Override
     public String getStorageType() {
@@ -30,8 +29,7 @@ public class LocalFileStorage implements FileStorage {
      */
     public void init(String basePath, String domain) {
         this.basePath = basePath;
-        this.domain = domain;
-        
+
         // 确保基础目录存在
         try {
             Path path = Paths.get(basePath);
@@ -93,7 +91,10 @@ public class LocalFileStorage implements FileStorage {
         if (!normalizedPath.startsWith("/")) {
             normalizedPath = "/" + normalizedPath;
         }
-        return domain + "/files" + normalizedPath;
+        // 本地存储使用相对路径，由本服务器的 FileAccessController 提供访问
+        // 注意：ApiPrefixConfig 会给所有 @RestController 加上 /api 前缀
+        // 所以 FileAccessController(@RequestMapping("/files")) 实际路径是 /api/files/**
+        return "/api/files" + normalizedPath;
     }
 
     @Override

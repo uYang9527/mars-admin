@@ -8,6 +8,7 @@ import com.mars.system.annotation.Log;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysRole;
 import com.mars.system.entity.SysUser;
+import com.mars.common.exception.BusinessException;
 import com.mars.system.service.SysRoleService;
 import com.mars.system.service.SysUserService;
 import lombok.Data;
@@ -40,8 +41,9 @@ public class SysUserController {
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String username,
-            @RequestParam(required = false) Integer status) {
-        return Result.ok(userService.page(page, pageSize, username, status));
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Long deptId) {
+        return Result.ok(userService.page(page, pageSize, username, status, deptId));
     }
 
     /**
@@ -101,6 +103,44 @@ public class SysUserController {
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public Result<Void> resetPassword(@PathVariable Long id) {
         userService.resetPassword(id);
+        return Result.ok();
+    }
+
+    /**
+     * 审核通过
+     */
+    @PostMapping("/{id}/approve")
+    @SaCheckPermission("sys:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    public Result<Void> approve(@PathVariable Long id) {
+        SysUser user = userService.getById(id);
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        if (user.getStatus() != 2) {
+            throw new BusinessException("该用户不在待审核状态");
+        }
+        user.setStatus(1);
+        userService.updateById(user);
+        return Result.ok();
+    }
+
+    /**
+     * 审核拒绝
+     */
+    @PostMapping("/{id}/reject")
+    @SaCheckPermission("sys:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    public Result<Void> reject(@PathVariable Long id) {
+        SysUser user = userService.getById(id);
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        if (user.getStatus() != 2) {
+            throw new BusinessException("该用户不在待审核状态");
+        }
+        user.setStatus(3);
+        userService.updateById(user);
         return Result.ok();
     }
 

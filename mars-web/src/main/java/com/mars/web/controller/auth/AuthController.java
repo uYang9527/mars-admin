@@ -206,6 +206,14 @@ public class AuthController {
             String msg = remaining > 0 ? "用户名或密码错误，还剩" + remaining + "次机会" : "用户名或密码错误，账号已锁定";
             throw new BusinessException(msg);
         }
+        if (user.getStatus() == 2) {
+            loginLogService.recordLog(request.getUsername(), 1, "账号待审核", ip, browser, os);
+            throw new BusinessException("您的账号正在审核中，请等待管理员审核通过后再登录");
+        }
+        if (user.getStatus() == 3) {
+            loginLogService.recordLog(request.getUsername(), 1, "审核未通过", ip, browser, os);
+            throw new BusinessException("您的注册申请未通过审核，如有疑问请联系管理员");
+        }
         if (user.getStatus() != 1) {
             loginLogService.recordLog(request.getUsername(), 1, "用户已被禁用", ip, browser, os);
             throw new BusinessException("用户已被禁用");
@@ -313,7 +321,7 @@ public class AuthController {
      * 用户注册
      */
     @PostMapping("/register")
-    public Result<Void> register(@RequestBody RegisterRequest request) {
+    public Result<?> register(@RequestBody RegisterRequest request) {
         // 检查是否开放注册
         if (!configHelper.isRegisterEnabled()) {
             throw new BusinessException("系统暂未开放注册");
@@ -402,7 +410,11 @@ public class AuthController {
         }
 
         if (configHelper.isRegisterNeedAudit()) {
-            return Result.ok();
+            Result<String> result = new Result<>();
+            result.setCode(200);
+            result.setMessage("注册成功，请等待管理员审核通过后再登录");
+            result.setData("needAudit");
+            return result;
         }
         return Result.ok();
     }

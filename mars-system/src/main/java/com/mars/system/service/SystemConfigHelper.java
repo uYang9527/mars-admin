@@ -80,6 +80,20 @@ public class SystemConfigHelper {
     }
 
     /**
+     * 获取长整数配置
+     */
+    public long getLong(String groupCode, String key, long defaultValue) {
+        JsonNode config = getConfig(groupCode);
+        if (config != null) {
+            JsonNode node = config.get(key);
+            if (node != null && !node.isNull()) {
+                return node.asLong(defaultValue);
+            }
+        }
+        return defaultValue;
+    }
+
+    /**
      * 获取布尔配置
      */
     public boolean getBoolean(String groupCode, String key) {
@@ -328,6 +342,92 @@ public class SystemConfigHelper {
         }
     }
 
+    // ============ Token 配置（存储在安全配置分组中） ============
+
+    /**
+     * 获取 Token 名称
+     */
+    public String getTokenName() {
+        return getString(GROUP_SECURITY, "tokenName", "Authorization");
+    }
+
+    /**
+     * 获取 Token 有效期（秒）
+     */
+    public long getTokenTimeout() {
+        return getLong(GROUP_SECURITY, "tokenTimeout", 86400);
+    }
+
+    /**
+     * 获取 Token 最低活跃频率（秒）
+     */
+    public long getTokenActiveTimeout() {
+        return getLong(GROUP_SECURITY, "tokenActiveTimeout", 86400);
+    }
+
+    /**
+     * 是否允许同一账号多地同时登录
+     */
+    public boolean isTokenConcurrent() {
+        return getBoolean(GROUP_SECURITY, "tokenIsConcurrent", true);
+    }
+
+    /**
+     * 多人登录同一账号时是否共用一个 Token
+     */
+    public boolean isTokenShare() {
+        return getBoolean(GROUP_SECURITY, "tokenIsShare", true);
+    }
+
+    /**
+     * 获取 Token 风格
+     */
+    public String getTokenStyle() {
+        return getString(GROUP_SECURITY, "tokenStyle", "uuid");
+    }
+
+    /**
+     * 是否输出 Sa-Token 操作日志
+     */
+    public boolean isTokenLog() {
+        return getBoolean(GROUP_SECURITY, "tokenIsLog", false);
+    }
+
+    /**
+     * 是否尝试从请求体里读取 Token
+     */
+    public boolean isTokenReadBody() {
+        return getBoolean(GROUP_SECURITY, "tokenIsReadBody", false);
+    }
+
+    /**
+     * 是否尝试从 Cookie 里读取 Token
+     */
+    public boolean isTokenReadCookie() {
+        return getBoolean(GROUP_SECURITY, "tokenIsReadCookie", false);
+    }
+
+    /**
+     * 是否尝试从 Header 里读取 Token
+     */
+    public boolean isTokenReadHeader() {
+        return getBoolean(GROUP_SECURITY, "tokenIsReadHeader", true);
+    }
+
+    /**
+     * 是否在初始化配置时打印版本字符画
+     */
+    public boolean isTokenPrint() {
+        return getBoolean(GROUP_SECURITY, "tokenIsPrint", true);
+    }
+
+    /**
+     * 是否在登录后将 Token 写入响应头
+     */
+    public boolean isTokenWriteHeader() {
+        return getBoolean(GROUP_SECURITY, "tokenIsWriteHeader", false);
+    }
+
     // ============ 安全配置 ============
 
     /**
@@ -549,6 +649,34 @@ public class SystemConfigHelper {
      */
     public String getIcp() {
         return getString(GROUP_SYSTEM, "icp", "");
+    }
+
+    /**
+     * 是否启用水印
+     */
+    public boolean isWatermarkEnabled() {
+        return getBoolean(GROUP_SYSTEM, "watermarkEnabled", true);
+    }
+
+    /**
+     * 获取水印类型（username/username_time/sitename/custom）
+     */
+    public String getWatermarkType() {
+        return getString(GROUP_SYSTEM, "watermarkType", "username");
+    }
+
+    /**
+     * 获取水印透明度
+     */
+    public double getWatermarkOpacity() {
+        JsonNode config = getConfig(GROUP_SYSTEM);
+        if (config != null) {
+            JsonNode node = config.get("watermarkOpacity");
+            if (node != null && !node.isNull()) {
+                return node.asDouble(0.1);
+            }
+        }
+        return 0.1;
     }
 
     // ============ 推送配置 ============

@@ -14,7 +14,7 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 分页查询用户
      */
-    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status);
+    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, Long deptId);
 
     /**
      * 获取用户详情（包含角色）

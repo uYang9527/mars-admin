@@ -34,8 +34,11 @@ public class FileAccessController {
     @GetMapping("/**")
     public ResponseEntity<byte[]> getFile(HttpServletRequest request) {
         // 获取文件路径
+        // 注意：ApiPrefixConfig 给 @RestController 自动加了 /api 前缀
+        // 所以实际请求URI是 /api/files/xxx，需要从 /api/files 之后截取
         String requestUri = request.getRequestURI();
-        String filePath = requestUri.substring("/files".length());
+        int filesIndex = requestUri.indexOf("/files/");
+        String filePath = (filesIndex >= 0) ? requestUri.substring(filesIndex + "/files".length()) : requestUri;
 
         // 获取本地存储路径
         String basePath = configHelper.getStorageLocalPath();

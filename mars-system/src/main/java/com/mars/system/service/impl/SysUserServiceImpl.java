@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mars.common.exception.BusinessException;
 import com.mars.common.result.PageResult;
+import com.mars.system.entity.SysDept;
 import com.mars.system.entity.SysUser;
 import com.mars.system.entity.SysUserRole;
+import com.mars.system.mapper.SysDeptMapper;
 import com.mars.system.mapper.SysUserMapper;
 import com.mars.system.mapper.SysUserRoleMapper;
+import com.mars.system.config.StpInterfaceImpl;
 import com.mars.system.service.SysUserService;
 import com.mars.system.service.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
@@ -27,20 +30,30 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserRoleMapper userRoleMapper;
+    private final SysDeptMapper deptMapper;
     private final SystemConfigHelper configHelper;
 
     private static final String DEFAULT_PASSWORD = "123456";
 
     @Override
-    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status) {
+    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, Long deptId) {
         Page<SysUser> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.hasText(username), SysUser::getUsername, username)
                 .eq(status != null, SysUser::getStatus, status)
+                .eq(deptId != null, SysUser::getDeptId, deptId)
                 .orderByDesc(SysUser::getCreateTime);
         Page<SysUser> result = this.page(pageParam, wrapper);
-        // 清空密码
-        result.getRecords().forEach(user -> user.setPassword(null));
+        // 清空密码，填充部门名称
+        result.getRecords().forEach(user -> {
+            user.setPassword(null);
+            if (user.getDeptId() != null) {
+                SysDept dept = deptMapper.selectById(user.getDeptId());
+                if (dept != null) {
+                    user.setDeptName(dept.getDeptName());
+                }
+            }
+        });
         return PageResult.of(result);
     }
 
@@ -86,6 +99,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 更新用户角色关联
         userRoleMapper.deleteByUserId(user.getId());
         saveUserRoles(user.getId(), roleIds);
+        // 角色变更，清除该用户的权限缓存
+        StpInterfaceImpl.clearPermissionCache(user.getId());
     }
 
     @Override
@@ -93,6 +108,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void delete(Long id) {
         this.removeById(id);
         userRoleMapper.deleteByUserId(id);
+        // 用户删除，清除权限缓存
+        StpInterfaceImpl.clearPermissionCache(id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mars.web.controller.system;
 
 import com.mars.common.result.Result;
+import com.mars.system.config.SaTokenConfigLoader;
 import com.mars.system.entity.SysConfigGroup;
 import com.mars.system.service.EmailService;
 import com.mars.system.service.SysConfigGroupService;
@@ -26,6 +27,7 @@ public class SysConfigGroupController {
     private final SystemConfigHelper configHelper;
     private final PayServiceFactory payServiceFactory;
     private final EmailService emailService;
+    private final SaTokenConfigLoader saTokenConfigLoader;
 
     /**
      * 获取所有配置分组
@@ -51,6 +53,12 @@ public class SysConfigGroupController {
         try {
             String configValue = new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(config);
             configGroupService.saveConfig(groupCode, configValue);
+
+            // 如果保存的是安全配置，重新加载 Sa-Token 配置使其即时生效
+            if ("security".equals(groupCode)) {
+                saTokenConfigLoader.applyConfig();
+            }
+
             return Result.ok();
         } catch (Exception e) {
             return Result.fail("保存配置失败: " + e.getMessage());
@@ -81,6 +89,9 @@ public class SysConfigGroupController {
         system.put("siteLogo", configHelper.getSiteLogo());
         system.put("copyright", configHelper.getCopyright());
         system.put("icp", configHelper.getIcp());
+        system.put("watermarkEnabled", configHelper.isWatermarkEnabled());
+        system.put("watermarkType", configHelper.getWatermarkType());
+        system.put("watermarkOpacity", configHelper.getWatermarkOpacity());
         config.put("system", system);
 
         // 登录配置

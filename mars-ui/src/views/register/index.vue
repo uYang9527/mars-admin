@@ -205,8 +205,12 @@ async function handleRegister() {
       registerData.code = formData.code
     }
     
-    await authApi.register(registerData)
-    message.success('注册成功，请登录')
+    const result = await authApi.register(registerData)
+    if (result === 'needAudit') {
+      message.success('注册成功，请等待管理员审核通过后再登录')
+    } else {
+      message.success('注册成功，请登录')
+    }
     router.push('/login')
   } catch (error: any) {
     // 刷新验证码

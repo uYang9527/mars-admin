@@ -1,55 +1,86 @@
 <template>
   <div class="page-container">
-    <n-card>
-      <!-- 搜索表单 -->
-      <div class="search-form">
-        <n-form inline :model="searchForm" label-placement="left">
-          <n-form-item label="用户名">
-            <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
-          </n-form-item>
-          <n-form-item label="状态">
-            <n-select
-              v-model:value="searchForm.status"
-              placeholder="请选择状态"
-              :options="statusOptions"
-              clearable
-              style="width: 120px"
-            />
-          </n-form-item>
-          <n-form-item>
-            <n-space>
-              <n-button type="primary" @click="handleSearch">
-                <template #icon><n-icon><SearchOutline /></n-icon></template>
-                搜索
-              </n-button>
-              <n-button @click="handleReset">
-                <template #icon><n-icon><RefreshOutline /></n-icon></template>
-                重置
-              </n-button>
-            </n-space>
-          </n-form-item>
-        </n-form>
-      </div>
-      
-      <!-- 工具栏 -->
-      <div class="table-toolbar">
-        <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
-          <template #icon><n-icon><AddOutline /></n-icon></template>
-          新增用户
-        </n-button>
-      </div>
-      
-      <!-- 表格 -->
-      <n-data-table
-        :columns="columns"
-        :data="tableData"
-        :loading="loading"
-        :pagination="pagination"
-        :row-key="(row: SysUser) => row.id"
-        @update:page="handlePageChange"
-        @update:page-size="handlePageSizeChange"
-      />
-    </n-card>
+    <div class="user-layout">
+      <!-- 左侧部门树 -->
+      <n-card class="dept-tree-card" size="small">
+        <template #header>
+          <div class="dept-tree-header">
+            <span>部门列表</span>
+          </div>
+        </template>
+        <div class="dept-search">
+          <n-input v-model:value="deptSearch" placeholder="搜索部门" clearable size="small">
+            <template #prefix><n-icon><SearchOutline /></n-icon></template>
+          </n-input>
+        </div>
+        <div class="dept-tree-wrapper">
+          <n-tree
+            :data="deptTreeData"
+            :pattern="deptSearch"
+            :default-expand-all="true"
+            :selected-keys="selectedDeptKeys"
+            :node-props="deptNodeProps"
+            key-field="id"
+            label-field="deptName"
+            children-field="children"
+            selectable
+            block-line
+          />
+        </div>
+      </n-card>
+
+      <!-- 右侧用户列表 -->
+      <n-card class="user-list-card" size="small">
+        <!-- 搜索表单 -->
+        <div class="search-form">
+          <n-form inline :model="searchForm" label-placement="left">
+            <n-form-item label="用户名">
+              <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
+            </n-form-item>
+            <n-form-item label="状态">
+              <n-select
+                v-model:value="searchForm.status"
+                placeholder="请选择状态"
+                :options="statusOptions"
+                clearable
+                style="width: 120px"
+              />
+            </n-form-item>
+            <n-form-item>
+              <n-space>
+                <n-button type="primary" @click="handleSearch">
+                  <template #icon><n-icon><SearchOutline /></n-icon></template>
+                  搜索
+                </n-button>
+                <n-button @click="handleReset">
+                  <template #icon><n-icon><RefreshOutline /></n-icon></template>
+                  重置
+                </n-button>
+              </n-space>
+            </n-form-item>
+          </n-form>
+        </div>
+        
+        <!-- 工具栏 -->
+        <div class="table-toolbar">
+          <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
+            <template #icon><n-icon><AddOutline /></n-icon></template>
+            新增用户
+          </n-button>
+        </div>
+        
+        <!-- 表格 -->
+        <n-data-table
+          :columns="columns"
+          :data="tableData"
+          :loading="loading"
+          :pagination="pagination"
+          :row-key="(row: SysUser) => row.id"
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        />
+      </n-card>
+    </div>
     
     <!-- 新增/编辑弹窗 -->
     <n-modal
@@ -75,6 +106,18 @@
         </n-form-item>
         <n-form-item label="昵称" path="nickname">
           <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
+        </n-form-item>
+        <n-form-item label="归属部门" path="deptId">
+          <n-tree-select
+            v-model:value="formData.deptId"
+            :options="deptOptions"
+            key-field="id"
+            label-field="deptName"
+            children-field="children"
+            placeholder="请选择归属部门"
+            clearable
+            default-expand-all
+          />
         </n-form-item>
         <n-form-item label="邮箱" path="email">
           <n-input v-model:value="formData.email" placeholder="请输入邮箱" />
@@ -118,10 +161,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
+import { ref, reactive, h, onMounted, type HTMLAttributes } from 'vue'
+import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, type SysUser, type SysRole } from '@/api/system'
+import { deptApi, type SysDept } from '@/api/org'
 import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
@@ -131,19 +175,57 @@ const userStore = useUserStore()
 // 权限检查
 const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
-// 搜索表单
+// ==================== 部门树 ====================
+const deptSearch = ref('')
+const deptTreeData = ref<SysDept[]>([])
+const deptOptions = ref<SysDept[]>([])
+const selectedDeptKeys = ref<Array<string | number>>([])
+const selectedDeptId = ref<number | undefined>(undefined)
+
+// 部门节点属性
+const deptNodeProps = ({ option }: { option: TreeOption }): HTMLAttributes => {
+  return {
+    onClick() {
+      const deptId = option.id as number
+      if (selectedDeptId.value === deptId) {
+        // 再次点击取消选择
+        selectedDeptId.value = undefined
+        selectedDeptKeys.value = []
+      } else {
+        selectedDeptId.value = deptId
+        selectedDeptKeys.value = [deptId]
+      }
+      pagination.page = 1
+      loadData()
+    }
+  }
+}
+
+// 加载部门树
+async function loadDeptTree() {
+  try {
+    const tree = await deptApi.tree()
+    deptTreeData.value = tree
+    deptOptions.value = tree
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// ==================== 搜索表单 ====================
 const searchForm = reactive({
   username: '',
   status: null as number | null
 })
 
-// 状态选项
 const statusOptions = [
   { label: '启用', value: 1 },
-  { label: '禁用', value: 0 }
+  { label: '禁用', value: 0 },
+  { label: '待审核', value: 2 },
+  { label: '审核拒绝', value: 3 }
 ]
 
-// 表格数据
+// ==================== 表格 ====================
 const tableData = ref<SysUser[]>([])
 const loading = ref(false)
 const pagination = reactive({
@@ -154,59 +236,61 @@ const pagination = reactive({
   pageSizes: [10, 20, 50]
 })
 
-// 角色选项
 const roleOptions = ref<Array<{ label: string; value: number }>>([])
 
-// 表格列
 const columns: DataTableColumns<SysUser> = [
-  { title: 'ID', key: 'id', width: 80 },
-  { title: '用户名', key: 'username', width: 120 },
-  { title: '昵称', key: 'nickname', width: 120 },
-  { title: '邮箱', key: 'email', width: 180 },
-  { title: '手机号', key: 'phone', width: 130 },
+  { title: 'ID', key: 'id', width: 60 },
+  { title: '用户名', key: 'username', width: 100 },
+  { title: '昵称', key: 'nickname', width: 100 },
+  { title: '部门', key: 'deptName', width: 100, render(row) {
+    return row.deptName || '-'
+  }},
+  { title: '手机号', key: 'phone', width: 120 },
   {
     title: '状态',
     key: 'status',
     width: 80,
     render(row) {
-      return h(
-        NTag,
-        { type: row.status === 1 ? 'success' : 'error', size: 'small' },
-        { default: () => (row.status === 1 ? '启用' : '禁用') }
-      )
+      const statusMap: Record<number, { type: 'success' | 'error' | 'warning' | 'info'; label: string }> = {
+        0: { type: 'error', label: '禁用' },
+        1: { type: 'success', label: '启用' },
+        2: { type: 'warning', label: '待审核' },
+        3: { type: 'error', label: '审核拒绝' }
+      }
+      const status = statusMap[row.status] || { type: 'info', label: '未知' }
+      return h(NTag, { type: status.type, size: 'small' }, { default: () => status.label })
     }
   },
-  { title: '创建时间', key: 'createTime', width: 180 },
+  { title: '创建时间', key: 'createTime', width: 170 },
   {
     title: '操作',
     key: 'actions',
-    width: 200,
+    width: 240,
     fixed: 'right',
     render(row) {
       const buttons = []
+      // 待审核状态显示审核按钮
+      if (row.status === 2 && hasPermission('sys:user:edit')) {
+        buttons.push(
+          h(NButton, { size: 'small', type: 'success', onClick: () => handleApprove(row) }, { default: () => '通过' })
+        )
+        buttons.push(
+          h(NButton, { size: 'small', type: 'error', onClick: () => handleReject(row) }, { default: () => '拒绝' })
+        )
+      }
       if (hasPermission('sys:user:edit')) {
         buttons.push(
-          h(
-            NButton,
-            { size: 'small', onClick: () => handleEdit(row) },
-            { default: () => '编辑' }
-          )
+          h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' })
         )
-        buttons.push(
-          h(
-            NButton,
-            { size: 'small', onClick: () => handleResetPassword(row) },
-            { default: () => '重置密码' }
+        if (row.status !== 2) {
+          buttons.push(
+            h(NButton, { size: 'small', onClick: () => handleResetPassword(row) }, { default: () => '重置密码' })
           )
-        )
+        }
       }
       if (hasPermission('sys:user:delete')) {
         buttons.push(
-          h(
-            NButton,
-            { size: 'small', type: 'error', onClick: () => handleDelete(row) },
-            { default: () => '删除' }
-          )
+          h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
         )
       }
       return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
@@ -214,7 +298,7 @@ const columns: DataTableColumns<SysUser> = [
   }
 ]
 
-// 弹窗
+// ==================== 弹窗 ====================
 const modalVisible = ref(false)
 const modalTitle = ref('新增用户')
 const formRef = ref<FormInst | null>(null)
@@ -223,6 +307,7 @@ const roleIds = ref<number[]>([])
 
 const formData = reactive<SysUser>({
   id: undefined,
+  deptId: null,
   username: '',
   password: '',
   nickname: '',
@@ -238,7 +323,7 @@ const rules: FormRules = {
   nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }]
 }
 
-// 加载数据
+// ==================== 数据加载 ====================
 async function loadData() {
   loading.value = true
   try {
@@ -246,7 +331,8 @@ async function loadData() {
       page: pagination.page,
       pageSize: pagination.pageSize,
       username: searchForm.username || undefined,
-      status: searchForm.status ?? undefined
+      status: searchForm.status ?? undefined,
+      deptId: selectedDeptId.value
     })
     tableData.value = res.list
     pagination.itemCount = res.total
@@ -257,7 +343,6 @@ async function loadData() {
   }
 }
 
-// 加载角色列表
 async function loadRoles() {
   try {
     const roles = await roleApi.list()
@@ -270,20 +355,20 @@ async function loadRoles() {
   }
 }
 
-// 搜索
+// ==================== 操作方法 ====================
 function handleSearch() {
   pagination.page = 1
   loadData()
 }
 
-// 重置
 function handleReset() {
   searchForm.username = ''
   searchForm.status = null
+  selectedDeptId.value = undefined
+  selectedDeptKeys.value = []
   handleSearch()
 }
 
-// 分页
 function handlePageChange(page: number) {
   pagination.page = page
   loadData()
@@ -295,11 +380,11 @@ function handlePageSizeChange(pageSize: number) {
   loadData()
 }
 
-// 新增
 function handleAdd() {
   modalTitle.value = '新增用户'
   Object.assign(formData, {
     id: undefined,
+    deptId: selectedDeptId.value || null,
     username: '',
     password: '',
     nickname: '',
@@ -313,7 +398,6 @@ function handleAdd() {
   modalVisible.value = true
 }
 
-// 编辑
 async function handleEdit(row: SysUser) {
   modalTitle.value = '编辑用户'
   try {
@@ -326,7 +410,6 @@ async function handleEdit(row: SysUser) {
   }
 }
 
-// 提交
 async function handleSubmit() {
   try {
     await formRef.value?.validate()
@@ -354,7 +437,6 @@ async function handleSubmit() {
   }
 }
 
-// 删除
 function handleDelete(row: SysUser) {
   dialog.warning({
     title: '提示',
@@ -373,7 +455,44 @@ function handleDelete(row: SysUser) {
   })
 }
 
-// 重置密码
+// 审核通过
+function handleApprove(row: SysUser) {
+  dialog.success({
+    title: '审核通过',
+    content: `确定通过用户"${row.username}"的注册申请吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.approve(row.id!)
+        message.success('审核通过')
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
+// 审核拒绝
+function handleReject(row: SysUser) {
+  dialog.warning({
+    title: '审核拒绝',
+    content: `确定拒绝用户"${row.username}"的注册申请吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.reject(row.id!)
+        message.success('已拒绝')
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
 function handleResetPassword(row: SysUser) {
   dialog.warning({
     title: '提示',
@@ -392,7 +511,48 @@ function handleResetPassword(row: SysUser) {
 }
 
 onMounted(() => {
+  loadDeptTree()
   loadData()
   loadRoles()
 })
 </script>
+
+<style scoped>
+.user-layout {
+  display: flex;
+  gap: 12px;
+  height: 100%;
+}
+
+.dept-tree-card {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.dept-tree-card :deep(.n-card-header) {
+  padding: 12px 16px;
+}
+
+.dept-tree-header {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dept-search {
+  margin-bottom: 8px;
+}
+
+.dept-tree-wrapper {
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+}
+
+.dept-tree-wrapper :deep(.n-tree-node) {
+  padding: 2px 0;
+}
+
+.user-list-card {
+  flex: 1;
+  min-width: 0;
+}
+</style>

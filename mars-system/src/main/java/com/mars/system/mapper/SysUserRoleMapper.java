@@ -5,6 +5,9 @@ import com.mars.system.entity.SysUserRole;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 用户角色关联Mapper
@@ -17,4 +20,10 @@ public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
      */
     @Delete("DELETE FROM sys_user_role WHERE user_id = #{userId}")
     int deleteByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据角色ID查询关联的用户ID列表
+     */
+    @Select("SELECT user_id FROM sys_user_role WHERE role_id = #{roleId}")
+    List<Long> selectUserIdsByRoleId(@Param("roleId") Long roleId);
 }

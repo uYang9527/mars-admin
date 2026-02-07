@@ -688,6 +688,63 @@
                 <n-form-item label="SQL注入防护">
                   <n-switch v-model:value="configs.security.sqlInject" />
                 </n-form-item>
+
+                <n-divider>Token 配置（Sa-Token）</n-divider>
+                <n-form-item label="Token 名称">
+                  <n-input v-model:value="configs.security.tokenName" placeholder="请求Header中的参数名" style="width: 250px" disabled />
+                  <span class="form-hint">同时也是 Cookie 名称、Header 提交的参数名称（不可修改）</span>
+                </n-form-item>
+                <n-form-item label="Token 有效期">
+                  <n-input-number v-model:value="configs.security.tokenTimeout" :min="-1" :max="2592000" style="width: 180px" />
+                  <span class="form-hint">
+                    单位：秒，-1代表永不过期
+                    <template v-if="configs.security.tokenTimeout > 0">
+                      （≈{{ formatDuration(configs.security.tokenTimeout) }}）
+                    </template>
+                  </span>
+                </n-form-item>
+                <n-form-item label="活跃超时时间">
+                  <n-input-number v-model:value="configs.security.tokenActiveTimeout" :min="-1" :max="2592000" style="width: 180px" />
+                  <span class="form-hint">
+                    单位：秒，超过此时间无操作则冻结，-1不限制
+                    <template v-if="configs.security.tokenActiveTimeout > 0">
+                      （≈{{ formatDuration(configs.security.tokenActiveTimeout) }}）
+                    </template>
+                  </span>
+                </n-form-item>
+                <n-form-item label="允许多端登录">
+                  <n-switch v-model:value="configs.security.tokenIsConcurrent" />
+                  <span class="form-hint">关闭后新登录将挤掉旧登录</span>
+                </n-form-item>
+                <n-form-item label="共用Token">
+                  <n-switch v-model:value="configs.security.tokenIsShare" />
+                  <span class="form-hint">多人登录同一账号时是否共用一个Token</span>
+                </n-form-item>
+                <n-form-item label="Token 风格">
+                  <n-select v-model:value="configs.security.tokenStyle" :options="tokenStyleOptions" style="width: 250px" />
+                </n-form-item>
+                <n-form-item label="从Header读取">
+                  <n-switch v-model:value="configs.security.tokenIsReadHeader" />
+                </n-form-item>
+                <n-form-item label="从Cookie读取">
+                  <n-switch v-model:value="configs.security.tokenIsReadCookie" />
+                </n-form-item>
+                <n-form-item label="从请求体读取">
+                  <n-switch v-model:value="configs.security.tokenIsReadBody" />
+                </n-form-item>
+                <n-form-item label="输出操作日志">
+                  <n-switch v-model:value="configs.security.tokenIsLog" />
+                  <span class="form-hint">是否输出 Sa-Token 操作日志</span>
+                </n-form-item>
+                <n-form-item label="打印版本信息">
+                  <n-switch v-model:value="configs.security.tokenIsPrint" />
+                  <span class="form-hint">启动时是否打印 Sa-Token 版本字符画</span>
+                </n-form-item>
+
+                <n-alert type="info" :bordered="false" style="margin-top: 12px">
+                  <p>注意：修改 Token 有效期和活跃超时时间后，仅对新创建的 Token 生效，已登录用户的 Token 不受影响。</p>
+                  <p>如果关闭了「允许多端登录」，已登录的多端 Token 在下次登录时才会互踢。</p>
+                </n-alert>
               </n-form>
             </template>
 
@@ -786,7 +843,14 @@ const configs = reactive<Record<string, any>>({
     wechatPay: { enabled: false, mchId: '', appId: '', apiV3Key: '', privateKey: '', certSerialNo: '', notifyUrl: '' },
     alipay: { enabled: false, appId: '', privateKey: '', publicKey: '', signType: 'RSA2', gatewayUrl: 'https://openapi.alipay.com/gateway.do', notifyUrl: '', returnUrl: '' }
   },
-  security: { encryptEnabled: false, encryptScope: 'partial', encryptPublicKey: '', encryptPrivateKey: '', xssFilter: true, sqlInject: true },
+  security: {
+    encryptEnabled: false, encryptScope: 'partial', encryptPublicKey: '', encryptPrivateKey: '', xssFilter: true, sqlInject: true,
+    // Token 配置
+    tokenName: 'Authorization', tokenTimeout: 86400, tokenActiveTimeout: 86400,
+    tokenIsConcurrent: true, tokenIsShare: true, tokenStyle: 'uuid',
+    tokenIsLog: false, tokenIsReadBody: false, tokenIsReadCookie: false,
+    tokenIsReadHeader: true, tokenIsPrint: true, tokenIsWriteHeader: false
+  },
   other: {}
 })
 
@@ -827,6 +891,28 @@ const alipayGatewayOptions = [
   { label: '正式环境', value: 'https://openapi.alipay.com/gateway.do' },
   { label: '沙箱环境', value: 'https://openapi-sandbox.dl.alipaydev.com/gateway.do' }
 ]
+
+const tokenStyleOptions = [
+  { label: 'UUID 风格', value: 'uuid' },
+  { label: '简洁 UUID（无下划线）', value: 'simple-uuid' },
+  { label: '随机32位字符串', value: 'random-32' },
+  { label: '随机64位字符串', value: 'random-64' },
+  { label: '随机128位字符串', value: 'random-128' },
+  { label: 'tik 风格', value: 'tik' }
+]
+
+// 将秒数格式化为友好的时间描述
+function formatDuration(seconds: number): string {
+  if (seconds <= 0) return '永不过期'
+  const days = Math.floor(seconds / 86400)
+  const hours = Math.floor((seconds % 86400) / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
+  const parts: string[] = []
+  if (days > 0) parts.push(`${days}天`)
+  if (hours > 0) parts.push(`${hours}小时`)
+  if (mins > 0 && days === 0) parts.push(`${mins}分钟`)
+  return parts.join('') || `${seconds}秒`
+}
 
 // 邮件测试相关
 const emailTesting = ref(false)
@@ -1277,6 +1363,8 @@ async function handleRefresh() {
   try {
     await configGroupApi.refresh()
     await siteStore.loadConfig()
+    // 重新加载当前 tab 的配置，保持页面显示最新值
+    await loadConfig(activeTab.value)
     message.success('缓存刷新成功')
   } catch (error) {
     // 错误已在拦截器处理
