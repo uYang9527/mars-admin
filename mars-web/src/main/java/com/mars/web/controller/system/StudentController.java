@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.Student;
 import com.mars.system.service.StudentService;
@@ -50,6 +51,7 @@ public class StudentController {
      */
     @PostMapping
     @SaCheckPermission("system:student:add")
+    @RepeatSubmit
     @Log(title = "学生管理", businessType = BusinessType.INSERT)
     public Result<Void> add(@RequestBody Student student) {
         studentService.create(student);

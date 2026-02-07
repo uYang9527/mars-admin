@@ -5,6 +5,7 @@ import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.EncryptResponse;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysRole;
 import com.mars.system.entity.SysUser;
@@ -67,6 +68,7 @@ public class SysUserController {
      */
     @PostMapping
     @SaCheckPermission("sys:user:add")
+    @RepeatSubmit
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody UserRequest request) {
         userService.create(request.getUser(), request.getRoleIds());

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysDictType;
 import com.mars.system.service.SysDictTypeService;
@@ -58,6 +59,7 @@ public class SysDictTypeController {
      */
     @PostMapping
     @SaCheckPermission("sys:dict:add")
+    @RepeatSubmit
     @Log(title = "字典类型", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody SysDictType dictType) {
         dictTypeService.create(dictType);

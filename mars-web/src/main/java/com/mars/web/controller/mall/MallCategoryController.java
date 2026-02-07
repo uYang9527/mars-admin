@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.mall.MallCategory;
 import com.mars.system.service.mall.MallCategoryService;
@@ -61,6 +62,7 @@ public class MallCategoryController {
      */
     @PostMapping
     @SaCheckPermission("mall:category:add")
+    @RepeatSubmit
     @Log(title = "商品分类", businessType = BusinessType.INSERT)
     public Result<Void> add(@RequestBody MallCategory category) {
         categoryService.create(category);

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysRole;
 import com.mars.system.service.SysRoleService;
@@ -66,6 +67,7 @@ public class SysRoleController {
      */
     @PostMapping
     @SaCheckPermission("sys:role:add")
+    @RepeatSubmit
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody RoleRequest request) {
         roleService.create(request.getRole(), request.getMenuIds());

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysPost;
 import com.mars.system.service.SysPostService;
@@ -58,6 +59,7 @@ public class SysPostController {
      */
     @PostMapping
     @SaCheckPermission("sys:post:add")
+    @RepeatSubmit
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody SysPost post) {
         postService.create(post);

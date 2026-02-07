@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.mall.MallBanner;
 import com.mars.system.service.mall.MallBannerService;
@@ -50,6 +51,7 @@ public class MallBannerController {
      */
     @PostMapping
     @SaCheckPermission("mall:banner:add")
+    @RepeatSubmit
     @Log(title = "轮播图", businessType = BusinessType.INSERT)
     public Result<Void> add(@RequestBody MallBanner banner) {
         bannerService.create(banner);

@@ -3,6 +3,7 @@ package com.mars.web.controller.file;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysFileGroup;
 import com.mars.system.service.SysFileGroupService;
@@ -52,6 +53,7 @@ public class SysFileGroupController {
      */
     @PostMapping
     @SaCheckPermission("sys:file:upload")
+    @RepeatSubmit
     @Log(title = "创建文件分组", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody SysFileGroup group) {
         fileGroupService.create(group);

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.Customer;
 import com.mars.system.service.CustomerService;
@@ -51,6 +52,7 @@ public class CustomerController {
      */
     @PostMapping
     @SaCheckPermission("system:customer:add")
+    @RepeatSubmit
     @Log(title = "客户表", businessType = BusinessType.INSERT)
     public Result<Void> add(@RequestBody Customer customer) {
         customerService.create(customer);

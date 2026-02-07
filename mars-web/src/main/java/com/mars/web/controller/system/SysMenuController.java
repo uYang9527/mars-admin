@@ -3,6 +3,7 @@ package com.mars.web.controller.system;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysMenu;
 import com.mars.system.service.SysMenuService;
@@ -54,6 +55,7 @@ public class SysMenuController {
      */
     @PostMapping
     @SaCheckPermission("sys:menu:add")
+    @RepeatSubmit
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody SysMenu menu) {
         menuService.create(menu);

@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.gen.DatabaseTable;
 import com.mars.system.entity.gen.GenTable;
@@ -44,6 +45,7 @@ public class GenController {
      */
     @PostMapping("/import")
     @SaCheckPermission("tool:gen:import")
+    @RepeatSubmit
     @Log(title = "导入表结构", businessType = BusinessType.INSERT)
     public Result<Void> importTable(@RequestBody String[] tableNames) {
         genTableService.importTable(tableNames);
@@ -133,6 +135,7 @@ public class GenController {
      */
     @PostMapping("/generate/{id}")
     @SaCheckPermission("tool:gen:code")
+    @RepeatSubmit
     @Log(title = "生成代码到项目", businessType = BusinessType.INSERT)
     public Result<List<String>> generateToProject(@PathVariable Long id) {
         List<String> files = genTableService.generateToProject(id);

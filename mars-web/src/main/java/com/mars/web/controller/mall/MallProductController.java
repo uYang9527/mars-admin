@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
+import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.mall.MallProduct;
 import com.mars.system.service.mall.MallProductService;
@@ -52,6 +53,7 @@ public class MallProductController {
      */
     @PostMapping
     @SaCheckPermission("mall:product:add")
+    @RepeatSubmit
     @Log(title = "商品", businessType = BusinessType.INSERT)
     public Result<Void> add(@RequestBody MallProduct product) {
         productService.create(product);
