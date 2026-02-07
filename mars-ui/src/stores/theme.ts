@@ -13,6 +13,11 @@ export const useThemeStore = defineStore('theme', () => {
     (localStorage.getItem('layout-position') as 'left' | 'right' | 'top') || 'left'
   )
 
+  // 是否显示页签
+  const showTabs = ref<boolean>(
+    localStorage.getItem('layout-show-tabs') !== 'false'
+  )
+
   // 是否是暗色主题
   const isDark = computed(() => mode.value === 'dark')
 
@@ -35,6 +40,12 @@ export const useThemeStore = defineStore('theme', () => {
     localStorage.setItem('layout-position', position)
   }
 
+  // 设置是否显示页签
+  function setShowTabs(show: boolean) {
+    showTabs.value = show
+    localStorage.setItem('layout-show-tabs', String(show))
+  }
+
   // 更新 body 类名
   function updateBodyClass() {
     if (isDark.value) {
@@ -52,10 +63,12 @@ export const useThemeStore = defineStore('theme', () => {
   return {
     mode,
     siderPosition,
+    showTabs,
     isDark,
     naiveTheme,
     setMode,
     setSiderPosition,
+    setShowTabs,
     updateBodyClass
   }
 }, {

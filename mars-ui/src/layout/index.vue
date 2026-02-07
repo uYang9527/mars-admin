@@ -174,6 +174,12 @@
                   </div>
                 </div>
               </div>
+              <div class="theme-section">
+                <div class="theme-switch-row">
+                  <span class="theme-title" style="margin-bottom: 0">显示页签</span>
+                  <n-switch :value="themeStore.showTabs" @update:value="themeStore.setShowTabs" size="small" />
+                </div>
+              </div>
             </div>
           </n-popover>
 
@@ -275,6 +281,9 @@
         </div>
       </n-layout-header>
 
+      <!-- 页签栏 -->
+      <TabBar v-if="themeStore.showTabs" />
+
       <!-- 内容区 -->
       <n-layout-content class="layout-content">
         <router-view v-slot="{ Component }">
@@ -340,6 +349,7 @@ import { useThemeStore } from '@/stores/theme'
 import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
+import TabBar from '@/components/TabBar.vue'
 import { noticeApi, chatApi, type SysNotice, type ChatMessage } from '@/api/message'
 import { iconMap as externalIconMap } from '@/utils/icons'
 
@@ -828,6 +838,7 @@ function handleUserAction(key: string) {
   :deep(.n-layout-sider-scroll-container) {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 }
 
@@ -891,6 +902,7 @@ body.dark-theme .logo-text {
 .layout-menu {
   flex: 1;
   padding: 12px 8px;
+  overflow-y: auto;
 }
 
 .layout-header {
@@ -1236,6 +1248,12 @@ body.dark-theme .layout-preview {
     flex: 1;
     background: #f5f5f5;
   }
+}
+
+.theme-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .theme-modes {

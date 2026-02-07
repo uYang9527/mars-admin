@@ -162,6 +162,13 @@ const routes: RouteRecordRaw[] = [
         name: 'ToolGen',
         component: () => import('@/views/tool/gen/index.vue'),
         meta: { title: '代码生成', icon: 'CodeSlashOutline' }
+      },
+      // 页签刷新中转路由
+      {
+        path: 'redirect/:path(.*)',
+        name: 'Redirect',
+        component: () => import('@/views/redirect/index.vue'),
+        meta: { title: '重定向', requiresAuth: true }
       }
     ]
   },
