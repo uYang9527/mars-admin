@@ -513,37 +513,38 @@ a {
   color: inherit;
 }
 
-// 滚动条样式
+// 滚动条样式 - 细且低调
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3F4F6;
-  border-radius: 3px;
+  background: transparent;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  transition: background 0.2s;
   
   &:hover {
-    background: #9CA3AF;
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 
 // 暗色主题滚动条
 body.dark-theme {
   ::-webkit-scrollbar-track {
-    background: #27272a;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #52525b;
+    background: rgba(255, 255, 255, 0.15);
     
     &:hover {
-      background: #71717a;
+      background: rgba(255, 255, 255, 0.3);
     }
   }
 }
