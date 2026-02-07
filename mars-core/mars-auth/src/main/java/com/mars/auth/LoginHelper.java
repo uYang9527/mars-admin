@@ -31,11 +31,7 @@ public class LoginHelper {
      * 执行登录并构建结果（通用流程）
      */
     public LoginResult doLogin(SysUser user) {
-        HttpServletRequest request = getRequest();
-        String ip = IpUtils.getIpAddr(request);
-        UserAgent ua = UserAgentUtil.parse(request.getHeader("User-Agent"));
-        String browser = ua != null ? ua.getBrowser().getName() : "Unknown";
-        String os = ua != null ? ua.getOs().getName() : "Unknown";
+        RequestInfo info = getRequestInfo();
 
         // 单点登录：踢掉其他设备
         if (configHelper.isSingleLogin()) {
@@ -48,15 +44,15 @@ public class LoginHelper {
         // 写入Session
         SaSession session = StpUtil.getSession();
         session.set("loginName", user.getUsername());
-        session.set("ipaddr", ip);
-        session.set("loginLocation", IpUtils.getAddressByIp(ip));
-        session.set("browser", browser);
-        session.set("os", os);
+        session.set("ipaddr", info.ip);
+        session.set("loginLocation", IpUtils.getAddressByIp(info.ip));
+        session.set("browser", info.browser);
+        session.set("os", info.os);
         session.set("status", 1);
         session.set("loginTime", System.currentTimeMillis());
 
         // 记录登录日志
-        loginLogService.recordLog(user.getUsername(), 0, "登录成功", ip, browser, os);
+        loginLogService.recordLog(user.getUsername(), 0, "登录成功", info.ip, info.browser, info.os);
 
         // 构建结果
         return LoginResult.of(
@@ -72,16 +68,25 @@ public class LoginHelper {
      * 记录登录失败日志
      */
     public void recordFailLog(String username, String message) {
-        HttpServletRequest request = getRequest();
-        String ip = IpUtils.getIpAddr(request);
-        UserAgent ua = UserAgentUtil.parse(request.getHeader("User-Agent"));
-        String browser = ua != null ? ua.getBrowser().getName() : "Unknown";
-        String os = ua != null ? ua.getOs().getName() : "Unknown";
-        loginLogService.recordLog(username, 1, message, ip, browser, os);
+        RequestInfo info = getRequestInfo();
+        loginLogService.recordLog(username, 1, message, info.ip, info.browser, info.os);
     }
 
-    private HttpServletRequest getRequest() {
+    /**
+     * 提取当前请求的 IP、浏览器、操作系统信息
+     */
+    private RequestInfo getRequestInfo() {
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return attrs != null ? attrs.getRequest() : null;
+        HttpServletRequest request = attrs != null ? attrs.getRequest() : null;
+        String ip = IpUtils.getIpAddr(request);
+        UserAgent ua = request != null ? UserAgentUtil.parse(request.getHeader("User-Agent")) : null;
+        String browser = ua != null ? ua.getBrowser().getName() : "Unknown";
+        String os = ua != null ? ua.getOs().getName() : "Unknown";
+        return new RequestInfo(ip, browser, os);
     }
+
+    /**
+     * 请求信息
+     */
+    private record RequestInfo(String ip, String browser, String os) {}
 }

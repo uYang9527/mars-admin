@@ -19,7 +19,6 @@
         <module>mars-file</module>
         <module>mars-gen</module>
         <module>mars-message</module>
-        <module>mars-mall</module>
         <module>mars-auth</module>
     </modules>
 </project>

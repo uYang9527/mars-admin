@@ -177,6 +177,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return users;
     }
 
+    @Override
+    public SysUser getByOpenId(String openId) {
+        return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getOpenId, openId));
+    }
+
     private void saveUserRoles(Long userId, List<Long> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             for (Long roleId : roleIds) {

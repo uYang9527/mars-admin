@@ -70,4 +70,9 @@ public interface SysUserService extends IService<SysUser> {
      * 获取所有用户列表
      */
     List<SysUser> listAll();
+
+    /**
+     * 根据微信openId获取用户
+     */
+    SysUser getByOpenId(String openId);
 }

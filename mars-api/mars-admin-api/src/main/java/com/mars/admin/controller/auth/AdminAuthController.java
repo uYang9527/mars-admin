@@ -247,6 +247,7 @@ public class AdminAuthController {
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setGender(0);
+        user.setUserType("admin");
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         user.setStatus(configHelper.isRegisterNeedAudit() ? 2 : 1);

@@ -21,21 +21,65 @@ public class LoginRequest {
     private ClientType clientType;
 
     // ========== 密码登录 ==========
+
+    /**
+     * 用户名
+     */
     private String username;
+
+    /**
+     * 密码
+     */
     private String password;
-    private String uuid;       // 验证码key
-    private String code;       // 验证码
+
+    /**
+     * 验证码key
+     */
+    private String uuid;
+
+    /**
+     * 验证码
+     */
+    private String code;
+
+    /**
+     * 是否记住我
+     */
     private Boolean rememberMe;
 
     // ========== 手机号登录 ==========
+
+    /**
+     * 手机号
+     */
     private String phone;
+
+    /**
+     * 短信验证码
+     */
     private String smsCode;
 
     // ========== 小程序登录 ==========
-    private String wxCode;     // 小程序 wx.login() 的 code
-    private String phoneCode;  // 获取手机号的 code
+
+    /**
+     * 小程序 wx.login() 的 code
+     */
+    private String wxCode;
+
+    /**
+     * 获取手机号的 code
+     */
+    private String phoneCode;
 
     // ========== 三方登录 ==========
-    private String platform;   // 三方平台：wechat_mp / alipay / apple
-    private String authCode;   // 授权码
+
+    /**
+     * 三方平台：wechat_mp / alipay / apple
+     */
+    private String platform;
+
+    /**
+     * 授权码
+     */
+    private String authCode;
 }

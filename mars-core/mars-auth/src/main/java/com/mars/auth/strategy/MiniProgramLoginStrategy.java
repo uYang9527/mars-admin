@@ -1,5 +1,6 @@
 package com.mars.auth.strategy;
 
+import cn.hutool.crypto.digest.BCrypt;
 import com.mars.auth.LoginHelper;
 import com.mars.auth.LoginRequest;
 import com.mars.auth.LoginResult;
@@ -7,8 +8,8 @@ import com.mars.auth.LoginStrategy;
 import com.mars.auth.enums.ClientType;
 import com.mars.auth.enums.LoginType;
 import com.mars.common.exception.BusinessException;
-import com.mars.mall.entity.MallMember;
-import com.mars.mall.service.MallMemberService;
+import com.mars.system.entity.SysUser;
+import com.mars.system.service.SysUserService;
 import com.mars.wechat.WechatMiniProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class MiniProgramLoginStrategy implements LoginStrategy {
 
     private final WechatMiniProgramService wechatMiniProgramService;
-    private final MallMemberService memberService;
+    private final SysUserService userService;
     private final LoginHelper loginHelper;
 
     @Override
@@ -47,14 +48,14 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
         WechatMiniProgramService.MiniProgramLoginResult wxResult = wechatMiniProgramService.login(request.getWxCode());
         String openId = wxResult.getOpenId();
 
-        // 2. 查找或创建会员
-        MallMember member = memberService.getByOpenId(openId);
-        if (member == null) {
-            member = memberService.createByWechat(openId, wxResult.getUnionId());
-            log.info("小程序新会员注册: openId={}", openId);
+        // 2. 从 sys_user 查找用户，不存在则自动注册
+        SysUser user = userService.getByOpenId(openId);
+        if (user == null) {
+            user = autoRegister(openId);
+            log.info("小程序新用户注册: openId={}", openId);
         }
 
-        if (member.getStatus() != 1) {
+        if (user.getStatus() != 1) {
             throw new BusinessException("账号已被禁用");
         }
 
@@ -63,23 +64,31 @@ public class MiniProgramLoginStrategy implements LoginStrategy {
             try {
                 String phoneNumber = wechatMiniProgramService.getPhoneNumber(request.getPhoneCode());
                 if (phoneNumber != null && !phoneNumber.isEmpty()) {
-                    memberService.bindPhone(member.getId(), phoneNumber);
+                    user.setPhone(phoneNumber);
+                    userService.updateById(user);
                 }
             } catch (Exception e) {
                 log.warn("获取手机号失败: {}", e.getMessage());
             }
         }
 
-        // 4. 构建结果（小程序使用 member ID）
-        LoginResult result = new LoginResult();
-        result.setToken(null); // 小程序不使用 Sa-Token 的 token
-        result.setUserId(member.getId());
-        result.setNickname(member.getNickname());
-        result.setAvatar(member.getAvatar());
+        // 4. 执行登录
+        return loginHelper.doLogin(user);
+    }
 
-        // 这里可以生成自定义的 app token
-        // result.setToken(xxx);
-
-        return result;
+    /**
+     * 小程序用户自动注册到 sys_user
+     */
+    private SysUser autoRegister(String openId) {
+        SysUser user = new SysUser();
+        user.setUsername("wx_" + openId.substring(0, Math.min(openId.length(), 10)));
+        user.setNickname("微信用户");
+        user.setPassword(BCrypt.hashpw("123456")); // 默认密码
+        user.setOpenId(openId);
+        user.setStatus(1);
+        user.setGender(0);
+        user.setUserType("app");
+        userService.save(user);
+        return user;
     }
 }

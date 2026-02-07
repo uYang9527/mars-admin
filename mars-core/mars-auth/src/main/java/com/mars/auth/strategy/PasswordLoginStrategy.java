@@ -73,7 +73,10 @@ public class PasswordLoginStrategy implements LoginStrategy {
         // 4. 状态检查
         checkUserStatus(user);
 
-        // 5. 清除重试、执行登录
+        // 5. 用户类型校验：admin端只允许admin用户，web端只允许pc或admin用户
+        checkUserType(user, request.getClientType());
+
+        // 6. 清除重试、执行登录
         redisTemplate.delete(retryKey);
         return loginHelper.doLogin(user);
     }
@@ -130,6 +133,21 @@ public class PasswordLoginStrategy implements LoginStrategy {
         int count = getRetryCount(retryKey) + 1;
         redisTemplate.opsForValue().set(retryKey, String.valueOf(count),
                 configHelper.getLockTime(), TimeUnit.MINUTES);
+    }
+
+    private void checkUserType(SysUser user, ClientType clientType) {
+        String userType = user.getUserType();
+        if (userType == null || userType.isEmpty()) {
+            return; // 兼容历史数据，未设置类型的用户不限制
+        }
+        if (clientType == ClientType.ADMIN && !"admin".equals(userType)) {
+            loginHelper.recordFailLog(user.getUsername(), "非管理端用户，无权登录后台");
+            throw new BusinessException("您不是管理端用户，无法登录后台管理系统");
+        }
+        if (clientType == ClientType.WEB && "app".equals(userType)) {
+            loginHelper.recordFailLog(user.getUsername(), "App用户无权登录PC端");
+            throw new BusinessException("您是App用户，请使用App登录");
+        }
     }
 
     private void checkUserStatus(SysUser user) {

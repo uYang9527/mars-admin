@@ -55,13 +55,14 @@ public class SocialLoginStrategy implements LoginStrategy {
         SocialLoginService.SocialUserInfo socialUser = socialService.getUserInfo(authCode);
 
         // 2. 通过 openId 查找已绑定用户
-        // TODO: 需要一个 sys_user_social 关联表来存储绑定关系
-        // 这里简化处理：通过用户名查找 "social_{platform}_{openId}" 格式的用户
-        String socialUsername = "social_" + platform + "_" + socialUser.getOpenId();
-        SysUser user = userService.getByUsername(socialUsername);
+        SysUser user = userService.getByOpenId(socialUser.getOpenId());
+
+        // 根据客户端类型确定用户类型
+        String userType = request.getClientType() == ClientType.APP ? "app" : "pc";
 
         if (user == null) {
             // 自动注册
+            String socialUsername = "social_" + platform + "_" + socialUser.getOpenId();
             user = new SysUser();
             user.setUsername(socialUsername);
             user.setNickname(socialUser.getNickname() != null ? socialUser.getNickname() : platform + "用户");
@@ -71,8 +72,10 @@ public class SocialLoginStrategy implements LoginStrategy {
             user.setGender(socialUser.getGender() != null ? socialUser.getGender() : 0);
             user.setPassword(""); // 三方登录无密码
             user.setStatus(1);
+            user.setOpenId(socialUser.getOpenId());
+            user.setUserType(userType);
             userService.save(user);
-            log.info("三方登录自动注册: platform={}, openId={}", platform, socialUser.getOpenId());
+            log.info("三方登录自动注册: platform={}, openId={}, userType={}", platform, socialUser.getOpenId(), userType);
         }
 
         if (user.getStatus() != 1) {

@@ -14,7 +14,6 @@
         <module name="mars-redis" />
         <module name="mars-websocket" />
         <module name="mars-job" />
-        <module name="mars-mall" />
         <module name="mars-starter" />
         <module name="mars-system" />
         <module name="mars-sms" />
@@ -32,6 +31,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="mars-mall" target="17" />
       <module name="mars-web" target="17" />
     </bytecodeTargetLevel>
   </component>

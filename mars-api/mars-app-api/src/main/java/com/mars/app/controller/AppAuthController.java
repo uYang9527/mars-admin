@@ -56,7 +56,7 @@ public class AppAuthController {
         }
 
         String limitKey = "sms:limit:" + phone;
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(limitKey))) {
+        if (redisTemplate.hasKey(limitKey)) {
             throw new BusinessException("发送太频繁，请稍后再试");
         }
 

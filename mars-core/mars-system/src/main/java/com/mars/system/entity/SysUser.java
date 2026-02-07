@@ -69,4 +69,14 @@ public class SysUser extends BaseEntity {
      * 备注
      */
     private String remark;
+
+    /**
+     * 用户类型(admin-后台管理员 pc-PC前台用户 app-App/小程序用户)
+     */
+    private String userType;
+
+    /**
+     * 微信openId(微信扫码登录时使用)
+     */
+    private String openId;
 }

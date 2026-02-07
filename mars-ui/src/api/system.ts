@@ -36,6 +36,8 @@ export interface SysUser {
   gender?: number
   status: number
   remark?: string
+  userType?: string   // 用户类型: admin-后台管理员 pc-PC前台用户 app-App/小程序用户
+  openId?: string     // 微信openId
   createTime?: string
 }
 

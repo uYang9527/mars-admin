@@ -2254,20 +2254,24 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `create_by` bigint NULL DEFAULT NULL COMMENT '创建人',
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
+  `user_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'admin' COMMENT '用户类型(admin-后台管理员 pc-PC前台用户 app-App/小程序用户)',
+  `open_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '微信openId(微信扫码登录时使用)',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE
+  UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
+  INDEX `idx_open_id`(`open_id` ASC) USING BTREE,
+  INDEX `idx_user_type`(`user_type` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 0);
-INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888888', 1, 0, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 0);
-INSERT INTO `sys_user` VALUES (3, 2, 'mars', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars', NULL, '1121@qq.com', '18888888881', 1, 1, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 0);
-INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 0);
-INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$DrZPHQH49c0ywbmlYOmhBeNDOquQlC/VqulezUj5jHlif.jVkTKRO', 'mars666', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 22:30:46', '2026-01-31 22:30:46', NULL, 1, 0);
-INSERT INTO `sys_user` VALUES (6, NULL, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 0);
+INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888888', 1, 0, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (3, 2, 'mars', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars', NULL, '1121@qq.com', '18888888881', 1, 1, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$DrZPHQH49c0ywbmlYOmhBeNDOquQlC/VqulezUj5jHlif.jVkTKRO', 'mars666', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 22:30:46', '2026-01-31 22:30:46', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (6, NULL, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 'admin', NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_blacklist

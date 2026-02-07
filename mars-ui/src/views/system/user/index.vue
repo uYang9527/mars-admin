@@ -132,6 +132,13 @@
             <n-radio :value="0">未知</n-radio>
           </n-radio-group>
         </n-form-item>
+        <n-form-item label="用户类型" path="userType">
+          <n-select
+            v-model:value="formData.userType"
+            :options="userTypeOptions"
+            placeholder="请选择用户类型"
+          />
+        </n-form-item>
         <n-form-item label="角色" path="roleIds">
           <n-select
             v-model:value="roleIds"
@@ -238,6 +245,12 @@ const pagination = reactive({
 
 const roleOptions = ref<Array<{ label: string; value: number }>>([])
 
+const userTypeOptions = [
+  { label: '后台管理员', value: 'admin' },
+  { label: 'PC前台用户', value: 'pc' },
+  { label: 'App/小程序用户', value: 'app' }
+]
+
 const columns: DataTableColumns<SysUser> = [
   { title: 'ID', key: 'id', width: 60 },
   { title: '用户名', key: 'username', width: 100 },
@@ -245,6 +258,20 @@ const columns: DataTableColumns<SysUser> = [
   { title: '部门', key: 'deptName', width: 100, render(row) {
     return row.deptName || '-'
   }},
+  {
+    title: '用户类型',
+    key: 'userType',
+    width: 110,
+    render(row) {
+      const typeMap: Record<string, { type: 'info' | 'success' | 'warning'; label: string }> = {
+        admin: { type: 'info', label: '后台管理员' },
+        pc: { type: 'success', label: 'PC前台' },
+        app: { type: 'warning', label: 'App/小程序' }
+      }
+      const t = typeMap[row.userType || 'admin'] || { type: 'info', label: row.userType || '未知' }
+      return h(NTag, { type: t.type, size: 'small' }, { default: () => t.label })
+    }
+  },
   { title: '手机号', key: 'phone', width: 120 },
   {
     title: '状态',
@@ -315,6 +342,7 @@ const formData = reactive<SysUser>({
   phone: '',
   gender: 0,
   status: 1,
+  userType: 'admin',
   remark: ''
 })
 
@@ -392,6 +420,7 @@ function handleAdd() {
     phone: '',
     gender: 0,
     status: 1,
+    userType: 'admin',
     remark: ''
   })
   roleIds.value = []

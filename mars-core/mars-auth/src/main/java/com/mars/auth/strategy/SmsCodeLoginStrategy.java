@@ -64,7 +64,8 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
                 .eq(SysUser::getPhone, phone)
                 .one();
         if (user == null) {
-            user = autoRegister(phone);
+            String userType = request.getClientType() == ClientType.APP ? "app" : "pc";
+            user = autoRegister(phone, userType);
         }
 
         if (user.getStatus() != 1) {
@@ -74,7 +75,7 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
         return loginHelper.doLogin(user);
     }
 
-    private SysUser autoRegister(String phone) {
+    private SysUser autoRegister(String phone, String userType) {
         SysUser user = new SysUser();
         user.setUsername(phone);
         user.setPhone(phone);
@@ -82,8 +83,9 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
         user.setPassword(BCrypt.hashpw("123456")); // 默认密码
         user.setStatus(1);
         user.setGender(0);
+        user.setUserType(userType);
         userService.save(user);
-        log.info("手机号登录自动注册: {}", phone);
+        log.info("手机号登录自动注册: phone={}, userType={}", phone, userType);
         return user;
     }
 }
