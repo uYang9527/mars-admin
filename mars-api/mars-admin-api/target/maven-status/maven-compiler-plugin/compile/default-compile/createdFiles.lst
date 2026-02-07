@@ -3,7 +3,6 @@ com\mars\admin\controller\mall\MallBannerController.class
 com\mars\admin\controller\monitor\MonitorController.class
 com\mars\admin\controller\monitor\DashboardController$DashboardStats.class
 com\mars\admin\controller\file\SysFileGroupController.class
-com\mars\admin\controller\auth\AuthController$LoginRequest.class
 com\mars\admin\controller\system\SysConfigGroupController.class
 com\mars\admin\controller\message\ChatGroupController$MemberIdsRequest.class
 com\mars\admin\controller\system\SysDictTypeController.class

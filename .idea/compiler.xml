@@ -7,8 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="mars-auth" />
         <module name="mars-crypto" />
         <module name="mars-wechat" />
+        <module name="mars-web-api" />
         <module name="mars-redis" />
         <module name="mars-websocket" />
         <module name="mars-job" />
@@ -39,6 +41,7 @@
       <module name="mars-admin-api" options="-parameters" />
       <module name="mars-api" options="-parameters" />
       <module name="mars-app-api" options="-parameters" />
+      <module name="mars-auth" options="-parameters" />
       <module name="mars-common" options="-parameters" />
       <module name="mars-core" options="-parameters" />
       <module name="mars-crypto" options="-parameters" />
@@ -58,6 +61,7 @@
       <module name="mars-starter" options="-parameters" />
       <module name="mars-system" options="-parameters" />
       <module name="mars-web" options="-parameters" />
+      <module name="mars-web-api" options="-parameters" />
       <module name="mars-websocket" options="-parameters" />
       <module name="mars-wechat" options="-parameters" />
     </option>

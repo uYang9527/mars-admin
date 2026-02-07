@@ -17,5 +17,6 @@
     <modules>
         <module>mars-admin-api</module>
         <module>mars-app-api</module>
+        <module>mars-web-api</module>
     </modules>
 </project>

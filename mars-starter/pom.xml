@@ -26,6 +26,12 @@
             <groupId>com.mars</groupId>
             <artifactId>mars-app-api</artifactId>
         </dependency>
+
+        <!-- PC端接口层 -->
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-web-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

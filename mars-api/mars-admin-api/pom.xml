@@ -15,6 +15,11 @@
     <description>后台管理接口层 - Admin控制器</description>
 
     <dependencies>
+        <!-- 认证模块 -->
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-auth</artifactId>
+        </dependency>
         <!-- 业务模块 -->
         <dependency>
             <groupId>com.mars</groupId>
