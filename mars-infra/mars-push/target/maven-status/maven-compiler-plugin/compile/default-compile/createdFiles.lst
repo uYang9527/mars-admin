@@ -1,0 +1,6 @@
+com\mars\push\GetuiPushService.class
+com\mars\push\PushService.class
+com\mars\push\JpushPushService.class
+com\mars\push\PushServiceFactory.class
+com\mars\push\ConsolePushService.class
+com\mars\push\UmengPushService.class

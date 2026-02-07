@@ -1,0 +1,16 @@
+com\mars\app\controller\MiniMallController$CartSelectedRequest.class
+com\mars\app\controller\WechatController$SyncMenuRequest.class
+com\mars\app\controller\MiniMallController$CreateOrderRequest.class
+com\mars\app\controller\MiniMallController$GetPhoneRequest.class
+com\mars\app\controller\WechatController$MpOAuthLoginRequest.class
+com\mars\app\controller\MiniMallController$CartSelectAllRequest.class
+com\mars\app\controller\MiniMallController.class
+com\mars\app\controller\WechatController$MiniProgramLoginRequest.class
+com\mars\app\controller\MiniMallController$CartAddRequest.class
+com\mars\app\controller\WechatController.class
+com\mars\app\controller\MiniMallController$PhoneLoginRequest.class
+com\mars\app\controller\MiniMallController$CreateDirectOrderRequest.class
+com\mars\app\controller\MiniMallController$PayOrderRequest.class
+com\mars\app\controller\MiniMallController$CartUpdateRequest.class
+com\mars\app\controller\WechatController$GetPhoneRequest.class
+com\mars\app\controller\MiniMallController$LoginRequest.class

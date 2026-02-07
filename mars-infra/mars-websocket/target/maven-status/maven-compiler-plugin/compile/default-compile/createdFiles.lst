@@ -1,0 +1,2 @@
+com\mars\websocket\WebSocketContainerConfig.class
+com\mars\websocket\WebSocketHandshakeInterceptor.class
