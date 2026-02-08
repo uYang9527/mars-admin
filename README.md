@@ -248,17 +248,17 @@ mars-admin
 
 1. **克隆项目**
 ```bash
-git clone https://github.com/marsfactory/mars-system.git
+git clone https://gitee.com/Marsfactory/mars-admin.git
 cd mars-admin
 ```
 
 2. **初始化数据库**
 ```sql
 -- 创建数据库
-CREATE DATABASE mars_system DEFAULT CHARACTER SET utf8mb4;
+CREATE DATABASE mars-system DEFAULT CHARACTER SET utf8mb4;
 
 -- 导入 SQL
-mysql -u root -p mars_system < sql/mars-system.sql
+mysql -u root -p mars-system < sql/mars-system.sql
 ```
 
 3. **修改配置**
@@ -296,7 +296,7 @@ npm install
 npm run dev
 ```
 
-前端默认运行在 `http://localhost:5173`
+前端默认运行在 `http://localhost:3000`
 
 ### 移动端启动
 
