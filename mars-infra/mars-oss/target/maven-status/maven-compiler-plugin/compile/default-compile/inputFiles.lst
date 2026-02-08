@@ -1,4 +1,4 @@
-D:\java-code1\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\MinioFileStorage.java
-D:\java-code1\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\LocalFileStorage.java
-D:\java-code1\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\FileStorage.java
-D:\java-code1\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\AliyunOssFileStorage.java
+E:\java-code4\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\FileStorage.java
+E:\java-code4\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\LocalFileStorage.java
+E:\java-code4\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\AliyunOssFileStorage.java
+E:\java-code4\mars-admin\mars-infra\mars-oss\src\main\java\com\mars\oss\MinioFileStorage.java

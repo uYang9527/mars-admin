@@ -1,178 +1,295 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const utils_cart = require("../../utils/cart.js");
 const utils_api = require("../../utils/api.js");
+const utils_auth = require("../../utils/auth.js");
+const utils_websocket = require("../../utils/websocket.js");
 const _sfc_main = {
   data() {
     return {
-      statusBarHeight: 0,
-      loading: true,
-      banners: [],
-      categories: [],
-      products: [],
-      showToast: false,
-      toastText: ""
+      conversations: [],
+      groups: [],
+      loading: false,
+      refreshing: false,
+      showAddMenu: false,
+      userInfo: null
     };
   },
-  onLoad() {
-    const systemInfo = common_vendor.index.getSystemInfoSync();
-    this.statusBarHeight = systemInfo.statusBarHeight || 0;
-    this.loadHomeData();
-  },
   onShow() {
-    utils_cart.updateCartBadge();
+    if (!utils_auth.checkLogin())
+      return;
+    this.userInfo = utils_auth.getUserInfo();
+    this.loadData();
+    this.setupWebSocket();
   },
-  onPullDownRefresh() {
-    this.loadHomeData().finally(() => {
-      common_vendor.index.stopPullDownRefresh();
-    });
+  onHide() {
+    this.removeWebSocketListeners();
   },
   methods: {
-    // 加载首页数据
-    async loadHomeData() {
+    getFirstChar(name) {
+      if (!name)
+        return "?";
+      return name.charAt(0).toUpperCase();
+    },
+    getAvatarColor(name) {
+      const colors = ["#25B7D3", "#F56C6C", "#E6A23C", "#67C23A", "#409EFF", "#9B59B6", "#1ABC9C", "#E74C3C", "#3498DB", "#2ECC71"];
+      if (!name)
+        return colors[0];
+      let hash = 0;
+      for (let i = 0; i < name.length; i++)
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      return colors[Math.abs(hash) % colors.length];
+    },
+    // 按时间倒序排列会话
+    sortConversations() {
+      this.conversations.sort((a, b) => {
+        const ta = a.sendTime ? new Date(a.sendTime).getTime() : 0;
+        const tb = b.sendTime ? new Date(b.sendTime).getTime() : 0;
+        return tb - ta;
+      });
+    },
+    async loadData() {
+      var _a;
       this.loading = true;
       try {
-        const res = await utils_api.getHomeData();
-        if (res.code === 200 && res.data) {
-          this.banners = (res.data.banners || []).map((item) => ({
-            id: item.id,
-            image: item.image,
-            title: item.title,
-            subtitle: item.subtitle,
-            linkType: item.linkType,
-            linkValue: item.linkValue
-          }));
-          this.categories = (res.data.categories || []).map((item) => ({
-            id: item.id,
-            name: item.name,
-            icon: this.getCategoryIcon(item.icon)
-          }));
-          this.products = (res.data.recommendProducts || []).map((item) => ({
-            id: item.id,
-            name: item.name,
-            desc: item.subtitle,
-            price: item.price,
-            image: item.mainImage,
-            isFavorite: false
-          }));
+        const [contactsRes, groupsRes, usersRes] = await Promise.all([
+          utils_api.getRecentContacts().catch(() => ({ data: [] })),
+          utils_api.getGroupList().catch(() => ({ data: [] })),
+          utils_api.getChatUsers().catch(() => ({ data: [] }))
+        ]);
+        const userMap = {};
+        if (usersRes.data && Array.isArray(usersRes.data)) {
+          usersRes.data.forEach((u) => {
+            userMap[String(u.id)] = u;
+          });
         }
-      } catch (e) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:155", "加载首页数据失败", e);
-        this.useDefaultData();
+        const userId = (_a = this.userInfo) == null ? void 0 : _a.userId;
+        if (contactsRes.data && Array.isArray(contactsRes.data)) {
+          const oldUnreadMap = {};
+          this.conversations.forEach((c) => {
+            if (c.unreadCount > 0)
+              oldUnreadMap[String(c.contactId)] = c.unreadCount;
+          });
+          this.conversations = contactsRes.data.map((msg) => {
+            const isMe = String(msg.senderId) === String(userId);
+            const otherId = isMe ? msg.receiverId : msg.senderId;
+            const otherUser = userMap[String(otherId)] || {};
+            const otherName = isMe ? msg.receiverName || msg.receiverNickname || otherUser.nickname || otherUser.username || "" : msg.senderName || "";
+            const otherAvatar = isMe ? msg.receiverAvatar || otherUser.avatar || "" : msg.senderAvatar || "";
+            return {
+              contactId: otherId,
+              nickname: otherName,
+              avatar: otherAvatar,
+              lastMessage: msg.msgType === 2 ? "[图片]" : msg.content,
+              sendTime: msg.sendTime,
+              unreadCount: oldUnreadMap[String(otherId)] || 0
+            };
+          });
+          this.sortConversations();
+        }
+        if (groupsRes.data && Array.isArray(groupsRes.data))
+          this.groups = groupsRes.data;
+      } catch (err) {
+        common_vendor.index.__f__("error", "at pages/index/index.vue:166", err);
       } finally {
         this.loading = false;
+        this.refreshing = false;
       }
     },
-    // 获取分类图标
-    getCategoryIcon(icon) {
-      if (!icon)
-        return "fas fa-tag";
-      if (icon.startsWith("fa"))
-        return icon;
-      return `fas ${icon}`;
-    },
-    // 使用默认数据（接口失败时）
-    useDefaultData() {
-      this.banners = [{
-        id: 1,
-        image: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop",
-        title: "有机牛油果 5折起"
-      }];
-      this.categories = [
-        { id: 1, name: "水果", icon: "fas fa-apple-alt" },
-        { id: 2, name: "蔬菜", icon: "fas fa-carrot" },
-        { id: 3, name: "海鲜", icon: "fas fa-fish" },
-        { id: 4, name: "肉类", icon: "fas fa-drumstick-bite" }
-      ];
-      this.products = [
-        {
-          id: 1,
-          name: "智利进口菠萝",
-          desc: "单果重约1.5kg",
-          price: "29.9",
-          image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=400",
-          isFavorite: false
-        },
-        {
-          id: 2,
-          name: "有机阳光草莓",
-          desc: "甜度15+ 500g/盒",
-          price: "45.0",
-          image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=400",
-          isFavorite: false
+    setupWebSocket() {
+      this.removeWebSocketListeners();
+      this.chatHandler = (data) => {
+        const senderId = data.senderId;
+        const senderName = data.senderName || "";
+        const senderAvatar = data.senderAvatar || "";
+        const content = data.msgType === 2 ? "[图片]" : data.content || "";
+        const now = (/* @__PURE__ */ new Date()).toISOString();
+        const idx = this.conversations.findIndex((c) => String(c.contactId) === String(senderId));
+        if (idx > -1) {
+          const conv = this.conversations[idx];
+          conv.lastMessage = content;
+          conv.sendTime = now;
+          conv.unreadCount = (conv.unreadCount || 0) + 1;
+          if (senderName && !conv.nickname)
+            conv.nickname = senderName;
+          if (senderAvatar && !conv.avatar)
+            conv.avatar = senderAvatar;
+          this.conversations.splice(idx, 1);
+          this.conversations.unshift(conv);
+        } else {
+          this.conversations.unshift({
+            contactId: senderId,
+            nickname: senderName,
+            avatar: senderAvatar,
+            lastMessage: content,
+            sendTime: now,
+            unreadCount: 1
+          });
         }
-      ];
-    },
-    goSearch() {
-      common_vendor.index.navigateTo({ url: "/pages/search/index" });
-    },
-    goNotification() {
-      common_vendor.index.showToast({ title: "暂无通知", icon: "none" });
-    },
-    goCategory(id) {
-      common_vendor.index.switchTab({ url: "/pages/category/index" });
-    },
-    goProductList() {
-      common_vendor.index.navigateTo({ url: "/pages/search/index" });
-    },
-    goDetail(id) {
-      common_vendor.index.navigateTo({ url: `/pages/detail/index?id=${id}` });
-    },
-    async addCart(product) {
-      const memberInfo = common_vendor.index.getStorageSync("memberInfo");
-      if (memberInfo && memberInfo.memberId) {
-        try {
-          await utils_api.addToCart(product.id, null, 1);
-          utils_cart.updateCartBadge();
-          this.showToastMessage(`${product.name} 已加入购物车`);
-        } catch (e) {
-          common_vendor.index.__f__("error", "at pages/index/index.vue:215", "添加购物车失败", e);
+        this.conversations = [...this.conversations];
+        common_vendor.index.vibrateShort();
+      };
+      this.groupChatHandler = (data) => {
+        const groupId = data.groupId;
+        const content = data.msgType === 2 ? "[图片]" : data.content || "";
+        const now = (/* @__PURE__ */ new Date()).toISOString();
+        const idx = this.groups.findIndex((g) => String(g.id) === String(groupId));
+        if (idx > -1) {
+          this.groups[idx].lastMessage = content;
+          this.groups[idx].lastMessageTime = now;
+          this.groups[idx].unreadCount = (this.groups[idx].unreadCount || 0) + 1;
+          this.groups = [...this.groups];
         }
-      } else {
-        utils_cart.addToCart(product);
-        this.showToastMessage(`${product.name} 已加入购物车`);
+        common_vendor.index.vibrateShort();
+      };
+      utils_websocket.wsClient.on("chat", this.chatHandler);
+      utils_websocket.wsClient.on("groupChat", this.groupChatHandler);
+    },
+    removeWebSocketListeners() {
+      if (this.chatHandler) {
+        utils_websocket.wsClient.off("chat", this.chatHandler);
+        this.chatHandler = null;
+      }
+      if (this.groupChatHandler) {
+        utils_websocket.wsClient.off("groupChat", this.groupChatHandler);
+        this.groupChatHandler = null;
       }
     },
-    toggleFavorite(product) {
-      product.isFavorite = !product.isFavorite;
-      this.showToastMessage(product.isFavorite ? "已收藏" : "已取消收藏");
+    onRefresh() {
+      this.refreshing = true;
+      this.loadData();
     },
-    showToastMessage(text) {
-      this.toastText = text;
-      this.showToast = true;
-      setTimeout(() => {
-        this.showToast = false;
-      }, 2e3);
+    loadMore() {
+    },
+    openChat(item) {
+      item.unreadCount = 0;
+      this.conversations = [...this.conversations];
+      common_vendor.index.navigateTo({ url: `/pages/chat/index?targetId=${item.contactId}&name=${encodeURIComponent(item.nickname || "聊天")}&avatar=${encodeURIComponent(item.avatar || "")}` });
+    },
+    openGroupChat(group) {
+      group.unreadCount = 0;
+      this.groups = [...this.groups];
+      common_vendor.index.navigateTo({ url: `/pages/group-chat/index?groupId=${group.id}&name=${encodeURIComponent(group.name)}` });
+    },
+    handleCreateGroup() {
+      this.showAddMenu = false;
+      common_vendor.index.navigateTo({ url: "/pages/group/create" });
+    },
+    navigateToSearch() {
+      common_vendor.index.showToast({ title: "搜索功能开发中", icon: "none" });
+    },
+    handleLongPress(item) {
+      common_vendor.index.showActionSheet({
+        itemList: ["删除会话", "标记已读"],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            this.conversations = this.conversations.filter((c) => c.contactId !== item.contactId);
+          } else if (res.tapIndex === 1) {
+            item.unreadCount = 0;
+            this.conversations = [...this.conversations];
+          }
+        }
+      });
+    },
+    formatTime(time) {
+      if (!time)
+        return "";
+      const d = new Date(time), now = /* @__PURE__ */ new Date(), diff = now - d;
+      if (diff < 6e4)
+        return "刚刚";
+      if (diff < 36e5)
+        return Math.floor(diff / 6e4) + "分钟前";
+      if (diff < 864e5)
+        return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+      if (diff < 1728e5)
+        return "昨天";
+      if (diff < 6048e5)
+        return "周" + ["日", "一", "二", "三", "四", "五", "六"][d.getDay()];
+      return `${d.getMonth() + 1}/${d.getDate()}`;
     }
   }
 };
+if (!Array) {
+  const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
+  _easycom_u_icon2();
+}
+const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u-icon.js";
+if (!Math) {
+  _easycom_u_icon();
+}
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return {
-    a: $data.statusBarHeight + "px",
-    b: common_vendor.o((...args) => $options.goNotification && $options.goNotification(...args)),
-    c: common_vendor.o((...args) => $options.goSearch && $options.goSearch(...args)),
-    d: common_vendor.f($data.banners, (banner, index, i0) => {
-      return {
-        a: banner.image,
-        b: common_vendor.t(banner.title),
-        c: index
-      };
+  return common_vendor.e({
+    a: common_vendor.p({
+      name: "search",
+      color: "rgba(255,255,255,0.55)",
+      size: "15"
     }),
-    e: common_vendor.o((...args) => $options.goProductList && $options.goProductList(...args)),
-    f: common_vendor.f($data.products, (product, k0, i0) => {
-      return {
-        a: product.image,
-        b: common_vendor.t(product.name),
-        c: common_vendor.t(product.desc),
-        d: common_vendor.t(product.price),
-        e: common_vendor.o(($event) => $options.addCart(product), product.id),
-        f: product.id,
-        g: common_vendor.o(($event) => $options.goDetail(product.id), product.id)
-      };
+    b: common_vendor.o((...args) => $options.navigateToSearch && $options.navigateToSearch(...args)),
+    c: common_vendor.p({
+      name: "plus-circle",
+      color: "rgba(255,255,255,0.9)",
+      size: "22"
     }),
-    g: common_vendor.t($data.toastText),
-    h: $data.showToast ? 1 : ""
-  };
+    d: common_vendor.o(($event) => $data.showAddMenu = !$data.showAddMenu),
+    e: $data.showAddMenu
+  }, $data.showAddMenu ? {
+    f: common_vendor.o((...args) => $options.handleCreateGroup && $options.handleCreateGroup(...args)),
+    g: common_vendor.o(() => {
+    }),
+    h: common_vendor.o(($event) => $data.showAddMenu = false)
+  } : {}, {
+    i: common_vendor.f($data.conversations, (item, k0, i0) => {
+      return common_vendor.e({
+        a: item.avatar
+      }, item.avatar ? {
+        b: item.avatar
+      } : {
+        c: common_vendor.t($options.getFirstChar(item.nickname || item.username)),
+        d: $options.getAvatarColor(item.nickname || item.username)
+      }, {
+        e: item.unreadCount > 0
+      }, item.unreadCount > 0 ? {
+        f: common_vendor.t(item.unreadCount > 99 ? "99+" : item.unreadCount)
+      } : {}, {
+        g: common_vendor.t(item.nickname || item.username),
+        h: common_vendor.t($options.formatTime(item.sendTime)),
+        i: common_vendor.t(item.lastMessage),
+        j: "c-" + item.contactId,
+        k: common_vendor.o(($event) => $options.openChat(item), "c-" + item.contactId),
+        l: common_vendor.o(($event) => $options.handleLongPress(item), "c-" + item.contactId)
+      });
+    }),
+    j: common_vendor.f($data.groups, (group, k0, i0) => {
+      return common_vendor.e({
+        a: group.avatar
+      }, group.avatar ? {
+        b: group.avatar
+      } : {
+        c: common_vendor.t($options.getFirstChar(group.name)),
+        d: $options.getAvatarColor(group.name)
+      }, {
+        e: group.unreadCount > 0
+      }, group.unreadCount > 0 ? {
+        f: common_vendor.t(group.unreadCount > 99 ? "99+" : group.unreadCount)
+      } : {}, {
+        g: common_vendor.t(group.name),
+        h: common_vendor.t($options.formatTime(group.lastMessageTime)),
+        i: common_vendor.t(group.lastMessage || "暂无消息"),
+        j: "g-" + group.id,
+        k: common_vendor.o(($event) => $options.openGroupChat(group), "g-" + group.id)
+      });
+    }),
+    k: $data.conversations.length === 0 && $data.groups.length === 0 && !$data.loading
+  }, $data.conversations.length === 0 && $data.groups.length === 0 && !$data.loading ? {
+    l: common_vendor.p({
+      name: "chat",
+      color: "#D0D0D0",
+      size: "56"
+    })
+  } : {}, {
+    m: common_vendor.o((...args) => $options.loadMore && $options.loadMore(...args)),
+    n: $data.refreshing,
+    o: common_vendor.o((...args) => $options.onRefresh && $options.onRefresh(...args))
+  });
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-1cf27b2a"]]);
 wx.createPage(MiniProgramPage);

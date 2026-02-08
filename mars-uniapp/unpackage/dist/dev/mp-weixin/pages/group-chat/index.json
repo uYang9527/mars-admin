@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "群聊",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon"
+  }
+}

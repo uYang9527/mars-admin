@@ -1,143 +1,136 @@
 /**
  * 网络请求封装
+ * 统一处理请求头、Token、错误码等
  */
+import { isAesEncryptedData, decryptResponseData } from './crypto.js'
 
-// 获取基础URL
-const getBaseUrl = () => {
-	return getApp().globalData.baseUrl || 'http://localhost:8080'
-}
-
-// 获取会员ID
-const getMemberId = () => {
-	const memberInfo = uni.getStorageSync('memberInfo')
-	return memberInfo ? memberInfo.memberId : null
-}
-
-// 获取Token
-const getToken = () => {
-	return uni.getStorageSync('token') || ''
-}
+// API 基础地址 - 根据环境切换
+const BASE_URL = 'http://localhost:8080'
 
 /**
- * 发起请求
+ * 通用请求方法
  */
 const request = (options) => {
-	return new Promise((resolve, reject) => {
-		const baseUrl = getBaseUrl()
-		const url = options.url.startsWith('http') ? options.url : baseUrl + options.url
-		
-		// 添加memberId参数
-		let data = options.data || {}
-		const memberId = getMemberId()
-		if (memberId && !data.memberId) {
-			if (options.method === 'GET') {
-				data.memberId = memberId
-			}
-		}
-		
-		// 构建请求头，添加 Token
-		const token = getToken()
-		const header = {
-			'Content-Type': options.contentType || 'application/json',
-			...options.header
-		}
-		// 后端 Sa-Token 配置使用 'Authorization' 作为 token-name
-		if (token) {
-			header['Authorization'] = token
-		}
-		
-		uni.request({
-			url: url,
-			method: options.method || 'GET',
-			data: data,
-			header: header,
-			success: (res) => {
-				if (res.statusCode === 200) {
-					if (res.data.code === 200) {
-						resolve(res.data)
-					} else if (res.data.code === 401 || res.data.code === 11011 || res.data.code === 11012) {
-						// 未登录或Token失效，清除本地信息并跳转登录页
-						uni.removeStorageSync('token')
-						uni.removeStorageSync('memberInfo')
-						uni.showToast({
-							title: '请先登录',
-							icon: 'none'
-						})
-						setTimeout(() => {
-							uni.navigateTo({ url: '/pages/login/index' })
-						}, 500)
-						reject(res.data)
-					} else {
-						// 业务错误
-						uni.showToast({
-							title: res.data.message || '请求失败',
-							icon: 'none'
-						})
-						reject(res.data)
-					}
-				} else if (res.statusCode === 401) {
-					// HTTP 401 未授权
-					uni.removeStorageSync('token')
-					uni.removeStorageSync('memberInfo')
-					uni.showToast({
-						title: '请先登录',
-						icon: 'none'
-					})
-					setTimeout(() => {
-						uni.navigateTo({ url: '/pages/login/index' })
-					}, 500)
-					reject(res)
-				} else {
-					uni.showToast({
-						title: '网络请求失败',
-						icon: 'none'
-					})
-					reject(res)
-				}
-			},
-			fail: (err) => {
-				uni.showToast({
-					title: '网络连接失败',
-					icon: 'none'
-				})
-				reject(err)
-			}
-		})
-	})
+  return new Promise((resolve, reject) => {
+    const token = uni.getStorageSync('token')
+    const header = {
+      'Content-Type': 'application/json',
+      ...options.header
+    }
+    if (token) {
+      header['Authorization'] = token
+    }
+
+    uni.request({
+      url: BASE_URL + options.url,
+      method: options.method || 'GET',
+      data: options.data,
+      header,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const data = res.data
+          // 后端统一返回格式 { code, msg, data }
+          if (data.code === 200 || data.code === 0) {
+            // 检查响应数据是否是AES加密的，自动解密
+            if (isAesEncryptedData(data.data)) {
+              decryptResponseData(data.data)
+                .then((decrypted) => {
+                  data.data = decrypted
+                  resolve(data)
+                })
+                .catch(() => {
+                  resolve(data) // 解密失败返回原始数据
+                })
+            } else {
+              resolve(data)
+            }
+          } else if (data.code === 401) {
+            // Token过期，跳转登录
+            uni.removeStorageSync('token')
+            uni.removeStorageSync('userInfo')
+            uni.reLaunch({ url: '/pages/login/index' })
+            reject(new Error(data.msg || '登录已过期'))
+          } else {
+            uni.showToast({ title: data.msg || '请求失败', icon: 'none' })
+            reject(new Error(data.msg || '请求失败'))
+          }
+        } else if (res.statusCode === 401) {
+          uni.removeStorageSync('token')
+          uni.removeStorageSync('userInfo')
+          uni.reLaunch({ url: '/pages/login/index' })
+          reject(new Error('登录已过期'))
+        } else {
+          uni.showToast({ title: '网络错误', icon: 'none' })
+          reject(new Error('网络错误'))
+        }
+      },
+      fail: (err) => {
+        uni.showToast({ title: '网络连接失败', icon: 'none' })
+        reject(err)
+      }
+    })
+  })
 }
 
 /**
- * GET请求
+ * GET 请求
  */
-export const get = (url, data = {}) => {
-	return request({ url, method: 'GET', data })
-}
+export const get = (url, data) => request({ url, method: 'GET', data })
 
 /**
- * POST请求
+ * POST 请求
  */
-export const post = (url, data = {}) => {
-	return request({ url, method: 'POST', data })
-}
+export const post = (url, data) => request({ url, method: 'POST', data })
 
 /**
- * PUT请求
+ * PUT 请求
  */
-export const put = (url, data = {}) => {
-	return request({ url, method: 'PUT', data })
-}
+export const put = (url, data) => request({ url, method: 'PUT', data })
 
 /**
- * DELETE请求
+ * DELETE 请求
  */
-export const del = (url, data = {}) => {
-	return request({ url, method: 'DELETE', data })
+export const del = (url, data) => request({ url, method: 'DELETE', data })
+
+/**
+ * 文件上传
+ */
+export const upload = (url, filePath, name = 'file') => {
+  return new Promise((resolve, reject) => {
+    const token = uni.getStorageSync('token')
+    uni.uploadFile({
+      url: BASE_URL + url,
+      filePath,
+      name,
+      header: {
+        'Authorization': token || ''
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const data = JSON.parse(res.data)
+          if (data.code === 200 || data.code === 0) {
+            // 检查上传响应数据是否加密
+            if (isAesEncryptedData(data.data)) {
+              decryptResponseData(data.data)
+                .then((decrypted) => {
+                  data.data = decrypted
+                  resolve(data)
+                })
+                .catch(() => resolve(data))
+            } else {
+              resolve(data)
+            }
+          } else {
+            reject(new Error(data.msg || '上传失败'))
+          }
+        } else {
+          reject(new Error('上传失败'))
+        }
+      },
+      fail: reject
+    })
+  })
 }
 
-export default {
-	get,
-	post,
-	put,
-	del,
-	request
-}
+export { BASE_URL }
+export default request

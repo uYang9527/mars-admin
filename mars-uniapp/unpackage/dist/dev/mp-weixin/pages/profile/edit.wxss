@@ -1,0 +1,73 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.page.data-v-ead3e541 {
+  min-height: 100vh;
+  background: #F0F0F0;
+  padding-top: 20rpx;
+}
+.section.data-v-ead3e541 {
+  margin: 0 24rpx 20rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.03);
+}
+.cell.data-v-ead3e541 {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 28rpx;
+  position: relative;
+}
+.cell.data-v-ead3e541:active {
+  background: #F7F7F7;
+}
+.cell + .cell.data-v-ead3e541::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 28rpx;
+  right: 28rpx;
+  height: 1rpx;
+  background: #F2F2F2;
+}
+.cell-avatar.data-v-ead3e541 {
+  padding: 20rpx 28rpx;
+}
+.cell-label.data-v-ead3e541 {
+  font-size: 28rpx;
+  color: #1A1A1A;
+  flex-shrink: 0;
+  width: 140rpx;
+}
+.cell-right.data-v-ead3e541 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.cell-value.data-v-ead3e541 {
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 12rpx;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cell-readonly.data-v-ead3e541 {
+  color: #BBBBBB;
+}
+.avatar-img.data-v-ead3e541 {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #E0E0E0;
+  margin-right: 12rpx;
+}

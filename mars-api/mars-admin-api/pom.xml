@@ -43,10 +43,6 @@
         </dependency>
         <dependency>
             <groupId>com.mars</groupId>
-            <artifactId>mars-mall</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mars</groupId>
             <artifactId>mars-pay</artifactId>
         </dependency>
         <dependency>

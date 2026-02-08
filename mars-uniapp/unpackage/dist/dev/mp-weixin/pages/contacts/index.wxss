@@ -1,0 +1,134 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.page.data-v-822bb6ce {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #EDEDED;
+}
+.search-bar-wrap.data-v-822bb6ce {
+  padding: 12rpx 20rpx;
+  background: #07C160;
+}
+.search-input-area.data-v-822bb6ce {
+  display: flex;
+  align-items: center;
+  height: 60rpx;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6rpx;
+  padding: 0 16rpx;
+}
+.search-input.data-v-822bb6ce {
+  flex: 1;
+  height: 60rpx;
+  font-size: 26rpx;
+  color: #FFF;
+  margin-left: 8rpx;
+}
+.search-placeholder.data-v-822bb6ce {
+  color: rgba(255, 255, 255, 0.55);
+}
+.contact-list.data-v-822bb6ce {
+  flex: 1;
+  overflow: hidden;
+}
+.func-item.data-v-822bb6ce {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 28rpx;
+  background: #FFF;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+.func-item.data-v-822bb6ce:active {
+  background: #ECECEC;
+}
+.func-icon.data-v-822bb6ce {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18rpx;
+}
+.func-icon.green.data-v-822bb6ce {
+  background: linear-gradient(135deg, #06AD56, #07C160);
+}
+.func-icon-text.data-v-822bb6ce {
+  font-size: 24rpx;
+  color: #FFF;
+  font-weight: 600;
+}
+.func-name.data-v-822bb6ce {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1A1A1A;
+}
+.section-title.data-v-822bb6ce {
+  padding: 18rpx 28rpx 8rpx;
+}
+.section-title text.data-v-822bb6ce {
+  font-size: 22rpx;
+  color: #999;
+}
+.contact-item.data-v-822bb6ce {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 28rpx;
+  background: #FFF;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+.contact-item.data-v-822bb6ce:active {
+  background: #ECECEC;
+}
+.contact-avatar.data-v-822bb6ce {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 6rpx;
+  background: #E0E0E0;
+  margin-right: 18rpx;
+  flex-shrink: 0;
+}
+.avatar-text.data-v-822bb6ce {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-text text.data-v-822bb6ce {
+  font-size: 32rpx;
+  color: #FFF;
+  font-weight: 600;
+}
+.contact-info.data-v-822bb6ce {
+  flex: 1;
+  min-width: 0;
+}
+.contact-name.data-v-822bb6ce {
+  font-size: 28rpx;
+  color: #1A1A1A;
+  display: block;
+}
+.contact-desc.data-v-822bb6ce {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+.empty-state.data-v-822bb6ce {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 40rpx;
+}
+.empty-state .empty-text.data-v-822bb6ce {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 14rpx;
+}

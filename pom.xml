@@ -154,11 +154,6 @@
             </dependency>
             <dependency>
                 <groupId>com.mars</groupId>
-                <artifactId>mars-mall</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.mars</groupId>
                 <artifactId>mars-pay</artifactId>
                 <version>${project.version}</version>
             </dependency>
