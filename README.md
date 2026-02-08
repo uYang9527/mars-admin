@@ -435,8 +435,12 @@ public class CustomLoginStrategy implements LoginStrategy {
 
 ## 联系作者
 
-- **GitHub**: [@marsfactory](https://github.com/marsfactory)
-- **Email**: mars@example.com
+- **微信**: mars8377或者mars3570
+
+
+### 学习交流群
+![交流群](doc/交流群.jpg)
+
 
 ---
 
