@@ -25,5 +25,6 @@
         <module>mars-wechat</module>
         <module>mars-social</module>
         <module>mars-crypto</module>
+        <module>mars-mail</module>
     </modules>
 </project>

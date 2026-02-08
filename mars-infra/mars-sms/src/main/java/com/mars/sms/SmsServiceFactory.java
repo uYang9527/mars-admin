@@ -1,6 +1,6 @@
 package com.mars.sms;
 
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +39,12 @@ public class SmsServiceFactory {
     public SmsService getService() {
         String provider = configHelper.getSmsProvider();
         SmsService service = serviceMap.get(provider);
-        
+
         if (service == null) {
             log.warn("未找到短信服务商: {}, 使用控制台模式", provider);
             service = serviceMap.get("console");
         }
-        
+
         return service;
     }
 

@@ -17,8 +17,8 @@
     </div>
 
     <!-- 样式一：左右分栏式 -->
-    <template v-if="currentStyle === 1">
-      <div class="login-container style1-container">
+    <template v-if="currentStyle === 2">
+      <div class="login-container style1-container style2-container">
         <div class="login-banner">
           <div class="banner-content">
             <div class="banner-logo">
@@ -105,7 +105,7 @@
     </template>
 
     <!-- 样式二：全屏背景（与样式一相同布局，加背景） -->
-    <template v-else-if="currentStyle === 2">
+    <template v-else-if="currentStyle === 1">
       <div class="style2-bg"></div>
       <div class="login-container style1-container">
         <div class="login-banner">
@@ -521,7 +521,7 @@ onMounted(() => {
 // 样式选项
 const styles = [
   { key: 1, name: '经典分栏', icon: GridOutline },
-  { key: 2, name: '全屏背景', icon: ImageOutline },
+  { key: 2, name: '左右分栏', icon: ImageOutline },
   { key: 3, name: '毛玻璃', icon: AppsOutline }
 ]
 
@@ -1149,10 +1149,49 @@ function goRegister() {
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(17, 24, 39, 0.5) 0%, transparent 100%);
+}
+
+.style2-container {
+  max-width: 100vw !important;
+  min-height: 100vh !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+/* 样式二全屏左右比例调整 */
+.style2-container .login-banner {
+  flex: 1.2;
+  border-radius: 0;
+}
+
+.style2-container .login-form-wrapper {
+  flex: 0.8;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+/* 小屏幕保持全屏堆叠 */
+@media (max-width: 960px) {
+  .style2-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .style2-container .login-banner {
+    flex: none;
+    min-height: 300px;
+    padding: 40px 24px;
+  }
+
+  .style2-container .login-form-wrapper {
+    flex: 1;
+    padding: 40px 24px;
+  }
 }
 
 .style2-footer {

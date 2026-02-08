@@ -131,6 +131,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.mars</groupId>
+                <artifactId>mars-mail</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- 业务核心层 -->
             <dependency>
                 <groupId>com.mars</groupId>

@@ -35,6 +35,8 @@
     <file url="file://$PROJECT_DIR$/mars-infra/mars-crypto/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mars-infra/mars-db/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mars-infra/mars-db/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mars-infra/mars-mail/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mars-infra/mars-mail/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mars-infra/mars-oss/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mars-infra/mars-oss/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mars-infra/mars-pay/src/main/java" charset="UTF-8" />

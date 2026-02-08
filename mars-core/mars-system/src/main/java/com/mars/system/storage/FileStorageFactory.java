@@ -4,7 +4,7 @@ import com.mars.oss.AliyunOssFileStorage;
 import com.mars.oss.FileStorage;
 import com.mars.oss.LocalFileStorage;
 import com.mars.oss.MinioFileStorage;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,18 +32,18 @@ public class FileStorageFactory {
      */
     public FileStorage getStorage() {
         String provider = configHelper.getStorageProvider();
-        
+
         // 如果服务商未变化，使用缓存的实例
         if (cachedStorage != null && provider.equals(cachedProvider)) {
             return cachedStorage;
         }
-        
+
         synchronized (this) {
             // 双重检查
             if (cachedStorage != null && provider.equals(cachedProvider)) {
                 return cachedStorage;
             }
-            
+
             cachedStorage = createStorage(provider);
             cachedProvider = provider;
             return cachedStorage;
@@ -63,7 +63,7 @@ public class FileStorageFactory {
                 yield createLocalStorage();
             }
         };
-        
+
         log.info("创建文件存储实例: {} - {}", provider, storage.getStorageType());
         return storage;
     }

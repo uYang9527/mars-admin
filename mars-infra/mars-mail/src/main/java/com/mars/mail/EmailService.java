@@ -1,4 +1,4 @@
-package com.mars.system.service;
+package com.mars.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final SystemConfigHelper configHelper;
+    private final MailConfigProvider configProvider;
 
     /**
      * 动态创建 JavaMailSender
@@ -30,11 +30,11 @@ public class EmailService {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         
         // 从配置中获取邮件服务器信息
-        String host = configHelper.getEmailHost();
-        int port = configHelper.getEmailPort();
-        String username = configHelper.getEmailUsername();
-        String password = configHelper.getEmailPassword();
-        boolean ssl = configHelper.isEmailSsl();
+        String host = configProvider.getEmailHost();
+        int port = configProvider.getEmailPort();
+        String username = configProvider.getEmailUsername();
+        String password = configProvider.getEmailPassword();
+        boolean ssl = configProvider.isEmailSsl();
         
         mailSender.setHost(host);
         mailSender.setPort(port);
@@ -70,7 +70,7 @@ public class EmailService {
      * @param content 内容
      */
     public void sendSimpleMail(String to, String subject, String content) {
-        if (!configHelper.isEmailEnabled()) {
+        if (!configProvider.isEmailEnabled()) {
             throw new RuntimeException("邮件服务未启用");
         }
         
@@ -97,7 +97,7 @@ public class EmailService {
      * @param content HTML内容
      */
     public void sendHtmlMail(String to, String subject, String content) {
-        if (!configHelper.isEmailEnabled()) {
+        if (!configProvider.isEmailEnabled()) {
             throw new RuntimeException("邮件服务未启用");
         }
         
@@ -123,12 +123,12 @@ public class EmailService {
      * @param to 收件人邮箱
      */
     public void sendTestMail(String to) {
-        String siteName = configHelper.getSiteName();
+        String siteName = configProvider.getSiteName();
         String subject = "【" + siteName + "】测试邮件";
         String content = "这是一封测试邮件，如果您收到此邮件，说明邮件服务配置正确。\n\n" +
                 "发送时间：" + java.time.LocalDateTime.now().toString() + "\n" +
-                "发件服务器：" + configHelper.getEmailHost() + "\n" +
-                "发件人：" + configHelper.getEmailUsername();
+                "发件服务器：" + configProvider.getEmailHost() + "\n" +
+                "发件人：" + configProvider.getEmailUsername();
         
         sendSimpleMail(to, subject, content);
     }
@@ -141,11 +141,11 @@ public class EmailService {
      * @param expire 过期时间（分钟）
      */
     public void sendVerifyCode(String to, String code, int expire) {
-        String template = configHelper.getEmailTemplateVerifyCode();
+        String template = configProvider.getEmailTemplateVerifyCode();
         String content = template.replace("{code}", code)
                 .replace("{expire}", String.valueOf(expire));
         
-        String siteName = configHelper.getSiteName();
+        String siteName = configProvider.getSiteName();
         String subject = "【" + siteName + "】验证码";
         
         sendSimpleMail(to, subject, content);
@@ -159,11 +159,11 @@ public class EmailService {
      * @param expire 过期时间（分钟）
      */
     public void sendResetPassword(String to, String code, int expire) {
-        String template = configHelper.getEmailTemplateResetPassword();
+        String template = configProvider.getEmailTemplateResetPassword();
         String content = template.replace("{code}", code)
                 .replace("{expire}", String.valueOf(expire));
         
-        String siteName = configHelper.getSiteName();
+        String siteName = configProvider.getSiteName();
         String subject = "【" + siteName + "】重置密码";
         
         sendSimpleMail(to, subject, content);
@@ -173,8 +173,8 @@ public class EmailService {
      * 获取发件人地址
      */
     private String getFromAddress() {
-        String fromName = configHelper.getEmailFromName();
-        String username = configHelper.getEmailUsername();
+        String fromName = configProvider.getEmailFromName();
+        String username = configProvider.getEmailUsername();
         
         if (fromName != null && !fromName.isEmpty()) {
             return fromName + " <" + username + ">";
@@ -182,3 +182,4 @@ public class EmailService {
         return username;
     }
 }
+

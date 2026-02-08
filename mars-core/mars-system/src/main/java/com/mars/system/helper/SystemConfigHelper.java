@@ -1,8 +1,9 @@
-package com.mars.system.service;
+package com.mars.system.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mars.system.entity.SysConfigGroup;
+import com.mars.system.service.SysConfigGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider {
+public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider, com.mars.mail.MailConfigProvider {
 
     private final SysConfigGroupService configGroupService;
     private final ObjectMapper objectMapper;
@@ -295,7 +296,7 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider 
      */
     public String getStorageAllowTypes() {
         // 支持常见的图片、文档、视频、音频、压缩包、代码等文件类型
-        return getString(GROUP_STORAGE, "allowTypes", 
+        return getString(GROUP_STORAGE, "allowTypes",
             "jpg,jpeg,png,gif,webp,bmp,ico,svg," +  // 图片
             "pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,rtf,csv," +  // 文档
             "mp4,avi,mov,wmv,flv,mkv,webm,m4v," +  // 视频

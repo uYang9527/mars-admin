@@ -10,7 +10,7 @@ import com.mars.auth.enums.LoginType;
 import com.mars.common.exception.BusinessException;
 import com.mars.system.entity.SysUser;
 import com.mars.system.service.SysUserService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

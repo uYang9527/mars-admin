@@ -13,6 +13,7 @@
         <module name="mars-web-api" />
         <module name="mars-redis" />
         <module name="mars-websocket" />
+        <module name="mars-mail" />
         <module name="mars-job" />
         <module name="mars-starter" />
         <module name="mars-system" />
@@ -50,6 +51,7 @@
       <module name="mars-gen" options="-parameters" />
       <module name="mars-infra" options="-parameters" />
       <module name="mars-job" options="-parameters" />
+      <module name="mars-mail" options="-parameters" />
       <module name="mars-mall" options="-parameters" />
       <module name="mars-message" options="-parameters" />
       <module name="mars-oss" options="-parameters" />

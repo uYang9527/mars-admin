@@ -7,7 +7,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -85,7 +85,7 @@ public class AlipayService extends AbstractPayService {
 
                 log.info("支付宝测试订单创建成功: orderNo={}, qrCode={}", orderNo, qrCode);
             } else {
-                log.error("支付宝下单失败: code={}, msg={}, subCode={}, subMsg={}", 
+                log.error("支付宝下单失败: code={}, msg={}, subCode={}, subMsg={}",
                     response.getCode(), response.getMsg(), response.getSubCode(), response.getSubMsg());
                 throw new RuntimeException("支付宝下单失败: " + response.getSubMsg());
             }

@@ -14,7 +14,7 @@ import com.mars.system.mapper.SysUserMapper;
 import com.mars.system.mapper.SysUserRoleMapper;
 import com.mars.system.config.StpInterfaceImpl;
 import com.mars.system.service.SysUserService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -138,7 +138,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         // 验证新密码规则
         configHelper.validatePassword(newPassword);
-        
+
         user.setPassword(BCrypt.hashpw(newPassword));
         this.updateById(user);
     }

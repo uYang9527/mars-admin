@@ -59,7 +59,6 @@ com\mars\system\service\impl\SysUserRoleServiceImpl.class
 com\mars\system\annotation\Log$BusinessType.class
 com\mars\system\service\SysConfigGroupService.class
 com\mars\system\service\SysDeptService.class
-com\mars\system\service\EmailService.class
 com\mars\system\service\impl\SysConfigGroupServiceImpl.class
 com\mars\system\service\impl\SysPostServiceImpl.class
 com\mars\system\service\SysServerService.class

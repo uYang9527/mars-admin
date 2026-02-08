@@ -1,6 +1,6 @@
 package com.mars.sms;
 
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,17 +38,17 @@ public class AliyunSmsService implements SmsService {
             // 参考文档: https://help.aliyun.com/document_detail/101414.html
             // 1. 引入依赖 aliyun-java-sdk-core 和 aliyun-java-sdk-dysmsapi
             // 2. 构建请求发送短信
-            
+
             /*
             DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             IAcsClient client = new DefaultAcsClient(profile);
-            
+
             SendSmsRequest request = new SendSmsRequest();
             request.setPhoneNumbers(phone);
             request.setSignName(signName);
             request.setTemplateCode(templateCode);
             request.setTemplateParam("{\"code\":\"" + code + "\"}");
-            
+
             SendSmsResponse response = client.getAcsResponse(request);
             if ("OK".equals(response.getCode())) {
                 log.info("阿里云短信发送成功: phone={}", phone);

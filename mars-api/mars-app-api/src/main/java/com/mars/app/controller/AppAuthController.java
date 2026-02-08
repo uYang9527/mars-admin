@@ -13,7 +13,7 @@ import com.mars.file.service.SysFileService;
 import com.mars.sms.SmsServiceFactory;
 import com.mars.system.entity.SysUser;
 import com.mars.system.service.SysUserService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

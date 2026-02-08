@@ -1,6 +1,6 @@
 package com.mars.sms;
 
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,19 +44,19 @@ public class TencentSmsService implements SmsService {
             Credential cred = new Credential(secretId, secretKey);
             HttpProfile httpProfile = new HttpProfile();
             httpProfile.setEndpoint("sms.tencentcloudapi.com");
-            
+
             ClientProfile clientProfile = new ClientProfile();
             clientProfile.setHttpProfile(httpProfile);
-            
+
             SmsClient client = new SmsClient(cred, "ap-guangzhou", clientProfile);
-            
+
             SendSmsRequest req = new SendSmsRequest();
             req.setSmsSdkAppId(appId);
             req.setSignName(signName);
             req.setTemplateId(templateId);
             req.setPhoneNumberSet(new String[]{"+86" + phone});
             req.setTemplateParamSet(new String[]{code});
-            
+
             SendSmsResponse resp = client.SendSms(req);
             if ("Ok".equals(resp.getSendStatusSet()[0].getCode())) {
                 log.info("腾讯云短信发送成功: phone={}", phone);

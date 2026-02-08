@@ -1,6 +1,6 @@
 package com.mars.push;
 
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,18 +27,18 @@ public class PushServiceFactory {
      */
     public PushService getPushService() {
         String provider = configHelper.getPushProvider();
-        
+
         // 如果服务商未变化，使用缓存的实例
         if (cachedService != null && provider.equals(cachedProvider)) {
             return cachedService;
         }
-        
+
         synchronized (this) {
             // 双重检查
             if (cachedService != null && provider.equals(cachedProvider)) {
                 return cachedService;
             }
-            
+
             cachedService = createPushService(provider);
             cachedProvider = provider;
             return cachedService;
@@ -51,7 +51,7 @@ public class PushServiceFactory {
     private PushService createPushService(String provider) {
         String appKey = configHelper.getPushAppKey();
         String masterSecret = configHelper.getPushMasterSecret();
-        
+
         PushService service = switch (provider) {
             case JpushPushService.PROVIDER_TYPE -> new JpushPushService(appKey, masterSecret);
             case UmengPushService.PROVIDER_TYPE -> new UmengPushService(appKey, masterSecret);
@@ -61,7 +61,7 @@ public class PushServiceFactory {
                 yield new ConsolePushService();
             }
         };
-        
+
         log.info("创建推送服务实例: {} - {}", provider, service.getProviderName());
         return service;
     }
