@@ -181,7 +181,7 @@ cd mars-system
 2. **初始化数据库**
 ```bash
 # 创建数据库
-CREATE DATABASE mars_system DEFAULT CHARACTER SET utf8mb4;
+CREATE DATABASE `mars-system` DEFAULT CHARACTER SET utf8mb4;
 
 # 导入 SQL
 mysql -u root -p mars_system < sql/mars_system.sql
