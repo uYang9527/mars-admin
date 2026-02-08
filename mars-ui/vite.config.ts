@@ -11,7 +11,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: resolve(__dirname, '../mars-web/src/main/resources/static'),
+    outDir: resolve(__dirname, '../mars-starter/src/main/resources/static'),
     emptyOutDir: true
   },
   server: {
