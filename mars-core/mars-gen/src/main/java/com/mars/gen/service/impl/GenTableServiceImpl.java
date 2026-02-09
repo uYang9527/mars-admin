@@ -9,6 +9,10 @@ import com.mars.gen.entity.*;
 import com.mars.gen.mapper.GenTableColumnMapper;
 import com.mars.gen.mapper.GenTableMapper;
 import com.mars.system.mapper.SysMenuMapper;
+import com.mars.system.entity.SysRole;
+import com.mars.system.entity.SysRoleMenu;
+import com.mars.system.mapper.SysRoleMapper;
+import com.mars.system.mapper.SysRoleMenuMapper;
 import com.mars.gen.service.GenTableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,8 @@ public class GenTableServiceImpl implements GenTableService {
     private final GenTableMapper genTableMapper;
     private final GenTableColumnMapper genTableColumnMapper;
     private final SysMenuMapper sysMenuMapper;
+    private final SysRoleMenuMapper sysRoleMenuMapper;
+    private final SysRoleMapper sysRoleMapper;
 
     // Java类型映射
     private static final Map<String, String> TYPE_MAP = new HashMap<>();
@@ -375,6 +381,9 @@ public class GenTableServiceImpl implements GenTableService {
         
         Long mainMenuId = mainMenu.getId();
         
+        // 自动授权给超级管理员 (role.code = admin)
+        authorizeToAdmin(mainMenuId);
+        
         // 创建按钮权限
         String[][] buttons = {
             {functionName + "查询", moduleName + ":" + businessName + ":list", "1"},
@@ -396,9 +405,41 @@ public class GenTableServiceImpl implements GenTableService {
             btnMenu.setIsFrame(0);
             btnMenu.setDeleted(0);
             sysMenuMapper.insert(btnMenu);
+            
+            // 按钮也授权给超级管理员
+            authorizeToAdmin(btnMenu.getId());
         }
         
-        log.info("菜单创建成功: {}", functionName);
+        log.info("菜单创建成功并已授权给超级管理员: {}", functionName);
+    }
+
+    /**
+     * 授权给超级管理员
+     */
+    private void authorizeToAdmin(Long menuId) {
+        // 查找超级管理员角色 (role.code = admin)
+        LambdaQueryWrapper<SysRole> roleWrapper = new LambdaQueryWrapper<>();
+        roleWrapper.eq(SysRole::getCode, "admin")
+                .last("LIMIT 1");
+        SysRole adminRole = sysRoleMapper.selectOne(roleWrapper);
+        if (adminRole == null) {
+            log.warn("未找到超级管理员角色(role.code=admin)，跳过菜单授权: menuId={}", menuId);
+            return;
+        }
+
+        // 避免重复授权
+        LambdaQueryWrapper<SysRoleMenu> existWrapper = new LambdaQueryWrapper<>();
+        existWrapper.eq(SysRoleMenu::getRoleId, adminRole.getId())
+                .eq(SysRoleMenu::getMenuId, menuId)
+                .last("LIMIT 1");
+        if (sysRoleMenuMapper.selectCount(existWrapper) > 0) {
+            return;
+        }
+
+        SysRoleMenu roleMenu = new SysRoleMenu();
+        roleMenu.setRoleId(adminRole.getId());
+        roleMenu.setMenuId(menuId);
+        sysRoleMenuMapper.insert(roleMenu);
     }
 
     @Override
@@ -531,11 +572,11 @@ public class GenTableServiceImpl implements GenTableService {
         String businessName = table.getBusinessName();
         
         return switch (fileName) {
-            case "Entity.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/entity/" + className + ".java";
-            case "Mapper.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/mapper/" + className + "Mapper.java";
-            case "Service.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/service/" + className + "Service.java";
-            case "ServiceImpl.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/service/impl/" + className + "ServiceImpl.java";
-            case "Controller.java" -> projectRoot + "/mars-web/src/main/java/com/mars/web/controller/" + moduleName + "/" + className + "Controller.java";
+            case "Entity.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/entity/" + className + ".java";
+            case "Mapper.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/mapper/" + className + "Mapper.java";
+            case "Service.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/service/" + className + "Service.java";
+            case "ServiceImpl.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/service/impl/" + className + "ServiceImpl.java";
+            case "Controller.java" -> projectRoot + "/mars-api/mars-admin-api/src/main/java/com/mars/admin/controller/" + moduleName + "/" + className + "Controller.java";
             case "api.ts" -> projectRoot + "/mars-ui/src/api/" + businessName + ".ts";
             case "index.vue" -> projectRoot + "/mars-ui/src/views/" + moduleName + "/" + businessName + "/index.vue";
             case "menu.sql" -> null; // SQL 文件不自动写入

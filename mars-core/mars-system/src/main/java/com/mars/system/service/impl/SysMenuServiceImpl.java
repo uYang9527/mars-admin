@@ -6,12 +6,15 @@ import com.mars.common.exception.BusinessException;
 import com.mars.system.entity.SysMenu;
 import com.mars.system.mapper.SysMenuMapper;
 import com.mars.system.service.SysMenuService;
+import com.mars.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +23,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
+    @Lazy
+    private final SysUserService userService;
 
     @Override
     public List<SysMenu> tree(String name, Integer status) {
@@ -33,15 +39,26 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> getUserMenuTree(Long userId) {
+        // 超级管理员(admin)直接返回全量启用菜单，避免因关联表/层级问题导致菜单缺失
+        List<String> roleCodes = userService.getRoleCodes(userId);
+        if (roleCodes != null && roleCodes.contains("admin")) {
+            LambdaQueryWrapper<SysMenu> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(SysMenu::getStatus, 1)
+                    .eq(SysMenu::getDeleted, 0)
+                    .ne(SysMenu::getType, 3)
+                    .orderByAsc(SysMenu::getSort);
+            return buildTree(this.list(wrapper));
+        }
+
         List<SysMenu> menus = baseMapper.selectMenusByUserId(userId);
         // 只返回目录和菜单类型，不返回按钮
         menus = menus.stream()
                 .filter(menu -> menu.getType() != 3)
                 .collect(Collectors.toList());
-        
+
         // 自动补充缺失的父级菜单，确保树结构完整
         menus = fillParentMenus(menus);
-        
+
         return buildTree(menus);
     }
     

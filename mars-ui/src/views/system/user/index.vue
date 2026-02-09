@@ -37,6 +37,15 @@
             <n-form-item label="用户名">
               <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
             </n-form-item>
+            <n-form-item label="用户类型">
+              <n-select
+                v-model:value="searchForm.userType"
+                placeholder="请选择用户类型"
+                :options="userTypeOptions"
+                clearable
+                style="width: 140px"
+              />
+            </n-form-item>
             <n-form-item label="状态">
               <n-select
                 v-model:value="searchForm.status"
@@ -222,7 +231,8 @@ async function loadDeptTree() {
 // ==================== 搜索表单 ====================
 const searchForm = reactive({
   username: '',
-  status: null as number | null
+  status: null as number | null,
+  userType: null as string | null
 })
 
 const statusOptions = [
@@ -360,6 +370,7 @@ async function loadData() {
       pageSize: pagination.pageSize,
       username: searchForm.username || undefined,
       status: searchForm.status ?? undefined,
+      userType: searchForm.userType || undefined,
       deptId: selectedDeptId.value
     })
     tableData.value = res.list
@@ -392,6 +403,7 @@ function handleSearch() {
 function handleReset() {
   searchForm.username = ''
   searchForm.status = null
+  searchForm.userType = null
   selectedDeptId.value = undefined
   selectedDeptKeys.value = []
   handleSearch()

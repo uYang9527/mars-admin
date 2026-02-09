@@ -43,8 +43,9 @@ public class SysUserController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) String userType,
             @RequestParam(required = false) Long deptId) {
-        return Result.ok(userService.page(page, pageSize, username, status, deptId));
+        return Result.ok(userService.page(page, pageSize, username, status, userType, deptId));
     }
 
     /**

@@ -36,11 +36,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private static final String DEFAULT_PASSWORD = "123456";
 
     @Override
-    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, Long deptId) {
+    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId) {
         Page<SysUser> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.hasText(username), SysUser::getUsername, username)
                 .eq(status != null, SysUser::getStatus, status)
+                .eq(StringUtils.hasText(userType), SysUser::getUserType, userType)
                 .eq(deptId != null, SysUser::getDeptId, deptId)
                 .orderByDesc(SysUser::getCreateTime);
         Page<SysUser> result = this.page(pageParam, wrapper);
