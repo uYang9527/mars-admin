@@ -49,4 +49,13 @@ public class PageResult<T> implements Serializable {
         result.setPageSize(pageSize);
         return result;
     }
+
+    public static <T> PageResult<T> empty() {
+        PageResult<T> result = new PageResult<>();
+        result.setList(new java.util.ArrayList<>());
+        result.setTotal(0L);
+        result.setPage(1L);
+        result.setPageSize(10L);
+        return result;
+    }
 }

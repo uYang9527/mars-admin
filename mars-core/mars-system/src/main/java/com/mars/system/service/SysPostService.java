@@ -35,4 +35,14 @@ public interface SysPostService extends IService<SysPost> {
      * 删除岗位
      */
     void delete(Long id);
+
+    /**
+     * 获取岗位树
+     */
+    List<SysPost> tree();
+
+    /**
+     * 移动岗位
+     */
+    void move(Long id, Long parentId);
 }

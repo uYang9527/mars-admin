@@ -10,9 +10,13 @@ import com.mars.system.mapper.SysPostMapper;
 import com.mars.system.service.SysPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 岗位服务实现
@@ -45,6 +49,9 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
         if (this.getOne(new LambdaQueryWrapper<SysPost>().eq(SysPost::getPostCode, post.getPostCode())) != null) {
             throw new BusinessException("岗位编码已存在");
         }
+        if (post.getParentId() == null) {
+            post.setParentId(0L);
+        }
         this.save(post);
     }
 
@@ -64,6 +71,42 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper, SysPost> impl
 
     @Override
     public void delete(Long id) {
+        // 检查是否有子岗位
+        long count = this.count(new LambdaQueryWrapper<SysPost>().eq(SysPost::getParentId, id));
+        if (count > 0) {
+            throw new BusinessException("存在子岗位，不允许删除");
+        }
         this.removeById(id);
+    }
+
+    @Override
+    public List<SysPost> tree() {
+        List<SysPost> list = this.list(new LambdaQueryWrapper<SysPost>().orderByAsc(SysPost::getSort));
+        return buildTree(list, 0L);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void move(Long id, Long parentId) {
+        SysPost post = this.getById(id);
+        if (post == null) {
+            throw new BusinessException("岗位不存在");
+        }
+        if (id.equals(parentId)) {
+            throw new BusinessException("不能移动到自身");
+        }
+        post.setParentId(parentId);
+        this.updateById(post);
+    }
+
+    private List<SysPost> buildTree(List<SysPost> list, Long parentId) {
+        List<SysPost> tree = new ArrayList<>();
+        for (SysPost post : list) {
+            if (parentId.equals(post.getParentId())) {
+                post.setChildren(buildTree(list, post.getId()));
+                tree.add(post);
+            }
+        }
+        return tree;
     }
 }

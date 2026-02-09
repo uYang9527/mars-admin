@@ -1,53 +1,97 @@
 <template>
   <div class="page-container">
-    <n-card>
-      <div class="search-form">
-        <n-form inline :model="searchForm" label-placement="left">
-          <n-form-item label="岗位编码">
-            <n-input v-model:value="searchForm.postCode" placeholder="请输入岗位编码" clearable />
-          </n-form-item>
-          <n-form-item label="岗位名称">
-            <n-input v-model:value="searchForm.postName" placeholder="请输入岗位名称" clearable />
-          </n-form-item>
-          <n-form-item label="状态">
-            <n-select v-model:value="searchForm.status" placeholder="请选择状态" :options="statusOptions" clearable style="width: 120px" />
-          </n-form-item>
-          <n-form-item>
+    <div class="post-layout">
+      <!-- 左侧岗位树 -->
+      <n-card class="post-tree-card" size="small">
+        <template #header>
+          <div class="post-tree-header">
+            <span>岗位体系</span>
+          </div>
+        </template>
+        <div class="post-search">
+          <n-input v-model:value="postTreeSearch" placeholder="搜索岗位" clearable size="small">
+            <template #prefix><n-icon><SearchOutline /></n-icon></template>
+          </n-input>
+        </div>
+        <div class="post-tree-wrapper">
+          <n-tree
+            :data="postTreeData"
+            :pattern="postTreeSearch"
+            :default-expand-all="true"
+            :selected-keys="selectedPostKeys"
+            :node-props="postNodeProps"
+            key-field="id"
+            label-field="postName"
+            children-field="children"
+            selectable
+            block-line
+            draggable
+            @drop="handleDrop"
+          />
+        </div>
+        <template #footer>
+          <n-button block dashed size="small" v-if="hasPermission('sys:post:add')" @click="handleAdd(0)">
+            <template #icon><n-icon><AddOutline /></n-icon></template>
+            新增顶级岗位
+          </n-button>
+        </template>
+      </n-card>
+
+      <!-- 右侧用户列表 -->
+      <n-card class="user-list-card" size="small">
+        <template #header>
+          <div class="card-header">
+            <span>{{ selectedPostName ? `【${selectedPostName}】岗位成员` : '所有用户' }}</span>
             <n-space>
-              <n-button type="primary" @click="handleSearch">
-                <template #icon><n-icon><SearchOutline /></n-icon></template>
-                搜索
+               <n-button v-if="selectedPostId && hasPermission('sys:post:edit')" size="small" @click="handleEditPost">
+                编辑岗位
               </n-button>
-              <n-button @click="handleReset">
-                <template #icon><n-icon><RefreshOutline /></n-icon></template>
-                重置
+              <n-button v-if="selectedPostId && hasPermission('sys:post:add')" type="primary" size="small" @click="handleAdd(selectedPostId)">
+                新增子岗位
+              </n-button>
+              <n-button v-if="selectedPostId && hasPermission('sys:post:delete')" type="error" size="small" @click="handleDeletePost">
+                删除岗位
               </n-button>
             </n-space>
-          </n-form-item>
-        </n-form>
-      </div>
-      
-      <div class="table-toolbar">
-        <n-button v-if="hasPermission('sys:post:add')" type="primary" @click="handleAdd">
-          <template #icon><n-icon><AddOutline /></n-icon></template>
-          新增岗位
-        </n-button>
-      </div>
-      
-      <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
-        :row-key="(row: SysPost) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
-    </n-card>
-    
+          </div>
+        </template>
+        
+        <!-- 用户表格 -->
+        <n-data-table
+          :columns="userColumns"
+          :data="userData"
+          :loading="userLoading"
+          :pagination="pagination"
+          :row-key="(row: SysUser) => row.id"
+          remote
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        />
+      </n-card>
+    </div>
+
+    <!-- 岗位编辑弹窗 -->
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 500px" :mask-closable="false">
       <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="80">
+        <n-form-item label="上级岗位" path="parentId">
+          <n-tree-select
+            v-model:value="formData.parentId"
+            :options="postTreeOptions"
+            key-field="id"
+            label-field="postName"
+            children-field="children"
+            placeholder="请选择上级岗位"
+            clearable
+          />
+        </n-form-item>
         <n-form-item label="岗位编码" path="postCode">
           <n-input v-model:value="formData.postCode" placeholder="请输入岗位编码" />
         </n-form-item>
         <n-form-item label="岗位名称" path="postName">
           <n-input v-model:value="formData.postName" placeholder="请输入岗位名称" />
         </n-form-item>
-        <n-form-item label="显示排序" path="sort">
-          <n-input-number v-model:value="formData.sort" :min="0" placeholder="请输入排序" style="width: 100%" />
+        <n-form-item label="排序" path="sort">
+          <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
         </n-form-item>
         <n-form-item label="状态" path="status">
           <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
@@ -70,10 +114,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
-import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
-import { postApi, type SysPost } from '@/api/org'
+import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
+import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption, type TreeDropInfo } from 'naive-ui'
+import { SearchOutline, AddOutline } from '@vicons/ionicons5'
+import { postApi, userApi, type SysUser, type SysPost } from '@/api/system'
 import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
@@ -81,83 +125,233 @@ const dialog = useDialog()
 const userStore = useUserStore()
 const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
-const searchForm = reactive({ postCode: '', postName: '', status: null as number | null })
-const statusOptions = [{ label: '正常', value: 1 }, { label: '停用', value: 0 }]
-const tableData = ref<SysPost[]>([])
-const loading = ref(false)
-const pagination = reactive({ page: 1, pageSize: 10, itemCount: 0, showSizePicker: true, pageSizes: [10, 20, 50] })
+// ==================== 岗位树逻辑 ====================
+const postTreeSearch = ref('')
+const postTreeData = ref<SysPost[]>([])
+const selectedPostKeys = ref<number[]>([])
+const selectedPostId = ref<number | undefined>(undefined)
+const selectedPostName = ref('')
 
-const columns: DataTableColumns<SysPost> = [
-  { title: 'ID', key: 'id', width: 80 },
-  { title: '岗位编码', key: 'postCode', width: 120 },
-  { title: '岗位名称', key: 'postName', width: 150 },
-  { title: '排序', key: 'sort', width: 80 },
-  { title: '状态', key: 'status', width: 80, render(row) {
-    return h(NTag, { type: row.status === 1 ? 'success' : 'error', size: 'small' }, { default: () => row.status === 1 ? '正常' : '停用' })
-  }},
-  { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
-  { title: '创建时间', key: 'createTime', width: 180 },
-  { title: '操作', key: 'actions', width: 150, fixed: 'right', render(row) {
-    const buttons = []
-    if (hasPermission('sys:post:edit')) buttons.push(h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' }))
-    if (hasPermission('sys:post:delete')) buttons.push(h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' }))
-    return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
+const postTreeOptions = computed(() => [
+  { id: 0, postName: '顶级岗位', children: postTreeData.value }
+])
+
+const postNodeProps = ({ option }: { option: TreeOption }): HTMLAttributes => {
+  return {
+    onClick() {
+      const id = option.id as number
+      if (selectedPostId.value === id) {
+        selectedPostId.value = undefined
+        selectedPostKeys.value = []
+        selectedPostName.value = ''
+      } else {
+        selectedPostId.value = id
+        selectedPostKeys.value = [id]
+        selectedPostName.value = option.postName as string
+      }
+      handlePageChange(1)
+    }
+  }
+}
+
+async function loadPostTree() {
+  try {
+    postTreeData.value = await postApi.tree()
+  } catch (error) {
+    console.error('加载岗位树失败:', error)
+  }
+}
+
+// ==================== 拖拽处理逻辑 ====================
+async function handleDrop({ node, dragNode, dropPosition }: TreeDropInfo) {
+  const dragId = dragNode.id as number
+  const targetId = node.id as number
+  
+  let parentId: number
+  
+  if (dropPosition === 'inside') {
+    // 拖拽到目标节点内部，目标节点成为新的父节点
+    parentId = targetId
+  } else {
+    // 拖拽到目标节点的前后，目标节点的父节点成为新的父节点
+    parentId = (node.parentId as number) || 0
+  }
+
+  try {
+    await postApi.move(dragId, parentId)
+    message.success('移动成功')
+    loadPostTree() // 重新加载树形结构
+  } catch (error) {
+    // 错误已在请求拦截器处理
+  }
+}
+
+// ==================== 用户列表逻辑 ====================
+const userData = ref<SysUser[]>([])
+const userLoading = ref(false)
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0,
+  showSizePicker: true,
+  pageSizes: [10, 20, 50]
+})
+
+const userColumns: DataTableColumns<SysUser> = [
+  { title: '用户名', key: 'username' },
+  { title: '昵称', key: 'nickname' },
+  { title: '部门', key: 'deptName' },
+  { title: '手机号', key: 'phone' },
+  { title: '状态', key: 'status', render(row) {
+    const statusMap: any = {
+      0: { type: 'error', label: '禁用' },
+      1: { type: 'success', label: '启用' },
+      2: { type: 'warning', label: '待审核' },
+      3: { type: 'error', label: '审核拒绝' }
+    }
+    const status = statusMap[row.status] || { type: 'info', label: '未知' }
+    return h(NTag, { type: status.type, size: 'small' }, { default: () => status.label })
   }}
 ]
 
+async function loadUserData() {
+  userLoading.value = true
+  try {
+    const res = await userApi.page({
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      postId: selectedPostId.value
+    })
+    userData.value = res.list
+    pagination.itemCount = res.total
+  } catch (error) {
+    console.error('加载用户数据失败:', error)
+  } finally {
+    userLoading.value = false
+  }
+}
+
+function handlePageChange(page: number) {
+  pagination.page = page
+  loadUserData()
+}
+
+function handlePageSizeChange(pageSize: number) {
+  pagination.pageSize = pageSize
+  handlePageChange(1)
+}
+
+// ==================== 岗位维护逻辑 ====================
 const modalVisible = ref(false)
-const modalTitle = ref('新增岗位')
+const modalTitle = ref('')
 const formRef = ref<FormInst | null>(null)
 const submitLoading = ref(false)
-const formData = reactive<SysPost>({ id: undefined, postCode: '', postName: '', sort: 0, status: 1, remark: '' })
+const formData = reactive<SysPost>({ id: undefined, parentId: 0, postCode: '', postName: '', sort: 0, status: 1, remark: '' })
 const rules: FormRules = {
   postCode: [{ required: true, message: '请输入岗位编码', trigger: 'blur' }],
   postName: [{ required: true, message: '请输入岗位名称', trigger: 'blur' }]
 }
 
-async function loadData() {
-  loading.value = true
-  try {
-    const res = await postApi.page({ page: pagination.page, pageSize: pagination.pageSize, ...searchForm })
-    tableData.value = res.list
-    pagination.itemCount = res.total
-  } finally { loading.value = false }
-}
-
-function handleSearch() { pagination.page = 1; loadData() }
-function handleReset() { searchForm.postCode = ''; searchForm.postName = ''; searchForm.status = null; handleSearch() }
-function handlePageChange(page: number) { pagination.page = page; loadData() }
-function handlePageSizeChange(pageSize: number) { pagination.pageSize = pageSize; pagination.page = 1; loadData() }
-
-function handleAdd() {
+function handleAdd(parentId: number = 0) {
   modalTitle.value = '新增岗位'
-  Object.assign(formData, { id: undefined, postCode: '', postName: '', sort: 0, status: 1, remark: '' })
+  Object.assign(formData, { id: undefined, parentId, postCode: '', postName: '', sort: 0, status: 1, remark: '' })
   modalVisible.value = true
 }
 
-function handleEdit(row: SysPost) {
-  modalTitle.value = '编辑岗位'
-  Object.assign(formData, row)
-  modalVisible.value = true
+async function handleEditPost() {
+  if (!selectedPostId.value) return
+  try {
+    const post = await postApi.detail(selectedPostId.value)
+    modalTitle.value = '编辑岗位'
+    Object.assign(formData, post)
+    modalVisible.value = true
+  } catch (error) {
+    console.error('获取岗位详情失败:', error)
+  }
+}
+
+function handleDeletePost() {
+  if (!selectedPostId.value) return
+  dialog.warning({
+    title: '提示',
+    content: `确定要删除岗位"${selectedPostName.value}"吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await postApi.delete(selectedPostId.value!)
+        message.success('删除成功')
+        selectedPostId.value = undefined
+        selectedPostKeys.value = []
+        selectedPostName.value = ''
+        loadPostTree()
+        loadUserData()
+      } catch (error) {
+        console.error('删除岗位失败:', error)
+      }
+    }
+  })
 }
 
 async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    if (formData.id) { await postApi.update(formData); message.success('更新成功') }
-    else { await postApi.create(formData); message.success('创建成功') }
+    if (formData.id) {
+      await postApi.update(formData)
+      message.success('更新成功')
+    } else {
+      await postApi.create(formData)
+      message.success('创建成功')
+    }
     modalVisible.value = false
-    loadData()
-  } finally { submitLoading.value = false }
+    loadPostTree()
+  } catch (error) {
+    console.error('提交失败:', error)
+  } finally {
+    submitLoading.value = false
+  }
 }
 
-function handleDelete(row: SysPost) {
-  dialog.warning({
-    title: '提示', content: `确定要删除岗位"${row.postName}"吗？`, positiveText: '确定', negativeText: '取消',
-    onPositiveClick: async () => { await postApi.delete(row.id!); message.success('删除成功'); loadData() }
-  })
-}
-
-onMounted(() => loadData())
+onMounted(() => {
+  loadPostTree()
+  loadUserData()
+})
 </script>
+
+<style scoped>
+.post-layout {
+  display: flex;
+  gap: 12px;
+  height: 100%;
+}
+
+.post-tree-card {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.post-tree-header {
+  font-weight: bold;
+}
+
+.post-search {
+  margin-bottom: 10px;
+}
+
+.post-tree-wrapper {
+  height: calc(100vh - 280px);
+  overflow-y: auto;
+}
+
+.user-list-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>

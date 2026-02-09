@@ -44,8 +44,9 @@ public class SysUserController {
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) String userType,
-            @RequestParam(required = false) Long deptId) {
-        return Result.ok(userService.page(page, pageSize, username, status, userType, deptId));
+            @RequestParam(required = false) Long deptId,
+            @RequestParam(required = false) Long postId) {
+        return Result.ok(userService.page(page, pageSize, username, status, userType, deptId, postId));
     }
 
     /**
@@ -58,9 +59,13 @@ public class SysUserController {
         List<SysRole> roles = roleService.listByUserId(id);
         List<Long> roleIds = roles.stream().map(SysRole::getId).collect(Collectors.toList());
 
+        // 获取岗位关联
+        List<Long> postIds = userService.getPostIds(id);
+
         Map<String, Object> result = new HashMap<>();
         result.put("user", user);
         result.put("roleIds", roleIds);
+        result.put("postIds", postIds);
         return Result.ok(result);
     }
 
@@ -72,7 +77,7 @@ public class SysUserController {
     @RepeatSubmit
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody UserRequest request) {
-        userService.create(request.getUser(), request.getRoleIds());
+        userService.create(request.getUser(), request.getRoleIds(), request.getPostIds());
         return Result.ok();
     }
 
@@ -83,7 +88,7 @@ public class SysUserController {
     @SaCheckPermission("sys:user:edit")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public Result<Void> update(@RequestBody UserRequest request) {
-        userService.update(request.getUser(), request.getRoleIds());
+        userService.update(request.getUser(), request.getRoleIds(), request.getPostIds());
         return Result.ok();
     }
 
@@ -106,6 +111,22 @@ public class SysUserController {
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public Result<Void> resetPassword(@PathVariable Long id) {
         userService.resetPassword(id);
+        return Result.ok();
+    }
+
+    /**
+     * 切换离职状态
+     */
+    @PostMapping("/{id}/quit")
+    @SaCheckPermission("sys:user:edit")
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
+    public Result<Void> toggleQuit(@PathVariable Long id) {
+        SysUser user = userService.getById(id);
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        user.setIsQuit(user.getIsQuit() == 1 ? 0 : 1);
+        userService.updateById(user);
         return Result.ok();
     }
 
@@ -151,5 +172,6 @@ public class SysUserController {
     public static class UserRequest {
         private SysUser user;
         private List<Long> roleIds;
+        private List<Long> postIds;
     }
 }

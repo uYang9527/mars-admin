@@ -69,7 +69,7 @@
             </n-form-item>
           </n-form>
         </div>
-        
+
         <!-- 工具栏 -->
         <div class="table-toolbar">
           <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
@@ -77,7 +77,7 @@
             新增用户
           </n-button>
         </div>
-        
+
         <!-- 表格 -->
         <n-data-table
           :columns="columns"
@@ -90,7 +90,7 @@
         />
       </n-card>
     </div>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -156,15 +156,21 @@
             placeholder="请选择角色"
           />
         </n-form-item>
+        <n-form-item label="岗位" path="postIds">
+          <n-select
+            v-model:value="postIds"
+            multiple
+            :options="postOptions"
+            placeholder="请选择岗位"
+          />
+        </n-form-item>
         <n-form-item label="状态" path="status">
           <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
             <template #checked>启用</template>
             <template #unchecked>禁用</template>
           </n-switch>
         </n-form-item>
-        <n-form-item label="备注" path="remark">
-          <n-input v-model:value="formData.remark" type="textarea" placeholder="请输入备注" />
-        </n-form-item>
+
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -178,9 +184,9 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, type HTMLAttributes } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
-import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
-import { userApi, roleApi, type SysUser, type SysRole } from '@/api/system'
+import { NButton, NTag, NSpace, NDropdown, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
+import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline } from '@vicons/ionicons5'
+import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
 import { deptApi, type SysDept } from '@/api/org'
 import { useUserStore } from '@/stores/user'
 
@@ -284,6 +290,15 @@ const columns: DataTableColumns<SysUser> = [
   },
   { title: '手机号', key: 'phone', width: 120 },
   {
+    title: '离职',
+    key: 'isQuit',
+    width: 80,
+    render(row) {
+      const quit = row.isQuit === 1
+      return h(NTag, { type: quit ? 'error' : 'success', size: 'small' }, { default: () => (quit ? '是' : '否') })
+    }
+  },
+  {
     title: '状态',
     key: 'status',
     width: 80,
@@ -319,17 +334,59 @@ const columns: DataTableColumns<SysUser> = [
         buttons.push(
           h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' })
         )
-        if (row.status !== 2) {
-          buttons.push(
-            h(NButton, { size: 'small', onClick: () => handleResetPassword(row) }, { default: () => '重置密码' })
-          )
-        }
       }
       if (hasPermission('sys:user:delete')) {
         buttons.push(
           h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
         )
       }
+
+      // 更多操作
+      if (hasPermission('sys:user:edit')) {
+        const moreOptions = []
+
+        // 重置密码移入更多
+        if (row.status !== 2) {
+          moreOptions.push({
+            label: '重置密码',
+            key: 'resetPassword'
+          })
+        }
+
+        moreOptions.push({
+          label: row.isQuit === 1 ? '取消离职' : '离职',
+          key: 'toggleQuit'
+        })
+
+        buttons.push(
+          h(
+            NDropdown,
+            {
+              trigger: 'click',
+              options: moreOptions,
+              onSelect: (key) => {
+                if (key === 'toggleQuit') {
+                  handleToggleQuit(row)
+                } else if (key === 'resetPassword') {
+                  handleResetPassword(row)
+                }
+              }
+            },
+            {
+              default: () =>
+                h(
+                  NButton,
+                  { size: 'small' },
+                  {
+                    default: () => '更多',
+                    icon: () => h(ChevronDownOutline)
+                  }
+                )
+            }
+          )
+        )
+      }
+
       return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
     }
   }
@@ -341,6 +398,8 @@ const modalTitle = ref('新增用户')
 const formRef = ref<FormInst | null>(null)
 const submitLoading = ref(false)
 const roleIds = ref<number[]>([])
+const postIds = ref<number[]>([])
+const postOptions = ref<Array<{ label: string; value: number }>>([])
 
 const formData = reactive<SysUser>({
   id: undefined,
@@ -394,6 +453,18 @@ async function loadRoles() {
   }
 }
 
+async function loadPostOptions() {
+  try {
+    const posts = await postApi.list()
+    postOptions.value = posts.map(p => ({
+      label: p.postName,
+      value: p.id!
+    }))
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
 // ==================== 操作方法 ====================
 function handleSearch() {
   pagination.page = 1
@@ -436,6 +507,7 @@ function handleAdd() {
     remark: ''
   })
   roleIds.value = []
+  postIds.value = []
   modalVisible.value = true
 }
 
@@ -445,6 +517,7 @@ async function handleEdit(row: SysUser) {
     const res = await userApi.detail(row.id!)
     Object.assign(formData, res.user)
     roleIds.value = res.roleIds
+    postIds.value = res.postIds
     modalVisible.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -455,12 +528,13 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     const data = {
       user: { ...formData },
-      roleIds: roleIds.value
+      roleIds: roleIds.value,
+      postIds: postIds.value
     }
-    
+
     if (formData.id) {
       await userApi.update(data)
       message.success('更新成功')
@@ -468,7 +542,7 @@ async function handleSubmit() {
       await userApi.create(data)
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -551,10 +625,30 @@ function handleResetPassword(row: SysUser) {
   })
 }
 
+function handleToggleQuit(row: SysUser) {
+  const nextQuit = row.isQuit === 1 ? 0 : 1
+  dialog.warning({
+    title: '提示',
+    content: nextQuit === 1 ? `确定将用户"${row.username}"设置为离职吗？` : `确定将用户"${row.username}"取消离职吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.toggleQuit(row.id!)
+        message.success(nextQuit === 1 ? '已设置离职' : '已取消离职')
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
 onMounted(() => {
   loadDeptTree()
   loadData()
   loadRoles()
+  loadPostOptions()
 })
 </script>
 

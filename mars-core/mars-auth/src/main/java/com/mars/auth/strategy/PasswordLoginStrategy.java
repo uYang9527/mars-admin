@@ -163,5 +163,9 @@ public class PasswordLoginStrategy implements LoginStrategy {
             loginHelper.recordFailLog(user.getUsername(), "用户已被禁用");
             throw new BusinessException("用户已被禁用");
         }
+        if (user.getIsQuit() == 1) {
+            loginHelper.recordFailLog(user.getUsername(), "用户已离职");
+            throw new BusinessException("用户已离职");
+        }
     }
 }

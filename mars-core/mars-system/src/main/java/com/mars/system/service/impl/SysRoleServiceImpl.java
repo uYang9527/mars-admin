@@ -11,6 +11,8 @@ import com.mars.system.entity.SysRoleMenu;
 import com.mars.system.mapper.SysMenuMapper;
 import com.mars.system.mapper.SysRoleMapper;
 import com.mars.system.mapper.SysRoleMenuMapper;
+import com.mars.system.entity.SysRoleDept;
+import com.mars.system.mapper.SysRoleDeptMapper;
 import com.mars.system.mapper.SysUserRoleMapper;
 import com.mars.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private final SysRoleMenuMapper roleMenuMapper;
     private final SysMenuMapper menuMapper;
     private final SysUserRoleMapper userRoleMapper;
+    private final SysRoleDeptMapper roleDeptMapper;
 
     @Override
     public PageResult<SysRole> page(Integer page, Integer pageSize, String name, Integer status) {
@@ -48,7 +51,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(SysRole role, List<Long> menuIds) {
+    public void create(SysRole role, List<Long> menuIds, List<Long> deptIds) {
         // 检查角色编码是否存在
         if (this.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getCode, role.getCode())) != null) {
             throw new BusinessException("角色编码已存在");
@@ -56,11 +59,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         this.save(role);
         // 保存角色菜单关联
         saveRoleMenus(role.getId(), menuIds);
+        // 保存角色部门关联
+        if (Integer.valueOf(2).equals(role.getDataScope())) {
+            saveRoleDepts(role.getId(), deptIds);
+        }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(SysRole role, List<Long> menuIds) {
+    public void update(SysRole role, List<Long> menuIds, List<Long> deptIds) {
         SysRole existRole = this.getById(role.getId());
         if (existRole == null) {
             throw new BusinessException("角色不存在");
@@ -74,8 +81,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         // 更新角色菜单关联
         roleMenuMapper.deleteByRoleId(role.getId());
         saveRoleMenus(role.getId(), menuIds);
+        // 更新角色部门关联
+        roleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>().eq(SysRoleDept::getRoleId, role.getId()));
+        if (Integer.valueOf(2).equals(role.getDataScope())) {
+            saveRoleDepts(role.getId(), deptIds);
+        }
         // 角色权限变更，清除该角色下所有用户的权限缓存
         clearCacheByRoleId(role.getId());
+    }
+
+    private void saveRoleDepts(Long roleId, List<Long> deptIds) {
+        if (deptIds != null && !deptIds.isEmpty()) {
+            roleDeptMapper.insertBatch(roleId, deptIds);
+        }
     }
 
     @Override
@@ -85,6 +103,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         clearCacheByRoleId(id);
         this.removeById(id);
         roleMenuMapper.deleteByRoleId(id);
+        roleDeptMapper.delete(new LambdaQueryWrapper<SysRoleDept>().eq(SysRoleDept::getRoleId, id));
     }
 
     @Override

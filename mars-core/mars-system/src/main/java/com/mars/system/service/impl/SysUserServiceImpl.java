@@ -2,15 +2,19 @@ package com.mars.system.service.impl;
 
 import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mars.common.exception.BusinessException;
 import com.mars.common.result.PageResult;
 import com.mars.system.entity.SysDept;
+import com.mars.system.entity.SysPost;
 import com.mars.system.entity.SysUser;
+import com.mars.system.entity.SysUserPost;
 import com.mars.system.entity.SysUserRole;
 import com.mars.system.mapper.SysDeptMapper;
 import com.mars.system.mapper.SysUserMapper;
+import com.mars.system.mapper.SysUserPostMapper;
 import com.mars.system.mapper.SysUserRoleMapper;
 import com.mars.system.config.StpInterfaceImpl;
 import com.mars.system.service.SysUserService;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户服务实现
@@ -30,30 +35,37 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserRoleMapper userRoleMapper;
+    private final SysUserPostMapper userPostMapper;
     private final SysDeptMapper deptMapper;
     private final SystemConfigHelper configHelper;
 
     private static final String DEFAULT_PASSWORD = "123456";
 
     @Override
-    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId) {
+    public PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId, Long postId) {
         Page<SysUser> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.hasText(username), SysUser::getUsername, username)
                 .eq(status != null, SysUser::getStatus, status)
                 .eq(StringUtils.hasText(userType), SysUser::getUserType, userType)
-                .eq(deptId != null, SysUser::getDeptId, deptId)
-                .orderByDesc(SysUser::getCreateTime);
-        Page<SysUser> result = this.page(pageParam, wrapper);
+                .eq(deptId != null, SysUser::getDeptId, deptId);
+
+        if (postId != null) {
+            List<Long> userIds = userPostMapper.selectUserIdsByPostId(postId);
+            if (userIds.isEmpty()) {
+                return PageResult.empty();
+            }
+            wrapper.apply("u.id IN ({0})", userIds.stream().map(String::valueOf).collect(Collectors.joining(",")));
+        }
+
+        wrapper.orderByDesc(SysUser::getCreateTime);
+
+        // 切换到自定义 @DataScope 拦截器
+        IPage<SysUser> result = baseMapper.selectUserPage(pageParam, wrapper);
+
         // 清空密码，填充部门名称
         result.getRecords().forEach(user -> {
             user.setPassword(null);
-            if (user.getDeptId() != null) {
-                SysDept dept = deptMapper.selectById(user.getDeptId());
-                if (dept != null) {
-                    user.setDeptName(dept.getDeptName());
-                }
-            }
         });
         return PageResult.of(result);
     }
@@ -69,7 +81,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(SysUser user, List<Long> roleIds) {
+    public void create(SysUser user, List<Long> roleIds, List<Long> postIds) {
         // 检查用户名是否存在
         if (this.getByUsername(user.getUsername()) != null) {
             throw new BusinessException("用户名已存在");
@@ -80,11 +92,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.save(user);
         // 保存用户角色关联
         saveUserRoles(user.getId(), roleIds);
+        // 保存用户岗位关联
+        saveUserPosts(user.getId(), postIds);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(SysUser user, List<Long> roleIds) {
+    public void update(SysUser user, List<Long> roleIds, List<Long> postIds) {
         SysUser existUser = this.getById(user.getId());
         if (existUser == null) {
             throw new BusinessException("用户不存在");
@@ -100,6 +114,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 更新用户角色关联
         userRoleMapper.deleteByUserId(user.getId());
         saveUserRoles(user.getId(), roleIds);
+        // 更新用户岗位关联
+        userPostMapper.deleteByUserId(user.getId());
+        saveUserPosts(user.getId(), postIds);
         // 角色变更，清除该用户的权限缓存
         StpInterfaceImpl.clearPermissionCache(user.getId());
     }
@@ -109,6 +126,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void delete(Long id) {
         this.removeById(id);
         userRoleMapper.deleteByUserId(id);
+        userPostMapper.deleteByUserId(id);
         // 用户删除，清除权限缓存
         StpInterfaceImpl.clearPermissionCache(id);
     }
@@ -183,6 +201,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getOpenId, openId));
     }
 
+    @Override
+    public List<Long> getPostIds(Long userId) {
+        return userPostMapper.selectList(new LambdaQueryWrapper<SysUserPost>()
+                .eq(SysUserPost::getUserId, userId))
+                .stream()
+                .map(SysUserPost::getPostId)
+                .collect(Collectors.toList());
+    }
+
     private void saveUserRoles(Long userId, List<Long> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             for (Long roleId : roleIds) {
@@ -190,6 +217,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 userRole.setUserId(userId);
                 userRole.setRoleId(roleId);
                 userRoleMapper.insert(userRole);
+            }
+        }
+    }
+
+    private void saveUserPosts(Long userId, List<Long> postIds) {
+        if (postIds != null && !postIds.isEmpty()) {
+            for (Long postId : postIds) {
+                SysUserPost userPost = new SysUserPost();
+                userPost.setUserId(userId);
+                userPost.setPostId(postId);
+                userPostMapper.insert(userPost);
             }
         }
     }

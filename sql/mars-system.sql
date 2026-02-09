@@ -3,43 +3,19 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80042 (8.0.42)
+ Source Server Version : 80032 (8.0.32)
  Source Host           : localhost:3306
  Source Schema         : mars-system
 
  Target Server Type    : MySQL
- Target Server Version : 80042 (8.0.42)
+ Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 07/02/2026 16:49:26
+ Date: 09/02/2026 16:09:00
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
-
--- ----------------------------
--- Table structure for customer
--- ----------------------------
-DROP TABLE IF EXISTS `customer`;
-CREATE TABLE `customer`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '客户ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '客户姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `id_card` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地址',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of customer
--- ----------------------------
-INSERT INTO `customer` VALUES (5, '12', '12', '12', '12', NULL, 0, '2026-02-02 20:09:32', '2026-02-02 20:10:03');
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -63,14 +39,12 @@ CREATE TABLE `gen_table`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO `gen_table` VALUES (1, 'sys_file', '文件记录表', 'File', 'com.mars.system', 'system', 'file', '文件记录表', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 19:53:23', '2026-02-02 19:53:23');
-INSERT INTO `gen_table` VALUES (2, 'customer', '客户表', 'Customer', 'com.mars.system', 'system', 'customer', '客户表', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 19:54:31', '2026-02-02 19:54:31');
-INSERT INTO `gen_table` VALUES (3, 'student', '学生表', 'Student', 'com.mars.system', 'system', 'student', '学生管理', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 22:21:29', '2026-02-02 22:21:29');
+INSERT INTO `gen_table` VALUES (4, 'student', '学生表', 'Student', 'com.mars.system', 'system', 'student', '学生表', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-09 12:44:26', '2026-02-09 12:44:26');
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -97,390 +71,24 @@ CREATE TABLE `gen_table_column`  (
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_table_id`(`table_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成字段表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成字段表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
-INSERT INTO `gen_table_column` VALUES (1, 1, 'id', '文件ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (2, 1, 'original_name', '原始文件名', 'varchar(200)', 'String', 'originalName', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (3, 1, 'file_name', '存储文件名', 'varchar(200)', 'String', 'fileName', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 3);
-INSERT INTO `gen_table_column` VALUES (4, 1, 'file_path', '文件路径', 'varchar(500)', 'String', 'filePath', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 4);
-INSERT INTO `gen_table_column` VALUES (5, 1, 'url', '文件访问URL', 'varchar(500)', 'String', 'url', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (6, 1, 'file_size', '文件大小（字节）', 'bigint', 'Long', 'fileSize', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 6);
-INSERT INTO `gen_table_column` VALUES (7, 1, 'file_type', '文件类型（MIME类型）', 'varchar(100)', 'String', 'fileType', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', '', 7);
-INSERT INTO `gen_table_column` VALUES (8, 1, 'file_suffix', '文件后缀', 'varchar(20)', 'String', 'fileSuffix', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 8);
-INSERT INTO `gen_table_column` VALUES (9, 1, 'storage_type', '存储类型', 'varchar(20)', 'String', 'storageType', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', '', 9);
-INSERT INTO `gen_table_column` VALUES (10, 1, 'bucket_name', '存储桶名称', 'varchar(100)', 'String', 'bucketName', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 10);
-INSERT INTO `gen_table_column` VALUES (11, 1, 'group_id', '分组ID', 'bigint', 'Long', 'groupId', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 11);
-INSERT INTO `gen_table_column` VALUES (12, 1, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 12);
-INSERT INTO `gen_table_column` VALUES (13, 1, 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'input', '', 13);
-INSERT INTO `gen_table_column` VALUES (14, 1, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 14);
-INSERT INTO `gen_table_column` VALUES (15, 2, 'id', '客户ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (16, 2, 'name', '客户姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 1, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (17, 2, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 3);
-INSERT INTO `gen_table_column` VALUES (18, 2, 'id_card', '身份证号', 'varchar(30)', 'String', 'idCard', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 4);
-INSERT INTO `gen_table_column` VALUES (19, 2, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (20, 2, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 6);
-INSERT INTO `gen_table_column` VALUES (21, 2, 'deleted', '删除标记', 'tinyint', 'Integer', 'deleted', 0, 0, 1, 0, 0, 0, 0, 'EQ', 'input', '', 7);
-INSERT INTO `gen_table_column` VALUES (22, 2, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 8);
-INSERT INTO `gen_table_column` VALUES (23, 2, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 9);
-INSERT INTO `gen_table_column` VALUES (24, 3, 'id', '学生ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (25, 3, 'name', '姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (26, 3, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 3);
-INSERT INTO `gen_table_column` VALUES (27, 3, 'id_card', '身份证号', 'varchar(30)', 'String', 'idCard', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 4);
-INSERT INTO `gen_table_column` VALUES (28, 3, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (29, 3, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 6);
-INSERT INTO `gen_table_column` VALUES (30, 3, 'deleted', '删除标记', 'tinyint', 'Integer', 'deleted', 0, 0, 1, 0, 0, 0, 0, 'EQ', 'input', '', 7);
-INSERT INTO `gen_table_column` VALUES (31, 3, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 8);
-INSERT INTO `gen_table_column` VALUES (32, 3, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 9);
-INSERT INTO `gen_table_column` VALUES (33, 3, 'image', 'image', 'varchar(255)', 'String', 'image', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'imageUpload', '', 6);
-
--- ----------------------------
--- Table structure for mall_address
--- ----------------------------
-DROP TABLE IF EXISTS `mall_address`;
-CREATE TABLE `mall_address`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '地址ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
-  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
-  `district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
-  `detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
-  `postal_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮政编码',
-  `is_default` tinyint NOT NULL DEFAULT 0 COMMENT '是否默认(0-否 1-是)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收货地址表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_address
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_banner
--- ----------------------------
-DROP TABLE IF EXISTS `mall_banner`;
-CREATE TABLE `mall_banner`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '轮播图ID',
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
-  `subtitle` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
-  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片地址',
-  `link_type` tinyint NOT NULL DEFAULT 0 COMMENT '链接类型(0-无 1-商品 2-分类 3-外链)',
-  `link_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '链接值',
-  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'home' COMMENT '位置(home-首页)',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_position`(`position` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '轮播图表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_banner
--- ----------------------------
-INSERT INTO `mall_banner` VALUES (1, '有机牛油果 5折起', '新品上市', 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop', 1, '1', 'home', 1, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_banner` VALUES (2, '秋季水果节', '满199减50', 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?q=80&w=1000&auto=format&fit=crop', 2, '1', 'home', 2, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_cart
--- ----------------------------
-DROP TABLE IF EXISTS `mall_cart`;
-CREATE TABLE `mall_cart`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '购物车ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
-  `quantity` int NOT NULL DEFAULT 1 COMMENT '数量',
-  `selected` tinyint NOT NULL DEFAULT 1 COMMENT '是否选中(0-否 1-是)',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_member_product_sku`(`member_id` ASC, `product_id` ASC, `sku_id` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '购物车表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_cart
--- ----------------------------
-INSERT INTO `mall_cart` VALUES (1, 3, 1, 1, 2, 1, '2026-02-03 16:08:55', '2026-02-03 16:08:55');
-
--- ----------------------------
--- Table structure for mall_category
--- ----------------------------
-DROP TABLE IF EXISTS `mall_category`;
-CREATE TABLE `mall_category`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父分类ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
-  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图标',
-  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图片',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE,
-  INDEX `idx_sort`(`sort` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_category
--- ----------------------------
-INSERT INTO `mall_category` VALUES (1, 0, '新鲜水果', 'fa-apple-alt', NULL, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (2, 0, '时令蔬菜', 'fa-carrot', NULL, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (3, 0, '海鲜水产', 'fa-fish', NULL, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (4, 0, '肉禽蛋品', 'fa-drumstick-bite', NULL, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (5, 0, '乳品烘焙', 'fa-cheese', NULL, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (6, 0, '粮油调味', 'fa-wheat-awn', NULL, 6, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `mall_coupon`;
-CREATE TABLE `mall_coupon`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '优惠券名称',
-  `type` tinyint NOT NULL DEFAULT 1 COMMENT '类型(1-满减券 2-折扣券 3-无门槛券)',
-  `amount` decimal(10, 2) NOT NULL COMMENT '优惠金额/折扣',
-  `min_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '最低消费金额',
-  `total_count` int NOT NULL DEFAULT 0 COMMENT '发放总量(0-不限)',
-  `receive_count` int NOT NULL DEFAULT 0 COMMENT '已领取数量',
-  `use_count` int NOT NULL DEFAULT 0 COMMENT '已使用数量',
-  `per_limit` int NOT NULL DEFAULT 1 COMMENT '每人限领数量',
-  `start_time` datetime NOT NULL COMMENT '开始时间',
-  `end_time` datetime NOT NULL COMMENT '结束时间',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_coupon
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_favorite
--- ----------------------------
-DROP TABLE IF EXISTS `mall_favorite`;
-CREATE TABLE `mall_favorite`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '收藏ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_member_product`(`member_id` ASC, `product_id` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品收藏表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_favorite
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_member
--- ----------------------------
-DROP TABLE IF EXISTS `mall_member`;
-CREATE TABLE `mall_member`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '会员ID',
-  `open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '微信openId',
-  `union_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '微信unionId',
-  `nickname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '昵称',
-  `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
-  `gender` tinyint NULL DEFAULT 0 COMMENT '性别(0-未知 1-男 2-女)',
-  `birthday` date NULL DEFAULT NULL COMMENT '生日',
-  `points` int NOT NULL DEFAULT 0 COMMENT '积分',
-  `balance` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '余额',
-  `level` tinyint NOT NULL DEFAULT 1 COMMENT '会员等级(1-普通 2-银卡 3-金卡 4-钻石)',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_open_id`(`open_id` ASC) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_union_id`(`union_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商城会员表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_member
--- ----------------------------
-INSERT INTO `mall_member` VALUES (3, 'opzUF43XlvnVUw5S9qS2cI6L7p9M', NULL, 'Mars', 'http://tmp/eEJVcFP9vatD5c93d5c9b774a7413682c69382756288.jpeg', '18483678377', 0, NULL, 0, 0.00, 1, 1, '2026-02-03 16:24:29', 0, '2026-02-03 16:05:17', '2026-02-03 16:24:29');
-
--- ----------------------------
--- Table structure for mall_member_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `mall_member_coupon`;
-CREATE TABLE `mall_member_coupon`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `coupon_id` bigint NOT NULL COMMENT '优惠券ID',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态(0-未使用 1-已使用 2-已过期)',
-  `use_time` datetime NULL DEFAULT NULL COMMENT '使用时间',
-  `order_id` bigint NULL DEFAULT NULL COMMENT '使用订单ID',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领取时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_coupon_id`(`coupon_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员优惠券表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_member_coupon
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_order
--- ----------------------------
-DROP TABLE IF EXISTS `mall_order`;
-CREATE TABLE `mall_order`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `total_amount` decimal(10, 2) NOT NULL COMMENT '订单总金额',
-  `pay_amount` decimal(10, 2) NOT NULL COMMENT '实付金额',
-  `freight_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '运费',
-  `discount_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '优惠金额',
-  `coupon_id` bigint NULL DEFAULT NULL COMMENT '优惠券ID',
-  `pay_type` tinyint NULL DEFAULT NULL COMMENT '支付方式(1-微信 2-支付宝)',
-  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `pay_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '支付流水号',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态(0-待付款 1-待发货 2-待收货 3-已完成 4-已取消 5-已退款)',
-  `receiver_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
-  `receiver_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人电话',
-  `receiver_province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
-  `receiver_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
-  `receiver_district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
-  `receiver_detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
-  `delivery_company` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流公司',
-  `delivery_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流单号',
-  `delivery_time` datetime NULL DEFAULT NULL COMMENT '发货时间',
-  `receive_time` datetime NULL DEFAULT NULL COMMENT '收货时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_order_item
--- ----------------------------
-DROP TABLE IF EXISTS `mall_order_item`;
-CREATE TABLE `mall_order_item`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单商品ID',
-  `order_id` bigint NOT NULL COMMENT '订单ID',
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
-  `product_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `product_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片',
-  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU名称',
-  `price` decimal(10, 2) NOT NULL COMMENT '商品单价',
-  `quantity` int NOT NULL COMMENT '购买数量',
-  `total_amount` decimal(10, 2) NOT NULL COMMENT '小计金额',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_order_id`(`order_id` ASC) USING BTREE,
-  INDEX `idx_order_no`(`order_no` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_order_item
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_product
--- ----------------------------
-DROP TABLE IF EXISTS `mall_product`;
-CREATE TABLE `mall_product`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '商品ID',
-  `category_id` bigint NOT NULL COMMENT '分类ID',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `subtitle` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
-  `main_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主图',
-  `images` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '图片列表(JSON数组)',
-  `detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情(富文本)',
-  `price` decimal(10, 2) NOT NULL COMMENT '价格',
-  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
-  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
-  `unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '单位',
-  `weight` decimal(10, 2) NULL DEFAULT NULL COMMENT '重量(kg)',
-  `is_hot` tinyint NOT NULL DEFAULT 0 COMMENT '是否热门(0-否 1-是)',
-  `is_new` tinyint NOT NULL DEFAULT 0 COMMENT '是否新品(0-否 1-是)',
-  `is_recommend` tinyint NOT NULL DEFAULT 0 COMMENT '是否推荐(0-否 1-是)',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-下架 1-上架)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_category_id`(`category_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_sort`(`sort` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_product
--- ----------------------------
-INSERT INTO `mall_product` VALUES (1, 1, '智利进口菠萝', '单果重约1.5kg', 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800\"]', '<p>金钻凤梨，自然成熟，果肉细腻，甜度高无酸涩感。</p>', 29.90, 39.90, 100, 56, '个', 1.50, 1, 0, 1, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (2, 1, '有机阳光草莓', '甜度15+ 500g/盒', 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=800\"]', '<p>精选有机草莓，甜蜜多汁。</p>', 45.00, 58.00, 200, 128, '盒', 0.50, 1, 1, 1, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (3, 1, '进口香蕉', '约1kg/份', 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800\"]', '<p>进口优质香蕉，香甜软糯。</p>', 12.90, 15.90, 500, 320, '份', 1.00, 0, 0, 1, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (4, 1, '新疆葡萄', '约500g/盒', 'https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=800\"]', '<p>新疆阳光葡萄，皮薄肉厚。</p>', 25.00, 32.00, 150, 89, '盒', 0.50, 0, 1, 0, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (5, 1, '进口柠檬', '约500g/份', 'https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=800\"]', '<p>进口柠檬，新鲜多汁。</p>', 9.90, 12.90, 300, 156, '份', 0.50, 0, 0, 0, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_product_sku
--- ----------------------------
-DROP TABLE IF EXISTS `mall_product_sku`;
-CREATE TABLE `mall_product_sku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'SKU ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'SKU名称',
-  `sku_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU图片',
-  `price` decimal(10, 2) NOT NULL COMMENT '价格',
-  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
-  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
-  `specs` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '规格属性(JSON)',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品SKU表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_product_sku
--- ----------------------------
-INSERT INTO `mall_product_sku` VALUES (1, 1, '单果 1.5kg', NULL, 29.90, 39.90, 80, 40, '{\"规格\": \"单果 1.5kg\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product_sku` VALUES (2, 1, '双果礼盒装', NULL, 55.00, 75.00, 20, 16, '{\"规格\": \"双果礼盒装\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product_sku` VALUES (3, 2, '500g/盒', NULL, 45.00, 58.00, 200, 128, '{\"规格\": \"500g/盒\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `gen_table_column` VALUES (34, 4, 'id', 'id', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
+INSERT INTO `gen_table_column` VALUES (35, 4, 'student_no', '学号', 'varchar(50)', 'String', 'studentNo', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 2);
+INSERT INTO `gen_table_column` VALUES (36, 4, 'name', '姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 1, 'EQ', 'input', '', 3);
+INSERT INTO `gen_table_column` VALUES (37, 4, 'gender', '性别 1男 2女', 'tinyint', 'Integer', 'gender', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', '', 4);
+INSERT INTO `gen_table_column` VALUES (38, 4, 'birthday', '出生日期', 'date', 'LocalDate', 'birthday', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'datetime', '', 5);
+INSERT INTO `gen_table_column` VALUES (39, 4, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 6);
+INSERT INTO `gen_table_column` VALUES (40, 4, 'email', '邮箱', 'varchar(100)', 'String', 'email', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 7);
+INSERT INTO `gen_table_column` VALUES (41, 4, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 8);
+INSERT INTO `gen_table_column` VALUES (42, 4, 'class_id', '班级ID', 'bigint', 'Long', 'classId', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 9);
+INSERT INTO `gen_table_column` VALUES (43, 4, 'status', '状态', 'tinyint', 'Integer', 'status', 0, 0, 0, 1, 1, 1, 1, 'EQ', 'select', '', 10);
+INSERT INTO `gen_table_column` VALUES (44, 4, 'deleted', 'deleted', 'tinyint', 'Integer', 'deleted', 0, 0, 0, 0, 0, 0, 0, 'EQ', 'input', '', 11);
+INSERT INTO `gen_table_column` VALUES (45, 4, 'create_time', 'create_time', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 12);
+INSERT INTO `gen_table_column` VALUES (46, 4, 'update_time', 'update_time', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 13);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -704,38 +312,26 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '学生ID',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `student_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `id_card` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '身份证号',
+  `gender` tinyint NULL DEFAULT NULL COMMENT '性别 1男 2女',
+  `birthday` date NULL DEFAULT NULL COMMENT '出生日期',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
   `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地址',
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生表' ROW_FORMAT = DYNAMIC;
+  `class_id` bigint NULL DEFAULT NULL COMMENT '班级ID',
+  `status` tinyint NULL DEFAULT 1 COMMENT '状态',
+  `deleted` tinyint NULL DEFAULT 0,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (6, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:10:24', '2026-02-02 23:22:18');
-INSERT INTO `student` VALUES (7, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:22:26', '2026-02-02 23:25:44');
-INSERT INTO `student` VALUES (8, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:25:39', '2026-02-02 23:25:42');
-INSERT INTO `student` VALUES (9, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:29:03', '2026-02-02 23:29:05');
-INSERT INTO `student` VALUES (10, '12', '121', '2', '12', NULL, NULL, 1, '2026-02-02 23:36:49', '2026-02-02 23:36:53');
-INSERT INTO `student` VALUES (11, '12', '122222222', '1', '1', NULL, NULL, 1, '2026-02-02 23:38:03', '2026-02-02 23:49:11');
-INSERT INTO `student` VALUES (12, '12', '12', '1', '1', NULL, NULL, 1, '2026-02-02 23:48:04', '2026-02-02 23:49:13');
-INSERT INTO `student` VALUES (13, '12', '12', '12', '1', NULL, NULL, 1, '2026-02-02 23:49:27', '2026-02-02 23:57:20');
-INSERT INTO `student` VALUES (14, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:54:15', '2026-02-02 23:54:18');
-INSERT INTO `student` VALUES (15, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:54:44', '2026-02-02 23:57:21');
-INSERT INTO `student` VALUES (16, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:58:05', '2026-02-03 08:59:01');
-INSERT INTO `student` VALUES (17, '1', '1', '1', '1', '', NULL, 1, '2026-02-03 08:51:57', '2026-02-03 08:58:59');
-INSERT INTO `student` VALUES (18, '12', '12', '1', '1', '', NULL, 1, '2026-02-03 08:52:12', '2026-02-03 08:58:56');
-INSERT INTO `student` VALUES (19, '12', '12', '12', '12', 'http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg', NULL, 1, '2026-02-03 08:58:54', '2026-02-03 08:59:21');
+INSERT INTO `student` VALUES (4, '12', '12', NULL, NULL, '1', '1', '1', 1, 1, 1, '2026-02-09 12:55:30', '2026-02-09 12:55:33');
 
 -- ----------------------------
 -- Table structure for sys_chat_group
@@ -941,7 +537,7 @@ CREATE TABLE `sys_chat_message`  (
   INDEX `idx_sender_id`(`sender_id` ASC) USING BTREE,
   INDEX `idx_receiver_id`(`receiver_id` ASC) USING BTREE,
   INDEX `idx_send_time`(`send_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 367 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 487 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chat_message
@@ -1078,10 +674,10 @@ INSERT INTO `sys_chat_message` VALUES (343, 1, '超级管理员', NULL, 4, '11',
 INSERT INTO `sys_chat_message` VALUES (344, 4, 'lisi', NULL, 1, 'nihao', 1, 1, '2026-01-31 21:37:46');
 INSERT INTO `sys_chat_message` VALUES (345, 5, 'mars666', NULL, 2, '1212', 1, 0, '2026-01-31 22:31:32');
 INSERT INTO `sys_chat_message` VALUES (346, 5, 'mars666', NULL, 1, '11', 1, 1, '2026-01-31 22:32:42');
-INSERT INTO `sys_chat_message` VALUES (347, 1, '超级管理员', NULL, 4, '111', 1, 0, '2026-01-31 22:54:12');
-INSERT INTO `sys_chat_message` VALUES (348, 1, '超级管理员', NULL, 4, '111', 1, 0, '2026-01-31 23:19:38');
-INSERT INTO `sys_chat_message` VALUES (349, 1, '超级管理员', NULL, 4, '稍等，我确认一下', 1, 0, '2026-01-31 23:19:48');
-INSERT INTO `sys_chat_message` VALUES (350, 1, '超级管理员', NULL, 4, '感谢你的反馈', 1, 0, '2026-01-31 23:19:52');
+INSERT INTO `sys_chat_message` VALUES (347, 1, '超级管理员', NULL, 4, '111', 1, 1, '2026-01-31 22:54:12');
+INSERT INTO `sys_chat_message` VALUES (348, 1, '超级管理员', NULL, 4, '111', 1, 1, '2026-01-31 23:19:38');
+INSERT INTO `sys_chat_message` VALUES (349, 1, '超级管理员', NULL, 4, '稍等，我确认一下', 1, 1, '2026-01-31 23:19:48');
+INSERT INTO `sys_chat_message` VALUES (350, 1, '超级管理员', NULL, 4, '感谢你的反馈', 1, 1, '2026-01-31 23:19:52');
 INSERT INTO `sys_chat_message` VALUES (351, 1, '超级管理员', NULL, 2, 'hahah', 1, 0, '2026-02-03 09:03:27');
 INSERT INTO `sys_chat_message` VALUES (352, 1, '超级管理员', NULL, 2, '你好', 1, 0, '2026-02-03 09:03:29');
 INSERT INTO `sys_chat_message` VALUES (353, 1, '超级管理员', NULL, 2, '你好', 1, 0, '2026-02-07 09:53:11');
@@ -1098,6 +694,126 @@ INSERT INTO `sys_chat_message` VALUES (363, 3, 'mars', NULL, 1, '1', 1, 1, '2026
 INSERT INTO `sys_chat_message` VALUES (364, 3, 'mars', NULL, 1, '2', 1, 1, '2026-02-07 09:53:52');
 INSERT INTO `sys_chat_message` VALUES (365, 3, 'mars', NULL, 1, '1', 1, 1, '2026-02-07 09:53:52');
 INSERT INTO `sys_chat_message` VALUES (366, 1, '超级管理员', NULL, 3, '222', 1, 1, '2026-02-07 09:53:56');
+INSERT INTO `sys_chat_message` VALUES (367, 1, '超级管理员', NULL, 3, '22', 1, 1, '2026-02-07 22:16:53');
+INSERT INTO `sys_chat_message` VALUES (368, 1, '超级管理员', NULL, 3, '12', 1, 1, '2026-02-07 22:16:53');
+INSERT INTO `sys_chat_message` VALUES (369, 3, 'mars', NULL, 1, 'hahha', 1, 1, '2026-02-07 22:17:46');
+INSERT INTO `sys_chat_message` VALUES (370, 1, '超级管理员', NULL, 3, '1', 1, 1, '2026-02-07 22:17:54');
+INSERT INTO `sys_chat_message` VALUES (371, 1, '超级管理员', NULL, 3, '11', 1, 1, '2026-02-07 22:17:55');
+INSERT INTO `sys_chat_message` VALUES (372, 3, 'mars', NULL, 1, '有点东西啊', 1, 1, '2026-02-07 22:18:07');
+INSERT INTO `sys_chat_message` VALUES (373, 1, '超级管理员', NULL, 7, '111', 1, 0, '2026-02-08 14:46:57');
+INSERT INTO `sys_chat_message` VALUES (374, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:47:09');
+INSERT INTO `sys_chat_message` VALUES (375, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:49:30');
+INSERT INTO `sys_chat_message` VALUES (376, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:55:04');
+INSERT INTO `sys_chat_message` VALUES (377, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:24:04');
+INSERT INTO `sys_chat_message` VALUES (378, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:24:16');
+INSERT INTO `sys_chat_message` VALUES (379, 1, '超级管理员', NULL, 10, 'hahah', 1, 1, '2026-02-08 17:24:20');
+INSERT INTO `sys_chat_message` VALUES (380, 1, '超级管理员', NULL, 10, '牛逼啊', 1, 1, '2026-02-08 17:24:25');
+INSERT INTO `sys_chat_message` VALUES (381, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '你好', 1, 1, '2026-02-08 17:24:31');
+INSERT INTO `sys_chat_message` VALUES (382, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '有点东西啊', 1, 1, '2026-02-08 17:24:39');
+INSERT INTO `sys_chat_message` VALUES (383, 1, '超级管理员', NULL, 10, '11', 1, 1, '2026-02-08 17:24:44');
+INSERT INTO `sys_chat_message` VALUES (384, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:24:46');
+INSERT INTO `sys_chat_message` VALUES (385, 1, '超级管理员', NULL, 10, '没我内天的', 1, 1, '2026-02-08 17:24:47');
+INSERT INTO `sys_chat_message` VALUES (386, 1, '超级管理员', NULL, 10, '没问题啊', 1, 1, '2026-02-08 17:24:50');
+INSERT INTO `sys_chat_message` VALUES (387, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:25:19');
+INSERT INTO `sys_chat_message` VALUES (388, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:25:22');
+INSERT INTO `sys_chat_message` VALUES (389, 1, '超级管理员', NULL, 10, 'u屁懂啊吗动漫行', 1, 1, '2026-02-08 17:25:25');
+INSERT INTO `sys_chat_message` VALUES (390, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (391, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (392, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (393, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (394, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 17:25:29');
+INSERT INTO `sys_chat_message` VALUES (395, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:30');
+INSERT INTO `sys_chat_message` VALUES (396, 1, '超级管理员', NULL, 10, '131', 1, 1, '2026-02-08 17:25:30');
+INSERT INTO `sys_chat_message` VALUES (397, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:25:31');
+INSERT INTO `sys_chat_message` VALUES (398, 1, '超级管理员', NULL, 10, '123123', 1, 1, '2026-02-08 17:25:32');
+INSERT INTO `sys_chat_message` VALUES (399, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:32');
+INSERT INTO `sys_chat_message` VALUES (400, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '哈哈哈', 1, 1, '2026-02-08 17:25:38');
+INSERT INTO `sys_chat_message` VALUES (401, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '12', 1, 1, '2026-02-08 17:25:41');
+INSERT INTO `sys_chat_message` VALUES (402, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '11', 1, 1, '2026-02-08 17:25:44');
+INSERT INTO `sys_chat_message` VALUES (403, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:27:22');
+INSERT INTO `sys_chat_message` VALUES (404, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:27:25');
+INSERT INTO `sys_chat_message` VALUES (405, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 17:27:26');
+INSERT INTO `sys_chat_message` VALUES (406, 1, '超级管理员', NULL, 10, '112', 1, 1, '2026-02-08 17:27:35');
+INSERT INTO `sys_chat_message` VALUES (407, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:23');
+INSERT INTO `sys_chat_message` VALUES (408, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:25');
+INSERT INTO `sys_chat_message` VALUES (409, 1, '超级管理员', NULL, 10, '3', 1, 1, '2026-02-08 17:30:25');
+INSERT INTO `sys_chat_message` VALUES (410, 1, '超级管理员', NULL, 10, '21', 1, 1, '2026-02-08 17:30:26');
+INSERT INTO `sys_chat_message` VALUES (411, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (412, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (413, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (414, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (415, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (416, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (417, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (418, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (419, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (420, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (421, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (422, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (423, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (424, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:30');
+INSERT INTO `sys_chat_message` VALUES (425, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:31');
+INSERT INTO `sys_chat_message` VALUES (426, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:22');
+INSERT INTO `sys_chat_message` VALUES (427, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:24');
+INSERT INTO `sys_chat_message` VALUES (428, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:25');
+INSERT INTO `sys_chat_message` VALUES (429, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '哈哈哈', 1, 1, '2026-02-08 17:34:12');
+INSERT INTO `sys_chat_message` VALUES (430, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '有点东西', 1, 1, '2026-02-08 17:34:14');
+INSERT INTO `sys_chat_message` VALUES (431, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:38:17');
+INSERT INTO `sys_chat_message` VALUES (432, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '111', 1, 1, '2026-02-08 17:46:43');
+INSERT INTO `sys_chat_message` VALUES (433, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '22', 1, 1, '2026-02-08 17:46:52');
+INSERT INTO `sys_chat_message` VALUES (434, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:49:30');
+INSERT INTO `sys_chat_message` VALUES (435, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:52:00');
+INSERT INTO `sys_chat_message` VALUES (436, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:52:01');
+INSERT INTO `sys_chat_message` VALUES (437, 1, '超级管理员', NULL, 10, '13', 1, 1, '2026-02-08 17:52:02');
+INSERT INTO `sys_chat_message` VALUES (438, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:54:26');
+INSERT INTO `sys_chat_message` VALUES (439, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:54:29');
+INSERT INTO `sys_chat_message` VALUES (440, 1, '超级管理员', NULL, 10, '有点东西', 1, 1, '2026-02-08 17:54:31');
+INSERT INTO `sys_chat_message` VALUES (441, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '牛逼的', 1, 1, '2026-02-08 17:54:39');
+INSERT INTO `sys_chat_message` VALUES (442, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:54:43');
+INSERT INTO `sys_chat_message` VALUES (443, 1, '超级管理员', NULL, 10, '你好', 1, 1, '2026-02-08 17:54:47');
+INSERT INTO `sys_chat_message` VALUES (444, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:55:01');
+INSERT INTO `sys_chat_message` VALUES (445, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:55:03');
+INSERT INTO `sys_chat_message` VALUES (446, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (447, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (448, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (449, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (450, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:55:08');
+INSERT INTO `sys_chat_message` VALUES (451, 1, '超级管理员', NULL, 10, '11', 1, 1, '2026-02-08 17:55:15');
+INSERT INTO `sys_chat_message` VALUES (452, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '111', 1, 1, '2026-02-08 17:55:21');
+INSERT INTO `sys_chat_message` VALUES (453, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:55:25');
+INSERT INTO `sys_chat_message` VALUES (454, 1, '超级管理员', NULL, 10, '33', 1, 1, '2026-02-08 17:55:26');
+INSERT INTO `sys_chat_message` VALUES (455, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:27');
+INSERT INTO `sys_chat_message` VALUES (456, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '11', 1, 1, '2026-02-08 17:55:31');
+INSERT INTO `sys_chat_message` VALUES (457, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:55:35');
+INSERT INTO `sys_chat_message` VALUES (458, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 18:03:07');
+INSERT INTO `sys_chat_message` VALUES (459, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 18:03:15');
+INSERT INTO `sys_chat_message` VALUES (460, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 18:05:16');
+INSERT INTO `sys_chat_message` VALUES (461, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:05:19');
+INSERT INTO `sys_chat_message` VALUES (462, 1, '超级管理员', NULL, 10, '121', 1, 1, '2026-02-08 18:05:20');
+INSERT INTO `sys_chat_message` VALUES (463, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '哈哈哈', 1, 1, '2026-02-08 18:05:26');
+INSERT INTO `sys_chat_message` VALUES (464, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '牛逼', 1, 1, '2026-02-08 18:05:36');
+INSERT INTO `sys_chat_message` VALUES (465, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '🤗🤗🤔🤔🤔', 1, 1, '2026-02-08 18:05:39');
+INSERT INTO `sys_chat_message` VALUES (466, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '李敏', 1, 1, '2026-02-08 18:05:44');
+INSERT INTO `sys_chat_message` VALUES (467, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '啊哈哈哈', 1, 1, '2026-02-08 18:05:50');
+INSERT INTO `sys_chat_message` VALUES (468, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '有点东西', 1, 1, '2026-02-08 18:05:58');
+INSERT INTO `sys_chat_message` VALUES (469, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '牛逼', 1, 1, '2026-02-08 18:06:12');
+INSERT INTO `sys_chat_message` VALUES (470, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '啊哈哈', 1, 1, '2026-02-08 18:06:25');
+INSERT INTO `sys_chat_message` VALUES (471, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 18:06:29');
+INSERT INTO `sys_chat_message` VALUES (472, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (473, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (474, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (475, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (476, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (477, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (478, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (479, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (480, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (481, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (482, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:33');
+INSERT INTO `sys_chat_message` VALUES (483, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:33');
+INSERT INTO `sys_chat_message` VALUES (484, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '哈哈哈', 1, 1, '2026-02-08 18:06:37');
+INSERT INTO `sys_chat_message` VALUES (485, 4, 'lisi', NULL, 1, '111', 1, 1, '2026-02-09 12:57:56');
+INSERT INTO `sys_chat_message` VALUES (486, 4, 'lisi', NULL, 1, '111', 1, 1, '2026-02-09 12:58:07');
 
 -- ----------------------------
 -- Table structure for sys_config_group
@@ -1132,7 +848,7 @@ INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"p
 INSERT INTO `sys_config_group` VALUES (10, 'push', '推送配置', NULL, '{\r\n  \"enabled\": false,\r\n  \"provider\": \"console\",\r\n  \"appKey\": \"\",\r\n  \"masterSecret\": \"\"\r\n}', 10, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:26:34');
 INSERT INTO `sys_config_group` VALUES (11, 'thirdParty', '第三方配置', NULL, '{\"wechat\":{\"enabled\":false,\"appId\":\"\",\"appSecret\":\"\"},\"alipay\":{\"enabled\":false,\"appId\":\"\",\"privateKey\":\"\",\"publicKey\":\"\"},\"github\":{\"enabled\":false,\"clientId\":\"\",\"clientSecret\":\"\"}}', 11, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (12, 'payment', '支付配置', NULL, '{\r\n    \"wechatPay\": {\r\n        \"enabled\": true,\r\n        \"mchId\": \"1627500294\",\r\n        \"appId\": \"wxe97894ad8c7ef7e0\",\r\n        \"apiKey\": \"\",\r\n        \"apiV3Key\": \"lxpvkwojpnxafnoutgqowbecdwdsmpwq\",\r\n        \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDlGsA4SciJOYYq\\nTL+/hYlaRLkkJ060c+2MrOl7egozzwddhNLHRC0wasgGdQdbDI39mAm34I7mLdMV\\nlv10dgtKXgpQBHc9QPKy3bPFcgFrz7rxS0YcFrqmzzB69a0LVVfAsZE2SD/4yKc3\\nVFW8cLKQZKRYYm3gZGwN0rsJFVU3dfWgOaoNlBkc5bNIbY7j4aHeW7tJXOQCiig6\\nKj+Dh7r1/POzTciCfqVB1Vjf+VkFMuF6oyKLxMBzFzxvXCGw3PySL6HuY1g5xI7j\\nbNi+xfqtzxZEQAv1QjbfBjzygQXeLCpsuYGVFRRVdyNYxkV90FDVI8swLXpMh65b\\nYNgBGtn1AgMBAAECggEBAKlIx+mPk07aI2mUBkcU+7WofAjbxosN8eP1TBxBw9Ie\\nUnnmj/xPQvi4ng4vYP0E3NIaCmxE0DICgCs+ww7Pvm336LTRZ+3p1KsXqCLnp2cr\\nOh3bGfXdUZO6Gj9w0qlCKTInwn2SizpfwTbf6O3xc++/fbQVHs0kRrc8E5mVmr77\\n01aGIJvXxtQPfdn/R2TMBwqiN8pO5igILlDzNAEusXnfSDOp3rYsXwcnCxJqgnVm\\nydlo7JMU2iqRKSD09qeKFgb+Hbr9aJIQdcvjGBSNmF3MsCFgs/XIb47B4xvy2HBN\\nvIBRwBy08fFeih0GE+0IKr0LyAQ8naMjRTD8A6SbPE0CgYEA9HJ+qigfUPsh/Q+u\\nyyoZeIrsR1xoNVcwANwpWnChsic+B3V/D/pWMJxPv9wKRsVt/dc4kVht//j69tS8\\ny3BFoUxSfUuoK5hdhI8osk3wdVFOnrPPs57s2bMcPPF3Rd5iMvcRNqM1IENCpDAR\\n4zlrEqcMpGSNfaSVhFEyo0fvsV8CgYEA7+6gxxkZJD7DwoVUk8w0BJoq7pNUZc43\\nC0uI8EIRCWxSkd5ahruJjreJuFM1IQUmmqFgewdhEIdUjyORwgVQlo469uwqYPQ5\\n8RWMJcQVK8+QEWV/TdywO3P7oEFgFmVlII/h7Janz/ZlOFZ1X8ANVvpenqgeB2j+\\nl1JMVfjnUSsCgYAHmvRT6PGofFe/XtiKW6H1PSVCxx464p6MuEzVEoIFX/EvHDm6\\nzogV9RcKGhd7wjK83hBVfVHWz/FG8rF5BuIztYMvgMYXrSLjt+yFN6WOkNwIVgHV\\nTdGCqG7tennCg7u8aDFx6LwDZ/RP1WsJDcVGDEp5ZuN8ED3SoxAXQmqzswKBgCk3\\nOtM40oLRbVtq//5ro7vup9VX5bWfWQFNtnZfQwH1Y7G/GpnueVDU4omRcZz8f4cs\\nlaBMwjXOqY31NEK6Gv/h6usj4pvJGHL7mpmaN3DRNRRn9RhxAq0T3XPIBzORs2+G\\nh+7WanllADpPT9Zk7WW1mK90fcQUGzfvYUGbglEFAoGARffpCUANEp1oedOyUVRN\\nSKIvSRggxxqMuzSdnm7eGKDmm+kbA8Iig2C0jgcn4vQZpngbhlNsGrb26Bvdh8wE\\nTBtkcxSBjzsFBdE4kSdVqxnZeVezouWixvkxL4ax1xwczS9hyJlunDljsUb2PkwZ\\nBE39glMdpIqGYrpSTM3p6mI=\\n-----END PRIVATE KEY-----\",\r\n        \"certSerialNo\": \"2FD947564972A8536BDD750944C4796CDF3265EB\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/wechat\"\r\n    },\r\n    \"alipay\": {\r\n        \"enabled\": true,\r\n        \"appId\": \"2021005192689177\",\r\n        \"privateKey\": \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCc1KF+8tqemN/+k99xwIxtfrZ8Py7ZtSv6zoDa0Z9pW1IWpYmz+Zm1wtF3CTX5xApyyBTWQgK8Pb/oEz4u4zKzuwcZFX/IdfP2mWaMHRvWnDLunWqH8rQO+JOaWDvzA68lL02AfubuafQldXY+hdeOpt+t5Kj/OnC+o4z0qTAcM9uTpeX9Z8lttlcW9JtCATRP+klr52bRaOcACgh3MIJrQ3OteeiikvbVtZtw4u3X2h5tdRlCl2/youKO6/iZXGmAmtTGRU8Iy8iBAMI6Ow8K6XH5xHccTzTOx8xv1PZ2IszVvMVhLJDXaUg4DyVbhN8hrmKFmu1i9eBbdSZixkNpAgMBAAECggEAXDjFBqu0VxK6lS9Lc86wRSsAECvvVuIsjH2mVAZ0YTXsHZkWUpjyBGodVow6Czd2lWyGpD+I8Dy3frbiGBxOElZmpB96VtzVqyslnDr5xcdwQ9SZcnwL2cnesiI0joCaG5mnT2pQTd5MTUK3V6jIyv/iBJWzsvIgnln6Z1yeB9ai/3c5Lvu0/ZnhC7trqD73BB1x49E0AV90y0/C/IA+FLEKio9/xjgYweSvTiaYTCBKzQv74Oco54HDtd93rlavZUu7F1qdpOWAj903N1xf8A/fepcL8/qPdSZNoRbPr2NgPMZa70hLvnWDfIXRWoaOZ+lFnPtewI8FAaVX4mI3AQKBgQDO8GxdEunrmRuOXbv/JqTj0dG2lXT7kUvDdJ6QVr3HIsmyxkZXQsp/7QdXh/FdRBNFwkOirmClUqrvYq3CbytgjNdxmYdZQ2A/YXqDdTs8J2Li36hbkOPIFNyMZsjtYF39eosf2oF0/ydRSlMqW5B6jpUh5qCYVWkVtUjLuXaM2QKBgQDCAwMqd6Um9X50dKNIqY1X2ImLiRdLVaqn4/pTwylxxIrRO9f5jF7PnenDci809+Sc+yCcZarvdh1QbUE+YGhYOjj2WGaB9sS2TGDFzOguGs7m7hCIQPa6VEyP2I07kaZcpb+r5GqnT9U47mPRcLJe3zop+w3B7cW5JcdtOSCREQKBgQCbpbALzWcOIoncado2Dk3lYPJ4fy+O6/jtWTDOZb+2IQ9OHN3ZUk5XK+PizUgYm1RXmscefEQK9QPGrBT/cnhQ1X5SXmS0Gf4xjdMFP06/buxsskbCIFeDLVW5cLHeASaQufQckE/gvO1IsjudV2NzGv1Gk13lVhCFGGZZfPSS+QKBgG4y2dSAWx1y6d3p9mkqbW9NPms0djfDNAji9GgpfVvyoErSbA2BzsSs1H/AVtIGUCNefRp4oQwdEe+B70In7nzWrU43zhnZ+cf2QC16AxNVBNqktF1AUSRrB4XZIfeI9m6/csyHFJFuRhVtSuNG2PoMX3RC9oCFtv5AWDNQ9I+RAoGAZF1dQs826kCeptQHXnlgTGNNIX9jLGyfO2qysBOCcqwFIrcJpsb11Q1xLrQmju6EHzr4kAINp32Qd5fo/oCM25JuSiw+fK6CgkAEYjSr/9dD4KpGicHmsib3GyfPj850K2RwFz2RckwX+If/NgI3dIecMTgTJ0tfytaaeqFH4PY=\",\r\n        \"publicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiwci3m6eLWeR1kgfeWm/F0V1e68VWUyRB4N5mhnxryTHqiLeN8ilxN9Kn/Ute1C9cL3b4hfx3NYk7zt60QWP9ly8QJQOlqd1H7XsG16AlEpsIaN1SrMYWq16nAD6uwvMmK0nTdzhuNIKOfdC2YWyv3AJTWh0nCTddYV2D+eSH/Ui6xkfgK8pFn/X1Q0xjXvuZrsXxF+WTk5mymEy2u4Kp7/rD/lClfNAv68kOHe92iKj1VzhtROrSp5//xuvL2PA7FLMqo5olZpBmda3eMWgnvHNwvaJvHJENN2ubANwMPNkwMkQ7MKLCBI33fzEERxJBACrJCc6lo8t+wq3zDo/uwIDAQAB\",\r\n        \"signType\": \"RSA2\",\r\n        \"charset\": \"UTF-8\",\r\n        \"gatewayUrl\": \"https://openapi.alipay.com/gateway.do\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/alipay\",\r\n        \"returnUrl\": \"\"\r\n    }\r\n}', 12, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:13:21');
-INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"tokenName\":\"Authorization\",\"tokenTimeout\":86400,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
+INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"tokenName\":\"Authorization\",\"tokenTimeout\":3600,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
 INSERT INTO `sys_config_group` VALUES (15, 'wechatMiniProgram', '小程序配置', NULL, '{\"enabled\":true,\"appId\":\"wxe97894ad8c7ef7e0\",\"appSecret\":\"ef498f4264b2271eac752b36433aca63\"}', 14, 1, '微信小程序登录配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 INSERT INTO `sys_config_group` VALUES (16, 'wechatMp', '公众号配置', NULL, '{\"enabled\":true,\"appId\":\"wx12721c4ea1370b36\",\"appSecret\":\"f860891f96df4fffe78f0424b913aedd\",\"token\":\"mars_coding_wechat_token1\",\"aesKey\":\"zBtP7b8qZKCSW2eU7Ozm6Jyapv5PCQu2Vxpj1v72qBP\",\"callbackUrl\":\"https://api.mars-coder.cn/api/wechat/callback\",\"oauthRedirectUrl\":\"http://localhost:3001/login\",\"menuConfig\":\"\"}', 15, 1, '微信公众号配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 
@@ -1219,7 +935,7 @@ CREATE TABLE `sys_dict_type`  (
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type`(`dict_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -1228,6 +944,8 @@ INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', 1, '用�
 INSERT INTO `sys_dict_type` VALUES (2, '系统状态', 'sys_status', 1, '系统通用状态', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_dict_type` VALUES (3, '是否', 'sys_yes_no', 1, '是否选项', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_dict_type` VALUES (4, '性别', 'sex', 1, '', '2026-01-29 23:21:29', '2026-02-07 15:33:54', 1, 1, 1);
+INSERT INTO `sys_dict_type` VALUES (5, '111', '222', 1, '', '2026-02-07 19:42:53', '2026-02-07 23:26:19', 1, 1, 1);
+INSERT INTO `sys_dict_type` VALUES (6, '222', '333', 1, '', '2026-02-07 19:43:46', '2026-02-07 23:26:17', 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -1254,13 +972,18 @@ CREATE TABLE `sys_file`  (
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_group_id`(`group_id` ASC) USING BTREE,
   INDEX `idx_file_type`(`file_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file
 -- ----------------------------
 INSERT INTO `sys_file` VALUES (10, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '97c4a311e92b409db8eeaa919c2014e6.jpg', '2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg', '/api/files/2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-02 16:54:05');
 INSERT INTO `sys_file` VALUES (13, '222.yaml', 'fb28a3b6569746688514518c32bb0237.yaml', '2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', '/api/files/2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', 6582, 'application/octet-stream', '.yaml', 'local', '', NULL, '', '1', '2026-02-02 17:02:45');
+INSERT INTO `sys_file` VALUES (38, '8sWHmSAlwmey2d398ffc33c404811e76aaf9697d2ed3.jpeg', '00e31155cc7f4a4fafca1943446541b3.jpeg', 'images/2026/02/08/00e31155cc7f4a4fafca1943446541b3.jpeg', '/api/files/images/2026/02/08/00e31155cc7f4a4fafca1943446541b3.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '8', '2026-02-08 16:43:09');
+INSERT INTO `sys_file` VALUES (39, '7WKDXjCMF6V0788491cd9d8fc92f435747cb5e46f478.jpeg', '8f812f8bbf634a0cae6b4189d4fd5465.jpeg', 'images/2026/02/08/8f812f8bbf634a0cae6b4189d4fd5465.jpeg', '/api/files/images/2026/02/08/8f812f8bbf634a0cae6b4189d4fd5465.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '9', '2026-02-08 16:44:12');
+INSERT INTO `sys_file` VALUES (40, 'gWUFBuyJ0yTl100deb149c357e85d0ffccb56fecb67b.jpeg', '2b3c6ece52694e66a256d72c0ae0be6a.jpeg', 'images/2026/02/08/2b3c6ece52694e66a256d72c0ae0be6a.jpeg', '/api/files/images/2026/02/08/2b3c6ece52694e66a256d72c0ae0be6a.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '10', '2026-02-08 16:46:44');
+INSERT INTO `sys_file` VALUES (41, 'XSGeetx0TvKka3c75490d3d905a46f0da72568fa9f78.jpeg', 'fdc1626199204477ae2093aeedc7aec8.jpeg', 'images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', '/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '10', '2026-02-08 17:26:38');
+INSERT INTO `sys_file` VALUES (44, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', 'e3065b470f9342f2bfeef9aa35182d39.jpg', '2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg', '/api/files/2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 11:49:05');
 
 -- ----------------------------
 -- Table structure for sys_file_config
@@ -1357,7 +1080,7 @@ CREATE TABLE `sys_job_log`  (
   `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
   `stop_time` datetime NULL DEFAULT NULL COMMENT '停止时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -1372,6 +1095,8 @@ INSERT INTO `sys_job_log` VALUES (7, '1', 'DEFAULT', 'sampleTask.noParams', '执
 INSERT INTO `sys_job_log` VALUES (8, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-01-31 22:36:20', '2026-01-31 22:36:20');
 INSERT INTO `sys_job_log` VALUES (9, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-01-31 22:36:30', '2026-01-31 22:36:30');
 INSERT INTO `sys_job_log` VALUES (10, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 09:51:50', '2026-02-07 09:51:50');
+INSERT INTO `sys_job_log` VALUES (11, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:54:56', '2026-02-07 23:54:56');
+INSERT INTO `sys_job_log` VALUES (12, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:55:04', '2026-02-07 23:55:04');
 
 -- ----------------------------
 -- Table structure for sys_login_log
@@ -1388,164 +1113,61 @@ CREATE TABLE `sys_login_log`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 154 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 210 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
-INSERT INTO `sys_login_log` VALUES (1, 'admin', '127.0.0.1', NULL, 'Chrome', 'Windows', 0, '登录成功', '2026-01-29 23:12:29');
-INSERT INTO `sys_login_log` VALUES (2, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:20:11');
-INSERT INTO `sys_login_log` VALUES (3, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:31:18');
-INSERT INTO `sys_login_log` VALUES (4, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-29 23:43:45');
-INSERT INTO `sys_login_log` VALUES (5, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-29 23:43:49');
-INSERT INTO `sys_login_log` VALUES (6, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:43:52');
-INSERT INTO `sys_login_log` VALUES (7, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:53:22');
-INSERT INTO `sys_login_log` VALUES (8, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:55:49');
-INSERT INTO `sys_login_log` VALUES (9, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 15:53:09');
-INSERT INTO `sys_login_log` VALUES (10, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:12:24');
-INSERT INTO `sys_login_log` VALUES (11, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:36:27');
-INSERT INTO `sys_login_log` VALUES (12, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:39:07');
-INSERT INTO `sys_login_log` VALUES (13, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:19');
-INSERT INTO `sys_login_log` VALUES (14, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:20');
-INSERT INTO `sys_login_log` VALUES (15, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:21');
-INSERT INTO `sys_login_log` VALUES (16, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:24');
-INSERT INTO `sys_login_log` VALUES (17, 'test', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:57:52');
-INSERT INTO `sys_login_log` VALUES (18, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 00:03:15');
-INSERT INTO `sys_login_log` VALUES (19, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:31:44');
-INSERT INTO `sys_login_log` VALUES (20, 'test', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:32:13');
-INSERT INTO `sys_login_log` VALUES (21, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:39:20');
-INSERT INTO `sys_login_log` VALUES (22, 'mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 13:54:15');
-INSERT INTO `sys_login_log` VALUES (23, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:34');
-INSERT INTO `sys_login_log` VALUES (24, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:35');
-INSERT INTO `sys_login_log` VALUES (25, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:36');
-INSERT INTO `sys_login_log` VALUES (26, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (27, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (28, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (29, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:43');
-INSERT INTO `sys_login_log` VALUES (30, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:48');
-INSERT INTO `sys_login_log` VALUES (31, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:52');
-INSERT INTO `sys_login_log` VALUES (32, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:38');
-INSERT INTO `sys_login_log` VALUES (33, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:51');
-INSERT INTO `sys_login_log` VALUES (34, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:53');
-INSERT INTO `sys_login_log` VALUES (35, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:54');
-INSERT INTO `sys_login_log` VALUES (36, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:55');
-INSERT INTO `sys_login_log` VALUES (37, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:55');
-INSERT INTO `sys_login_log` VALUES (38, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:56');
-INSERT INTO `sys_login_log` VALUES (39, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:57');
-INSERT INTO `sys_login_log` VALUES (40, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:58');
-INSERT INTO `sys_login_log` VALUES (41, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:59');
-INSERT INTO `sys_login_log` VALUES (42, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:59');
-INSERT INTO `sys_login_log` VALUES (43, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:00');
-INSERT INTO `sys_login_log` VALUES (44, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:01');
-INSERT INTO `sys_login_log` VALUES (45, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:01');
-INSERT INTO `sys_login_log` VALUES (46, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:02');
-INSERT INTO `sys_login_log` VALUES (47, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:03');
-INSERT INTO `sys_login_log` VALUES (48, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:04');
-INSERT INTO `sys_login_log` VALUES (49, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:04');
-INSERT INTO `sys_login_log` VALUES (50, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:05');
-INSERT INTO `sys_login_log` VALUES (51, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:06');
-INSERT INTO `sys_login_log` VALUES (52, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:07');
-INSERT INTO `sys_login_log` VALUES (53, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:07');
-INSERT INTO `sys_login_log` VALUES (54, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:15');
-INSERT INTO `sys_login_log` VALUES (55, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:22');
-INSERT INTO `sys_login_log` VALUES (56, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:31');
-INSERT INTO `sys_login_log` VALUES (57, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:07:27');
-INSERT INTO `sys_login_log` VALUES (58, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:07:30');
-INSERT INTO `sys_login_log` VALUES (59, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:12:31');
-INSERT INTO `sys_login_log` VALUES (60, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:12:34');
-INSERT INTO `sys_login_log` VALUES (61, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:22:09');
-INSERT INTO `sys_login_log` VALUES (62, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:22:13');
-INSERT INTO `sys_login_log` VALUES (63, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:22:17');
-INSERT INTO `sys_login_log` VALUES (64, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:23:58');
-INSERT INTO `sys_login_log` VALUES (65, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:24:08');
-INSERT INTO `sys_login_log` VALUES (66, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:24:56');
-INSERT INTO `sys_login_log` VALUES (67, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:27:19');
-INSERT INTO `sys_login_log` VALUES (68, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:27:22');
-INSERT INTO `sys_login_log` VALUES (69, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:29:20');
-INSERT INTO `sys_login_log` VALUES (70, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:44:07');
-INSERT INTO `sys_login_log` VALUES (71, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:56:09');
-INSERT INTO `sys_login_log` VALUES (72, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:57:18');
-INSERT INTO `sys_login_log` VALUES (73, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:57:44');
-INSERT INTO `sys_login_log` VALUES (74, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:58:03');
-INSERT INTO `sys_login_log` VALUES (75, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:59:00');
-INSERT INTO `sys_login_log` VALUES (76, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:00:17');
-INSERT INTO `sys_login_log` VALUES (77, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:04:11');
-INSERT INTO `sys_login_log` VALUES (78, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:11:02');
-INSERT INTO `sys_login_log` VALUES (79, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:11:19');
-INSERT INTO `sys_login_log` VALUES (80, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:14:05');
-INSERT INTO `sys_login_log` VALUES (81, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:14:15');
-INSERT INTO `sys_login_log` VALUES (82, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:14:25');
-INSERT INTO `sys_login_log` VALUES (83, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:15:06');
-INSERT INTO `sys_login_log` VALUES (84, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:23:23');
-INSERT INTO `sys_login_log` VALUES (85, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:36:27');
-INSERT INTO `sys_login_log` VALUES (86, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:39:07');
-INSERT INTO `sys_login_log` VALUES (87, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:39:16');
-INSERT INTO `sys_login_log` VALUES (88, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:49:43');
-INSERT INTO `sys_login_log` VALUES (89, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:50:22');
-INSERT INTO `sys_login_log` VALUES (90, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:08:16');
-INSERT INTO `sys_login_log` VALUES (91, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:28:17');
-INSERT INTO `sys_login_log` VALUES (92, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:28:53');
-INSERT INTO `sys_login_log` VALUES (93, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:40:01');
-INSERT INTO `sys_login_log` VALUES (94, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:49:24');
-INSERT INTO `sys_login_log` VALUES (95, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 20:18:03');
-INSERT INTO `sys_login_log` VALUES (96, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:18:12');
-INSERT INTO `sys_login_log` VALUES (97, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:24:34');
-INSERT INTO `sys_login_log` VALUES (98, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:25:02');
-INSERT INTO `sys_login_log` VALUES (99, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:25:22');
-INSERT INTO `sys_login_log` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:26:57');
-INSERT INTO `sys_login_log` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:31:18');
-INSERT INTO `sys_login_log` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:35:54');
-INSERT INTO `sys_login_log` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:42:37');
-INSERT INTO `sys_login_log` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:47:54');
-INSERT INTO `sys_login_log` VALUES (105, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:48:43');
-INSERT INTO `sys_login_log` VALUES (106, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:49:49');
-INSERT INTO `sys_login_log` VALUES (107, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 21:04:05');
-INSERT INTO `sys_login_log` VALUES (108, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 21:29:05');
-INSERT INTO `sys_login_log` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:06:00');
-INSERT INTO `sys_login_log` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:24:30');
-INSERT INTO `sys_login_log` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:28:54');
-INSERT INTO `sys_login_log` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:30:00');
-INSERT INTO `sys_login_log` VALUES (113, 'mars666', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:31:01');
-INSERT INTO `sys_login_log` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:32:57');
-INSERT INTO `sys_login_log` VALUES (115, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:42:56');
-INSERT INTO `sys_login_log` VALUES (116, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:07:42');
-INSERT INTO `sys_login_log` VALUES (117, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:08:49');
-INSERT INTO `sys_login_log` VALUES (118, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:09:00');
-INSERT INTO `sys_login_log` VALUES (119, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:57:25');
-INSERT INTO `sys_login_log` VALUES (120, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:25:47');
-INSERT INTO `sys_login_log` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:25:58');
-INSERT INTO `sys_login_log` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:34:16');
-INSERT INTO `sys_login_log` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:36:21');
-INSERT INTO `sys_login_log` VALUES (124, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 20:08:22');
-INSERT INTO `sys_login_log` VALUES (125, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 22:08:26');
-INSERT INTO `sys_login_log` VALUES (126, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 22:10:17');
-INSERT INTO `sys_login_log` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 23:11:29');
-INSERT INTO `sys_login_log` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:16:53');
-INSERT INTO `sys_login_log` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:21:35');
-INSERT INTO `sys_login_log` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:23:31');
-INSERT INTO `sys_login_log` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:23:47');
-INSERT INTO `sys_login_log` VALUES (132, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:14');
-INSERT INTO `sys_login_log` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:34');
-INSERT INTO `sys_login_log` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:57');
-INSERT INTO `sys_login_log` VALUES (135, 'mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:39:57');
-INSERT INTO `sys_login_log` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:40:19');
-INSERT INTO `sys_login_log` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:47:14');
-INSERT INTO `sys_login_log` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:49:07');
-INSERT INTO `sys_login_log` VALUES (139, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:53:30');
-INSERT INTO `sys_login_log` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:32:22');
-INSERT INTO `sys_login_log` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:50:33');
-INSERT INTO `sys_login_log` VALUES (142, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 15:58:32');
-INSERT INTO `sys_login_log` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:58:49');
-INSERT INTO `sys_login_log` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:59:12');
-INSERT INTO `sys_login_log` VALUES (145, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 16:00:35');
-INSERT INTO `sys_login_log` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:01:13');
-INSERT INTO `sys_login_log` VALUES (147, 'test01', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:01:42');
-INSERT INTO `sys_login_log` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:02:30');
-INSERT INTO `sys_login_log` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:05:50');
-INSERT INTO `sys_login_log` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:06:01');
-INSERT INTO `sys_login_log` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:08:08');
-INSERT INTO `sys_login_log` VALUES (152, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 16:45:45');
-INSERT INTO `sys_login_log` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:45:53');
+INSERT INTO `sys_login_log` VALUES (160, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 14:20:50');
+INSERT INTO `sys_login_log` VALUES (161, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 14:41:42');
+INSERT INTO `sys_login_log` VALUES (162, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 14:45:12');
+INSERT INTO `sys_login_log` VALUES (163, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 14:45:19');
+INSERT INTO `sys_login_log` VALUES (164, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 15:06:00');
+INSERT INTO `sys_login_log` VALUES (165, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 16:32:55');
+INSERT INTO `sys_login_log` VALUES (166, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 16:38:22');
+INSERT INTO `sys_login_log` VALUES (167, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 16:43:03');
+INSERT INTO `sys_login_log` VALUES (168, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 16:44:06');
+INSERT INTO `sys_login_log` VALUES (169, 'wx_opzUF43Xlv', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 16:46:40');
+INSERT INTO `sys_login_log` VALUES (170, 'Mars', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 17:26:31');
+INSERT INTO `sys_login_log` VALUES (171, 'Mars', '127.0.0.1', '内网IP', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 17:33:57');
+INSERT INTO `sys_login_log` VALUES (172, 'Mars', '117.174.18.21', '中国 四川省 成都市', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 18:02:47');
+INSERT INTO `sys_login_log` VALUES (173, 'Mars', '111.55.145.39', '中国 山西省', 'MicroMessenger', 'iPhone', 0, '登录成功', '2026-02-08 18:07:38');
+INSERT INTO `sys_login_log` VALUES (174, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-08 22:34:47');
+INSERT INTO `sys_login_log` VALUES (175, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-08 22:44:15');
+INSERT INTO `sys_login_log` VALUES (176, 'Mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '非管理端用户，无权登录后台', '2026-02-08 23:56:53');
+INSERT INTO `sys_login_log` VALUES (177, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-08 23:57:05');
+INSERT INTO `sys_login_log` VALUES (178, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-09 00:21:39');
+INSERT INTO `sys_login_log` VALUES (179, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 00:21:51');
+INSERT INTO `sys_login_log` VALUES (180, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 11:48:00');
+INSERT INTO `sys_login_log` VALUES (181, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:20:22');
+INSERT INTO `sys_login_log` VALUES (182, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:22:03');
+INSERT INTO `sys_login_log` VALUES (183, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:25:31');
+INSERT INTO `sys_login_log` VALUES (184, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:26:49');
+INSERT INTO `sys_login_log` VALUES (185, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:28:00');
+INSERT INTO `sys_login_log` VALUES (186, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:28:36');
+INSERT INTO `sys_login_log` VALUES (187, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:48:22');
+INSERT INTO `sys_login_log` VALUES (188, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:56:34');
+INSERT INTO `sys_login_log` VALUES (189, 'Mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '非管理端用户，无权登录后台', '2026-02-09 12:57:00');
+INSERT INTO `sys_login_log` VALUES (190, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-09 12:57:12');
+INSERT INTO `sys_login_log` VALUES (191, 'mars01', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-02-09 12:57:21');
+INSERT INTO `sys_login_log` VALUES (192, 'lisi', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:57:44');
+INSERT INTO `sys_login_log` VALUES (193, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 12:58:17');
+INSERT INTO `sys_login_log` VALUES (194, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:18:48');
+INSERT INTO `sys_login_log` VALUES (195, 'mars666', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:25:32');
+INSERT INTO `sys_login_log` VALUES (196, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:31:37');
+INSERT INTO `sys_login_log` VALUES (197, 'mars02', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:32:22');
+INSERT INTO `sys_login_log` VALUES (198, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:32:42');
+INSERT INTO `sys_login_log` VALUES (199, 'mars02', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:33:33');
+INSERT INTO `sys_login_log` VALUES (200, 'mars02', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-09 14:41:52');
+INSERT INTO `sys_login_log` VALUES (201, 'mars02', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:42:05');
+INSERT INTO `sys_login_log` VALUES (202, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 14:58:46');
+INSERT INTO `sys_login_log` VALUES (203, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-09 14:59:01');
+INSERT INTO `sys_login_log` VALUES (204, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-09 14:59:04');
+INSERT INTO `sys_login_log` VALUES (205, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已离职', '2026-02-09 14:59:12');
+INSERT INTO `sys_login_log` VALUES (206, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已离职', '2026-02-09 14:59:28');
+INSERT INTO `sys_login_log` VALUES (207, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已离职', '2026-02-09 14:59:42');
+INSERT INTO `sys_login_log` VALUES (208, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 15:00:20');
+INSERT INTO `sys_login_log` VALUES (209, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 16:01:44');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1670,12 +1292,12 @@ INSERT INTO `sys_menu` VALUES (172, 170, '客户表详情', 3, '', '', 'system:c
 INSERT INTO `sys_menu` VALUES (173, 170, '客户表新增', 3, '', '', 'system:customer:add', '', 3, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
 INSERT INTO `sys_menu` VALUES (174, 170, '客户表修改', 3, '', '', 'system:customer:edit', '', 4, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
 INSERT INTO `sys_menu` VALUES (175, 170, '客户表删除', 3, '', '', 'system:customer:remove', '', 5, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
-INSERT INTO `sys_menu` VALUES (272, 161, '学生管理', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (273, 272, '学生管理查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (274, 272, '学生管理详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (275, 272, '学生管理新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (276, 272, '学生管理修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (277, 272, '学生管理删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (272, 161, '学生管理', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (273, 272, '学生管理查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (274, 272, '学生管理详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (275, 272, '学生管理新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (276, 272, '学生管理修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (277, 272, '学生管理删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1723,275 +1345,55 @@ CREATE TABLE `sys_oper_log`  (
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 266 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 354 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (2, '用户管理', 1, 'com.mars.admin.controller.SysUserController.create()', 'POST', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12.4730368\",\"updateTime\":\"2026-01-29T23:21:12.4730368\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"username\":\"test\",\"password\":\"$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq\",\"nickname\":\"mars\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:12', 0);
-INSERT INTO `sys_oper_log` VALUES (3, '字典类型', 1, 'com.mars.admin.controller.SysDictTypeController.create()', 'POST', 'admin', '/sys/dict/type', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T23:21:28.6284556\",\"updateTime\":\"2026-01-29T23:21:28.6284556\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"dictName\":\"男\",\"dictType\":\"sex\",\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:29', 0);
-INSERT INTO `sys_oper_log` VALUES (4, '字典数据', 1, 'com.mars.admin.controller.SysDictDataController.create()', 'POST', 'admin', '/sys/dict/data', '127.0.0.1', '{\"id\":8,\"createTime\":\"2026-01-29T23:21:37.720816\",\"updateTime\":\"2026-01-29T23:21:37.720816\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"sex\",\"dictValue\":\"1\",\"dictType\":\"sex\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:38', 0);
-INSERT INTO `sys_oper_log` VALUES (5, '字典数据', 1, 'com.mars.admin.controller.SysDictDataController.create()', 'POST', 'admin', '/sys/dict/data', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:21:57.5830655\",\"updateTime\":\"2026-01-29T23:21:57.5830655\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"女\",\"dictValue\":\"0\",\"dictType\":\"sex\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:58', 0);
-INSERT INTO `sys_oper_log` VALUES (6, '字典类型', 2, 'com.mars.admin.controller.SysDictTypeController.update()', 'PUT', 'admin', '/sys/dict/type', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T23:21:29\",\"updateTime\":\"2026-01-29T23:21:29\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"dictName\":\"性别\",\"dictType\":\"sex\",\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:16', 0);
-INSERT INTO `sys_oper_log` VALUES (7, '岗位管理', 1, 'com.mars.admin.controller.SysPostController.create()', 'POST', 'admin', '/sys/post', '127.0.0.1', '{\"id\":5,\"createTime\":\"2026-01-29T23:22:32.6209502\",\"updateTime\":\"2026-01-29T23:22:32.6209502\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"postCode\":\"11\",\"postName\":\"11\",\"sort\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:33', 0);
-INSERT INTO `sys_oper_log` VALUES (8, '岗位管理', 3, 'com.mars.admin.controller.SysPostController.delete()', 'DELETE', 'admin', '/sys/post/5', '127.0.0.1', '5', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:36', 0);
-INSERT INTO `sys_oper_log` VALUES (9, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:52:59', 0);
-INSERT INTO `sys_oper_log` VALUES (10, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:50', 0);
-INSERT INTO `sys_oper_log` VALUES (11, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:51', 0);
-INSERT INTO `sys_oper_log` VALUES (12, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:51', 0);
-INSERT INTO `sys_oper_log` VALUES (13, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:52', 0);
-INSERT INTO `sys_oper_log` VALUES (14, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (15, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (16, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (17, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (18, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:54', 0);
-INSERT INTO `sys_oper_log` VALUES (19, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"true\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:55:26', 0);
-INSERT INTO `sys_oper_log` VALUES (20, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:55:26', 0);
-INSERT INTO `sys_oper_log` VALUES (21, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"false\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:12:50', 0);
-INSERT INTO `sys_oper_log` VALUES (22, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:12:50', 0);
-INSERT INTO `sys_oper_log` VALUES (23, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"true\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:13:07', 0);
-INSERT INTO `sys_oper_log` VALUES (24, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:13:07', 0);
-INSERT INTO `sys_oper_log` VALUES (25, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:36:54', 0);
-INSERT INTO `sys_oper_log` VALUES (26, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,19,20,21,126,127,128,129,130,131,132,133]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:40:20', 0);
-INSERT INTO `sys_oper_log` VALUES (27, '用户管理', 2, 'com.mars.admin.controller.SysUserController.update()', 'PUT', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 00:04:11', 0);
-INSERT INTO `sys_oper_log` VALUES (28, '用户管理', 1, 'com.mars.admin.controller.SysUserController.create()', 'POST', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":3,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"username\":\"mars\",\"password\":\"$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G\",\"nickname\":\"mars\",\"avatar\":null,\"email\":\"1121@qq.com\",\"phone\":\"18888888881\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 00:04:32', 0);
-INSERT INTO `sys_oper_log` VALUES (29, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":1,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"filePath\":\"images/2026/01/31/4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T00:08:56.7388473\",\"remark\":null}}', 0, NULL, '2026-01-31 00:08:57', 0);
-INSERT INTO `sys_oper_log` VALUES (30, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":2,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"filePath\":\"images/2026/01/31/1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T10:11:54.9186654\",\"remark\":null}}', 0, NULL, '2026-01-31 10:11:55', 0);
-INSERT INTO `sys_oper_log` VALUES (31, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,126,127,128,129,130,131,132,133,134,135,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 10:32:02', 0);
-INSERT INTO `sys_oper_log` VALUES (32, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":3,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"filePath\":\"images/2026/01/31/1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T12:26:51.507376\",\"remark\":null}}', 0, NULL, '2026-01-31 12:26:52', 0);
-INSERT INTO `sys_oper_log` VALUES (33, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":4,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"788f706ff0a548c0a4b744de208e73a5.jpg\",\"filePath\":\"images/2026/01/31/788f706ff0a548c0a4b744de208e73a5.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/788f706ff0a548c0a4b744de208e73a5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T12:27:02.4947877\",\"remark\":null}}', 0, NULL, '2026-01-31 12:27:03', 0);
-INSERT INTO `sys_oper_log` VALUES (34, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":5,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"40015680077f4bdf99a934b4c8c4110b.jpg\",\"filePath\":\"2026/01/31/40015680077f4bdf99a934b4c8c4110b.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/40015680077f4bdf99a934b4c8c4110b.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:03.0908998\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:03', 0);
-INSERT INTO `sys_oper_log` VALUES (35, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":6,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"c04f38976b2d42a3b6607c796a7f932e.png\",\"filePath\":\"2026/01/31/c04f38976b2d42a3b6607c796a7f932e.png\",\"url\":\"http://localhost:8080/file/2026/01/31/c04f38976b2d42a3b6607c796a7f932e.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:06.1062097\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:06', 0);
-INSERT INTO `sys_oper_log` VALUES (36, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":7,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"c0bf62e221c0443b86e890f160767edb.jpg\",\"filePath\":\"2026/01/31/c0bf62e221c0443b86e890f160767edb.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/c0bf62e221c0443b86e890f160767edb.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:08.2984259\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:08', 0);
-INSERT INTO `sys_oper_log` VALUES (37, '删除文件', 3, 'com.mars.admin.controller.SysFileController.delete()', 'DELETE', 'admin', '/sys/file/7', '127.0.0.1', '7', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:28:17', 0);
-INSERT INTO `sys_oper_log` VALUES (38, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/131', '127.0.0.1', '131', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:45', 0);
-INSERT INTO `sys_oper_log` VALUES (39, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/132', '127.0.0.1', '132', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:47', 0);
-INSERT INTO `sys_oper_log` VALUES (40, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/133', '127.0.0.1', '133', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:50', 0);
-INSERT INTO `sys_oper_log` VALUES (41, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/130', '127.0.0.1', '130', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:52', 0);
-INSERT INTO `sys_oper_log` VALUES (42, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":8,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4cd0becad45c44649f88d78000ad9b9d.jpg\",\"filePath\":\"2026/01/31/4cd0becad45c44649f88d78000ad9b9d.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/4cd0becad45c44649f88d78000ad9b9d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T15:00:46.5929261\",\"remark\":null}}', 0, NULL, '2026-01-31 15:00:47', 0);
-INSERT INTO `sys_oper_log` VALUES (43, '删除文件', 3, 'com.mars.admin.controller.SysFileController.delete()', 'DELETE', 'admin', '/sys/file/8', '127.0.0.1', '8', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 15:01:02', 0);
-INSERT INTO `sys_oper_log` VALUES (44, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":1,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"9f375134efa54ddeb9d19adb5295939f.jpg\",\"filePath\":\"2026/01/31/9f375134efa54ddeb9d19adb5295939f.jpg\",\"url\":\"http://localhost:8080/files/2026/01/31/9f375134efa54ddeb9d19adb5295939f.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T16:50:36.1890809\",\"remark\":null}}', 0, NULL, '2026-01-31 16:50:36', 0);
-INSERT INTO `sys_oper_log` VALUES (45, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37.2734227\",\"updateTime\":\"2026-01-31T20:17:37.2734227\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:17:37', 0);
-INSERT INTO `sys_oper_log` VALUES (46, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:17:50', 0);
-INSERT INTO `sys_oper_log` VALUES (47, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37.2535381\",\"updateTime\":\"2026-01-31T20:23:37.2535381\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test\",\"component\":\"/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:23:37', 0);
-INSERT INTO `sys_oper_log` VALUES (48, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:24:22', 0);
-INSERT INTO `sys_oper_log` VALUES (49, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:35:26', 0);
-INSERT INTO `sys_oper_log` VALUES (50, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:39:47', 0);
-INSERT INTO `sys_oper_log` VALUES (51, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:40:08', 0);
-INSERT INTO `sys_oper_log` VALUES (52, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test\",\"component\":\"/test/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:40:35', 0);
-INSERT INTO `sys_oper_log` VALUES (53, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:41:14', 0);
-INSERT INTO `sys_oper_log` VALUES (54, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:42:14', 0);
-INSERT INTO `sys_oper_log` VALUES (55, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37\",\"updateTime\":\"2026-01-31T20:17:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":7,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:45:25', 0);
-INSERT INTO `sys_oper_log` VALUES (56, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50.0831627\",\"updateTime\":\"2026-01-31T20:51:50.0841601\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":2,\"name\":\"用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:51:50', 0);
-INSERT INTO `sys_oper_log` VALUES (57, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:12.9077313\",\"updateTime\":\"2026-01-31T20:52:12.9077313\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":6,\"name\":\"角色列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:13', 0);
-INSERT INTO `sys_oper_log` VALUES (58, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":144,\"createTime\":\"2026-01-31T20:52:31.5487596\",\"updateTime\":\"2026-01-31T20:52:31.5487596\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":10,\"name\":\"菜单列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:menu:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:32', 0);
-INSERT INTO `sys_oper_log` VALUES (59, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":145,\"createTime\":\"2026-01-31T20:52:51.9327195\",\"updateTime\":\"2026-01-31T20:52:51.9327195\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":14,\"name\":\"字典列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:dict:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:52', 0);
-INSERT INTO `sys_oper_log` VALUES (60, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":146,\"createTime\":\"2026-01-31T20:54:25.6538971\",\"updateTime\":\"2026-01-31T20:54:25.6538971\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":23,\"name\":\"部门列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:dept:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:54:26', 0);
-INSERT INTO `sys_oper_log` VALUES (61, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":147,\"createTime\":\"2026-01-31T20:54:44.7654349\",\"updateTime\":\"2026-01-31T20:54:44.7654349\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":27,\"name\":\"岗位列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:post:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:54:45', 0);
-INSERT INTO `sys_oper_log` VALUES (62, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":148,\"createTime\":\"2026-01-31T20:55:13.9316756\",\"updateTime\":\"2026-01-31T20:55:13.9316756\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":32,\"name\":\"查询日志\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:operlog:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:55:14', 0);
-INSERT INTO `sys_oper_log` VALUES (63, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":149,\"createTime\":\"2026-01-31T20:55:31.7721299\",\"updateTime\":\"2026-01-31T20:55:31.7721299\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":34,\"name\":\"日志列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:loginlog:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:55:32', 0);
-INSERT INTO `sys_oper_log` VALUES (64, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":150,\"createTime\":\"2026-01-31T20:56:04.216496\",\"updateTime\":\"2026-01-31T20:56:04.216496\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":37,\"name\":\"在线用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:online:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:56:04', 0);
-INSERT INTO `sys_oper_log` VALUES (65, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":151,\"createTime\":\"2026-01-31T20:56:20.3485179\",\"updateTime\":\"2026-01-31T20:56:20.3485179\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":39,\"name\":\"任务列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:job:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:56:20', 0);
-INSERT INTO `sys_oper_log` VALUES (66, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":152,\"createTime\":\"2026-01-31T20:57:18.2372336\",\"updateTime\":\"2026-01-31T20:57:18.2372336\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":127,\"name\":\"文件列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:file:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:57:18', 0);
-INSERT INTO `sys_oper_log` VALUES (67, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":153,\"createTime\":\"2026-01-31T20:57:55.1807857\",\"updateTime\":\"2026-01-31T20:57:55.1807857\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":135,\"name\":\"系统通知\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:notice:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:57:55', 0);
-INSERT INTO `sys_oper_log` VALUES (68, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,146,147,148,149,150,151,152,153]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:58:24', 0);
-INSERT INTO `sys_oper_log` VALUES (69, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,146,147,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:34', 0);
-INSERT INTO `sys_oper_log` VALUES (70, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:44', 0);
-INSERT INTO `sys_oper_log` VALUES (71, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:52', 0);
-INSERT INTO `sys_oper_log` VALUES (72, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:56', 0);
-INSERT INTO `sys_oper_log` VALUES (73, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:00', 0);
-INSERT INTO `sys_oper_log` VALUES (74, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:04', 0);
-INSERT INTO `sys_oper_log` VALUES (75, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:08', 0);
-INSERT INTO `sys_oper_log` VALUES (76, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:12', 0);
-INSERT INTO `sys_oper_log` VALUES (77, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:15', 0);
-INSERT INTO `sys_oper_log` VALUES (78, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,140,141,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:20', 0);
-INSERT INTO `sys_oper_log` VALUES (79, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,140,141,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:23', 0);
-INSERT INTO `sys_oper_log` VALUES (80, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:26', 0);
-INSERT INTO `sys_oper_log` VALUES (81, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139,140,141]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:29', 0);
-INSERT INTO `sys_oper_log` VALUES (82, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,142,143,144,145,146,147,148,149,150,151,152,153,128]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:03:45', 0);
-INSERT INTO `sys_oper_log` VALUES (83, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,142,143,144,145,146,147,148,149,150,151,152,153,128,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:08:30', 0);
-INSERT INTO `sys_oper_log` VALUES (84, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:08:40', 0);
-INSERT INTO `sys_oper_log` VALUES (85, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,142,2,3,4,5,1,23,27,32,34,37,39,127,135,22,31,36,126,134]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:10', 0);
-INSERT INTO `sys_oper_log` VALUES (86, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:30', 0);
-INSERT INTO `sys_oper_log` VALUES (87, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:57', 0);
-INSERT INTO `sys_oper_log` VALUES (88, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:17:02', 0);
-INSERT INTO `sys_oper_log` VALUES (89, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50\",\"updateTime\":\"2026-01-31T20:51:50\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":2,\"name\":\"用户列表\",\"type\":2,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:25', 0);
-INSERT INTO `sys_oper_log` VALUES (90, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:13\",\"updateTime\":\"2026-01-31T20:52:13\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":6,\"name\":\"角色列表\",\"type\":2,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:36', 0);
-INSERT INTO `sys_oper_log` VALUES (91, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:46', 0);
-INSERT INTO `sys_oper_log` VALUES (92, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50\",\"updateTime\":\"2026-01-31T20:51:50\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":2,\"name\":\"用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:21:24', 0);
-INSERT INTO `sys_oper_log` VALUES (93, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:13\",\"updateTime\":\"2026-01-31T20:52:13\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":6,\"name\":\"角色列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:21:34', 0);
-INSERT INTO `sys_oper_log` VALUES (94, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:25:14', 0);
-INSERT INTO `sys_oper_log` VALUES (95, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,3,4,5,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:25:35', 0);
-INSERT INTO `sys_oper_log` VALUES (96, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:26:16', 0);
-INSERT INTO `sys_oper_log` VALUES (97, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,7,8,9,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,6,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,1,2,3,4,5]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:31:45', 0);
-INSERT INTO `sys_oper_log` VALUES (98, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,7,8,9,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,6,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:31:57', 0);
-INSERT INTO `sys_oper_log` VALUES (99, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,2,6,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:32:39', 0);
-INSERT INTO `sys_oper_log` VALUES (100, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,142,18,43,128,2,6,10,14,23,27,32,34,37,39,127,135,1,22,31,36,126,134]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:41:49', 0);
-INSERT INTO `sys_oper_log` VALUES (101, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":4,\"createTime\":\"2026-01-31T20:49:34\",\"updateTime\":\"2026-01-31T20:49:34\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"username\":\"lisi\",\"password\":null,\"nickname\":\"lisi\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 22:28:30', 0);
-INSERT INTO `sys_oper_log` VALUES (102, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,2,6,10,14,18,23,27,32,34,37,39,43,127,135,1,22,31,126,134,140,154,155,156,157,158,159,160,36]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 23:42:41', 0);
-INSERT INTO `sys_oper_log` VALUES (103, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":154,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":36,\"name\":\"服务器管理\",\"type\":2,\"path\":\"/monitor/server-manager\",\"component\":\"/monitor/server-manager/index\",\"permission\":null,\"icon\":\"ServerOutline\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":155,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"服务器列表\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:list\",\"icon\":null,\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":156,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"服务器详情\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:query\",\"icon\":null,\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":157,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"新增服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:add\",\"icon\":null,\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":158,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"编辑服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:edit\",\"icon\":null,\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":159,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"删除服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:remove\",\"icon\":null,\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":160,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"测试连接\",\"type\":3,\"pa', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 23:45:06', 0);
-INSERT INTO `sys_oper_log` VALUES (104, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":2,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"facf51bceffa4b0594a876dcd470c8d9.png\",\"filePath\":\"2026/02/02/facf51bceffa4b0594a876dcd470c8d9.png\",\"url\":\"http://localhost:8080/files/2026/02/02/facf51bceffa4b0594a876dcd470c8d9.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:28:15.0087984\",\"remark\":null}}', 0, NULL, '2026-02-02 16:28:15', 0);
-INSERT INTO `sys_oper_log` VALUES (105, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":3,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"ba6a6df521634d65a01ee41000bcfe4d.png\",\"filePath\":\"2026/02/02/ba6a6df521634d65a01ee41000bcfe4d.png\",\"url\":\"http://localhost:8080/files/2026/02/02/ba6a6df521634d65a01ee41000bcfe4d.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:29:59.7196597\",\"remark\":null}}', 0, NULL, '2026-02-02 16:30:00', 0);
-INSERT INTO `sys_oper_log` VALUES (106, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":4,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"filePath\":\"2026/02/02/d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"url\":\"http://localhost:8080/files/2026/02/02/d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:30:06.3784107\",\"remark\":null}}', 0, NULL, '2026-02-02 16:30:06', 0);
-INSERT INTO `sys_oper_log` VALUES (107, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":5,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"c127252a197948c99afaff2412937344.png\",\"filePath\":\"2026/02/02/c127252a197948c99afaff2412937344.png\",\"url\":\"http://localhost:8080/files/2026/02/02/c127252a197948c99afaff2412937344.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:33:56.2953548\",\"remark\":null}}', 0, NULL, '2026-02-02 16:33:56', 0);
-INSERT INTO `sys_oper_log` VALUES (108, '创建文件分组', 1, 'com.mars.web.controller.file.SysFileGroupController.create()', 'POST', 'admin', '/sys/file-group', '127.0.0.1', '{\"id\":1,\"name\":\"测试分组\",\"sort\":0,\"fileCount\":null,\"createBy\":null,\"createTime\":\"2026-02-02T16:50:49.7601501\",\"updateTime\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 16:50:50', 0);
-INSERT INTO `sys_oper_log` VALUES (109, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":6,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"b4d670b1b94544caafebff8ccb391af5.jpg\",\"filePath\":\"2026/02/02/b4d670b1b94544caafebff8ccb391af5.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/b4d670b1b94544caafebff8ccb391af5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:11.7194099\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:12', 0);
-INSERT INTO `sys_oper_log` VALUES (110, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":7,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"filePath\":\"2026/02/02/5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:19.0010822\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:19', 0);
-INSERT INTO `sys_oper_log` VALUES (111, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":8,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"1d792369c1324ebbb1ae1c6abb1c385b.png\",\"filePath\":\"2026/02/02/1d792369c1324ebbb1ae1c6abb1c385b.png\",\"url\":\"http://localhost:8080/files/2026/02/02/1d792369c1324ebbb1ae1c6abb1c385b.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:24.5108305\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:25', 0);
-INSERT INTO `sys_oper_log` VALUES (112, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":9,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"filePath\":\"2026/02/02/5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:30.1302856\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:30', 0);
-INSERT INTO `sys_oper_log` VALUES (113, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":10,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"97c4a311e92b409db8eeaa919c2014e6.jpg\",\"filePath\":\"2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:54:05.3938291\",\"remark\":null}}', 0, NULL, '2026-02-02 16:54:05', 0);
-INSERT INTO `sys_oper_log` VALUES (114, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":11,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"630542f51b124c519f14fdf97db37b7b.png\",\"filePath\":\"2026/02/02/630542f51b124c519f14fdf97db37b7b.png\",\"url\":\"http://localhost:8080/files/2026/02/02/630542f51b124c519f14fdf97db37b7b.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:54:07.0094663\",\"remark\":null}}', 0, NULL, '2026-02-02 16:54:07', 0);
-INSERT INTO `sys_oper_log` VALUES (115, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: mp4，允许的类型: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx', '2026-02-02 16:55:23', 0);
-INSERT INTO `sys_oper_log` VALUES (116, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: mp4，允许的类型: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx', '2026-02-02 16:58:26', 0);
-INSERT INTO `sys_oper_log` VALUES (117, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":12,\"originalName\":\"d46297cfbd32ba4d300eaca236a934a2.mp4\",\"fileName\":\"83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"filePath\":\"2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"url\":\"http://localhost:8080/files/2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"fileSize\":345989,\"fileType\":\"video/mp4\",\"fileSuffix\":\".mp4\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:00:18.0270023\",\"remark\":null}}', 0, NULL, '2026-02-02 17:00:18', 0);
-INSERT INTO `sys_oper_log` VALUES (118, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: yaml，允许的类型: jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,mp4,avi,mov,wmv,flv,mkv,mp3,wav,ogg,zip,rar,7z', '2026-02-02 17:01:05', 0);
-INSERT INTO `sys_oper_log` VALUES (119, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":13,\"originalName\":\"222.yaml\",\"fileName\":\"fb28a3b6569746688514518c32bb0237.yaml\",\"filePath\":\"2026/02/02/fb28a3b6569746688514518c32bb0237.yaml\",\"url\":\"http://localhost:8080/files/2026/02/02/fb28a3b6569746688514518c32bb0237.yaml\",\"fileSize\":6582,\"fileType\":\"application/octet-stream\",\"fileSuffix\":\".yaml\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:02:45.4955269\",\"remark\":null}}', 0, NULL, '2026-02-02 17:02:46', 0);
-INSERT INTO `sys_oper_log` VALUES (120, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":14,\"originalName\":\"222.yaml\",\"fileName\":\"8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"filePath\":\"2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"url\":\"http://localhost:8080/files/2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"fileSize\":6582,\"fileType\":\"application/octet-stream\",\"fileSuffix\":\".yaml\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:02:50.9339581\",\"remark\":null}}', 0, NULL, '2026-02-02 17:02:51', 0);
-INSERT INTO `sys_oper_log` VALUES (121, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":15,\"originalName\":\"王先生简历.pdf\",\"fileName\":\"cd7d82145cf54c8abab1007437338f7f.pdf\",\"filePath\":\"2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf\",\"url\":\"http://localhost:8080/files/2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf\",\"fileSize\":170770,\"fileType\":\"application/pdf\",\"fileSuffix\":\".pdf\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:03:06.3922265\",\"remark\":null}}', 0, NULL, '2026-02-02 17:03:06', 0);
-INSERT INTO `sys_oper_log` VALUES (122, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,2,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140,161,162,163,164,165,166,167,168,169]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:52:54', 0);
-INSERT INTO `sys_oper_log` VALUES (123, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"sys_file\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:53:23', 0);
-INSERT INTO `sys_oper_log` VALUES (124, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"customer\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:54:31', 0);
-INSERT INTO `sys_oper_log` VALUES (125, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[2]', NULL, 0, NULL, '2026-02-02 19:54:41', 0);
-INSERT INTO `sys_oper_log` VALUES (126, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:05:31', 0);
-INSERT INTO `sys_oper_log` VALUES (127, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,2,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,22,31,36,126,134,140,161,170,171,172,173,174,175,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:05:42', 0);
-INSERT INTO `sys_oper_log` VALUES (128, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:06:27', 0);
-INSERT INTO `sys_oper_log` VALUES (129, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/system/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:07:14', 0);
-INSERT INTO `sys_oper_log` VALUES (130, '客户表', 1, 'com.mars.web.controller.CustomerController.add()', 'POST', 'admin', '/system/customer', '127.0.0.1', '{\"id\":5,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"deleted\":1,\"createTime\":\"2026-02-02T20:09:32.3541679\",\"updateTime\":\"2026-02-02T20:09:32.3541679\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:09:32', 0);
-INSERT INTO `sys_oper_log` VALUES (131, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"student\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:21:29', 0);
-INSERT INTO `sys_oper_log` VALUES (132, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"timeType\":false,\"stringType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"timeType\":false,\"stringType\":true,\"numberT', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:21:38', 0);
-INSERT INTO `sys_oper_log` VALUES (133, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[3]', NULL, 0, NULL, '2026-02-02 22:21:40', 0);
-INSERT INTO `sys_oper_log` VALUES (134, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:26:31', 0);
-INSERT INTO `sys_oper_log` VALUES (135, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/system/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":0,\"status\":0,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:28:15', 0);
-INSERT INTO `sys_oper_log` VALUES (136, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,176,177,178,179,180,181]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:28:30', 0);
-INSERT INTO `sys_oper_log` VALUES (137, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":176,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":161,\"name\":\"学生管理\",\"type\":2,\"path\":\"/system/student\",\"component\":\"/system/student/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":177,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":178,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":179,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":180,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":181,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:29:13', 0);
-INSERT INTO `sys_oper_log` VALUES (138, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37\",\"updateTime\":\"2026-01-31T20:17:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":7,\"visible\":0,\"status\":0,\"isFrame\":0,\"children\":[{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:31:03', 0);
-INSERT INTO `sys_oper_log` VALUES (139, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:55:40', 0);
-INSERT INTO `sys_oper_log` VALUES (140, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:55:57', 0);
-INSERT INTO `sys_oper_log` VALUES (141, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:56:50', 0);
-INSERT INTO `sys_oper_log` VALUES (142, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:57:22', 0);
-INSERT INTO `sys_oper_log` VALUES (143, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:01:25', 0);
-INSERT INTO `sys_oper_log` VALUES (144, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:01:38', 0);
-INSERT INTO `sys_oper_log` VALUES (145, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:04:11', 0);
-INSERT INTO `sys_oper_log` VALUES (146, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:07:15', 0);
-INSERT INTO `sys_oper_log` VALUES (147, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:07:43', 0);
-INSERT INTO `sys_oper_log` VALUES (148, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,194,195,196,197,198,199]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:08:04', 0);
-INSERT INTO `sys_oper_log` VALUES (149, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":6,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:10:23.8491886\",\"updateTime\":\"2026-02-02T23:10:23.8501851\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:10:24', 0);
-INSERT INTO `sys_oper_log` VALUES (150, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:19:37', 0);
-INSERT INTO `sys_oper_log` VALUES (151, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:19:53', 0);
-INSERT INTO `sys_oper_log` VALUES (152, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/6', '127.0.0.1', '[6]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:22:18', 0);
-INSERT INTO `sys_oper_log` VALUES (153, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":7,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:22:26.1590412\",\"updateTime\":\"2026-02-02T23:22:26.1590412\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:22:26', 0);
-INSERT INTO `sys_oper_log` VALUES (154, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[3]', NULL, 0, NULL, '2026-02-02 23:23:41', 0);
-INSERT INTO `sys_oper_log` VALUES (155, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:24:54', 0);
-INSERT INTO `sys_oper_log` VALUES (156, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,206,207,208,209,210,211]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:24', 0);
-INSERT INTO `sys_oper_log` VALUES (157, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":8,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:25:39.4626787\",\"updateTime\":\"2026-02-02T23:25:39.4626787\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:39', 0);
-INSERT INTO `sys_oper_log` VALUES (158, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/8', '127.0.0.1', '[8]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:42', 0);
-INSERT INTO `sys_oper_log` VALUES (159, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/7', '127.0.0.1', '[7]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:44', 0);
-INSERT INTO `sys_oper_log` VALUES (160, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":9,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:29:02.6810732\",\"updateTime\":\"2026-02-02T23:29:02.6812107\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:03', 0);
-INSERT INTO `sys_oper_log` VALUES (161, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/9', '127.0.0.1', '[9]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:05', 0);
-INSERT INTO `sys_oper_log` VALUES (162, '同步表结构', 2, 'com.mars.web.controller.tool.GenController.sync()', 'POST', 'admin', '/tool/gen/sync/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:22', 0);
-INSERT INTO `sys_oper_log` VALUES (163, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:30:30', 0);
-INSERT INTO `sys_oper_log` VALUES (164, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:30:58', 0);
-INSERT INTO `sys_oper_log` VALUES (165, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,212,213,214,215,216,217]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:31:06', 0);
-INSERT INTO `sys_oper_log` VALUES (166, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:33:40', 0);
-INSERT INTO `sys_oper_log` VALUES (167, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"numberT', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:34:00', 0);
-INSERT INTO `sys_oper_log` VALUES (168, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":2,\"tableName\":\"customer\",\"tableComment\":\"客户表\",\"className\":\"Customer\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"customer\",\"functionName\":\"客户表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T19:54:31\",\"updateTime\":\"2026-02-02T19:54:31\",\"columns\":[{\"id\":15,\"tableId\":2,\"columnName\":\"id\",\"columnComment\":\"客户ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":16,\"tableId\":2,\"columnName\":\"name\",\"columnComment\":\"客户姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":17,\"tableId\":2,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":18,\"tableId\":2,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":19,\"tableId\":2,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"num', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:16', 0);
-INSERT INTO `sys_oper_log` VALUES (169, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:36:22', 0);
-INSERT INTO `sys_oper_log` VALUES (170, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,218,219,220,221,222,223]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:41', 0);
-INSERT INTO `sys_oper_log` VALUES (171, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":10,\"name\":\"12\",\"phone\":\"121\",\"idCard\":\"2\",\"address\":\"12\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:36:48.7311674\",\"updateTime\":\"2026-02-02T23:36:48.7311674\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:49', 0);
-INSERT INTO `sys_oper_log` VALUES (172, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/10', '127.0.0.1', '[10]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:53', 0);
-INSERT INTO `sys_oper_log` VALUES (173, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:38:03.0427541\",\"updateTime\":\"2026-02-02T23:38:03.0427541\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:38:03', 0);
-INSERT INTO `sys_oper_log` VALUES (174, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"122222222\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:38:03\",\"updateTime\":\"2026-02-02T23:38:03\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:38:08', 0);
-INSERT INTO `sys_oper_log` VALUES (175, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:38:19', 0);
-INSERT INTO `sys_oper_log` VALUES (176, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"n', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:39:03', 0);
-INSERT INTO `sys_oper_log` VALUES (177, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:39:09', 0);
-INSERT INTO `sys_oper_log` VALUES (178, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,224,225,226,227,228,229]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:39:48', 0);
-INSERT INTO `sys_oper_log` VALUES (179, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":16,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"de36558603754856be6984d6cdc0654a.jpg\",\"filePath\":\"images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:40:00.0648201\",\"remark\":null}}', 0, NULL, '2026-02-02 23:40:00', 0);
-INSERT INTO `sys_oper_log` VALUES (180, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:43:09', 0);
-INSERT INTO `sys_oper_log` VALUES (181, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"n', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:43:19', 0);
-INSERT INTO `sys_oper_log` VALUES (182, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:43:26', 0);
-INSERT INTO `sys_oper_log` VALUES (183, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,230,231,232,233,234,235]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:43:33', 0);
-INSERT INTO `sys_oper_log` VALUES (184, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":17,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"13e1fb150b264caca201dbe58b74b69a.jpg\",\"filePath\":\"images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:43:47.2100967\",\"remark\":null}}', 0, NULL, '2026-02-02 23:43:47', 0);
-INSERT INTO `sys_oper_log` VALUES (185, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:44:22', 0);
-INSERT INTO `sys_oper_log` VALUES (186, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:44:50', 0);
-INSERT INTO `sys_oper_log` VALUES (187, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:45:00', 0);
-INSERT INTO `sys_oper_log` VALUES (188, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"numberType\":true,\"timeType\":false,\"stringType\":false},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"numberType\":false,\"timeType\":false,\"', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:45:45', 0);
-INSERT INTO `sys_oper_log` VALUES (189, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:46:17', 0);
-INSERT INTO `sys_oper_log` VALUES (190, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:46:35', 0);
-INSERT INTO `sys_oper_log` VALUES (191, '同步表结构', 2, 'com.mars.web.controller.tool.GenController.sync()', 'POST', 'admin', '/tool/gen/sync/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:10', 0);
-INSERT INTO `sys_oper_log` VALUES (192, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"numberType\":true,\"timeType\":false,\"stringType\":false},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"numberType\":false,\"timeType\":false,\"string', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:20', 0);
-INSERT INTO `sys_oper_log` VALUES (193, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:47:25', 0);
-INSERT INTO `sys_oper_log` VALUES (194, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,248,249,250,251,252,253]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:35', 0);
-INSERT INTO `sys_oper_log` VALUES (195, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":18,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"d53bc5adf9d94423ab00010afc726afd.jpg\",\"filePath\":\"images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:48:03.0698288\",\"remark\":null}}', 0, NULL, '2026-02-02 23:48:03', 0);
-INSERT INTO `sys_oper_log` VALUES (196, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":12,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:48:03.7784222\",\"updateTime\":\"2026-02-02T23:48:03.779419\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:48:04', 0);
-INSERT INTO `sys_oper_log` VALUES (197, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":19,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"filePath\":\"images/2026/02/02/8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:48:31.6491554\",\"remark\":null}}', 0, NULL, '2026-02-02 23:48:32', 0);
-INSERT INTO `sys_oper_log` VALUES (198, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"122222222\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:38:03\",\"updateTime\":\"2026-02-02T23:38:03\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:48:56', 0);
-INSERT INTO `sys_oper_log` VALUES (199, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":20,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1bd9460f122741c28e20f77d1d231a6d.jpg\",\"filePath\":\"images/2026/02/02/1bd9460f122741c28e20f77d1d231a6d.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/1bd9460f122741c28e20f77d1d231a6d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:49:05.7732622\",\"remark\":null}}', 0, NULL, '2026-02-02 23:49:06', 0);
-INSERT INTO `sys_oper_log` VALUES (200, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":12,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:48:04\",\"updateTime\":\"2026-02-02T23:48:04\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:08', 0);
-INSERT INTO `sys_oper_log` VALUES (201, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/11', '127.0.0.1', '[11]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:11', 0);
-INSERT INTO `sys_oper_log` VALUES (202, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/12', '127.0.0.1', '[12]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:14', 0);
-INSERT INTO `sys_oper_log` VALUES (203, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":21,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"filePath\":\"images/2026/02/02/7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:49:21.9637381\",\"remark\":null}}', 0, NULL, '2026-02-02 23:49:22', 0);
-INSERT INTO `sys_oper_log` VALUES (204, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":13,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:49:27.3862397\",\"updateTime\":\"2026-02-02T23:49:27.3862397\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:27', 0);
-INSERT INTO `sys_oper_log` VALUES (205, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:53:29', 0);
-INSERT INTO `sys_oper_log` VALUES (206, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,254,255,256,257,258,259]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:53:45', 0);
-INSERT INTO `sys_oper_log` VALUES (207, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":22,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"199c326d1eed480dafedf70e10375b91.jpg\",\"filePath\":\"images/2026/02/02/199c326d1eed480dafedf70e10375b91.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/199c326d1eed480dafedf70e10375b91.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:54:08.8939937\",\"remark\":null}}', 0, NULL, '2026-02-02 23:54:09', 0);
-INSERT INTO `sys_oper_log` VALUES (208, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":14,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:54:15.4908614\",\"updateTime\":\"2026-02-02T23:54:15.4908614\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:15', 0);
-INSERT INTO `sys_oper_log` VALUES (209, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/14', '127.0.0.1', '[14]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:19', 0);
-INSERT INTO `sys_oper_log` VALUES (210, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":23,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"filePath\":\"images/2026/02/02/47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:54:27.5184948\",\"remark\":null}}', 0, NULL, '2026-02-02 23:54:28', 0);
-INSERT INTO `sys_oper_log` VALUES (211, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":15,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:54:43.7524124\",\"updateTime\":\"2026-02-02T23:54:43.7524124\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:44', 0);
-INSERT INTO `sys_oper_log` VALUES (212, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/13', '127.0.0.1', '[13]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:20', 0);
-INSERT INTO `sys_oper_log` VALUES (213, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/15', '127.0.0.1', '[15]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:22', 0);
-INSERT INTO `sys_oper_log` VALUES (214, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:57:31', 0);
-INSERT INTO `sys_oper_log` VALUES (215, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:57:43', 0);
-INSERT INTO `sys_oper_log` VALUES (216, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,260,261,262,263,264,265]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:50', 0);
-INSERT INTO `sys_oper_log` VALUES (217, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":24,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"filePath\":\"images/2026/02/02/0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:58:00.9002807\",\"remark\":null}}', 0, NULL, '2026-02-02 23:58:01', 0);
-INSERT INTO `sys_oper_log` VALUES (218, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":16,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:58:05.2950956\",\"updateTime\":\"2026-02-02T23:58:05.2950956\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:58:05', 0);
-INSERT INTO `sys_oper_log` VALUES (219, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-03 08:51:02', 0);
-INSERT INTO `sys_oper_log` VALUES (220, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-03 08:51:14', 0);
-INSERT INTO `sys_oper_log` VALUES (221, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,266,267,268,269,270,271]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:51:42', 0);
-INSERT INTO `sys_oper_log` VALUES (222, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":25,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"6589513e71ce435c9ca1ab46ca520864.jpg\",\"filePath\":\"images/2026/02/03/6589513e71ce435c9ca1ab46ca520864.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/6589513e71ce435c9ca1ab46ca520864.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:51:55.5341708\",\"remark\":null}}', 0, NULL, '2026-02-03 08:51:56', 0);
-INSERT INTO `sys_oper_log` VALUES (223, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":17,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":\"\",\"deleted\":null,\"createTime\":\"2026-02-03T08:51:57.0308485\",\"updateTime\":\"2026-02-03T08:51:57.0308485\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:51:57', 0);
-INSERT INTO `sys_oper_log` VALUES (224, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":26,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4baf87ff9a24412585bafbf558606a5f.jpg\",\"filePath\":\"images/2026/02/03/4baf87ff9a24412585bafbf558606a5f.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/4baf87ff9a24412585bafbf558606a5f.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:52:09.5045282\",\"remark\":null}}', 0, NULL, '2026-02-03 08:52:10', 0);
-INSERT INTO `sys_oper_log` VALUES (225, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":18,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":\"\",\"deleted\":null,\"createTime\":\"2026-02-03T08:52:11.607751\",\"updateTime\":\"2026-02-03T08:52:11.607751\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:52:12', 0);
-INSERT INTO `sys_oper_log` VALUES (226, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-03 08:57:26', 0);
-INSERT INTO `sys_oper_log` VALUES (227, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-03 08:58:09', 0);
-INSERT INTO `sys_oper_log` VALUES (228, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,272,273,274,275,276,277]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:19', 0);
-INSERT INTO `sys_oper_log` VALUES (229, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":27,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"7365ea7837094dffb3e64258e69490c7.jpg\",\"filePath\":\"images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:58:53.0509031\",\"remark\":null}}', 0, NULL, '2026-02-03 08:58:53', 0);
-INSERT INTO `sys_oper_log` VALUES (230, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":19,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":\"http://localhost:8080/files/images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"deleted\":null,\"createTime\":\"2026-02-03T08:58:53.813062\",\"updateTime\":\"2026-02-03T08:58:53.813062\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:54', 0);
-INSERT INTO `sys_oper_log` VALUES (231, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/18', '127.0.0.1', '[18]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:57', 0);
-INSERT INTO `sys_oper_log` VALUES (232, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/17', '127.0.0.1', '[17]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:59', 0);
-INSERT INTO `sys_oper_log` VALUES (233, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/16', '127.0.0.1', '[16]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:02', 0);
-INSERT INTO `sys_oper_log` VALUES (234, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":28,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"filePath\":\"images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:59:12.4025898\",\"remark\":null}}', 0, NULL, '2026-02-03 08:59:12', 0);
-INSERT INTO `sys_oper_log` VALUES (235, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":19,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":\"http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"deleted\":0,\"createTime\":\"2026-02-03T08:58:54\",\"updateTime\":\"2026-02-03T08:58:54\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:14', 0);
-INSERT INTO `sys_oper_log` VALUES (236, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/19', '127.0.0.1', '[19]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:22', 0);
-INSERT INTO `sys_oper_log` VALUES (237, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":29,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"filePath\":\"2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"url\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com/2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"aliyun\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T09:01:55.1847937\",\"remark\":null}}', 0, NULL, '2026-02-03 09:01:55', 0);
-INSERT INTO `sys_oper_log` VALUES (238, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/sys/file/batch', '127.0.0.1', '[15]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 10:24:00', 0);
-INSERT INTO `sys_oper_log` VALUES (239, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":30,\"originalName\":\"profile.jpg\",\"fileName\":\"8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"filePath\":\"2026/02/07/8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"url\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com/files/2026/02/07/8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"fileSize\":93672,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T09:48:10.2173522\",\"remark\":null}}', 0, NULL, '2026-02-07 09:48:10', 0);
-INSERT INTO `sys_oper_log` VALUES (240, '字典类型', 3, 'com.mars.web.controller.system.SysDictTypeController.delete()', 'DELETE', 'admin', '/api/sys/dict/type/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:33:54', 0);
-INSERT INTO `sys_oper_log` VALUES (241, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-01-31T22:30:46\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:10', 0);
-INSERT INTO `sys_oper_log` VALUES (242, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":4,\"createTime\":\"2026-01-31T20:49:34\",\"updateTime\":\"2026-01-31T20:49:34\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":3,\"deptName\":null,\"username\":\"lisi\",\"password\":null,\"nickname\":\"lisi\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:17', 0);
-INSERT INTO `sys_oper_log` VALUES (243, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:26', 0);
-INSERT INTO `sys_oper_log` VALUES (244, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":3,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars\",\"password\":null,\"nickname\":\"mars\",\"avatar\":null,\"email\":\"1121@qq.com\",\"phone\":\"18888888881\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:43', 0);
-INSERT INTO `sys_oper_log` VALUES (245, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:58:21\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":1,\"deptName\":null,\"username\":\"admin\",\"password\":null,\"nickname\":\"超级管理员\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:51', 0);
-INSERT INTO `sys_oper_log` VALUES (246, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":0,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:45:39', 0);
-INSERT INTO `sys_oper_log` VALUES (247, '部门管理', 2, 'com.mars.web.controller.system.SysDeptController.update()', 'PUT', 'admin', '/api/sys/dept', '127.0.0.1', '{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"ancestors\":\"0\",\"deptName\":\"火星网络科技\",\"sort\":0,\"leader\":\"管理员\",\"phone\":null,\"email\":null,\"status\":1,\"children\":[{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"技术部\",\"sort\":1,\"leader\":\"张三\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null},{\"id\":3,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"产品部\",\"sort\":2,\"leader\":\"李四\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null},{\"id\":4,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"运营部\",\"sort\":3,\"leader\":\"王五\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:52:59', 0);
-INSERT INTO `sys_oper_log` VALUES (248, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.approve()', 'POST', 'admin', '/api/sys/user/6/approve', '127.0.0.1', '6', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:01:26', 0);
-INSERT INTO `sys_oper_log` VALUES (249, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":31,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"e65166e0cdac405ea5796650dae2d331.jpg\",\"filePath\":\"2026/02/07/e65166e0cdac405ea5796650dae2d331.jpg\",\"url\":\"http://localhost:8080/files/2026/02/07/e65166e0cdac405ea5796650dae2d331.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:09:38.0325839\",\"remark\":null}}', 0, NULL, '2026-02-07 16:09:38', 0);
-INSERT INTO `sys_oper_log` VALUES (250, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":32,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"484b47f7dda444cd8efe94ba67549862.jpg\",\"filePath\":\"2026/02/07/484b47f7dda444cd8efe94ba67549862.jpg\",\"url\":\"http://localhost:8080/files/2026/02/07/484b47f7dda444cd8efe94ba67549862.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:09:52.7168384\",\"remark\":null}}', 0, NULL, '2026-02-07 16:09:53', 0);
-INSERT INTO `sys_oper_log` VALUES (251, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":33,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"filePath\":\"2026/02/07/00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"url\":\"/files/2026/02/07/00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:22:03.8842027\",\"remark\":null}}', 0, NULL, '2026-02-07 16:22:04', 0);
-INSERT INTO `sys_oper_log` VALUES (252, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,9,8]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:25:27', 0);
-INSERT INTO `sys_oper_log` VALUES (253, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[7,6,5,4,3,2,1]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:25:31', 0);
-INSERT INTO `sys_oper_log` VALUES (254, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":34,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"1a873f3def2944cfa92b5ff2e1517330.jpg\",\"filePath\":\"2026/02/07/1a873f3def2944cfa92b5ff2e1517330.jpg\",\"url\":\"/files/2026/02/07/1a873f3def2944cfa92b5ff2e1517330.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:25:35.9542121\",\"remark\":null}}', 0, NULL, '2026-02-07 16:25:36', 0);
-INSERT INTO `sys_oper_log` VALUES (255, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[34]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:29:35', 0);
-INSERT INTO `sys_oper_log` VALUES (256, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":35,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"filePath\":\"2026/02/07/40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"url\":\"/api/files/2026/02/07/40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:29:40.8707584\",\"remark\":null}}', 0, NULL, '2026-02-07 16:29:41', 0);
-INSERT INTO `sys_oper_log` VALUES (257, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[35]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:30:03', 0);
-INSERT INTO `sys_oper_log` VALUES (258, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":36,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"filePath\":\"2026/02/07/8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"url\":\"/api/files/2026/02/07/8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:30:07.2482939\",\"remark\":null}}', 0, NULL, '2026-02-07 16:30:07', 0);
-INSERT INTO `sys_oper_log` VALUES (259, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":37,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"6d2e629e1bf64af0a2003b9c07747000.jpg\",\"filePath\":\"2026/02/07/6d2e629e1bf64af0a2003b9c07747000.jpg\",\"url\":\"/api/files/2026/02/07/6d2e629e1bf64af0a2003b9c07747000.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:32:48.7832288\",\"remark\":null}}', 0, NULL, '2026-02-07 16:32:49', 0);
-INSERT INTO `sys_oper_log` VALUES (260, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[12]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:32:59', 0);
-INSERT INTO `sys_oper_log` VALUES (261, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[14]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:33:40', 0);
-INSERT INTO `sys_oper_log` VALUES (262, '移动文件', 2, 'com.mars.web.controller.file.SysFileController.moveToGroup()', 'POST', 'admin', '/api/sys/file/move', '127.0.0.1', '{\"fileIds\":[36],\"groupId\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:33:52', 0);
-INSERT INTO `sys_oper_log` VALUES (263, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[37,36,11]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:34:14', 0);
-INSERT INTO `sys_oper_log` VALUES (264, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,2,170,6,10,14,18,23,27,32,34,37,39,43,154,135,162,272,1,22,31,36,134,140,161]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:47:05', 0);
-INSERT INTO `sys_oper_log` VALUES (265, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,2,170,6,10,14,18,23,27,32,34,37,39,43,154,135,162,272,1,22,31,36,134,140,161,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:47:14', 0);
+INSERT INTO `sys_oper_log` VALUES (310, '批量删除文件', 3, 'com.mars.admin.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[43,42]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 11:49:00', 0);
+INSERT INTO `sys_oper_log` VALUES (311, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":44,\"originalName\":\"img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg\",\"fileName\":\"e3065b470f9342f2bfeef9aa35182d39.jpg\",\"filePath\":\"2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg\",\"url\":\"/api/files/2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg\",\"fileSize\":101083,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T11:49:04.5790909\",\"remark\":null}}', 0, NULL, '2026-02-09 11:49:05', 0);
+INSERT INTO `sys_oper_log` VALUES (312, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-01-31T22:30:46\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:04:11', 0);
+INSERT INTO `sys_oper_log` VALUES (313, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-01-31T22:30:46\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":\"wqexpore@163.com\",\"phone\":\"18888888888\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:04:23', 0);
+INSERT INTO `sys_oper_log` VALUES (314, '删除代码生成表', 3, 'com.mars.admin.controller.gen.GenController.remove()', 'DELETE', 'admin', '/api/tool/gen/3,2,1', '127.0.0.1', '[3,2,1]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:44:22', 0);
+INSERT INTO `sys_oper_log` VALUES (315, '导入表结构', 1, 'com.mars.admin.controller.gen.GenController.importTable()', 'POST', 'admin', '/api/tool/gen/import', '127.0.0.1', '[\"student\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:44:26', 0);
+INSERT INTO `sys_oper_log` VALUES (316, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-api/mars-admin-api/src/main/java/com/mars/admin/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-09 12:46:12', 0);
+INSERT INTO `sys_oper_log` VALUES (317, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:47:51', 0);
+INSERT INTO `sys_oper_log` VALUES (318, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:48:12', 0);
+INSERT INTO `sys_oper_log` VALUES (319, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:48:47', 0);
+INSERT INTO `sys_oper_log` VALUES (320, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":272,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":161,\"name\":\"学生管理\",\"type\":2,\"path\":\"system/student\",\"component\":\"system/student/index\",\"permission\":\"system:student:list\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":273,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":272,\"name\":\"学生管理查询\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"system:student:list\",\"icon\":null,\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":274,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":272,\"name\":\"学生管理详情\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"system:student:query\",\"icon\":null,\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":275,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":272,\"name\":\"学生管理新增\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"system:student:add\",\"icon\":null,\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":276,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":272,\"name\":\"学生管理修改\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"system:student:edit\",\"icon\":null,\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":277,\"createTime\":\"2026-02-03T08:58:09\",\"updateTime\":\"2026-02-03T08:58:09\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":272,\"name\":\"学生管理删除\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"system:student:remove\",\"icon\":null,\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:55:15', 0);
+INSERT INTO `sys_oper_log` VALUES (321, '学生表', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":4,\"studentNo\":\"12\",\"name\":\"12\",\"gender\":null,\"birthday\":null,\"phone\":\"1\",\"email\":\"1\",\"address\":\"1\",\"classId\":1,\"status\":null,\"deleted\":null,\"createTime\":\"2026-02-09T12:55:30.0402385\",\"updateTime\":\"2026-02-09T12:55:30.0402385\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:55:30', 0);
+INSERT INTO `sys_oper_log` VALUES (322, '学生表', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/api/system/student/4', '127.0.0.1', '[4]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:55:34', 0);
+INSERT INTO `sys_oper_log` VALUES (323, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-core/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-api/mars-admin-api/src/main/java/com/mars/admin/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-09 12:55:57', 0);
+INSERT INTO `sys_oper_log` VALUES (324, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,163,164,165,166,167,168,169,135,162,134,161,36,37,150,38,39,151,40,41,42,43,44,45,154,155,156,157,158,159,160,31,32,148,33,34,149,35]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 12:56:49', 0);
+INSERT INTO `sys_oper_log` VALUES (325, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":5,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,163,164,165,166,167,168,169,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,32,34,37,39,43,154,135,162,31,36,134,161,1,2,142,3,4,5,170,171,172,173,174,175,6,143,7,8,9,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,126,127,152,128,129,140,141],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:19:31', 0);
+INSERT INTO `sys_oper_log` VALUES (326, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.resetPassword()', 'POST', 'admin', '/api/sys/user/5/reset-password', '127.0.0.1', '5', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:25:16', 0);
+INSERT INTO `sys_oper_log` VALUES (327, '用户管理', 1, 'com.mars.admin.controller.system.SysUserController.create()', 'POST', 'mars666', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":11,\"createTime\":\"2026-02-09T14:31:09.2982817\",\"updateTime\":\"2026-02-09T14:31:09.2992778\",\"createBy\":5,\"updateBy\":5,\"deleted\":null,\"deptId\":2,\"deptName\":null,\"username\":\"mars02\",\"password\":\"$2a$10$4LVE/zBTH6smGMjfOu/bku1PBaFun3JpFCYG1bTZgPHJQuE3hyjVC\",\"nickname\":\"mars02\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"status\":1,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:31:09', 0);
+INSERT INTO `sys_oper_log` VALUES (328, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":3,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,163,164,165,166,167,168,169,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:31:56', 0);
+INSERT INTO `sys_oper_log` VALUES (329, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":3,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,163,164,165,166,167,168,169,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:32:55', 0);
+INSERT INTO `sys_oper_log` VALUES (330, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":11,\"createTime\":\"2026-02-09T14:31:09\",\"updateTime\":\"2026-02-09T14:31:09\",\"createBy\":5,\"updateBy\":5,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars02\",\"password\":null,\"nickname\":\"mars02\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"status\":1,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:33:01', 0);
+INSERT INTO `sys_oper_log` VALUES (331, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,163,164,165,166,167,168,169,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:33:57', 0);
+INSERT INTO `sys_oper_log` VALUES (332, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:42:29', 0);
+INSERT INTO `sys_oper_log` VALUES (333, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140,161,162,163,164,165,166,167,168,169],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:42:53', 0);
+INSERT INTO `sys_oper_log` VALUES (334, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"dataScope\":3,\"remark\":\"普通用户角色\"},\"menuIds\":[139,153,136,137,138,150,38,151,40,41,42,44,45,155,156,157,158,159,160,148,33,149,35,142,3,4,5,171,172,173,174,175,143,7,8,9,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,152,128,129,141,163,164,165,166,167,168,169],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:43:15', 0);
+INSERT INTO `sys_oper_log` VALUES (335, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:45:24', 0);
+INSERT INTO `sys_oper_log` VALUES (336, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140,161,162,163,164,165,166,167,168,169],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:45:28', 0);
+INSERT INTO `sys_oper_log` VALUES (337, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":6,\"createTime\":\"2026-02-07T16:01:02\",\"updateTime\":\"2026-02-07T16:01:02\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"test01\",\"password\":null,\"nickname\":\"test01\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:47:28', 0);
+INSERT INTO `sys_oper_log` VALUES (338, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888881\",\"gender\":1,\"status\":0,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:48:30', 0);
+INSERT INTO `sys_oper_log` VALUES (339, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-02-09T14:30:30\",\"createBy\":5,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":\"wqexpore@163.com\",\"phone\":\"18888888882\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:48:34', 0);
+INSERT INTO `sys_oper_log` VALUES (340, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.toggleQuit()', 'POST', 'admin', '/api/sys/user/2/quit', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:58:26', 0);
+INSERT INTO `sys_oper_log` VALUES (341, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888881\",\"gender\":1,\"status\":1,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null,\"isQuit\":1},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 14:58:32', 0);
+INSERT INTO `sys_oper_log` VALUES (342, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.toggleQuit()', 'POST', 'admin', '/api/sys/user/2/quit', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:01:03', 0);
+INSERT INTO `sys_oper_log` VALUES (343, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":11,\"createTime\":\"2026-02-09T14:31:09\",\"updateTime\":\"2026-02-09T14:31:09\",\"createBy\":5,\"updateBy\":5,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars02\",\"password\":null,\"nickname\":\"mars02\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"status\":1,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:39:33', 0);
+INSERT INTO `sys_oper_log` VALUES (344, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.update()', 'PUT', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"children\":null,\"postCode\":\"dev\",\"postName\":\"开发工程师\",\"sort\":4,\"status\":1,\"remark\":\"开发工程师\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:42:38', 0);
+INSERT INTO `sys_oper_log` VALUES (345, '岗位管理', 1, 'com.mars.admin.controller.system.SysPostController.create()', 'POST', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":6,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"children\":null,\"postCode\":\"manager\",\"postName\":\"总经理\",\"sort\":2,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:43:11', 0);
+INSERT INTO `sys_oper_log` VALUES (346, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.update()', 'PUT', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":6,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"children\":null,\"postCode\":\"manager\",\"postName\":\"总经理\",\"sort\":2,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:44:19', 0);
+INSERT INTO `sys_oper_log` VALUES (347, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.update()', 'PUT', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":6,\"children\":null,\"postCode\":\"cto\",\"postName\":\"技术总监\",\"sort\":2,\"status\":1,\"remark\":\"技术总监\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:44:43', 0);
+INSERT INTO `sys_oper_log` VALUES (348, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.update()', 'PUT', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":2,\"children\":null,\"postCode\":\"dev\",\"postName\":\"开发工程师\",\"sort\":4,\"status\":1,\"remark\":\"开发工程师\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:45:03', 0);
+INSERT INTO `sys_oper_log` VALUES (349, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.update()', 'PUT', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":3,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":2,\"children\":null,\"postCode\":\"pm\",\"postName\":\"产品经理\",\"sort\":3,\"status\":1,\"remark\":\"产品经理\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:45:29', 0);
+INSERT INTO `sys_oper_log` VALUES (350, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":10,\"createTime\":\"2026-02-08T16:46:40\",\"updateTime\":\"2026-02-08T16:46:40\",\"createBy\":null,\"updateBy\":10,\"deleted\":0,\"deptId\":null,\"deptName\":null,\"username\":\"Mars\",\"password\":null,\"nickname\":\"Mars\",\"avatar\":\"http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg\",\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null,\"userType\":\"app\",\"openId\":\"opzUF43XlvnVUw5S9qS2cI6L7p9M\",\"isQuit\":0},\"roleIds\":[2],\"postIds\":[4]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:46:01', 0);
+INSERT INTO `sys_oper_log` VALUES (351, '岗位管理', 1, 'com.mars.admin.controller.system.SysPostController.create()', 'POST', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":7,\"createTime\":\"2026-02-09T15:47:34.7205627\",\"updateTime\":\"2026-02-09T15:47:34.7205627\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":0,\"children\":null,\"postCode\":\"test_coder\",\"postName\":\"测试工程师\",\"sort\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:47:35', 0);
+INSERT INTO `sys_oper_log` VALUES (352, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.move()', 'POST', 'admin', '/api/sys/post/7/move', '127.0.0.1', '7 2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:50:58', 0);
+INSERT INTO `sys_oper_log` VALUES (353, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-02-09T14:30:30\",\"createBy\":5,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":\"wqexpore@163.com\",\"phone\":\"18888888882\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[3,4]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:55:56', 0);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1999,6 +1401,7 @@ INSERT INTO `sys_oper_log` VALUES (265, '角色管理', 2, 'com.mars.web.control
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父岗位ID',
   `post_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位编码',
   `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位名称',
   `sort` int NULL DEFAULT 0 COMMENT '显示顺序',
@@ -2011,16 +1414,17 @@ CREATE TABLE `sys_post`  (
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_post_code`(`post_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '岗位表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '岗位表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, 1, '公司董事长', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (2, 'cto', '技术总监', 2, 1, '技术总监', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (3, 'pm', '产品经理', 3, 1, '产品经理', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (4, 'dev', '开发工程师', 4, 1, '开发工程师', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (5, '11', '11', 0, 1, '', '2026-01-29 23:22:33', '2026-01-29 23:22:36', 1, 1, 1);
+INSERT INTO `sys_post` VALUES (1, 0, 'ceo', '董事长', 1, 1, '公司董事长', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
+INSERT INTO `sys_post` VALUES (2, 6, 'cto', '技术总监', 2, 1, '技术总监', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (3, 2, 'pm', '产品经理', 3, 1, '产品经理', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (4, 2, 'dev', '开发工程师', 4, 1, '开发工程师', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (6, 1, 'manager', '总经理', 2, 1, '', '2026-01-29 22:42:08', '2026-01-29 22:42:08', 1, 1, 0);
+INSERT INTO `sys_post` VALUES (7, 2, 'test_coder', '测试工程师', 0, 1, '', '2026-02-09 15:47:35', '2026-02-09 15:47:35', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -2038,6 +1442,7 @@ CREATE TABLE `sys_role`  (
   `create_by` bigint NULL DEFAULT NULL COMMENT '创建人',
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
+  `data_scope` tinyint NOT NULL DEFAULT 1 COMMENT '数据范围(1全部 2自定义 3本部门 4本部门及以下 5仅本人)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_code`(`code` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
@@ -2045,8 +1450,24 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, 1, '拥有所有权限', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
-INSERT INTO `sys_role` VALUES (2, '普通用户', 'user', 2, 1, '普通用户角色', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, 1, '拥有所有权限', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0, 1);
+INSERT INTO `sys_role` VALUES (2, '普通用户', 'user', 2, 1, '普通用户角色', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0, 3);
+
+-- ----------------------------
+-- Table structure for sys_role_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `role_id` bigint NOT NULL,
+  `dept_id` bigint NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_role_dept`(`role_id` ASC, `dept_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色-部门 数据权限关联' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -2059,147 +1480,168 @@ CREATE TABLE `sys_role_menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE,
   INDEX `idx_menu_id`(`menu_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6645 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7696 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (5001, 2, 19);
-INSERT INTO `sys_role_menu` VALUES (5002, 2, 20);
-INSERT INTO `sys_role_menu` VALUES (5003, 2, 21);
-INSERT INTO `sys_role_menu` VALUES (5004, 2, 44);
-INSERT INTO `sys_role_menu` VALUES (5005, 2, 45);
-INSERT INTO `sys_role_menu` VALUES (5006, 2, 139);
-INSERT INTO `sys_role_menu` VALUES (5007, 2, 143);
-INSERT INTO `sys_role_menu` VALUES (5008, 2, 144);
-INSERT INTO `sys_role_menu` VALUES (5009, 2, 145);
-INSERT INTO `sys_role_menu` VALUES (5010, 2, 146);
-INSERT INTO `sys_role_menu` VALUES (5011, 2, 147);
-INSERT INTO `sys_role_menu` VALUES (5012, 2, 148);
-INSERT INTO `sys_role_menu` VALUES (5013, 2, 149);
-INSERT INTO `sys_role_menu` VALUES (5014, 2, 150);
-INSERT INTO `sys_role_menu` VALUES (5015, 2, 151);
-INSERT INTO `sys_role_menu` VALUES (5016, 2, 152);
-INSERT INTO `sys_role_menu` VALUES (5017, 2, 153);
-INSERT INTO `sys_role_menu` VALUES (5018, 2, 142);
-INSERT INTO `sys_role_menu` VALUES (5019, 2, 18);
-INSERT INTO `sys_role_menu` VALUES (5020, 2, 43);
-INSERT INTO `sys_role_menu` VALUES (5021, 2, 128);
-INSERT INTO `sys_role_menu` VALUES (5022, 2, 2);
-INSERT INTO `sys_role_menu` VALUES (5023, 2, 6);
-INSERT INTO `sys_role_menu` VALUES (5024, 2, 10);
-INSERT INTO `sys_role_menu` VALUES (5025, 2, 14);
-INSERT INTO `sys_role_menu` VALUES (5026, 2, 23);
-INSERT INTO `sys_role_menu` VALUES (5027, 2, 27);
-INSERT INTO `sys_role_menu` VALUES (5028, 2, 32);
-INSERT INTO `sys_role_menu` VALUES (5029, 2, 34);
-INSERT INTO `sys_role_menu` VALUES (5030, 2, 37);
-INSERT INTO `sys_role_menu` VALUES (5031, 2, 39);
-INSERT INTO `sys_role_menu` VALUES (5032, 2, 127);
-INSERT INTO `sys_role_menu` VALUES (5033, 2, 135);
-INSERT INTO `sys_role_menu` VALUES (5034, 2, 1);
-INSERT INTO `sys_role_menu` VALUES (5035, 2, 22);
-INSERT INTO `sys_role_menu` VALUES (5036, 2, 31);
-INSERT INTO `sys_role_menu` VALUES (5037, 2, 36);
-INSERT INTO `sys_role_menu` VALUES (5038, 2, 126);
-INSERT INTO `sys_role_menu` VALUES (5039, 2, 134);
-INSERT INTO `sys_role_menu` VALUES (6548, 1, 7);
-INSERT INTO `sys_role_menu` VALUES (6549, 1, 8);
-INSERT INTO `sys_role_menu` VALUES (6550, 1, 9);
-INSERT INTO `sys_role_menu` VALUES (6551, 1, 143);
-INSERT INTO `sys_role_menu` VALUES (6552, 1, 142);
-INSERT INTO `sys_role_menu` VALUES (6553, 1, 3);
-INSERT INTO `sys_role_menu` VALUES (6554, 1, 4);
-INSERT INTO `sys_role_menu` VALUES (6555, 1, 5);
-INSERT INTO `sys_role_menu` VALUES (6556, 1, 144);
-INSERT INTO `sys_role_menu` VALUES (6557, 1, 11);
-INSERT INTO `sys_role_menu` VALUES (6558, 1, 12);
-INSERT INTO `sys_role_menu` VALUES (6559, 1, 13);
-INSERT INTO `sys_role_menu` VALUES (6560, 1, 145);
-INSERT INTO `sys_role_menu` VALUES (6561, 1, 15);
-INSERT INTO `sys_role_menu` VALUES (6562, 1, 16);
-INSERT INTO `sys_role_menu` VALUES (6563, 1, 17);
-INSERT INTO `sys_role_menu` VALUES (6564, 1, 19);
-INSERT INTO `sys_role_menu` VALUES (6565, 1, 20);
-INSERT INTO `sys_role_menu` VALUES (6566, 1, 21);
-INSERT INTO `sys_role_menu` VALUES (6567, 1, 146);
-INSERT INTO `sys_role_menu` VALUES (6568, 1, 24);
-INSERT INTO `sys_role_menu` VALUES (6569, 1, 25);
-INSERT INTO `sys_role_menu` VALUES (6570, 1, 26);
-INSERT INTO `sys_role_menu` VALUES (6571, 1, 147);
-INSERT INTO `sys_role_menu` VALUES (6572, 1, 28);
-INSERT INTO `sys_role_menu` VALUES (6573, 1, 29);
-INSERT INTO `sys_role_menu` VALUES (6574, 1, 30);
-INSERT INTO `sys_role_menu` VALUES (6575, 1, 148);
-INSERT INTO `sys_role_menu` VALUES (6576, 1, 33);
-INSERT INTO `sys_role_menu` VALUES (6577, 1, 149);
-INSERT INTO `sys_role_menu` VALUES (6578, 1, 35);
-INSERT INTO `sys_role_menu` VALUES (6579, 1, 150);
-INSERT INTO `sys_role_menu` VALUES (6580, 1, 38);
-INSERT INTO `sys_role_menu` VALUES (6581, 1, 151);
-INSERT INTO `sys_role_menu` VALUES (6582, 1, 40);
-INSERT INTO `sys_role_menu` VALUES (6583, 1, 41);
-INSERT INTO `sys_role_menu` VALUES (6584, 1, 42);
-INSERT INTO `sys_role_menu` VALUES (6585, 1, 44);
-INSERT INTO `sys_role_menu` VALUES (6586, 1, 45);
-INSERT INTO `sys_role_menu` VALUES (6587, 1, 153);
-INSERT INTO `sys_role_menu` VALUES (6588, 1, 136);
-INSERT INTO `sys_role_menu` VALUES (6589, 1, 137);
-INSERT INTO `sys_role_menu` VALUES (6590, 1, 138);
-INSERT INTO `sys_role_menu` VALUES (6591, 1, 139);
-INSERT INTO `sys_role_menu` VALUES (6592, 1, 141);
-INSERT INTO `sys_role_menu` VALUES (6593, 1, 155);
-INSERT INTO `sys_role_menu` VALUES (6594, 1, 156);
-INSERT INTO `sys_role_menu` VALUES (6595, 1, 157);
-INSERT INTO `sys_role_menu` VALUES (6596, 1, 158);
-INSERT INTO `sys_role_menu` VALUES (6597, 1, 159);
-INSERT INTO `sys_role_menu` VALUES (6598, 1, 160);
-INSERT INTO `sys_role_menu` VALUES (6599, 1, 163);
-INSERT INTO `sys_role_menu` VALUES (6600, 1, 164);
-INSERT INTO `sys_role_menu` VALUES (6601, 1, 165);
-INSERT INTO `sys_role_menu` VALUES (6602, 1, 166);
-INSERT INTO `sys_role_menu` VALUES (6603, 1, 167);
-INSERT INTO `sys_role_menu` VALUES (6604, 1, 168);
-INSERT INTO `sys_role_menu` VALUES (6605, 1, 169);
-INSERT INTO `sys_role_menu` VALUES (6606, 1, 171);
-INSERT INTO `sys_role_menu` VALUES (6607, 1, 172);
-INSERT INTO `sys_role_menu` VALUES (6608, 1, 173);
-INSERT INTO `sys_role_menu` VALUES (6609, 1, 174);
-INSERT INTO `sys_role_menu` VALUES (6610, 1, 175);
-INSERT INTO `sys_role_menu` VALUES (6611, 1, 273);
-INSERT INTO `sys_role_menu` VALUES (6612, 1, 274);
-INSERT INTO `sys_role_menu` VALUES (6613, 1, 275);
-INSERT INTO `sys_role_menu` VALUES (6614, 1, 276);
-INSERT INTO `sys_role_menu` VALUES (6615, 1, 277);
-INSERT INTO `sys_role_menu` VALUES (6616, 1, 2);
-INSERT INTO `sys_role_menu` VALUES (6617, 1, 170);
-INSERT INTO `sys_role_menu` VALUES (6618, 1, 6);
-INSERT INTO `sys_role_menu` VALUES (6619, 1, 10);
-INSERT INTO `sys_role_menu` VALUES (6620, 1, 14);
-INSERT INTO `sys_role_menu` VALUES (6621, 1, 18);
-INSERT INTO `sys_role_menu` VALUES (6622, 1, 23);
-INSERT INTO `sys_role_menu` VALUES (6623, 1, 27);
-INSERT INTO `sys_role_menu` VALUES (6624, 1, 32);
-INSERT INTO `sys_role_menu` VALUES (6625, 1, 34);
-INSERT INTO `sys_role_menu` VALUES (6626, 1, 37);
-INSERT INTO `sys_role_menu` VALUES (6627, 1, 39);
-INSERT INTO `sys_role_menu` VALUES (6628, 1, 43);
-INSERT INTO `sys_role_menu` VALUES (6629, 1, 154);
-INSERT INTO `sys_role_menu` VALUES (6630, 1, 135);
-INSERT INTO `sys_role_menu` VALUES (6631, 1, 162);
-INSERT INTO `sys_role_menu` VALUES (6632, 1, 272);
-INSERT INTO `sys_role_menu` VALUES (6633, 1, 1);
-INSERT INTO `sys_role_menu` VALUES (6634, 1, 22);
-INSERT INTO `sys_role_menu` VALUES (6635, 1, 31);
-INSERT INTO `sys_role_menu` VALUES (6636, 1, 36);
-INSERT INTO `sys_role_menu` VALUES (6637, 1, 134);
-INSERT INTO `sys_role_menu` VALUES (6638, 1, 140);
-INSERT INTO `sys_role_menu` VALUES (6639, 1, 161);
-INSERT INTO `sys_role_menu` VALUES (6640, 1, 126);
-INSERT INTO `sys_role_menu` VALUES (6641, 1, 127);
-INSERT INTO `sys_role_menu` VALUES (6642, 1, 152);
-INSERT INTO `sys_role_menu` VALUES (6643, 1, 128);
-INSERT INTO `sys_role_menu` VALUES (6644, 1, 129);
+INSERT INTO `sys_role_menu` VALUES (7457, 2, 139);
+INSERT INTO `sys_role_menu` VALUES (7458, 2, 153);
+INSERT INTO `sys_role_menu` VALUES (7459, 2, 136);
+INSERT INTO `sys_role_menu` VALUES (7460, 2, 137);
+INSERT INTO `sys_role_menu` VALUES (7461, 2, 138);
+INSERT INTO `sys_role_menu` VALUES (7462, 2, 150);
+INSERT INTO `sys_role_menu` VALUES (7463, 2, 38);
+INSERT INTO `sys_role_menu` VALUES (7464, 2, 151);
+INSERT INTO `sys_role_menu` VALUES (7465, 2, 40);
+INSERT INTO `sys_role_menu` VALUES (7466, 2, 41);
+INSERT INTO `sys_role_menu` VALUES (7467, 2, 42);
+INSERT INTO `sys_role_menu` VALUES (7468, 2, 44);
+INSERT INTO `sys_role_menu` VALUES (7469, 2, 45);
+INSERT INTO `sys_role_menu` VALUES (7470, 2, 155);
+INSERT INTO `sys_role_menu` VALUES (7471, 2, 156);
+INSERT INTO `sys_role_menu` VALUES (7472, 2, 157);
+INSERT INTO `sys_role_menu` VALUES (7473, 2, 158);
+INSERT INTO `sys_role_menu` VALUES (7474, 2, 159);
+INSERT INTO `sys_role_menu` VALUES (7475, 2, 160);
+INSERT INTO `sys_role_menu` VALUES (7476, 2, 148);
+INSERT INTO `sys_role_menu` VALUES (7477, 2, 33);
+INSERT INTO `sys_role_menu` VALUES (7478, 2, 149);
+INSERT INTO `sys_role_menu` VALUES (7479, 2, 35);
+INSERT INTO `sys_role_menu` VALUES (7480, 2, 142);
+INSERT INTO `sys_role_menu` VALUES (7481, 2, 3);
+INSERT INTO `sys_role_menu` VALUES (7482, 2, 4);
+INSERT INTO `sys_role_menu` VALUES (7483, 2, 5);
+INSERT INTO `sys_role_menu` VALUES (7484, 2, 171);
+INSERT INTO `sys_role_menu` VALUES (7485, 2, 172);
+INSERT INTO `sys_role_menu` VALUES (7486, 2, 173);
+INSERT INTO `sys_role_menu` VALUES (7487, 2, 174);
+INSERT INTO `sys_role_menu` VALUES (7488, 2, 175);
+INSERT INTO `sys_role_menu` VALUES (7489, 2, 143);
+INSERT INTO `sys_role_menu` VALUES (7490, 2, 7);
+INSERT INTO `sys_role_menu` VALUES (7491, 2, 8);
+INSERT INTO `sys_role_menu` VALUES (7492, 2, 9);
+INSERT INTO `sys_role_menu` VALUES (7493, 2, 144);
+INSERT INTO `sys_role_menu` VALUES (7494, 2, 11);
+INSERT INTO `sys_role_menu` VALUES (7495, 2, 12);
+INSERT INTO `sys_role_menu` VALUES (7496, 2, 13);
+INSERT INTO `sys_role_menu` VALUES (7497, 2, 145);
+INSERT INTO `sys_role_menu` VALUES (7498, 2, 15);
+INSERT INTO `sys_role_menu` VALUES (7499, 2, 16);
+INSERT INTO `sys_role_menu` VALUES (7500, 2, 17);
+INSERT INTO `sys_role_menu` VALUES (7501, 2, 19);
+INSERT INTO `sys_role_menu` VALUES (7502, 2, 20);
+INSERT INTO `sys_role_menu` VALUES (7503, 2, 21);
+INSERT INTO `sys_role_menu` VALUES (7504, 2, 146);
+INSERT INTO `sys_role_menu` VALUES (7505, 2, 24);
+INSERT INTO `sys_role_menu` VALUES (7506, 2, 25);
+INSERT INTO `sys_role_menu` VALUES (7507, 2, 26);
+INSERT INTO `sys_role_menu` VALUES (7508, 2, 147);
+INSERT INTO `sys_role_menu` VALUES (7509, 2, 28);
+INSERT INTO `sys_role_menu` VALUES (7510, 2, 29);
+INSERT INTO `sys_role_menu` VALUES (7511, 2, 30);
+INSERT INTO `sys_role_menu` VALUES (7512, 2, 152);
+INSERT INTO `sys_role_menu` VALUES (7513, 2, 128);
+INSERT INTO `sys_role_menu` VALUES (7514, 2, 129);
+INSERT INTO `sys_role_menu` VALUES (7515, 2, 141);
+INSERT INTO `sys_role_menu` VALUES (7516, 2, 163);
+INSERT INTO `sys_role_menu` VALUES (7517, 2, 164);
+INSERT INTO `sys_role_menu` VALUES (7518, 2, 165);
+INSERT INTO `sys_role_menu` VALUES (7519, 2, 166);
+INSERT INTO `sys_role_menu` VALUES (7520, 2, 167);
+INSERT INTO `sys_role_menu` VALUES (7521, 2, 168);
+INSERT INTO `sys_role_menu` VALUES (7522, 2, 169);
+INSERT INTO `sys_role_menu` VALUES (7605, 1, 7);
+INSERT INTO `sys_role_menu` VALUES (7606, 1, 8);
+INSERT INTO `sys_role_menu` VALUES (7607, 1, 9);
+INSERT INTO `sys_role_menu` VALUES (7608, 1, 143);
+INSERT INTO `sys_role_menu` VALUES (7609, 1, 142);
+INSERT INTO `sys_role_menu` VALUES (7610, 1, 3);
+INSERT INTO `sys_role_menu` VALUES (7611, 1, 4);
+INSERT INTO `sys_role_menu` VALUES (7612, 1, 5);
+INSERT INTO `sys_role_menu` VALUES (7613, 1, 144);
+INSERT INTO `sys_role_menu` VALUES (7614, 1, 11);
+INSERT INTO `sys_role_menu` VALUES (7615, 1, 12);
+INSERT INTO `sys_role_menu` VALUES (7616, 1, 13);
+INSERT INTO `sys_role_menu` VALUES (7617, 1, 145);
+INSERT INTO `sys_role_menu` VALUES (7618, 1, 15);
+INSERT INTO `sys_role_menu` VALUES (7619, 1, 16);
+INSERT INTO `sys_role_menu` VALUES (7620, 1, 17);
+INSERT INTO `sys_role_menu` VALUES (7621, 1, 19);
+INSERT INTO `sys_role_menu` VALUES (7622, 1, 20);
+INSERT INTO `sys_role_menu` VALUES (7623, 1, 21);
+INSERT INTO `sys_role_menu` VALUES (7624, 1, 146);
+INSERT INTO `sys_role_menu` VALUES (7625, 1, 24);
+INSERT INTO `sys_role_menu` VALUES (7626, 1, 25);
+INSERT INTO `sys_role_menu` VALUES (7627, 1, 26);
+INSERT INTO `sys_role_menu` VALUES (7628, 1, 147);
+INSERT INTO `sys_role_menu` VALUES (7629, 1, 28);
+INSERT INTO `sys_role_menu` VALUES (7630, 1, 29);
+INSERT INTO `sys_role_menu` VALUES (7631, 1, 30);
+INSERT INTO `sys_role_menu` VALUES (7632, 1, 148);
+INSERT INTO `sys_role_menu` VALUES (7633, 1, 33);
+INSERT INTO `sys_role_menu` VALUES (7634, 1, 149);
+INSERT INTO `sys_role_menu` VALUES (7635, 1, 35);
+INSERT INTO `sys_role_menu` VALUES (7636, 1, 150);
+INSERT INTO `sys_role_menu` VALUES (7637, 1, 38);
+INSERT INTO `sys_role_menu` VALUES (7638, 1, 151);
+INSERT INTO `sys_role_menu` VALUES (7639, 1, 40);
+INSERT INTO `sys_role_menu` VALUES (7640, 1, 41);
+INSERT INTO `sys_role_menu` VALUES (7641, 1, 42);
+INSERT INTO `sys_role_menu` VALUES (7642, 1, 44);
+INSERT INTO `sys_role_menu` VALUES (7643, 1, 45);
+INSERT INTO `sys_role_menu` VALUES (7644, 1, 153);
+INSERT INTO `sys_role_menu` VALUES (7645, 1, 136);
+INSERT INTO `sys_role_menu` VALUES (7646, 1, 137);
+INSERT INTO `sys_role_menu` VALUES (7647, 1, 138);
+INSERT INTO `sys_role_menu` VALUES (7648, 1, 139);
+INSERT INTO `sys_role_menu` VALUES (7649, 1, 141);
+INSERT INTO `sys_role_menu` VALUES (7650, 1, 155);
+INSERT INTO `sys_role_menu` VALUES (7651, 1, 156);
+INSERT INTO `sys_role_menu` VALUES (7652, 1, 157);
+INSERT INTO `sys_role_menu` VALUES (7653, 1, 158);
+INSERT INTO `sys_role_menu` VALUES (7654, 1, 159);
+INSERT INTO `sys_role_menu` VALUES (7655, 1, 160);
+INSERT INTO `sys_role_menu` VALUES (7656, 1, 171);
+INSERT INTO `sys_role_menu` VALUES (7657, 1, 172);
+INSERT INTO `sys_role_menu` VALUES (7658, 1, 173);
+INSERT INTO `sys_role_menu` VALUES (7659, 1, 174);
+INSERT INTO `sys_role_menu` VALUES (7660, 1, 175);
+INSERT INTO `sys_role_menu` VALUES (7661, 1, 152);
+INSERT INTO `sys_role_menu` VALUES (7662, 1, 128);
+INSERT INTO `sys_role_menu` VALUES (7663, 1, 129);
+INSERT INTO `sys_role_menu` VALUES (7664, 1, 2);
+INSERT INTO `sys_role_menu` VALUES (7665, 1, 170);
+INSERT INTO `sys_role_menu` VALUES (7666, 1, 6);
+INSERT INTO `sys_role_menu` VALUES (7667, 1, 10);
+INSERT INTO `sys_role_menu` VALUES (7668, 1, 14);
+INSERT INTO `sys_role_menu` VALUES (7669, 1, 18);
+INSERT INTO `sys_role_menu` VALUES (7670, 1, 23);
+INSERT INTO `sys_role_menu` VALUES (7671, 1, 27);
+INSERT INTO `sys_role_menu` VALUES (7672, 1, 32);
+INSERT INTO `sys_role_menu` VALUES (7673, 1, 34);
+INSERT INTO `sys_role_menu` VALUES (7674, 1, 37);
+INSERT INTO `sys_role_menu` VALUES (7675, 1, 39);
+INSERT INTO `sys_role_menu` VALUES (7676, 1, 43);
+INSERT INTO `sys_role_menu` VALUES (7677, 1, 154);
+INSERT INTO `sys_role_menu` VALUES (7678, 1, 127);
+INSERT INTO `sys_role_menu` VALUES (7679, 1, 135);
+INSERT INTO `sys_role_menu` VALUES (7680, 1, 1);
+INSERT INTO `sys_role_menu` VALUES (7681, 1, 22);
+INSERT INTO `sys_role_menu` VALUES (7682, 1, 31);
+INSERT INTO `sys_role_menu` VALUES (7683, 1, 36);
+INSERT INTO `sys_role_menu` VALUES (7684, 1, 126);
+INSERT INTO `sys_role_menu` VALUES (7685, 1, 134);
+INSERT INTO `sys_role_menu` VALUES (7686, 1, 140);
+INSERT INTO `sys_role_menu` VALUES (7687, 1, 161);
+INSERT INTO `sys_role_menu` VALUES (7688, 1, 162);
+INSERT INTO `sys_role_menu` VALUES (7689, 1, 163);
+INSERT INTO `sys_role_menu` VALUES (7690, 1, 164);
+INSERT INTO `sys_role_menu` VALUES (7691, 1, 165);
+INSERT INTO `sys_role_menu` VALUES (7692, 1, 166);
+INSERT INTO `sys_role_menu` VALUES (7693, 1, 167);
+INSERT INTO `sys_role_menu` VALUES (7694, 1, 168);
+INSERT INTO `sys_role_menu` VALUES (7695, 1, 169);
 
 -- ----------------------------
 -- Table structure for sys_server
@@ -2249,6 +1691,7 @@ CREATE TABLE `sys_user`  (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
   `gender` tinyint NULL DEFAULT 0 COMMENT '性别(0-未知 1-男 2-女)',
   `status` tinyint NULL DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
+  `is_quit` tinyint NULL DEFAULT 0 COMMENT '是否离职(0-否 1-是)',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -2261,17 +1704,19 @@ CREATE TABLE `sys_user`  (
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
   INDEX `idx_open_id`(`open_id` ASC) USING BTREE,
   INDEX `idx_user_type`(`user_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888888', 1, 0, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (3, 2, 'mars', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars', NULL, '1121@qq.com', '18888888881', 1, 1, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$DrZPHQH49c0ywbmlYOmhBeNDOquQlC/VqulezUj5jHlif.jVkTKRO', 'mars666', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 22:30:46', '2026-01-31 22:30:46', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (6, NULL, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888881', 1, 1, 1, '', '2026-01-29 23:21:12', '2026-02-09 14:59:31', 1, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (3, 2, 'mars11', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars11', NULL, '1121@qq.com', '18888888881', 1, 1, 0, '', '2026-01-29 23:21:12', '2026-02-08 16:44:59', 1, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$i3ztgmo5kmPow2ro8Kuxouq0yLnv/JM4huDoZdVIeDp3ErKtBSxiS', 'mars666', NULL, 'wqexpore@163.com', '18888888882', 1, 1, 0, NULL, '2026-01-31 22:30:46', '2026-02-09 14:30:30', 5, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (6, 2, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (10, NULL, 'Mars', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (11, 2, 'mars02', '$2a$10$4LVE/zBTH6smGMjfOu/bku1PBaFun3JpFCYG1bTZgPHJQuE3hyjVC', 'mars02', NULL, '111@qq.com', '18888888888', 1, 1, 0, '', '2026-02-09 14:31:09', '2026-02-09 14:31:09', 5, 5, 'admin', NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_blacklist
@@ -2314,6 +1759,27 @@ CREATE TABLE `sys_user_notice`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for sys_user_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_post`;
+CREATE TABLE `sys_user_post`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `post_id` bigint NOT NULL COMMENT '岗位ID',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_post_id`(`post_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_post
+-- ----------------------------
+INSERT INTO `sys_user_post` VALUES (1, 11, 2);
+INSERT INTO `sys_user_post` VALUES (2, 10, 4);
+INSERT INTO `sys_user_post` VALUES (3, 5, 3);
+INSERT INTO `sys_user_post` VALUES (4, 5, 4);
+
+-- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
@@ -2324,45 +1790,19 @@ CREATE TABLE `sys_user_role`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (8, 5, 2);
 INSERT INTO `sys_user_role` VALUES (9, 4, 2);
 INSERT INTO `sys_user_role` VALUES (11, 3, 2);
 INSERT INTO `sys_user_role` VALUES (12, 1, 1);
-INSERT INTO `sys_user_role` VALUES (13, 2, 2);
-INSERT INTO `sys_user_role` VALUES (14, 6, 2);
-
--- ----------------------------
--- Table structure for t_order
--- ----------------------------
-DROP TABLE IF EXISTS `t_order`;
-CREATE TABLE `t_order`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号（业务订单号）',
-  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品名称',
-  `product_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '商品描述',
-  `amount` decimal(10, 2) NOT NULL COMMENT '订单金额（单位：元）',
-  `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '支付方式（WECHAT/ALIPAY）',
-  `status` int NOT NULL DEFAULT 0 COMMENT '支付状态（0-待支付 1-支付中 2-支付成功 3-支付失败 4-已退款 5-已关闭）',
-  `third_order_no` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方订单号（微信/支付宝返回的订单号）',
-  `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
-  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of t_order
--- ----------------------------
+INSERT INTO `sys_user_role` VALUES (25, 7, 2);
+INSERT INTO `sys_user_role` VALUES (30, 6, 2);
+INSERT INTO `sys_user_role` VALUES (33, 2, 2);
+INSERT INTO `sys_user_role` VALUES (34, 11, 2);
+INSERT INTO `sys_user_role` VALUES (35, 10, 2);
+INSERT INTO `sys_user_role` VALUES (36, 5, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;

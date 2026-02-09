@@ -34,6 +34,11 @@ public class SysRole extends BaseEntity {
     private Integer status;
 
     /**
+     * 数据范围(1全部 2自定义 3本部门 4本部门及以下 5仅本人)
+     */
+    private Integer dataScope;
+
+    /**
      * 备注
      */
     private String remark;

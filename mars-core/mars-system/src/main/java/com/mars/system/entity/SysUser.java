@@ -79,4 +79,9 @@ public class SysUser extends BaseEntity {
      * 微信openId(微信扫码登录时使用)
      */
     private String openId;
+
+    /**
+     * 是否离职(0-否 1-是)
+     */
+    private Integer isQuit;
 }

@@ -14,22 +14,22 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 分页查询用户
      */
-    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId);
+    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId, Long postId);
 
     /**
-     * 获取用户详情（包含角色）
+     * 获取用户详情（包含角色和岗位）
      */
     SysUser getDetail(Long id);
 
     /**
      * 创建用户
      */
-    void create(SysUser user, List<Long> roleIds);
+    void create(SysUser user, List<Long> roleIds, List<Long> postIds);
 
     /**
      * 更新用户
      */
-    void update(SysUser user, List<Long> roleIds);
+    void update(SysUser user, List<Long> roleIds, List<Long> postIds);
 
     /**
      * 删除用户
@@ -70,6 +70,11 @@ public interface SysUserService extends IService<SysUser> {
      * 获取所有用户列表
      */
     List<SysUser> listAll();
+
+    /**
+     * 获取用户岗位ID列表
+     */
+    List<Long> getPostIds(Long userId);
 
     /**
      * 根据微信openId获取用户

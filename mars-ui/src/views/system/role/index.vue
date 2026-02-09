@@ -100,6 +100,27 @@
         <n-form-item label="备注" path="remark">
           <n-input v-model:value="formData.remark" type="textarea" placeholder="请输入备注" />
         </n-form-item>
+        <n-form-item label="数据权限" path="dataScope">
+          <n-select
+            v-model:value="formData.dataScope"
+            placeholder="请选择数据范围"
+            :options="dataScopeOptions"
+          />
+        </n-form-item>
+        <n-form-item v-if="formData.dataScope === 2" label="部门权限">
+          <div class="menu-tree-wrapper">
+            <n-tree
+              :data="deptTreeData"
+              :checked-keys="deptIds"
+              checkable
+              cascade
+              check-strategy="all"
+              selectable
+              block-line
+              @update:checked-keys="handleDeptCheck"
+            />
+          </div>
+        </n-form-item>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -115,7 +136,7 @@
 import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
-import { roleApi, menuApi, type SysRole, type SysMenu } from '@/api/system'
+import { roleApi, menuApi, deptApi, type SysRole, type SysMenu, type SysDept } from '@/api/system'
 import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
@@ -137,6 +158,15 @@ const statusOptions = [
   { label: '禁用', value: 0 }
 ]
 
+// 数据范围选项
+const dataScopeOptions = [
+  { label: '全部数据权限', value: 1 },
+  { label: '自定数据权限', value: 2 },
+  { label: '本部门数据权限', value: 3 },
+  { label: '本部门及以下数据权限', value: 4 },
+  { label: '仅本人数据权限', value: 5 }
+]
+
 // 表格数据
 const tableData = ref<SysRole[]>([])
 const loading = ref(false)
@@ -151,6 +181,10 @@ const pagination = reactive({
 // 菜单树
 const menuTreeData = ref<TreeOption[]>([])
 const menuIds = ref<number[]>([])
+
+// 部门树
+const deptTreeData = ref<TreeOption[]>([])
+const deptIds = ref<number[]>([])
 
 // 表格列
 const columns: DataTableColumns<SysRole> = [
@@ -219,6 +253,15 @@ function convertMenuToTree(menus: SysMenu[]): TreeOption[] {
   }))
 }
 
+// 转换部门为树结构
+function convertDeptToTree(depts: SysDept[]): TreeOption[] {
+  return depts.map(dept => ({
+    key: dept.id,
+    label: dept.deptName,
+    children: dept.children ? convertDeptToTree(dept.children) : undefined
+  }))
+}
+
 // 加载数据
 async function loadData() {
   loading.value = true
@@ -243,6 +286,16 @@ async function loadMenuTree() {
   try {
     const menus = await menuApi.tree()
     menuTreeData.value = convertMenuToTree(menus)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 加载部门树
+async function loadDeptTree() {
+  try {
+    const depts = await deptApi.tree()
+    deptTreeData.value = convertDeptToTree(depts)
   } catch (error) {
     // 错误已在拦截器处理
   }
@@ -284,6 +337,11 @@ function handleIndeterminateChange(keys: number[]) {
   halfCheckedKeys.value = keys
 }
 
+// 部门选择
+function handleDeptCheck(keys: number[]) {
+  deptIds.value = keys
+}
+
 // 新增
 function handleAdd() {
   modalTitle.value = '新增角色'
@@ -293,9 +351,11 @@ function handleAdd() {
     code: '',
     sort: 0,
     status: 1,
+    dataScope: 1,
     remark: ''
   })
   menuIds.value = []
+  deptIds.value = []
   modalVisible.value = true
 }
 
@@ -324,6 +384,8 @@ async function handleEdit(row: SysRole) {
     // 只选中叶子节点，父节点会自动计算半选状态
     const leafIds = getLeafNodeIds(menuTreeData.value)
     menuIds.value = res.menuIds.filter((id: number) => leafIds.includes(id))
+    // 部门回显
+    deptIds.value = res.deptIds || []
     modalVisible.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -341,7 +403,8 @@ async function handleSubmit() {
     
     const data = {
       role: { ...formData },
-      menuIds: allMenuIds
+      menuIds: allMenuIds,
+      deptIds: formData.dataScope === 2 ? deptIds.value : []
     }
     
     if (formData.id) {
@@ -383,6 +446,7 @@ function handleDelete(row: SysRole) {
 onMounted(() => {
   loadData()
   loadMenuTree()
+  loadDeptTree()
 })
 </script>
 

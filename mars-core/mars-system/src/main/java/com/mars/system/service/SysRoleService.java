@@ -24,12 +24,12 @@ public interface SysRoleService extends IService<SysRole> {
     /**
      * 创建角色
      */
-    void create(SysRole role, List<Long> menuIds);
+    void create(SysRole role, List<Long> menuIds, List<Long> deptIds);
 
     /**
      * 更新角色
      */
-    void update(SysRole role, List<Long> menuIds);
+    void update(SysRole role, List<Long> menuIds, List<Long> deptIds);
 
     /**
      * 删除角色
