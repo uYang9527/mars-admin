@@ -758,8 +758,12 @@ onMounted(() => {
   transition: all 0.2s;
 }
 
-.type-tab:hover { color: var(--n-primary-color); }
-.type-tab.active { color: var(--n-primary-color); font-weight: 500; background: var(--n-primary-color-hover); }
+.type-tab:hover { color: #18a058; }
+.type-tab.active {
+  color: #fff;
+  font-weight: 500;
+  background: #18a058;
+}
 
 .group-list-wrapper {
   flex: 1;
