@@ -1,5 +1,0 @@
-com\mars\sms\ConsoleSmsService.class
-com\mars\sms\SmsService.class
-com\mars\sms\SmsServiceFactory.class
-com\mars\sms\AliyunSmsService.class
-com\mars\sms\TencentSmsService.class

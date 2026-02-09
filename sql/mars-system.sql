@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 09/02/2026 16:09:00
+ Date: 09/02/2026 21:30:03
 */
 
 SET NAMES utf8mb4;
@@ -848,7 +848,7 @@ INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"p
 INSERT INTO `sys_config_group` VALUES (10, 'push', '推送配置', NULL, '{\r\n  \"enabled\": false,\r\n  \"provider\": \"console\",\r\n  \"appKey\": \"\",\r\n  \"masterSecret\": \"\"\r\n}', 10, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:26:34');
 INSERT INTO `sys_config_group` VALUES (11, 'thirdParty', '第三方配置', NULL, '{\"wechat\":{\"enabled\":false,\"appId\":\"\",\"appSecret\":\"\"},\"alipay\":{\"enabled\":false,\"appId\":\"\",\"privateKey\":\"\",\"publicKey\":\"\"},\"github\":{\"enabled\":false,\"clientId\":\"\",\"clientSecret\":\"\"}}', 11, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (12, 'payment', '支付配置', NULL, '{\r\n    \"wechatPay\": {\r\n        \"enabled\": true,\r\n        \"mchId\": \"1627500294\",\r\n        \"appId\": \"wxe97894ad8c7ef7e0\",\r\n        \"apiKey\": \"\",\r\n        \"apiV3Key\": \"lxpvkwojpnxafnoutgqowbecdwdsmpwq\",\r\n        \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDlGsA4SciJOYYq\\nTL+/hYlaRLkkJ060c+2MrOl7egozzwddhNLHRC0wasgGdQdbDI39mAm34I7mLdMV\\nlv10dgtKXgpQBHc9QPKy3bPFcgFrz7rxS0YcFrqmzzB69a0LVVfAsZE2SD/4yKc3\\nVFW8cLKQZKRYYm3gZGwN0rsJFVU3dfWgOaoNlBkc5bNIbY7j4aHeW7tJXOQCiig6\\nKj+Dh7r1/POzTciCfqVB1Vjf+VkFMuF6oyKLxMBzFzxvXCGw3PySL6HuY1g5xI7j\\nbNi+xfqtzxZEQAv1QjbfBjzygQXeLCpsuYGVFRRVdyNYxkV90FDVI8swLXpMh65b\\nYNgBGtn1AgMBAAECggEBAKlIx+mPk07aI2mUBkcU+7WofAjbxosN8eP1TBxBw9Ie\\nUnnmj/xPQvi4ng4vYP0E3NIaCmxE0DICgCs+ww7Pvm336LTRZ+3p1KsXqCLnp2cr\\nOh3bGfXdUZO6Gj9w0qlCKTInwn2SizpfwTbf6O3xc++/fbQVHs0kRrc8E5mVmr77\\n01aGIJvXxtQPfdn/R2TMBwqiN8pO5igILlDzNAEusXnfSDOp3rYsXwcnCxJqgnVm\\nydlo7JMU2iqRKSD09qeKFgb+Hbr9aJIQdcvjGBSNmF3MsCFgs/XIb47B4xvy2HBN\\nvIBRwBy08fFeih0GE+0IKr0LyAQ8naMjRTD8A6SbPE0CgYEA9HJ+qigfUPsh/Q+u\\nyyoZeIrsR1xoNVcwANwpWnChsic+B3V/D/pWMJxPv9wKRsVt/dc4kVht//j69tS8\\ny3BFoUxSfUuoK5hdhI8osk3wdVFOnrPPs57s2bMcPPF3Rd5iMvcRNqM1IENCpDAR\\n4zlrEqcMpGSNfaSVhFEyo0fvsV8CgYEA7+6gxxkZJD7DwoVUk8w0BJoq7pNUZc43\\nC0uI8EIRCWxSkd5ahruJjreJuFM1IQUmmqFgewdhEIdUjyORwgVQlo469uwqYPQ5\\n8RWMJcQVK8+QEWV/TdywO3P7oEFgFmVlII/h7Janz/ZlOFZ1X8ANVvpenqgeB2j+\\nl1JMVfjnUSsCgYAHmvRT6PGofFe/XtiKW6H1PSVCxx464p6MuEzVEoIFX/EvHDm6\\nzogV9RcKGhd7wjK83hBVfVHWz/FG8rF5BuIztYMvgMYXrSLjt+yFN6WOkNwIVgHV\\nTdGCqG7tennCg7u8aDFx6LwDZ/RP1WsJDcVGDEp5ZuN8ED3SoxAXQmqzswKBgCk3\\nOtM40oLRbVtq//5ro7vup9VX5bWfWQFNtnZfQwH1Y7G/GpnueVDU4omRcZz8f4cs\\nlaBMwjXOqY31NEK6Gv/h6usj4pvJGHL7mpmaN3DRNRRn9RhxAq0T3XPIBzORs2+G\\nh+7WanllADpPT9Zk7WW1mK90fcQUGzfvYUGbglEFAoGARffpCUANEp1oedOyUVRN\\nSKIvSRggxxqMuzSdnm7eGKDmm+kbA8Iig2C0jgcn4vQZpngbhlNsGrb26Bvdh8wE\\nTBtkcxSBjzsFBdE4kSdVqxnZeVezouWixvkxL4ax1xwczS9hyJlunDljsUb2PkwZ\\nBE39glMdpIqGYrpSTM3p6mI=\\n-----END PRIVATE KEY-----\",\r\n        \"certSerialNo\": \"2FD947564972A8536BDD750944C4796CDF3265EB\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/wechat\"\r\n    },\r\n    \"alipay\": {\r\n        \"enabled\": true,\r\n        \"appId\": \"2021005192689177\",\r\n        \"privateKey\": \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCc1KF+8tqemN/+k99xwIxtfrZ8Py7ZtSv6zoDa0Z9pW1IWpYmz+Zm1wtF3CTX5xApyyBTWQgK8Pb/oEz4u4zKzuwcZFX/IdfP2mWaMHRvWnDLunWqH8rQO+JOaWDvzA68lL02AfubuafQldXY+hdeOpt+t5Kj/OnC+o4z0qTAcM9uTpeX9Z8lttlcW9JtCATRP+klr52bRaOcACgh3MIJrQ3OteeiikvbVtZtw4u3X2h5tdRlCl2/youKO6/iZXGmAmtTGRU8Iy8iBAMI6Ow8K6XH5xHccTzTOx8xv1PZ2IszVvMVhLJDXaUg4DyVbhN8hrmKFmu1i9eBbdSZixkNpAgMBAAECggEAXDjFBqu0VxK6lS9Lc86wRSsAECvvVuIsjH2mVAZ0YTXsHZkWUpjyBGodVow6Czd2lWyGpD+I8Dy3frbiGBxOElZmpB96VtzVqyslnDr5xcdwQ9SZcnwL2cnesiI0joCaG5mnT2pQTd5MTUK3V6jIyv/iBJWzsvIgnln6Z1yeB9ai/3c5Lvu0/ZnhC7trqD73BB1x49E0AV90y0/C/IA+FLEKio9/xjgYweSvTiaYTCBKzQv74Oco54HDtd93rlavZUu7F1qdpOWAj903N1xf8A/fepcL8/qPdSZNoRbPr2NgPMZa70hLvnWDfIXRWoaOZ+lFnPtewI8FAaVX4mI3AQKBgQDO8GxdEunrmRuOXbv/JqTj0dG2lXT7kUvDdJ6QVr3HIsmyxkZXQsp/7QdXh/FdRBNFwkOirmClUqrvYq3CbytgjNdxmYdZQ2A/YXqDdTs8J2Li36hbkOPIFNyMZsjtYF39eosf2oF0/ydRSlMqW5B6jpUh5qCYVWkVtUjLuXaM2QKBgQDCAwMqd6Um9X50dKNIqY1X2ImLiRdLVaqn4/pTwylxxIrRO9f5jF7PnenDci809+Sc+yCcZarvdh1QbUE+YGhYOjj2WGaB9sS2TGDFzOguGs7m7hCIQPa6VEyP2I07kaZcpb+r5GqnT9U47mPRcLJe3zop+w3B7cW5JcdtOSCREQKBgQCbpbALzWcOIoncado2Dk3lYPJ4fy+O6/jtWTDOZb+2IQ9OHN3ZUk5XK+PizUgYm1RXmscefEQK9QPGrBT/cnhQ1X5SXmS0Gf4xjdMFP06/buxsskbCIFeDLVW5cLHeASaQufQckE/gvO1IsjudV2NzGv1Gk13lVhCFGGZZfPSS+QKBgG4y2dSAWx1y6d3p9mkqbW9NPms0djfDNAji9GgpfVvyoErSbA2BzsSs1H/AVtIGUCNefRp4oQwdEe+B70In7nzWrU43zhnZ+cf2QC16AxNVBNqktF1AUSRrB4XZIfeI9m6/csyHFJFuRhVtSuNG2PoMX3RC9oCFtv5AWDNQ9I+RAoGAZF1dQs826kCeptQHXnlgTGNNIX9jLGyfO2qysBOCcqwFIrcJpsb11Q1xLrQmju6EHzr4kAINp32Qd5fo/oCM25JuSiw+fK6CgkAEYjSr/9dD4KpGicHmsib3GyfPj850K2RwFz2RckwX+If/NgI3dIecMTgTJ0tfytaaeqFH4PY=\",\r\n        \"publicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiwci3m6eLWeR1kgfeWm/F0V1e68VWUyRB4N5mhnxryTHqiLeN8ilxN9Kn/Ute1C9cL3b4hfx3NYk7zt60QWP9ly8QJQOlqd1H7XsG16AlEpsIaN1SrMYWq16nAD6uwvMmK0nTdzhuNIKOfdC2YWyv3AJTWh0nCTddYV2D+eSH/Ui6xkfgK8pFn/X1Q0xjXvuZrsXxF+WTk5mymEy2u4Kp7/rD/lClfNAv68kOHe92iKj1VzhtROrSp5//xuvL2PA7FLMqo5olZpBmda3eMWgnvHNwvaJvHJENN2ubANwMPNkwMkQ7MKLCBI33fzEERxJBACrJCc6lo8t+wq3zDo/uwIDAQAB\",\r\n        \"signType\": \"RSA2\",\r\n        \"charset\": \"UTF-8\",\r\n        \"gatewayUrl\": \"https://openapi.alipay.com/gateway.do\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/alipay\",\r\n        \"returnUrl\": \"\"\r\n    }\r\n}', 12, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:13:21');
-INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"tokenName\":\"Authorization\",\"tokenTimeout\":3600,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
+INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":false,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"tokenName\":\"Authorization\",\"tokenTimeout\":3600,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
 INSERT INTO `sys_config_group` VALUES (15, 'wechatMiniProgram', '小程序配置', NULL, '{\"enabled\":true,\"appId\":\"wxe97894ad8c7ef7e0\",\"appSecret\":\"ef498f4264b2271eac752b36433aca63\"}', 14, 1, '微信小程序登录配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 INSERT INTO `sys_config_group` VALUES (16, 'wechatMp', '公众号配置', NULL, '{\"enabled\":true,\"appId\":\"wx12721c4ea1370b36\",\"appSecret\":\"f860891f96df4fffe78f0424b913aedd\",\"token\":\"mars_coding_wechat_token1\",\"aesKey\":\"zBtP7b8qZKCSW2eU7Ozm6Jyapv5PCQu2Vxpj1v72qBP\",\"callbackUrl\":\"https://api.mars-coder.cn/api/wechat/callback\",\"oauthRedirectUrl\":\"http://localhost:3001/login\",\"menuConfig\":\"\"}', 15, 1, '微信公众号配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 
@@ -972,7 +972,7 @@ CREATE TABLE `sys_file`  (
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_group_id`(`group_id` ASC) USING BTREE,
   INDEX `idx_file_type`(`file_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file
@@ -984,6 +984,17 @@ INSERT INTO `sys_file` VALUES (39, '7WKDXjCMF6V0788491cd9d8fc92f435747cb5e46f478
 INSERT INTO `sys_file` VALUES (40, 'gWUFBuyJ0yTl100deb149c357e85d0ffccb56fecb67b.jpeg', '2b3c6ece52694e66a256d72c0ae0be6a.jpeg', 'images/2026/02/08/2b3c6ece52694e66a256d72c0ae0be6a.jpeg', '/api/files/images/2026/02/08/2b3c6ece52694e66a256d72c0ae0be6a.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '10', '2026-02-08 16:46:44');
 INSERT INTO `sys_file` VALUES (41, 'XSGeetx0TvKka3c75490d3d905a46f0da72568fa9f78.jpeg', 'fdc1626199204477ae2093aeedc7aec8.jpeg', 'images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', '/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 7086, 'image/jpeg', '.jpeg', 'local', '', NULL, '', '10', '2026-02-08 17:26:38');
 INSERT INTO `sys_file` VALUES (44, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', 'e3065b470f9342f2bfeef9aa35182d39.jpg', '2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg', '/api/files/2026/02/09/e3065b470f9342f2bfeef9aa35182d39.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 11:49:05');
+INSERT INTO `sys_file` VALUES (45, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', 'e321bfaf05754cb98700459c53fed98a.jpg', '2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg', '/api/files/2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-09 16:52:03');
+INSERT INTO `sys_file` VALUES (46, '项目汇总交付表.xlsx', 'c2a527651b6845f7ac36af3edf32e6c3.xlsx', '2026/02/09/c2a527651b6845f7ac36af3edf32e6c3.xlsx', '/api/files/2026/02/09/c2a527651b6845f7ac36af3edf32e6c3.xlsx', 5925, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', '.xlsx', 'local', '', 2, '', '1', '2026-02-09 16:53:29');
+INSERT INTO `sys_file` VALUES (47, 'img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg', 'b4d816e8567f4a219c33b9d0ee1a5615.jpg', '2026/02/09/b4d816e8567f4a219c33b9d0ee1a5615.jpg', '/api/files/2026/02/09/b4d816e8567f4a219c33b9d0ee1a5615.jpg', 108824, 'image/jpeg', '.jpg', 'local', '', 2, '', '1', '2026-02-09 16:53:52');
+INSERT INTO `sys_file` VALUES (48, 'img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg', 'be55af87595046cdb2834cc611a81f30.jpg', '2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', '/api/files/2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', 108824, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-09 16:54:07');
+INSERT INTO `sys_file` VALUES (49, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', '2aa015bf21dd4bf78e25b904507e88a9.jpg', '2026/02/09/2aa015bf21dd4bf78e25b904507e88a9.jpg', '/api/files/2026/02/09/2aa015bf21dd4bf78e25b904507e88a9.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:05:03');
+INSERT INTO `sys_file` VALUES (50, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', '78ab2e5845d245d4976f18069258a1e3.jpg', '2026/02/09/78ab2e5845d245d4976f18069258a1e3.jpg', '/api/files/2026/02/09/78ab2e5845d245d4976f18069258a1e3.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:06:38');
+INSERT INTO `sys_file` VALUES (51, 'img_v3_02un_25630100-71c0-4026-8965-5133f5d735dg.jpg', 'd983f41b0997442bacb33a057c3adf56.jpg', '2026/02/09/d983f41b0997442bacb33a057c3adf56.jpg', '/api/files/2026/02/09/d983f41b0997442bacb33a057c3adf56.jpg', 92978, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:06:42');
+INSERT INTO `sys_file` VALUES (52, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', 'f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg', '2026/02/09/f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg', '/api/files/2026/02/09/f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:06:44');
+INSERT INTO `sys_file` VALUES (53, 'img_v3_02un_25630100-71c0-4026-8965-5133f5d735dg.jpg', 'c5b39025dcc5452fb652bdcea9a1618f.jpg', '2026/02/09/c5b39025dcc5452fb652bdcea9a1618f.jpg', '/api/files/2026/02/09/c5b39025dcc5452fb652bdcea9a1618f.jpg', 92978, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:06:46');
+INSERT INTO `sys_file` VALUES (54, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '23d5546b227743c6b9b24eb19bb50476.jpg', '2026/02/09/23d5546b227743c6b9b24eb19bb50476.jpg', '/api/files/2026/02/09/23d5546b227743c6b9b24eb19bb50476.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-09 21:07:03');
+INSERT INTO `sys_file` VALUES (55, 'caa41ac5c974e4fa96b1df176aeba849.png', '7d8d2dbcb3924c128ac708d3bef8a63d.png', '2026/02/09/7d8d2dbcb3924c128ac708d3bef8a63d.png', '/api/files/2026/02/09/7d8d2dbcb3924c128ac708d3bef8a63d.png', 16286, 'image/png', '.png', 'local', '', NULL, '', '1', '2026-02-09 21:07:06');
 
 -- ----------------------------
 -- Table structure for sys_file_config
@@ -1029,12 +1040,13 @@ CREATE TABLE `sys_file_group`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file_group
 -- ----------------------------
 INSERT INTO `sys_file_group` VALUES (1, '测试分组', 0, NULL, '2026-02-02 16:50:50', NULL);
+INSERT INTO `sys_file_group` VALUES (2, '111', 0, NULL, '2026-02-09 16:53:04', NULL);
 
 -- ----------------------------
 -- Table structure for sys_job
@@ -1080,7 +1092,7 @@ CREATE TABLE `sys_job_log`  (
   `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
   `stop_time` datetime NULL DEFAULT NULL COMMENT '停止时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -1097,6 +1109,17 @@ INSERT INTO `sys_job_log` VALUES (9, '1', 'DEFAULT', 'sampleTask.noParams', '执
 INSERT INTO `sys_job_log` VALUES (10, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 09:51:50', '2026-02-07 09:51:50');
 INSERT INTO `sys_job_log` VALUES (11, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:54:56', '2026-02-07 23:54:56');
 INSERT INTO `sys_job_log` VALUES (12, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:55:04', '2026-02-07 23:55:04');
+INSERT INTO `sys_job_log` VALUES (13, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:25', '2026-02-09 17:04:25');
+INSERT INTO `sys_job_log` VALUES (14, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (15, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (16, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (17, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (18, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:34', '2026-02-09 17:04:34');
+INSERT INTO `sys_job_log` VALUES (19, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (20, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (21, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (22, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (23, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
 
 -- ----------------------------
 -- Table structure for sys_login_log
@@ -1113,7 +1136,7 @@ CREATE TABLE `sys_login_log`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 210 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_login_log
@@ -1168,6 +1191,10 @@ INSERT INTO `sys_login_log` VALUES (206, 'admin', '127.0.0.1', '内网IP', 'Chro
 INSERT INTO `sys_login_log` VALUES (207, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已离职', '2026-02-09 14:59:42');
 INSERT INTO `sys_login_log` VALUES (208, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 15:00:20');
 INSERT INTO `sys_login_log` VALUES (209, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 16:01:44');
+INSERT INTO `sys_login_log` VALUES (210, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 16:54:58');
+INSERT INTO `sys_login_log` VALUES (211, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 17:02:33');
+INSERT INTO `sys_login_log` VALUES (212, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 19:12:42');
+INSERT INTO `sys_login_log` VALUES (213, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-09 20:27:54');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1345,7 +1372,7 @@ CREATE TABLE `sys_oper_log`  (
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 354 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 371 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1394,6 +1421,23 @@ INSERT INTO `sys_oper_log` VALUES (350, '用户管理', 2, 'com.mars.admin.contr
 INSERT INTO `sys_oper_log` VALUES (351, '岗位管理', 1, 'com.mars.admin.controller.system.SysPostController.create()', 'POST', 'admin', '/api/sys/post', '127.0.0.1', '{\"id\":7,\"createTime\":\"2026-02-09T15:47:34.7205627\",\"updateTime\":\"2026-02-09T15:47:34.7205627\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":0,\"children\":null,\"postCode\":\"test_coder\",\"postName\":\"测试工程师\",\"sort\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:47:35', 0);
 INSERT INTO `sys_oper_log` VALUES (352, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.move()', 'POST', 'admin', '/api/sys/post/7/move', '127.0.0.1', '7 2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:50:58', 0);
 INSERT INTO `sys_oper_log` VALUES (353, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-02-09T14:30:30\",\"createBy\":5,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":\"wqexpore@163.com\",\"phone\":\"18888888882\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[3,4]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 15:55:56', 0);
+INSERT INTO `sys_oper_log` VALUES (354, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":10,\"createTime\":\"2026-02-08T16:46:40\",\"updateTime\":\"2026-02-08T16:46:40\",\"createBy\":null,\"updateBy\":10,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"postNames\":null,\"username\":\"Mars\",\"password\":null,\"nickname\":\"Mars\",\"avatar\":\"http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg\",\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null,\"userType\":\"app\",\"openId\":\"opzUF43XlvnVUw5S9qS2cI6L7p9M\",\"isQuit\":0},\"roleIds\":[2],\"postIds\":[4]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 16:21:54', 0);
+INSERT INTO `sys_oper_log` VALUES (355, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:58:21\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":1,\"deptName\":null,\"postNames\":null,\"username\":\"admin\",\"password\":null,\"nickname\":\"超级管理员\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[1],\"postIds\":[1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 16:23:22', 0);
+INSERT INTO `sys_oper_log` VALUES (356, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.move()', 'POST', 'admin', '/api/sys/post/4/move', '127.0.0.1', '4 1', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 16:27:55', 0);
+INSERT INTO `sys_oper_log` VALUES (357, '岗位管理', 2, 'com.mars.admin.controller.system.SysPostController.move()', 'POST', 'admin', '/api/sys/post/4/move', '127.0.0.1', '4 2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 16:27:58', 0);
+INSERT INTO `sys_oper_log` VALUES (358, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":45,\"originalName\":\"img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg\",\"fileName\":\"e321bfaf05754cb98700459c53fed98a.jpg\",\"filePath\":\"2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg\",\"url\":\"/api/files/2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg\",\"fileSize\":101083,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-09T16:52:02.7691962\",\"remark\":null}}', 0, NULL, '2026-02-09 16:52:03', 0);
+INSERT INTO `sys_oper_log` VALUES (359, '创建文件分组', 1, 'com.mars.admin.controller.file.SysFileGroupController.create()', 'POST', 'admin', '/api/sys/file-group', '127.0.0.1', '{\"id\":2,\"name\":\"111\",\"sort\":0,\"fileCount\":null,\"createBy\":null,\"createTime\":\"2026-02-09T16:53:03.5460584\",\"updateTime\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 16:53:04', 0);
+INSERT INTO `sys_oper_log` VALUES (360, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":46,\"originalName\":\"项目汇总交付表.xlsx\",\"fileName\":\"c2a527651b6845f7ac36af3edf32e6c3.xlsx\",\"filePath\":\"2026/02/09/c2a527651b6845f7ac36af3edf32e6c3.xlsx\",\"url\":\"/api/files/2026/02/09/c2a527651b6845f7ac36af3edf32e6c3.xlsx\",\"fileSize\":5925,\"fileType\":\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\",\"fileSuffix\":\".xlsx\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":2,\"createBy\":\"1\",\"createTime\":\"2026-02-09T16:53:28.72321\",\"remark\":null}}', 0, NULL, '2026-02-09 16:53:29', 0);
+INSERT INTO `sys_oper_log` VALUES (361, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":47,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"b4d816e8567f4a219c33b9d0ee1a5615.jpg\",\"filePath\":\"2026/02/09/b4d816e8567f4a219c33b9d0ee1a5615.jpg\",\"url\":\"/api/files/2026/02/09/b4d816e8567f4a219c33b9d0ee1a5615.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":2,\"createBy\":\"1\",\"createTime\":\"2026-02-09T16:53:52.4690099\",\"remark\":null}}', 0, NULL, '2026-02-09 16:53:52', 0);
+INSERT INTO `sys_oper_log` VALUES (362, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":48,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"be55af87595046cdb2834cc611a81f30.jpg\",\"filePath\":\"2026/02/09/be55af87595046cdb2834cc611a81f30.jpg\",\"url\":\"/api/files/2026/02/09/be55af87595046cdb2834cc611a81f30.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-09T16:54:07.1678495\",\"remark\":null}}', 0, NULL, '2026-02-09 16:54:07', 0);
+INSERT INTO `sys_oper_log` VALUES (363, '岗位管理', 3, 'com.mars.admin.controller.system.SysPostController.delete()', 'DELETE', 'admin', '/api/sys/post/7', '127.0.0.1', '7', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-09 17:03:40', 0);
+INSERT INTO `sys_oper_log` VALUES (364, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":49,\"originalName\":\"img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg\",\"fileName\":\"2aa015bf21dd4bf78e25b904507e88a9.jpg\",\"filePath\":\"2026/02/09/2aa015bf21dd4bf78e25b904507e88a9.jpg\",\"url\":\"/api/files/2026/02/09/2aa015bf21dd4bf78e25b904507e88a9.jpg\",\"fileSize\":101083,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:05:02.8086823\",\"remark\":null}}', 0, NULL, '2026-02-09 21:05:03', 0);
+INSERT INTO `sys_oper_log` VALUES (365, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":50,\"originalName\":\"img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg\",\"fileName\":\"78ab2e5845d245d4976f18069258a1e3.jpg\",\"filePath\":\"2026/02/09/78ab2e5845d245d4976f18069258a1e3.jpg\",\"url\":\"/api/files/2026/02/09/78ab2e5845d245d4976f18069258a1e3.jpg\",\"fileSize\":101083,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:06:37.8053148\",\"remark\":null}}', 0, NULL, '2026-02-09 21:06:38', 0);
+INSERT INTO `sys_oper_log` VALUES (366, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":51,\"originalName\":\"img_v3_02un_25630100-71c0-4026-8965-5133f5d735dg.jpg\",\"fileName\":\"d983f41b0997442bacb33a057c3adf56.jpg\",\"filePath\":\"2026/02/09/d983f41b0997442bacb33a057c3adf56.jpg\",\"url\":\"/api/files/2026/02/09/d983f41b0997442bacb33a057c3adf56.jpg\",\"fileSize\":92978,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:06:41.6506017\",\"remark\":null}}', 0, NULL, '2026-02-09 21:06:42', 0);
+INSERT INTO `sys_oper_log` VALUES (367, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":52,\"originalName\":\"img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg\",\"fileName\":\"f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg\",\"filePath\":\"2026/02/09/f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg\",\"url\":\"/api/files/2026/02/09/f4b77e83a7974286a5e8e3bd2c0bf6a9.jpg\",\"fileSize\":101083,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:06:43.780783\",\"remark\":null}}', 0, NULL, '2026-02-09 21:06:44', 0);
+INSERT INTO `sys_oper_log` VALUES (368, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":53,\"originalName\":\"img_v3_02un_25630100-71c0-4026-8965-5133f5d735dg.jpg\",\"fileName\":\"c5b39025dcc5452fb652bdcea9a1618f.jpg\",\"filePath\":\"2026/02/09/c5b39025dcc5452fb652bdcea9a1618f.jpg\",\"url\":\"/api/files/2026/02/09/c5b39025dcc5452fb652bdcea9a1618f.jpg\",\"fileSize\":92978,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:06:45.5588546\",\"remark\":null}}', 0, NULL, '2026-02-09 21:06:46', 0);
+INSERT INTO `sys_oper_log` VALUES (369, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":54,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"23d5546b227743c6b9b24eb19bb50476.jpg\",\"filePath\":\"2026/02/09/23d5546b227743c6b9b24eb19bb50476.jpg\",\"url\":\"/api/files/2026/02/09/23d5546b227743c6b9b24eb19bb50476.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:07:02.8586868\",\"remark\":null}}', 0, NULL, '2026-02-09 21:07:03', 0);
+INSERT INTO `sys_oper_log` VALUES (370, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":55,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"7d8d2dbcb3924c128ac708d3bef8a63d.png\",\"filePath\":\"2026/02/09/7d8d2dbcb3924c128ac708d3bef8a63d.png\",\"url\":\"/api/files/2026/02/09/7d8d2dbcb3924c128ac708d3bef8a63d.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-09T21:07:06.2040492\",\"remark\":null}}', 0, NULL, '2026-02-09 21:07:06', 0);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1424,7 +1468,7 @@ INSERT INTO `sys_post` VALUES (2, 6, 'cto', '技术总监', 2, 1, '技术总监'
 INSERT INTO `sys_post` VALUES (3, 2, 'pm', '产品经理', 3, 1, '产品经理', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
 INSERT INTO `sys_post` VALUES (4, 2, 'dev', '开发工程师', 4, 1, '开发工程师', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
 INSERT INTO `sys_post` VALUES (6, 1, 'manager', '总经理', 2, 1, '', '2026-01-29 22:42:08', '2026-01-29 22:42:08', 1, 1, 0);
-INSERT INTO `sys_post` VALUES (7, 2, 'test_coder', '测试工程师', 0, 1, '', '2026-02-09 15:47:35', '2026-02-09 15:47:35', 1, 1, 0);
+INSERT INTO `sys_post` VALUES (7, 2, 'test_coder', '测试工程师', 0, 1, '', '2026-02-09 15:47:35', '2026-02-09 17:03:40', 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1704,7 +1748,7 @@ CREATE TABLE `sys_user`  (
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
   INDEX `idx_open_id`(`open_id` ASC) USING BTREE,
   INDEX `idx_user_type`(`user_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
@@ -1715,8 +1759,13 @@ INSERT INTO `sys_user` VALUES (3, 2, 'mars11', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7F
 INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
 INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$i3ztgmo5kmPow2ro8Kuxouq0yLnv/JM4huDoZdVIeDp3ErKtBSxiS', 'mars666', NULL, 'wqexpore@163.com', '18888888882', 1, 1, 0, NULL, '2026-01-31 22:30:46', '2026-02-09 14:30:30', 5, 1, 'admin', NULL, 0);
 INSERT INTO `sys_user` VALUES (6, 2, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (10, NULL, 'Mars', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (10, 2, 'Mars', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
 INSERT INTO `sys_user` VALUES (11, 2, 'mars02', '$2a$10$4LVE/zBTH6smGMjfOu/bku1PBaFun3JpFCYG1bTZgPHJQuE3hyjVC', 'mars02', NULL, '111@qq.com', '18888888888', 1, 1, 0, '', '2026-02-09 14:31:09', '2026-02-09 14:31:09', 5, 5, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (13, 2, 'Mars111', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (14, 2, 'Mars222', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (15, 2, 'Mars333', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (16, 2, 'Mars444', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (17, 2, 'Mars555', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
 
 -- ----------------------------
 -- Table structure for sys_user_blacklist
@@ -1769,15 +1818,16 @@ CREATE TABLE `sys_user_post`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_post_id`(`post_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_post
 -- ----------------------------
 INSERT INTO `sys_user_post` VALUES (1, 11, 2);
-INSERT INTO `sys_user_post` VALUES (2, 10, 4);
 INSERT INTO `sys_user_post` VALUES (3, 5, 3);
 INSERT INTO `sys_user_post` VALUES (4, 5, 4);
+INSERT INTO `sys_user_post` VALUES (5, 10, 4);
+INSERT INTO `sys_user_post` VALUES (6, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -1790,19 +1840,19 @@ CREATE TABLE `sys_user_role`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (9, 4, 2);
 INSERT INTO `sys_user_role` VALUES (11, 3, 2);
-INSERT INTO `sys_user_role` VALUES (12, 1, 1);
 INSERT INTO `sys_user_role` VALUES (25, 7, 2);
 INSERT INTO `sys_user_role` VALUES (30, 6, 2);
 INSERT INTO `sys_user_role` VALUES (33, 2, 2);
 INSERT INTO `sys_user_role` VALUES (34, 11, 2);
-INSERT INTO `sys_user_role` VALUES (35, 10, 2);
 INSERT INTO `sys_user_role` VALUES (36, 5, 2);
+INSERT INTO `sys_user_role` VALUES (37, 10, 2);
+INSERT INTO `sys_user_role` VALUES (38, 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

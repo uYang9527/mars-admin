@@ -1,5 +1,0 @@
-com\mars\pay\AlipayService.class
-com\mars\pay\PayServiceFactory.class
-com\mars\pay\AbstractPayService.class
-com\mars\pay\PayService.class
-com\mars\pay\WechatPayService.class

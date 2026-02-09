@@ -1,4 +1,0 @@
-com\mars\oss\FileStorage.class
-com\mars\oss\MinioFileStorage.class
-com\mars\oss\LocalFileStorage.class
-com\mars\oss\AliyunOssFileStorage.class

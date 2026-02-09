@@ -145,7 +145,10 @@ export const cacheApi = {
     return request({ url: '/monitor/cache/keys', method: 'get', params: { pattern } })
   },
   delete(key: string): Promise<void> {
-    return request({ url: `/monitor/cache/${key}`, method: 'delete' })
+    return request({ url: `/monitor/cache/${encodeURIComponent(key)}`, method: 'delete' })
+  },
+  getValue(key: string): Promise<any> {
+    return request({ url: '/monitor/cache/value', method: 'get', params: { key } })
   }
 }
 

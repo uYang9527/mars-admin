@@ -8,11 +8,16 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.util.StringUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.lang.management.*;
 import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -145,6 +150,38 @@ public class MonitorController {
         redisTemplate.delete(key);
         return Result.ok();
     }
+
+    /**
+     * 获取缓存详情
+     */
+    @GetMapping("/cache/value")
+    @SaCheckPermission("monitor:cache:list")
+    public Result<Map<String, Object>> getCacheValue(@RequestParam("key") String key) {
+        String type = Objects.requireNonNull(redisTemplate.type(key)).code();
+        Long ttl = redisTemplate.getExpire(key);
+        Object value = null;
+
+        if ("string".equals(type)) {
+            value = redisTemplate.opsForValue().get(key);
+        } else if ("list".equals(type)) {
+            value = redisTemplate.opsForList().range(key, 0, -1);
+        } else if ("set".equals(type)) {
+            value = redisTemplate.opsForSet().members(key);
+        } else if ("zset".equals(type)) {
+            value = redisTemplate.opsForZSet().range(key, 0, -1);
+        } else if ("hash".equals(type)) {
+            value = redisTemplate.opsForHash().entries(key);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("key", key);
+        result.put("type", type);
+        result.put("ttl", ttl);
+        result.put("value", value);
+
+        return Result.ok(result);
+    }
+
 
     /**
      * 获取服务器信息

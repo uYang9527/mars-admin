@@ -1,8 +1,0 @@
-com\mars\gen\service\impl\GenTableServiceImpl.class
-com\mars\gen\entity\GenTableColumn.class
-com\mars\gen\mapper\GenTableColumnMapper.class
-com\mars\gen\mapper\GenTableMapper.class
-com\mars\gen\entity\DatabaseTable.class
-com\mars\gen\entity\GenTable.class
-com\mars\gen\service\GenTableService.class
-com\mars\gen\entity\DatabaseColumn.class
