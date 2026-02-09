@@ -45,12 +45,27 @@
         :columns="columns"
         :data="tableData"
         :loading="loading"
-        :pagination="pagination"
         :row-key="(row: GenTable) => row.id"
-        @update:page="handlePageChange"
-        @update:page-size="handlePageSizeChange"
+        remote
         @update:checked-row-keys="handleCheck"
       />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
 
     <!-- 导入表弹窗 -->
@@ -80,12 +95,26 @@
           :columns="importColumns"
           :data="dbTables"
           :row-key="(row: DatabaseTable) => row.tableName"
-          :pagination="importPagination"
           max-height="400px"
-          @update:page="handleImportPageChange"
-          @update:page-size="handleImportPageSizeChange"
+          remote
           @update:checked-row-keys="handleImportCheck"
         />
+        <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+          <n-pagination
+            v-model:page="importPagination.page"
+            v-model:page-size="importPagination.pageSize"
+            :item-count="importPagination.itemCount"
+            :page-sizes="[10, 20, 50, 100]"
+            show-size-picker
+            show-quick-jumper
+            @update:page="handleImportPageChange"
+            @update:page-size="handleImportPageSizeChange"
+          >
+            <template #prefix>
+              共 {{ importPagination.itemCount }} 条
+            </template>
+          </n-pagination>
+        </div>
       </n-spin>
       <template #footer>
         <n-space justify="end">
@@ -273,7 +302,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NSpace, NIcon, NTag, NSwitch, NSelect, NInput, NText, NList, NListItem, NScrollbar, NAlert, NEmpty, NSpin, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
+import { NButton, NSpace, NIcon, NTag, NSwitch, NSelect, NInput, NText, NList, NListItem, NScrollbar, NAlert, NEmpty, NSpin, NPagination, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, CloudDownloadOutline, CodeSlashOutline, TrashOutline, SettingsOutline, EyeOutline, SyncOutline, CloseCircleOutline } from '@vicons/ionicons5'
 import { genApi, type GenTable, type GenTableColumn, type DatabaseTable } from '@/api/gen'
 
@@ -491,7 +520,7 @@ async function loadData() {
       tableName: searchForm.tableName || undefined
     })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } finally {
     loading.value = false
   }
@@ -507,7 +536,7 @@ async function loadDbTables() {
       tableName: importSearchForm.tableName || undefined
     })
     dbTables.value = res.list
-    importPagination.itemCount = res.total
+    importPagination.itemCount = Number(res.total)
   } finally {
     importLoading.value = false
   }

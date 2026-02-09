@@ -40,8 +40,30 @@
         </n-space>
       </div>
 
-      <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
-        :row-key="(row: SysJob) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysJob) => row.id"
+        remote
+      />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
 
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 600px" :mask-closable="false">
@@ -86,15 +108,37 @@
     </n-modal>
 
     <n-modal v-model:show="showLogModal" title="调度日志" preset="card" style="width: 1000px">
-      <n-data-table :columns="logColumns" :data="logData" :loading="logLoading" :pagination="logPagination" size="small"
-        :row-key="(row: SysJobLog) => row.id" @update:page="handleLogPageChange" />
+      <n-data-table
+        :columns="logColumns"
+        :data="logData"
+        :loading="logLoading"
+        :row-key="(row: SysJobLog) => row.id"
+        size="small"
+        remote
+      />
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="logPagination.page"
+          v-model:page-size="logPagination.pageSize"
+          :item-count="logPagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handleLogPageChange"
+          @update:page-size="handleLogPageSizeChange"
+        >
+          <template #prefix>
+            共 {{ logPagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted, watch } from 'vue'
-import { NButton, NTag, NSpace, NSwitch, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
+import { ref, reactive, h, onMounted, watch, computed } from 'vue'
+import { NButton, NTag, NSpace, NSwitch, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, ListOutline } from '@vicons/ionicons5'
 import { jobApi, type SysJob, type SysJobLog } from '@/api/monitor'
 import { useUserStore } from '@/stores/user'
@@ -187,6 +231,11 @@ function handleReset() { searchForm.jobName = ''; searchForm.jobGroup = ''; sear
 function handlePageChange(page: number) { pagination.page = page; loadData() }
 function handlePageSizeChange(pageSize: number) { pagination.pageSize = pageSize; pagination.page = 1; loadData() }
 function handleLogPageChange(page: number) { logPagination.page = page; loadLogData() }
+function handleLogPageSizeChange(pageSize: number) {
+  logPagination.pageSize = pageSize
+  logPagination.page = 1
+  loadLogData()
+}
 
 function handleAdd() {
   modalTitle.value = '新增任务'

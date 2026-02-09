@@ -34,8 +34,30 @@
         </n-button>
       </div>
 
-      <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
-        :row-key="(row: SysOperLog) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysOperLog) => row.id"
+        remote
+      />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
 
     <n-modal v-model:show="detailVisible" title="日志详情" preset="card" style="width: 700px">
@@ -70,8 +92,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
+import { ref, reactive, h, onMounted, computed } from 'vue'
+import { NButton, NTag, NSpace, NPagination, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, TrashOutline } from '@vicons/ionicons5'
 import { operLogApi, type SysOperLog } from '@/api/monitor'
 import { useUserStore } from '@/stores/user'
@@ -85,7 +107,13 @@ const searchForm = reactive({ title: '', operName: '', status: null as number | 
 const statusOptions = [{ label: '正常', value: 0 }, { label: '异常', value: 1 }]
 const tableData = ref<SysOperLog[]>([])
 const loading = ref(false)
-const pagination = reactive({ page: 1, pageSize: 10, itemCount: 0, showSizePicker: true, pageSizes: [10, 20, 50] })
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0
+})
+
+const pageCount = computed(() => Math.ceil(pagination.itemCount / pagination.pageSize))
 
 const detailVisible = ref(false)
 const detailData = ref<SysOperLog>({} as SysOperLog)
@@ -120,7 +148,7 @@ async function loadData() {
   try {
     const res = await operLogApi.page({ page: pagination.page, pageSize: pagination.pageSize, ...searchForm })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } finally { loading.value = false }
 }
 

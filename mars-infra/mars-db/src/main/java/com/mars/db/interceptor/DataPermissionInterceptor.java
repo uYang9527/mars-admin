@@ -4,22 +4,21 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.mars.common.annotation.DataScope;
-import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 数据权限拦截器 (重构后支持跨模块动态加载)
@@ -35,10 +34,7 @@ public class DataPermissionInterceptor implements InnerInterceptor, ApplicationC
     }
 
     @Override
-    public void beforePrepare(StatementHandler sh, Connection connection, Integer transactionTimeout) {
-        MetaObject metaObject = SystemMetaObject.forObject(sh);
-        MappedStatement ms = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
-
+    public void beforeQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException {
         if (SqlCommandType.SELECT != ms.getSqlCommandType()) {
             return;
         }
@@ -62,15 +58,21 @@ public class DataPermissionInterceptor implements InnerInterceptor, ApplicationC
             return;
         }
 
-        BoundSql boundSql = (BoundSql) metaObject.getValue("delegate.boundSql");
         String originalSql = boundSql.getSql();
-
         String filterSql = buildDataScopeFilter(userId, dataScope, roleMapper, userMapper);
         if (StringUtils.hasText(filterSql)) {
-            metaObject.setValue("delegate.boundSql.sql", "SELECT * FROM (" + originalSql + ") temp_data_scope WHERE " + filterSql);
+            String newSql = "SELECT * FROM (" + originalSql + ") temp_data_scope WHERE " + filterSql;
+            try {
+                java.lang.reflect.Field field = boundSql.getClass().getDeclaredField("sql");
+                field.setAccessible(true);
+                field.set(boundSql, newSql);
+            } catch (Exception e) {
+                throw new SQLException("修改数据权限SQL失败", e);
+            }
         }
     }
 
+    // 移除之前的 beforePrepare 方法
     private DataScope getDataScope(MappedStatement ms) {
         try {
             String id = ms.getId();

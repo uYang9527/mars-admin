@@ -83,11 +83,26 @@
           :columns="columns"
           :data="tableData"
           :loading="loading"
-          :pagination="pagination"
           :row-key="(row: SysUser) => row.id"
-          @update:page="handlePageChange"
-          @update:page-size="handlePageSizeChange"
+          remote
         />
+
+        <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+          <n-pagination
+            v-model:page="pagination.page"
+            v-model:page-size="pagination.pageSize"
+            :item-count="pagination.itemCount"
+            :page-sizes="[10, 20, 50, 100]"
+            show-size-picker
+            show-quick-jumper
+            @update:page="handlePageChange"
+            @update:page-size="handlePageSizeChange"
+          >
+            <template #prefix>
+              共 {{ pagination.itemCount }} 条
+            </template>
+          </n-pagination>
+        </div>
       </n-card>
     </div>
 
@@ -183,8 +198,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted, type HTMLAttributes } from 'vue'
-import { NButton, NTag, NSpace, NDropdown, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
+import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
+import { NButton, NTag, NSpace, NDropdown, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
 import { deptApi, type SysDept } from '@/api/org'
@@ -254,10 +269,10 @@ const loading = ref(false)
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  itemCount: 0,
-  showSizePicker: true,
-  pageSizes: [10, 20, 50]
+  itemCount: 0
 })
+
+const pageCount = computed(() => Math.ceil(pagination.itemCount / pagination.pageSize))
 
 const roleOptions = ref<Array<{ label: string; value: number }>>([])
 
@@ -291,7 +306,9 @@ const columns: DataTableColumns<SysUser> = [
       return h(NTag, { type: t.type, size: 'small' }, { default: () => t.label })
     }
   },
-  { title: '手机号', key: 'phone', width: 120 },
+  { title: '手机号', key: 'phone', width: 120 , render(row) {
+      return row.phone || '-'
+    }},
   {
     title: '离职',
     key: 'isQuit',
@@ -436,7 +453,8 @@ async function loadData() {
       deptId: selectedDeptId.value
     })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
+    console.log('Pagination updated:', pagination.itemCount)
   } catch (error) {
     // 错误已在拦截器处理
   } finally {

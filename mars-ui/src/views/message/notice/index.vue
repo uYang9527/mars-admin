@@ -53,11 +53,26 @@
         :columns="columns"
         :data="tableData"
         :loading="loading"
-        :pagination="pagination"
         :row-key="(row: SysNotice) => row.id"
-        @update:page="handlePageChange"
-        @update:page-size="handlePageSizeChange"
+        remote
       />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
 
     <!-- 新增/编辑弹窗 -->
@@ -125,7 +140,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
+import { NButton, NTag, NSpace, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { noticeApi, type SysNotice } from '@/api/message'
 import { useUserStore } from '@/stores/user'
@@ -251,7 +266,7 @@ async function loadData() {
       status: searchForm.status ?? undefined
     })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } catch (error) {
     // 错误已在拦截器处理
   } finally {

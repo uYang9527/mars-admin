@@ -61,12 +61,21 @@
           :columns="userColumns"
           :data="userData"
           :loading="userLoading"
-          :pagination="pagination"
           :row-key="(row: SysUser) => row.id"
           remote
-          @update:page="handlePageChange"
-          @update:page-size="handlePageSizeChange"
         />
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 12px">
+          <n-pagination
+            v-model:page="pagination.page"
+            v-model:page-size="pagination.pageSize"
+            :item-count="pagination.itemCount"
+            :page-sizes="pagination.pageSizes"
+            show-size-picker
+            @update:page="handlePageChange"
+            @update:page-size="handlePageSizeChange"
+          />
+        </div>
       </n-card>
     </div>
 
@@ -115,7 +124,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption, type TreeDropInfo } from 'naive-ui'
+import { NButton, NTag, NSpace, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption, type TreeDropInfo } from 'naive-ui'
 import { SearchOutline, AddOutline } from '@vicons/ionicons5'
 import { postApi, userApi, type SysUser, type SysPost } from '@/api/system'
 import { useUserStore } from '@/stores/user'

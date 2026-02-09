@@ -210,26 +210,21 @@
         </div>
 
         <template #footer>
-          <div class="pagination">
-            <span>共 {{ pagination.itemCount }} 条</span>
+          <div class="pagination" style="display: flex; justify-content: flex-end; margin-top: 12px; align-items: center; gap: 12px;">
             <n-pagination
                 v-model:page="pagination.page"
-                :page-count="Math.ceil(pagination.itemCount / pagination.pageSize)"
-                :page-slot="5"
+                v-model:page-size="pagination.pageSize"
+                :item-count="pagination.itemCount"
+                :page-sizes="[10, 20, 50, 100]"
+                show-size-picker
+                show-quick-jumper
                 @update:page="loadFiles"
-            />
-            <div class="goto">
-              <span>前往</span>
-              <n-input-number
-                  v-model:value="gotoPage"
-                  :min="1"
-                  :max="Math.ceil(pagination.itemCount / pagination.pageSize)"
-                  size="small"
-                  style="width: 60px"
-                  @keyup.enter="pagination.page = gotoPage || 1; loadFiles()"
-              />
-              <span>页</span>
-            </div>
+                @update:page-size="handlePageSizeChange"
+            >
+              <template #prefix>
+                共 {{ pagination.itemCount }} 条
+              </template>
+            </n-pagination>
           </div>
         </template>
       </n-card>
@@ -443,12 +438,18 @@ async function loadFiles() {
       originalName: searchName.value || undefined
     })
     files.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } catch (error) {
     // 错误已在拦截器处理
   } finally {
     loading.value = false
   }
+}
+
+function handlePageSizeChange(pageSize: number) {
+  pagination.pageSize = pageSize
+  pagination.page = 1
+  loadFiles()
 }
 
 // 选择分组

@@ -24,9 +24,9 @@ public class MybatisPlusConfig implements MetaObjectHandler {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(DataPermissionInterceptor dataPermissionInterceptor) {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 数据权限插件
+        // 1. 数据权限插件（先执行 SQL 包装）
         interceptor.addInnerInterceptor(dataPermissionInterceptor);
-        // 分页插件
+        // 2. 分页插件（最后执行，确保 LIMIT 在最外层）
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
