@@ -601,7 +601,13 @@ async function handleDrop(e: DragEvent) {
 // 预览
 async function handlePreview(file: SysFile) {
   previewFile.value = file
-  previewUrl.value = fileApi.getPreviewUrl(file.id!)
+  // 如果 file.url 存在且不是相对路径（或者已经是完整的后端地址），则优先使用它
+  // 否则使用预览接口
+  if (file.url && (file.url.startsWith('http') || file.url.startsWith('/'))) {
+    previewUrl.value = file.url
+  } else {
+    previewUrl.value = fileApi.getPreviewUrl(file.id!)
+  }
   previewText.value = ''
 
   // 如果是文本文件，获取内容
