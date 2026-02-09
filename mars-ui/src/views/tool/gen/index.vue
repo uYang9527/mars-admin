@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -160,9 +160,9 @@
           请选择生成方式
         </n-alert>
         <n-space vertical size="large">
-          <n-card 
-            hoverable 
-            :class="['generate-option', { 'generate-option-selected': generateType === 'project' }]" 
+          <n-card
+            hoverable
+            :class="['generate-option', { 'generate-option-selected': generateType === 'project' }]"
             @click="generateType = 'project'"
           >
             <template #header>
@@ -180,9 +180,9 @@
               </ul>
             </n-text>
           </n-card>
-          <n-card 
-            hoverable 
-            :class="['generate-option', { 'generate-option-selected': generateType === 'download' }]" 
+          <n-card
+            hoverable
+            :class="['generate-option', { 'generate-option-selected': generateType === 'download' }]"
             @click="generateType = 'download'"
           >
             <template #header>
@@ -225,9 +225,9 @@
       <template #footer>
         <n-space justify="end">
           <n-button @click="showPreviewFilesModal = false">取消</n-button>
-          <n-button 
-            :type="previewAction === 'generate' ? 'primary' : 'error'" 
-            :loading="generateLoading" 
+          <n-button
+            :type="previewAction === 'generate' ? 'primary' : 'error'"
+            :loading="generateLoading"
             @click="handleExecuteAction"
           >
             {{ previewAction === 'generate' ? '确认生成' : '确认删除' }}
@@ -400,14 +400,14 @@ const importColumns: DataTableColumns<DatabaseTable> = [
 // 字段编辑列
 const columnEditColumns: DataTableColumns<GenTableColumn> = [
   { title: '字段名', key: 'columnName', width: 120 },
-  { title: '字段描述', key: 'columnComment', width: 120, 
+  { title: '字段描述', key: 'columnComment', width: 120,
     render(row) {
       return h(NInput, { value: row.columnComment, size: 'small', onUpdateValue: (v: string) => { row.columnComment = v } })
     }
   },
   { title: 'Java类型', key: 'javaType', width: 100,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.javaType, size: 'small', style: { width: '100px' },
         options: [
           { label: 'Long', value: 'Long' },
@@ -446,7 +446,7 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
   },
   { title: '查询方式', key: 'queryType', width: 100,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.queryType, size: 'small', style: { width: '90px' },
         options: [
           { label: '=', value: 'EQ' },
@@ -462,7 +462,7 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
   },
   { title: '显示类型', key: 'htmlType', width: 120,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.htmlType, size: 'small', style: { width: '110px' },
         options: [
           { label: '文本框', value: 'input' },
@@ -644,7 +644,7 @@ function handleBatchGenerate() {
 // 确认生成 - 下一步（预览文件）
 async function handleConfirmGenerate() {
   if (!currentGenerateId.value || !generateType.value) return
-  
+
   if (generateType.value === 'project') {
     // 先预览将要生成的文件
     previewLoading.value = true
@@ -666,7 +666,7 @@ async function handleConfirmGenerate() {
 // 执行操作（生成或移除）
 async function handleExecuteAction() {
   if (!currentGenerateId.value) return
-  
+
   generateLoading.value = true
   try {
     if (previewAction.value === 'generate') {
@@ -701,7 +701,7 @@ async function handleRemoveCodeDirect(row: GenTable) {
   previewAction.value = 'remove'
   previewFiles.value = []
   showPreviewFilesModal.value = true
-  
+
   try {
     previewFiles.value = await genApi.previewRemoveFiles(row.id!)
   } catch (error) {
@@ -824,5 +824,8 @@ onMounted(() => {
   border-color: #18a058;
   background-color: rgba(24, 160, 88, 0.08);
   box-shadow: 0 2px 12px rgba(24, 160, 88, 0.2);
+}
+.page-layout{
+  height: calc(100vh - 160px);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
           <n-form-item label="用户名">
@@ -23,14 +23,14 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:loginlog:delete')" type="error" @click="handleClean">
           <template #icon><n-icon><TrashOutline /></n-icon></template>
           清空日志
         </n-button>
       </div>
-      
+
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
         :row-key="(row: SysLoginLog) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
     </n-card>
@@ -68,7 +68,7 @@ const columns: DataTableColumns<SysLoginLog> = [
   { title: '提示信息', key: 'msg', ellipsis: { tooltip: true } },
   { title: '登录时间', key: 'loginTime', width: 180 },
   { title: '操作', key: 'actions', width: 80, fixed: 'right', render(row) {
-    return hasPermission('sys:loginlog:delete') 
+    return hasPermission('sys:loginlog:delete')
       ? h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
       : '-'
   }}
@@ -104,3 +104,5 @@ function handleClean() {
 
 onMounted(() => loadData())
 </script>
+
+

@@ -26,6 +26,12 @@ public class SysUser extends BaseEntity {
     private String deptName;
 
     /**
+     * 岗位名称列表（非数据库字段，逗号分隔）
+     */
+    @TableField(exist = false)
+    private String postNames;
+
+    /**
      * 用户名
      */
     private String username;

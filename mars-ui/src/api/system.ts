@@ -39,6 +39,7 @@ export interface SysUser {
   userType?: string   // 用户类型: admin-后台管理员 pc-PC前台用户 app-App/小程序用户
   openId?: string     // 微信openId
   isQuit?: number     // 是否离职(0-否 1-是)
+  postNames?: string  // 岗位名称列表
   createTime?: string
 }
 

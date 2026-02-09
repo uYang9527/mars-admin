@@ -55,7 +55,7 @@
             </n-space>
           </div>
         </template>
-        
+
         <!-- 用户表格 -->
         <n-data-table
           :columns="userColumns"
@@ -166,9 +166,9 @@ async function loadPostTree() {
 async function handleDrop({ node, dragNode, dropPosition }: TreeDropInfo) {
   const dragId = dragNode.id as number
   const targetId = node.id as number
-  
+
   let parentId: number
-  
+
   if (dropPosition === 'inside') {
     // 拖拽到目标节点内部，目标节点成为新的父节点
     parentId = targetId
@@ -201,6 +201,9 @@ const userColumns: DataTableColumns<SysUser> = [
   { title: '用户名', key: 'username' },
   { title: '昵称', key: 'nickname' },
   { title: '部门', key: 'deptName' },
+  { title: '岗位', key: 'postNames', render(row) {
+    return row.postNames || '-'
+  }},
   { title: '手机号', key: 'phone' },
   { title: '状态', key: 'status', render(row) {
     const statusMap: any = {

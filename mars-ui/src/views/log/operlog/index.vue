@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
           <n-form-item label="模块名称">
@@ -26,18 +26,18 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:operlog:delete')" type="error" @click="handleClean">
           <template #icon><n-icon><TrashOutline /></n-icon></template>
           清空日志
         </n-button>
       </div>
-      
+
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
         :row-key="(row: SysOperLog) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
     </n-card>
-    
+
     <n-modal v-model:show="detailVisible" title="日志详情" preset="card" style="width: 700px">
       <n-descriptions :column="2" label-placement="left">
         <n-descriptions-item label="模块名称">{{ detailData.title }}</n-descriptions-item>
@@ -176,5 +176,8 @@ onMounted(() => loadData())
 .code-container :deep(.n-code) {
   white-space: pre-wrap;
   word-break: break-all;
+}
+.page-layout{
+  height: calc(100vh - 160px);
 }
 </style>

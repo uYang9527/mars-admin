@@ -230,7 +230,7 @@
                 <n-form-item label="允许的文件类型">
                   <n-input v-model:value="configs.storage.allowTypes" placeholder="如: jpg,png,pdf,doc,docx,xls,xlsx" />
                 </n-form-item>
-                
+
                 <!-- 本地存储配置 -->
                 <template v-if="configs.storage.provider === 'local'">
                   <n-divider>本地存储配置</n-divider>
@@ -238,7 +238,7 @@
                     <n-input v-model:value="configs.storage.localPath" placeholder="如: ./uploads" />
                   </n-form-item>
                 </template>
-                
+
                 <!-- MinIO配置 -->
                 <template v-if="configs.storage.provider === 'minio'">
                   <n-divider>MinIO配置</n-divider>
@@ -255,7 +255,7 @@
                     <n-input v-model:value="configs.storage.minioBucket" placeholder="请输入存储桶名称" />
                   </n-form-item>
                 </template>
-                
+
                 <!-- 阿里云OSS配置 -->
                 <template v-if="configs.storage.provider === 'aliyun'">
                   <n-divider>阿里云OSS配置</n-divider>
@@ -272,7 +272,7 @@
                     <n-input v-model:value="configs.storage.aliyunBucket" placeholder="请输入Bucket名称" />
                   </n-form-item>
                 </template>
-                
+
                 <!-- 腾讯云COS配置 -->
                 <template v-if="configs.storage.provider === 'tencent'">
                   <n-divider>腾讯云COS配置</n-divider>
@@ -405,7 +405,7 @@
                   <n-input v-model:value="configs.wechatMp.oauthRedirectUrl" placeholder="如: https://www.example.com/login" />
                   <span class="form-hint">网页授权登录后的回调地址</span>
                 </n-form-item>
-                
+
                 <n-divider>自定义菜单配置</n-divider>
                 <div class="menu-editor">
                   <div class="menu-preview">
@@ -413,17 +413,17 @@
                       <div class="phone-screen">
                         <div class="chat-area"></div>
                         <div class="menu-bar">
-                          <div 
-                            v-for="(menu, index) in menuList" 
-                            :key="index" 
+                          <div
+                            v-for="(menu, index) in menuList"
+                            :key="index"
                             class="menu-item"
                             :class="{ active: selectedMenuIndex === index && selectedSubIndex === -1 }"
                             @click="selectMenu(index)"
                           >
                             <span class="menu-name">{{ menu.name || '菜单名称' }}</span>
                             <div v-if="menu.sub_button && menu.sub_button.length > 0" class="sub-menu-list">
-                              <div 
-                                v-for="(sub, subIndex) in menu.sub_button" 
+                              <div
+                                v-for="(sub, subIndex) in menu.sub_button"
                                 :key="subIndex"
                                 class="sub-menu-item"
                                 :class="{ active: selectedMenuIndex === index && selectedSubIndex === subIndex }"
@@ -431,7 +431,7 @@
                               >
                                 {{ sub.name || '子菜单' }}
                               </div>
-                              <div 
+                              <div
                                 v-if="menu.sub_button.length < 5"
                                 class="sub-menu-item add-sub"
                                 @click.stop="addSubMenu(index)"
@@ -440,8 +440,8 @@
                               </div>
                             </div>
                           </div>
-                          <div 
-                            v-if="menuList.length < 3" 
+                          <div
+                            v-if="menuList.length < 3"
                             class="menu-item add-menu"
                             @click="addMenu"
                           >
@@ -451,7 +451,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="menu-config" v-if="selectedMenuIndex >= 0">
                     <n-card size="small" :title="selectedSubIndex >= 0 ? '子菜单配置' : '一级菜单配置'">
                       <template #header-extra>
@@ -460,33 +460,33 @@
                           删除
                         </n-button>
                       </template>
-                      
+
                       <n-form label-placement="left" label-width="80" size="small">
                         <n-form-item label="菜单名称">
-                          <n-input 
-                            v-model:value="currentMenu.name" 
+                          <n-input
+                            v-model:value="currentMenu.name"
                             placeholder="最多4个汉字或8个字母"
                             :maxlength="selectedSubIndex >= 0 ? 16 : 8"
                           />
                         </n-form-item>
-                        
+
                         <n-form-item label="菜单类型" v-if="!hasSubMenu">
-                          <n-select 
-                            v-model:value="currentMenu.type" 
+                          <n-select
+                            v-model:value="currentMenu.type"
                             :options="menuTypeOptions"
                             @update:value="handleMenuTypeChange"
                           />
                         </n-form-item>
-                        
+
                         <template v-if="!hasSubMenu">
                           <n-form-item label="网页链接" v-if="currentMenu.type === 'view'">
                             <n-input v-model:value="currentMenu.url" placeholder="https://" />
                           </n-form-item>
-                          
+
                           <n-form-item label="事件KEY" v-if="currentMenu.type === 'click'">
                             <n-input v-model:value="currentMenu.key" placeholder="用于消息接口推送" />
                           </n-form-item>
-                          
+
                           <template v-if="currentMenu.type === 'miniprogram'">
                             <n-form-item label="小程序AppID">
                               <n-input v-model:value="currentMenu.appid" placeholder="小程序的AppID" />
@@ -499,13 +499,13 @@
                             </n-form-item>
                           </template>
                         </template>
-                        
+
                         <n-form-item v-if="selectedSubIndex === -1 && !currentMenu.type">
                           <n-alert type="info" :bordered="false">
                             一级菜单有子菜单时，不能设置跳转动作
                           </n-alert>
                         </n-form-item>
-                        
+
                         <n-form-item v-if="selectedSubIndex === -1 && (!currentMenu.sub_button || currentMenu.sub_button.length === 0)">
                           <n-button size="small" @click="addSubMenu(selectedMenuIndex)">
                             <template #icon><n-icon><AddOutline /></n-icon></template>
@@ -515,12 +515,12 @@
                       </n-form>
                     </n-card>
                   </div>
-                  
+
                   <div class="menu-config menu-empty" v-else>
                     <n-empty description="点击左侧菜单进行编辑" />
                   </div>
                 </div>
-                
+
                 <n-form-item label="菜单操作" style="margin-top: 16px;">
                   <n-space>
                     <n-button type="primary" @click="handleSyncMenu" :loading="menuSyncing" :disabled="!configs.wechatMp.enabled || menuList.length === 0">
@@ -537,13 +537,13 @@
                     </n-button>
                   </n-space>
                 </n-form-item>
-                
+
                 <!-- JSON预览弹窗 -->
                 <n-modal v-model:show="showMenuJson" preset="card" title="菜单JSON" style="width: 600px">
-                  <n-input 
-                    :value="menuJsonPreview" 
-                    type="textarea" 
-                    :rows="15" 
+                  <n-input
+                    :value="menuJsonPreview"
+                    type="textarea"
+                    :rows="15"
                     readonly
                   />
                   <template #footer>
@@ -624,7 +624,7 @@
                   </n-form>
                 </n-collapse-item>
               </n-collapse>
-              
+
               <!-- 测试支付弹窗 -->
               <n-modal v-model:show="showPaymentModal" preset="card" title="测试支付" style="width: 400px">
                 <div class="payment-test-modal">
@@ -796,11 +796,11 @@ const configs = reactive<Record<string, any>>({
   emailTemplate: { verifyCode: '', resetPassword: '', welcome: '' },
   sms: { provider: 'aliyun', accessKeyId: '', accessKeySecret: '', signName: '', enabled: false },
   smsTemplate: { verifyCode: '', resetPassword: '', notification: '' },
-  storage: { 
-    provider: 'local', 
+  storage: {
+    provider: 'local',
     domain: 'http://localhost:8080',
-    localPath: './uploads', 
-    maxSize: 10, 
+    localPath: './uploads',
+    maxSize: 10,
     allowTypes: 'jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,mp4,avi,mov,wmv,flv,mkv,mp3,wav,ogg,zip,rar,7z',
     // MinIO配置
     minioEndpoint: '',
@@ -949,14 +949,14 @@ async function handleTestEmail() {
     message.warning('请输入收件人邮箱')
     return
   }
-  
+
   // 简单的邮箱格式验证
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(testEmailAddress.value)) {
     message.warning('请输入正确的邮箱格式')
     return
   }
-  
+
   emailTesting.value = true
   try {
     await configGroupApi.testEmail(testEmailAddress.value)
@@ -1021,7 +1021,7 @@ const menuJsonPreview = computed(() => {
 // 格式化菜单数据用于API
 function formatMenuForApi(menu: MenuItem): any {
   const result: any = { name: menu.name }
-  
+
   if (menu.sub_button && menu.sub_button.length > 0) {
     result.sub_button = menu.sub_button.map(formatMenuForApi)
   } else if (menu.type) {
@@ -1036,7 +1036,7 @@ function formatMenuForApi(menu: MenuItem): any {
       result.url = menu.url || ''
     }
   }
-  
+
   return result
 }
 
@@ -1083,7 +1083,7 @@ function addSubMenu(menuIndex: number) {
   delete menu.key
   delete menu.appid
   delete menu.pagepath
-  
+
   menu.sub_button.push({
     name: '子菜单' + (menu.sub_button.length + 1),
     type: 'view',
@@ -1096,7 +1096,7 @@ function addSubMenu(menuIndex: number) {
 // 删除当前菜单
 function deleteCurrentMenu() {
   if (selectedMenuIndex.value < 0) return
-  
+
   if (selectedSubIndex.value >= 0) {
     // 删除子菜单
     const menu = menuList.value[selectedMenuIndex.value]
@@ -1167,7 +1167,7 @@ async function handleSyncMenu() {
     message.warning('请先添加菜单')
     return
   }
-  
+
   // 验证菜单
   for (const menu of menuList.value) {
     if (!menu.name) {
@@ -1190,7 +1190,7 @@ async function handleSyncMenu() {
       return
     }
   }
-  
+
   menuSyncing.value = true
   try {
     const menuData = JSON.stringify({ button: menuList.value.map(formatMenuForApi) })
@@ -1317,7 +1317,7 @@ async function loadConfig(groupCode: string) {
       }
       deepMergeReactive(configs[groupCode], value)
     }
-    
+
     // 如果是公众号配置，自动获取当前菜单
     if (groupCode === 'wechatMp') {
       await loadWechatMpMenu()
@@ -1396,7 +1396,7 @@ const menuLoaded = ref(false)
 async function loadWechatMpMenu() {
   if (menuLoaded.value) return
   menuLoaded.value = true
-  
+
   // 先尝试从微信获取当前菜单
   try {
     await handleGetMenu()
@@ -1409,7 +1409,7 @@ async function loadWechatMpMenu() {
 
 <style scoped>
 .config-card {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 160px);
 }
 
 .config-content {
@@ -1546,20 +1546,20 @@ async function loadWechatMpMenu() {
   position: relative;
   transition: all 0.2s;
   padding: 0 8px;
-  
+
   &:last-child {
     border-right: none;
   }
-  
+
   &:hover {
     background: #f0f0f0;
   }
-  
+
   &.active {
     background: #e6f7ff;
     color: #1890ff;
   }
-  
+
   &.add-menu {
     color: #999;
     &:hover {
@@ -1598,16 +1598,16 @@ async function loadWechatMpMenu() {
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     background: #f0f0f0;
   }
-  
+
   &.active {
     background: #e6f7ff;
     color: #1890ff;
   }
-  
+
   &.add-sub {
     color: #999;
     font-size: 16px;
@@ -1633,45 +1633,45 @@ async function loadWechatMpMenu() {
 
 .payment-test-modal {
   text-align: center;
-  
+
   .payment-info {
     margin-bottom: 20px;
     text-align: left;
     padding: 16px;
     background: #f9fafb;
     border-radius: 8px;
-    
+
     p {
       margin: 8px 0;
       color: #374151;
     }
-    
+
     .amount {
       font-size: 24px;
       font-weight: 600;
       color: #ef4444;
     }
   }
-  
+
   .qrcode-container {
     padding: 20px;
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     display: inline-block;
-    
+
     .qrcode-img {
       width: 200px;
       height: 200px;
     }
-    
+
     .qrcode-tip {
       margin-top: 12px;
       color: #6b7280;
       font-size: 14px;
     }
   }
-  
+
   .payment-link {
     margin-top: 20px;
   }

@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +38,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysUserRoleMapper userRoleMapper;
     private final SysUserPostMapper userPostMapper;
     private final SysDeptMapper deptMapper;
+    private final com.mars.system.mapper.SysPostMapper postMapper;
     private final SystemConfigHelper configHelper;
 
     private static final String DEFAULT_PASSWORD = "123456";
@@ -63,9 +65,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 切换到自定义 @DataScope 拦截器
         IPage<SysUser> result = baseMapper.selectUserPage(pageParam, wrapper);
 
+        // 获取岗位映射
+        List<SysPost> allPosts = postMapper.selectList(null);
+        Map<Long, String> postMap = allPosts.stream().collect(Collectors.toMap(SysPost::getId, SysPost::getPostName));
+
         // 清空密码，填充部门名称
         result.getRecords().forEach(user -> {
             user.setPassword(null);
+            List<Long> userPostIds = getPostIds(user.getId());
+            if (userPostIds != null && !userPostIds.isEmpty()) {
+                String postNames = userPostIds.stream()
+                        .map(postMap::get)
+                        .filter(java.util.Objects::nonNull)
+                        .collect(Collectors.joining(","));
+                user.setPostNames(postNames);
+            }
         });
         return PageResult.of(result);
     }

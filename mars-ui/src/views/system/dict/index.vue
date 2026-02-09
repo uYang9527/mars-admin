@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -27,7 +27,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:dict:add')" type="primary" @click="handleAdd">
@@ -35,12 +35,12 @@
           新增字典
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
         :row-key="(row: SysDictType) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
     </n-card>
-    
+
     <!-- 字典类型弹窗 -->
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 500px" :mask-closable="false">
       <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="80">
@@ -301,3 +301,9 @@ function handleDeleteData(row: SysDictData) {
 
 onMounted(() => loadData())
 </script>
+
+<style lang="scss" scoped>
+.page-layout{
+  height: calc(100vh - 160px);
+}
+</style>

@@ -274,6 +274,9 @@ const columns: DataTableColumns<SysUser> = [
   { title: '部门', key: 'deptName', width: 100, render(row) {
     return row.deptName || '-'
   }},
+  { title: '岗位', key: 'postNames', width: 150, render(row) {
+    return row.postNames || '-'
+  }},
   {
     title: '用户类型',
     key: 'userType',
@@ -662,6 +665,7 @@ onMounted(() => {
 .dept-tree-card {
   width: 240px;
   flex-shrink: 0;
+  height: calc(100vh - 160px);
 }
 
 .dept-tree-card :deep(.n-card-header) {
@@ -678,7 +682,7 @@ onMounted(() => {
 }
 
 .dept-tree-wrapper {
-  max-height: calc(100vh - 260px);
+  max-height: 100vh;
   overflow-y: auto;
 }
 

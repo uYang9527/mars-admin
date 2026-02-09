@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
           <n-form-item label="任务名称">
@@ -26,7 +26,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <div class="table-toolbar">
         <n-space>
           <n-button v-if="hasPermission('monitor:job:add')" type="primary" @click="handleAdd">
@@ -39,11 +39,11 @@
           </n-button>
         </n-space>
       </div>
-      
+
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
         :row-key="(row: SysJob) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
     </n-card>
-    
+
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 600px" :mask-closable="false">
       <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="100">
         <n-form-item label="任务名称" path="jobName">
@@ -231,3 +231,8 @@ async function handleRun(row: SysJob) {
 
 onMounted(() => loadData())
 </script>
+<style lang="scss" scoped>
+.page-layout{
+  height: calc(100vh - 160px);
+}
+</style>

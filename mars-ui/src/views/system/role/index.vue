@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -30,7 +30,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:role:add')" type="primary" @click="handleAdd">
@@ -38,7 +38,7 @@
           新增角色
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table
         :columns="columns"
@@ -50,7 +50,7 @@
         @update:page-size="handlePageSizeChange"
       />
     </n-card>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -397,16 +397,16 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     // 合并选中的节点和半选的父节点
     const allMenuIds = [...new Set([...menuIds.value, ...halfCheckedKeys.value])]
-    
+
     const data = {
       role: { ...formData },
       menuIds: allMenuIds,
       deptIds: formData.dataScope === 2 ? deptIds.value : []
     }
-    
+
     if (formData.id) {
       await roleApi.update(data)
       message.success('更新成功')
@@ -414,7 +414,7 @@ async function handleSubmit() {
       await roleApi.create(data)
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -459,4 +459,9 @@ onMounted(() => {
   border-radius: 8px;
   padding: 12px;
 }
+
+.page-layout{
+  height: calc(100vh - 160px);
+}
+
 </style>

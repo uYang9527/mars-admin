@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
           <n-form-item label="部门名称">
@@ -23,18 +23,18 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:dept:add')" type="primary" @click="handleAdd()">
           <template #icon><n-icon><AddOutline /></n-icon></template>
           新增部门
         </n-button>
       </div>
-      
+
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :row-key="(row: SysDept) => row.id"
         :default-expand-all="true" />
     </n-card>
-    
+
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 600px" :mask-closable="false">
       <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="80">
         <n-form-item label="上级部门" path="parentId">
@@ -164,3 +164,8 @@ function handleDelete(row: SysDept) {
 
 onMounted(() => loadData())
 </script>
+<style lang="scss" scoped>
+.page-layout{
+  height: calc(100vh - 160px);
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -30,7 +30,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:menu:add')" type="primary" @click="handleAdd()">
@@ -38,7 +38,7 @@
           新增菜单
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table
         :columns="columns"
@@ -48,7 +48,7 @@
         default-expand-all
       />
     </n-card>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -166,7 +166,7 @@ const menuOptions = computed<TreeSelectOption[]>(() => {
   const options: TreeSelectOption[] = [
     { key: 0, label: '顶级菜单' }
   ]
-  
+
   function convert(menus: SysMenu[]): TreeSelectOption[] {
     return menus
       .filter(m => m.type !== 3) // 按钮不能作为上级
@@ -176,7 +176,7 @@ const menuOptions = computed<TreeSelectOption[]>(() => {
         children: menu.children ? convert(menu.children) : undefined
       }))
   }
-  
+
   options.push(...convert(tableData.value))
   return options
 })
@@ -345,7 +345,7 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     if (formData.id) {
       await menuApi.update({ ...formData })
       message.success('更新成功')
@@ -353,7 +353,7 @@ async function handleSubmit() {
       await menuApi.create({ ...formData })
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -386,3 +386,9 @@ onMounted(() => {
   loadData()
 })
 </script>
+
+<style lang="scss" scoped>
+  .page-layout{
+    height: calc(100vh - 160px);
+  }
+</style>

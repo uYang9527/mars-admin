@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -39,7 +39,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:notice:add')" type="primary" @click="handleAdd">
@@ -47,7 +47,7 @@
           新增通知
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table
         :columns="columns"
@@ -59,7 +59,7 @@
         @update:page-size="handlePageSizeChange"
       />
     </n-card>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -107,7 +107,7 @@
         </n-space>
       </template>
     </n-modal>
-    
+
     <!-- 查看详情弹窗 -->
     <n-modal v-model:show="detailVisible" preset="card" title="通知详情" style="width: 600px">
       <div v-if="detailData" class="notice-detail">
@@ -335,7 +335,7 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     if (formData.id) {
       await noticeApi.update(formData)
       message.success('更新成功')
@@ -343,7 +343,7 @@ async function handleSubmit() {
       await noticeApi.create(formData)
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -403,5 +403,8 @@ onMounted(() => {
   line-height: 1.8;
   color: #333;
   white-space: pre-wrap;
+}
+.page-layout{
+  height: calc(100vh - 160px);
 }
 </style>
