@@ -33,6 +33,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="mars-mall" target="17" />
+      <module name="mars-test" target="17" />
       <module name="mars-web" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -62,6 +63,7 @@
       <module name="mars-social" options="-parameters" />
       <module name="mars-starter" options="-parameters" />
       <module name="mars-system" options="-parameters" />
+      <module name="mars-test" options="-parameters" />
       <module name="mars-web" options="-parameters" />
       <module name="mars-web-api" options="-parameters" />
       <module name="mars-websocket" options="-parameters" />

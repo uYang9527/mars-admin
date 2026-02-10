@@ -5,7 +5,7 @@
       <n-card class="post-tree-card" size="small">
         <template #header>
           <div class="post-tree-header">
-            <span>岗位体系</span>
+            <span>岗位体系</span><span style="color: gray">（支持拖拽）</span>
           </div>
         </template>
         <div class="post-search">
@@ -207,23 +207,57 @@ const pagination = reactive({
 })
 
 const userColumns: DataTableColumns<SysUser> = [
-  { title: '用户名', key: 'username' },
-  { title: '昵称', key: 'nickname' },
-  { title: '部门', key: 'deptName' },
-  { title: '岗位', key: 'postNames', render(row) {
+  { title: 'ID', key: 'id', width: 60 },
+  { title: '用户名', key: 'username', width: 100 },
+  { title: '昵称', key: 'nickname', width: 100 },
+  { title: '部门', key: 'deptName', width: 100, render(row) {
+    return row.deptName || '-'
+  }},
+  { title: '岗位', key: 'postNames', width: 150, render(row) {
     return row.postNames || '-'
   }},
-  { title: '手机号', key: 'phone' },
-  { title: '状态', key: 'status', render(row) {
-    const statusMap: any = {
-      0: { type: 'error', label: '禁用' },
-      1: { type: 'success', label: '启用' },
-      2: { type: 'warning', label: '待审核' },
-      3: { type: 'error', label: '审核拒绝' }
+  {
+    title: '用户类型',
+    key: 'userType',
+    width: 110,
+    render(row) {
+      const typeMap: Record<string, { type: 'info' | 'success' | 'warning'; label: string }> = {
+        admin: { type: 'info', label: '后台管理员' },
+        pc: { type: 'success', label: 'PC前台' },
+        app: { type: 'warning', label: 'App/小程序' }
+      }
+      const t = typeMap[row.userType || 'admin'] || { type: 'info', label: row.userType || '未知' }
+      return h(NTag, { type: t.type, size: 'small' }, { default: () => t.label })
     }
-    const status = statusMap[row.status] || { type: 'info', label: '未知' }
-    return h(NTag, { type: status.type, size: 'small' }, { default: () => status.label })
-  }}
+  },
+  { title: '手机号', key: 'phone', width: 120 , render(row) {
+      return row.phone || '-'
+    }},
+  {
+    title: '离职',
+    key: 'isQuit',
+    width: 80,
+    render(row) {
+      const quit = row.isQuit === 1
+      return h(NTag, { type: quit ? 'error' : 'success', size: 'small' }, { default: () => (quit ? '是' : '否') })
+    }
+  },
+  {
+    title: '状态',
+    key: 'status',
+    width: 80,
+    render(row) {
+      const statusMap: Record<number, { type: 'success' | 'error' | 'warning' | 'info'; label: string }> = {
+        0: { type: 'error', label: '禁用' },
+        1: { type: 'success', label: '启用' },
+        2: { type: 'warning', label: '待审核' },
+        3: { type: 'error', label: '审核拒绝' }
+      }
+      const status = statusMap[row.status] || { type: 'info', label: '未知' }
+      return h(NTag, { type: status.type, size: 'small' }, { default: () => status.label })
+    }
+  },
+  { title: '创建时间', key: 'createTime', width: 170 }
 ]
 
 async function loadUserData() {

@@ -1,110 +1,80 @@
 <template>
   <div class="page-container">
-    <div class="user-layout">
-      <!-- 左侧部门树 -->
-      <n-card class="dept-tree-card" size="small">
-        <template #header>
-          <div class="dept-tree-header">
-            <span>部门列表</span>
-          </div>
-        </template>
-        <div class="dept-search">
-          <n-input v-model:value="deptSearch" placeholder="搜索部门" clearable size="small">
-            <template #prefix><n-icon><SearchOutline /></n-icon></template>
-          </n-input>
-        </div>
-        <div class="dept-tree-wrapper">
-          <n-tree
-            :data="deptTreeData"
-            :pattern="deptSearch"
-            :default-expand-all="true"
-            :selected-keys="selectedDeptKeys"
-            :node-props="deptNodeProps"
-            key-field="id"
-            label-field="deptName"
-            children-field="children"
-            selectable
-            block-line
-          />
-        </div>
-      </n-card>
+    <!-- 用户列表 -->
+    <n-card class="user-list-card" size="small">
+      <!-- 搜索表单 -->
+      <div class="search-form">
+        <n-form inline :model="searchForm" label-placement="left">
+          <n-form-item label="用户名">
+            <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
+          </n-form-item>
+          <n-form-item label="用户类型">
+            <n-select
+              v-model:value="searchForm.userType"
+              placeholder="请选择用户类型"
+              :options="userTypeOptions"
+              clearable
+              style="width: 140px"
+            />
+          </n-form-item>
+          <n-form-item label="状态">
+            <n-select
+              v-model:value="searchForm.status"
+              placeholder="请选择状态"
+              :options="statusOptions"
+              clearable
+              style="width: 120px"
+            />
+          </n-form-item>
+          <n-form-item>
+            <n-space>
+              <n-button type="primary" @click="handleSearch">
+                <template #icon><n-icon><SearchOutline /></n-icon></template>
+                搜索
+              </n-button>
+              <n-button @click="handleReset">
+                <template #icon><n-icon><RefreshOutline /></n-icon></template>
+                重置
+              </n-button>
+            </n-space>
+          </n-form-item>
+        </n-form>
+      </div>
 
-      <!-- 右侧用户列表 -->
-      <n-card class="user-list-card" size="small">
-        <!-- 搜索表单 -->
-        <div class="search-form">
-          <n-form inline :model="searchForm" label-placement="left">
-            <n-form-item label="用户名">
-              <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
-            </n-form-item>
-            <n-form-item label="用户类型">
-              <n-select
-                v-model:value="searchForm.userType"
-                placeholder="请选择用户类型"
-                :options="userTypeOptions"
-                clearable
-                style="width: 140px"
-              />
-            </n-form-item>
-            <n-form-item label="状态">
-              <n-select
-                v-model:value="searchForm.status"
-                placeholder="请选择状态"
-                :options="statusOptions"
-                clearable
-                style="width: 120px"
-              />
-            </n-form-item>
-            <n-form-item>
-              <n-space>
-                <n-button type="primary" @click="handleSearch">
-                  <template #icon><n-icon><SearchOutline /></n-icon></template>
-                  搜索
-                </n-button>
-                <n-button @click="handleReset">
-                  <template #icon><n-icon><RefreshOutline /></n-icon></template>
-                  重置
-                </n-button>
-              </n-space>
-            </n-form-item>
-          </n-form>
-        </div>
+      <!-- 工具栏 -->
+      <div class="table-toolbar">
+        <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
+          <template #icon><n-icon><AddOutline /></n-icon></template>
+          新增用户
+        </n-button>
+      </div>
 
-        <!-- 工具栏 -->
-        <div class="table-toolbar">
-          <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
-            <template #icon><n-icon><AddOutline /></n-icon></template>
-            新增用户
-          </n-button>
-        </div>
+      <!-- 表格 -->
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysUser) => row.id"
+        remote
+      />
 
-        <!-- 表格 -->
-        <n-data-table
-          :columns="columns"
-          :data="tableData"
-          :loading="loading"
-          :row-key="(row: SysUser) => row.id"
-          remote
-        />
-
-        <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
-          <n-pagination
-            v-model:page="pagination.page"
-            v-model:page-size="pagination.pageSize"
-            :item-count="pagination.itemCount"
-            :page-sizes="[10, 20, 50, 100]"
-            show-size-picker
-            show-quick-jumper
-            @update:page="handlePageChange"
-            @update:page-size="handlePageSizeChange"
-          >
-            <template #prefix>
-              共 {{ pagination.itemCount }} 条
-            </template>
-          </n-pagination>
-        </div>
-      </n-card>
-    </div>
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
+    </n-card>
 
     <!-- 新增/编辑弹窗 -->
     <n-modal
@@ -199,6 +169,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
+import { useRoute } from 'vue-router'
 import { NButton, NTag, NSpace, NDropdown, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
@@ -208,41 +179,19 @@ import { useUserStore } from '@/stores/user'
 const message = useMessage()
 const dialog = useDialog()
 const userStore = useUserStore()
+const route = useRoute()
 
 // 权限检查
 const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
-// ==================== 部门树 ====================
-const deptSearch = ref('')
-const deptTreeData = ref<SysDept[]>([])
+// ==================== 部门选择 ====================
 const deptOptions = ref<SysDept[]>([])
-const selectedDeptKeys = ref<Array<string | number>>([])
 const selectedDeptId = ref<number | undefined>(undefined)
 
-// 部门节点属性
-const deptNodeProps = ({ option }: { option: TreeOption }): HTMLAttributes => {
-  return {
-    onClick() {
-      const deptId = option.id as number
-      if (selectedDeptId.value === deptId) {
-        // 再次点击取消选择
-        selectedDeptId.value = undefined
-        selectedDeptKeys.value = []
-      } else {
-        selectedDeptId.value = deptId
-        selectedDeptKeys.value = [deptId]
-      }
-      pagination.page = 1
-      loadData()
-    }
-  }
-}
-
-// 加载部门树
-async function loadDeptTree() {
+// 加载部门树（用于下拉选择）
+async function loadDeptOptions() {
   try {
     const tree = await deptApi.tree()
-    deptTreeData.value = tree
     deptOptions.value = tree
   } catch (error) {
     // 错误已在拦截器处理
@@ -497,7 +446,6 @@ function handleReset() {
   searchForm.status = null
   searchForm.userType = null
   selectedDeptId.value = undefined
-  selectedDeptKeys.value = []
   handleSearch()
 }
 
@@ -516,7 +464,7 @@ function handleAdd() {
   modalTitle.value = '新增用户'
   Object.assign(formData, {
     id: undefined,
-    deptId: selectedDeptId.value || null,
+    deptId: null,
     username: '',
     password: '',
     nickname: '',
@@ -666,7 +614,11 @@ function handleToggleQuit(row: SysUser) {
 }
 
 onMounted(() => {
-  loadDeptTree()
+  const deptId = route.query.deptId
+  if (deptId) {
+    selectedDeptId.value = Number(deptId)
+  }
+  loadDeptOptions()
   loadData()
   loadRoles()
   loadPostOptions()
@@ -674,42 +626,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.user-layout {
-  display: flex;
-  gap: 12px;
-  height: 100%;
-}
-
-.dept-tree-card {
-  width: 240px;
-  flex-shrink: 0;
-  height: calc(100vh - 160px);
-}
-
-.dept-tree-card :deep(.n-card-header) {
-  padding: 12px 16px;
-}
-
-.dept-tree-header {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.dept-search {
-  margin-bottom: 8px;
-}
-
-.dept-tree-wrapper {
-  max-height: 100vh;
-  overflow-y: auto;
-}
-
-.dept-tree-wrapper :deep(.n-tree-node) {
-  padding: 2px 0;
-}
-
 .user-list-card {
-  flex: 1;
-  min-width: 0;
+  height: calc(100vh - 160px);
 }
 </style>

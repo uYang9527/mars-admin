@@ -34,6 +34,9 @@ export const deptApi = {
   },
   delete(id: number): Promise<void> {
     return request({ url: `/sys/dept/${id}`, method: 'delete' })
+  },
+  move(id: number, parentId: number, sort?: number): Promise<void> {
+    return request({ url: '/sys/dept/move', method: 'put', params: { id, parentId, sort } })
   }
 }
 
