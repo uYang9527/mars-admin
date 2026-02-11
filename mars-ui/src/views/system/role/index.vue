@@ -204,7 +204,7 @@ const columns: DataTableColumns<SysRole> = [
       )
     }
   },
-  { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
+  { title: '备注', key: 'remark',width: 180, ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   {
     title: '操作',

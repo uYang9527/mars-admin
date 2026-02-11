@@ -171,7 +171,7 @@ const columns: DataTableColumns<SysDictType> = [
   { title: '状态', key: 'status', width: 80, render(row) {
     return h(NTag, { type: row.status === 1 ? 'success' : 'error', size: 'small' }, { default: () => row.status === 1 ? '启用' : '禁用' })
   }},
-  { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
+  { title: '备注', key: 'remark', width: 80, ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   { title: '操作', key: 'actions', width: 220, fixed: 'right', render(row) {
     const buttons = [h(NButton, { size: 'small', onClick: () => handleViewData(row) }, { default: () => '字典数据' })]

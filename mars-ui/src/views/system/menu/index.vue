@@ -187,7 +187,7 @@ const columns: DataTableColumns<SysMenu> = [
   {
     title: '类型',
     key: 'type',
-    width: 80,
+    width: 120,
     render(row) {
       const info = typeMap[row.type]
       return h(NTag, { type: info.type, size: 'small' }, { default: () => info.text })
@@ -196,7 +196,7 @@ const columns: DataTableColumns<SysMenu> = [
   {
     title: '图标',
     key: 'icon',
-    width: 120,
+    width: 180,
     render(row) {
       if (!row.icon) return '-'
       const iconComponent = getIconComponent(row.icon)
@@ -211,9 +211,15 @@ const columns: DataTableColumns<SysMenu> = [
       return row.icon
     }
   },
-  { title: '路由地址', key: 'path', width: 180 },
-  { title: '组件路径', key: 'component', width: 200 },
-  { title: '权限标识', key: 'permission', width: 150 },
+  { title: '路由地址', key: 'path', width: 200 , render(row) {
+      return row.path || '-'
+    }},
+  { title: '组件路径', key: 'component', width: 200 , render(row) {
+      return row.component || '-'
+    }},
+  { title: '权限标识', key: 'permission', width: 200 , render(row) {
+      return row.permission || '-'
+    }},
   { title: '排序', key: 'sort', width: 80 },
   {
     title: '可见',
@@ -388,7 +394,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-  .page-layout{
-    height: calc(100vh - 160px);
-  }
+
 </style>
