@@ -626,7 +626,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.user-list-card {
-  height: calc(100vh - 160px);
-}
+
 </style>
