@@ -70,9 +70,9 @@ public class GenTableServiceImpl implements GenTableService {
         // 初始化 Velocity
         Properties props = new Properties();
         props.put("resource.loader.file.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        props.put("resource.loader", "class");
+        props.put("resource.loaders", "class");
         props.put("resource.loader.class.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        props.put("input.encoding", "UTF-8");
+        props.put("input.default_encoding", "UTF-8");
         props.put("output.encoding", "UTF-8");
         Velocity.init(props);
     }
