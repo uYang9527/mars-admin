@@ -19,7 +19,7 @@
     <!-- 样式一：左右分栏式 -->
     <template v-if="currentStyle === 2">
       <div class="login-container style1-container style2-container">
-        <div class="login-banner">
+        <div class="login-banner" :style="{ background: `linear-gradient(135deg, ${themeStore.primaryColor} 0%, ${adjustColor(themeStore.primaryColor, -30)} 100%)` }">
           <div class="banner-content">
             <div class="banner-logo">
               <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
@@ -89,7 +89,7 @@
               <n-form-item v-if="rememberMeEnabled" :show-label="false">
                 <div class="login-options">
                   <n-checkbox v-model:checked="formData.rememberMe">记住我</n-checkbox>
-                  <a v-if="registerEnabled" class="register-link" @click="goRegister">没有账号？立即注册</a>
+                  <a v-if="registerEnabled" class="register-link" :style="{ color: themeStore.primaryColor }" @click="goRegister">没有账号？立即注册</a>
                 </div>
               </n-form-item>
               <n-form-item>
@@ -108,7 +108,7 @@
     <template v-else-if="currentStyle === 1">
       <div class="style2-bg"></div>
       <div class="login-container style1-container">
-        <div class="login-banner">
+        <div class="login-banner" :style="{ background: `linear-gradient(135deg, ${themeStore.primaryColor} 0%, ${adjustColor(themeStore.primaryColor, -30)} 100%)` }">
           <div class="banner-content">
             <div class="banner-logo">
               <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
@@ -178,7 +178,7 @@
               <n-form-item v-if="rememberMeEnabled" :show-label="false">
                 <div class="login-options">
                   <n-checkbox v-model:checked="formData.rememberMe">记住我</n-checkbox>
-                  <a v-if="registerEnabled" class="register-link" @click="goRegister">没有账号？立即注册</a>
+                  <a v-if="registerEnabled" class="register-link" :style="{ color: themeStore.primaryColor }" @click="goRegister">没有账号？立即注册</a>
                 </div>
               </n-form-item>
               <n-form-item>
@@ -195,28 +195,28 @@
 
     <!-- 样式三：毛玻璃（与样式一相同布局，加毛玻璃效果） -->
     <template v-else-if="currentStyle === 3">
-      <div class="style3-bg"></div>
+      <div class="style3-bg" :style="{ background: `linear-gradient(135deg, ${themeStore.primaryColor} 0%, ${adjustColor(themeStore.primaryColor, -30)} 50%, ${themeStore.primaryColor} 100%)` }"></div>
       <div class="login-container style1-container style3-glass">
-        <div class="login-banner">
+        <div class="login-banner" style="background: transparent;">
           <div class="banner-content">
             <div class="banner-logo">
               <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-              <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+              <div v-else class="logo-icon" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);">{{ siteName.charAt(0) }}</div>
               <span class="logo-text">{{ siteName }}</span>
             </div>
-            <h1 class="banner-title">{{ siteDescription || '后台管理系统' }}</h1>
+            <h1 class="banner-title" style="color: #fff;">{{ siteDescription || '后台管理系统' }}</h1>
             <p class="banner-desc">打造一款现代化后台管理平台</p>
             <div class="banner-features">
               <div class="feature-item">
-                <div class="feature-dot"></div>
+                <div class="feature-dot" style="background: rgba(255, 255, 255, 0.6);"></div>
                 <span>RBAC权限管理</span>
               </div>
               <div class="feature-item">
-                <div class="feature-dot"></div>
+                <div class="feature-dot" style="background: rgba(255, 255, 255, 0.6);"></div>
                 <span>高效开发体验</span>
               </div>
               <div class="feature-item">
-                <div class="feature-dot"></div>
+                <div class="feature-dot" style="background: rgba(255, 255, 255, 0.6);"></div>
                 <span>精美界面设计</span>
               </div>
             </div>
@@ -267,7 +267,7 @@
               <n-form-item v-if="rememberMeEnabled" :show-label="false">
                 <div class="login-options">
                   <n-checkbox v-model:checked="formData.rememberMe">记住我</n-checkbox>
-                  <a v-if="registerEnabled" class="register-link" @click="goRegister">没有账号？立即注册</a>
+                  <a v-if="registerEnabled" class="register-link" style="color: rgba(255, 255, 255, 0.6);" @click="goRegister">没有账号？立即注册</a>
                 </div>
               </n-form-item>
               <n-form-item>
@@ -281,6 +281,7 @@
         <span>{{ copyright }}</span>
       </div>
     </template>
+
 
     <!-- 滑块验证弹窗 -->
     <n-modal v-model:show="showSliderModal" :mask-closable="false" class="slider-modal">
@@ -346,6 +347,7 @@ import { useMessage, type FormInst, type FormRules } from 'naive-ui'
 import { PersonOutline, LockClosedOutline, GridOutline, AppsOutline, ImageOutline, RefreshOutline, CloseOutline, ArrowForwardOutline, CheckmarkOutline } from '@vicons/ionicons5'
 import { useUserStore } from '@/stores/user'
 import { useSiteStore } from '@/stores/site'
+import { useThemeStore } from '@/stores/theme'
 import { authApi } from '@/api/auth'
 import { configGroupApi } from '@/api/org'
 
@@ -354,6 +356,7 @@ const route = useRoute()
 const message = useMessage()
 const userStore = useUserStore()
 const siteStore = useSiteStore()
+const themeStore = useThemeStore()
 
 // 站点配置（带默认值）
 const siteName = computed(() => siteStore.siteName || 'Mars Admin')
@@ -521,8 +524,7 @@ onMounted(() => {
 // 样式选项
 const styles = [
   { key: 1, name: '经典分栏', icon: GridOutline },
-  { key: 2, name: '左右分栏', icon: ImageOutline },
-  { key: 3, name: '毛玻璃', icon: AppsOutline }
+  { key: 2, name: '左右分栏', icon: AppsOutline }
 ]
 
 // 当前样式
@@ -618,6 +620,15 @@ async function doLogin() {
 // 跳转注册页面
 function goRegister() {
   router.push('/register')
+}
+
+// 颜色调整函数（调深或调亮）
+function adjustColor(hex: string, percent: number): string {
+  const num = parseInt(hex.replace('#', ''), 16)
+  const r = Math.min(255, Math.max(0, (num >> 16) + percent))
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + percent))
+  const b = Math.min(255, Math.max(0, (num & 0x0000FF) + percent))
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`
 }
 </script>
 
@@ -735,7 +746,7 @@ function goRegister() {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #111827;
+    color: var(--primary-color, #111827);
     font-size: 24px;
     font-weight: 700;
   }
@@ -777,7 +788,7 @@ function goRegister() {
 
 .banner-desc {
   font-size: 16px;
-  color: #9CA3AF;
+  color: #d9dbdd;
   margin-bottom: 40px;
 }
 

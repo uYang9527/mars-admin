@@ -16,9 +16,9 @@
       :class="[`theme-${layoutConfig.theme}`, layoutConfig.siderPosition === 'right' ? 'sider-right' : '']"
     >
       <!-- Logo -->
-      <div class="logo" :class="{ 'logo-collapsed': collapsed }">
+      <div class="logo" :class="{ 'logo-collapsed': collapsed, 'logo-primary': themeStore.headerUsePrimaryColor }" :style="themeStore.headerUsePrimaryColor ? { background: themeStore.primaryColor, borderBottomColor: themeStore.primaryColor } : {}">
         <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-        <div v-else class="logo-icon" :style="themeStore.headerUsePrimaryColor ? { background: themeStore.primaryColor } : {}">{{ siteName.charAt(0) }}</div>
+        <div v-else class="logo-icon" :style="{ background: themeStore.headerUsePrimaryColor ? '#fff' : themeStore.primaryColor, color: themeStore.headerUsePrimaryColor ? themeStore.primaryColor : '#fff' }">{{ siteName.charAt(0) }}</div>
         <transition name="fade">
           <span v-if="!collapsed" class="logo-text">{{ siteName }}</span>
         </transition>
@@ -43,7 +43,7 @@
         <!-- 顶部菜单模式下的Logo -->
         <div v-if="layoutConfig.siderPosition === 'top'" class="header-logo">
           <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-          <div v-else class="logo-icon" :style="themeStore.headerUsePrimaryColor ? { background: '#fff', color: themeStore.primaryColor } : {}">{{ siteName.charAt(0) }}</div>
+          <div v-else class="logo-icon" :style="{ background: themeStore.headerUsePrimaryColor ? '#fff' : themeStore.primaryColor, color: themeStore.headerUsePrimaryColor ? themeStore.primaryColor : '#fff' }">{{ siteName.charAt(0) }}</div>
           <span class="logo-text">{{ siteName }}</span>
         </div>
 
@@ -909,6 +909,17 @@ body.dark-theme .layout-sider {
 
 body.dark-theme .logo {
   border-bottom-color: #3f3f46;
+}
+
+// 侧边栏logo区域应用主题色时的样式
+.logo.logo-primary {
+  .logo-text {
+    color: #fff;
+  }
+
+  .logo-icon {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .logo-img {

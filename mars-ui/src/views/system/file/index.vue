@@ -13,6 +13,7 @@
               v-for="tab in typeTabs"
               :key="tab.value"
               :class="['type-tab', { active: activeType === tab.value }]"
+              :style="activeType === tab.value ? activeTabStyle : {}"
               @click="activeType = tab.value; loadFiles()"
           >
             {{ tab.label }}
@@ -330,11 +331,21 @@ import {
 } from '@vicons/ionicons5'
 import {fileApi, fileGroupApi, type SysFile, type SysFileGroup} from '@/api/system'
 import {useUserStore} from '@/stores/user'
+import {useThemeStore} from '@/stores/theme'
 
 const message = useMessage()
 const dialog = useDialog()
 const userStore = useUserStore()
+const themeStore = useThemeStore()
 const hasPermission = (permission: string) => userStore.hasPermission(permission)
+
+// 选中标签的动态样式
+const activeTabStyle = computed(() => ({
+  color: '#fff',
+  fontWeight: '500',
+  background: themeStore.primaryColor,
+  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
+}))
 
 // 文件类型标签
 const typeTabs = [
@@ -770,11 +781,10 @@ onMounted(() => {
   transition: all 0.2s;
 }
 
-.type-tab:hover { color: #18a058; }
+.type-tab:hover { color: var(--n-primary-color); background: var(--n-hover-color); }
 .type-tab.active {
-  color: #fff;
-  font-weight: 500;
-  background: #18a058;
+  /* 样式由内联 style 控制 */
+  border-radius: 4px;
 }
 
 .group-list-wrapper {

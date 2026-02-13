@@ -60,7 +60,10 @@ function generateColorVariants(baseColor: string) {
     primary: baseColor,
     hover: lighten(baseColor, 30),
     pressed: darken(baseColor, 20),
-    suppl: darken(baseColor, 10)
+    suppl: darken(baseColor, 10),
+    // 暗色主题下使用的亮色版本（提高对比度）
+    light: lighten(baseColor, 60),
+    lighter: lighten(baseColor, 80)
   }
 }
 
@@ -124,7 +127,13 @@ const lightThemeOverrides = computed<GlobalThemeOverrides>(() => {
       itemIconColorActiveHover: colors.primary
     },
     Tag: {
-      borderRadius: '6px'
+      borderRadius: '6px',
+      // info 类型标签使用主题色
+      colorInfo: `${colors.primary}15`,
+      colorInfoHover: `${colors.primary}25`,
+      colorInfoPressed: `${colors.primary}35`,
+      textColorInfo: colors.primary,
+      borderInfo: `1px solid ${colors.primary}40`
     },
     Dialog: {
       borderRadius: '12px'
@@ -137,10 +146,10 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
   const colors = generateColorVariants(themeStore.primaryColor)
   return {
     common: {
-      primaryColor: colors.primary,
-      primaryColorHover: colors.hover,
-      primaryColorPressed: colors.pressed,
-      primaryColorSuppl: colors.suppl,
+      primaryColor: colors.light, // 暗色主题下使用亮色版本
+      primaryColorHover: colors.lighter,
+      primaryColorPressed: colors.primary,
+      primaryColorSuppl: colors.hover,
       bodyColor: '#101014',
       cardColor: '#18181c',
       modalColor: '#18181c',
@@ -159,7 +168,21 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       heightMedium: '36px',
       colorSecondary: '#27272a',
       colorSecondaryHover: '#3f3f46',
-      colorSecondaryPressed: '#52525b'
+      colorSecondaryPressed: '#52525b',
+      // 确保主色按钮文字为白色
+      textColorPrimary: '#ffffff',
+      textColorHoverPrimary: '#ffffff',
+      textColorPressedPrimary: '#ffffff',
+      textColorFocusPrimary: '#ffffff',
+      // 确保文字按钮在暗色主题下可见（使用亮色）
+      textColorText: colors.light,
+      textColorTextHover: colors.lighter,
+      textColorTextPressed: colors.primary,
+      textColorTextFocus: colors.light,
+      // 默认按钮文字颜色
+      textColor: '#ffffffd1',
+      textColorHover: '#ffffff',
+      textColorPressed: '#ffffffa6'
     },
     Card: {
       borderRadius: '12px',
@@ -183,7 +206,7 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       colorFocus: '#27272a',
       border: '1px solid #3f3f46',
       borderHover: '1px solid #52525b',
-      borderFocus: `1px solid ${colors.primary}`
+      borderFocus: `1px solid ${colors.light}`
     },
     Form: {
       labelFontSizeTopMedium: '14px'
@@ -193,10 +216,31 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       borderRadius: '8px',
       color: '#18181c',
       itemColorActive: '#27272a',
-      itemColorActiveHover: '#3f3f46'
+      itemColorActiveHover: '#3f3f46',
+      // 确保菜单文字在暗色主题下可见
+      itemTextColor: '#ffffffa6',
+      itemTextColorHover: '#ffffff',
+      // 选中状态使用亮色版本提高对比度
+      itemTextColorActive: colors.light,
+      itemTextColorActiveHover: colors.lighter,
+      itemIconColor: '#ffffffa6',
+      itemIconColorHover: '#ffffff',
+      itemIconColorActive: colors.light,
+      itemIconColorActiveHover: colors.lighter,
+      // 子菜单文字颜色
+      itemTextColorChildActive: colors.light,
+      itemTextColorChildActiveHover: colors.lighter,
+      itemIconColorChildActive: colors.light,
+      itemIconColorChildActiveHover: colors.lighter
     },
     Tag: {
-      borderRadius: '6px'
+      borderRadius: '6px',
+      // info 类型标签使用主题色（暗色模式下使用亮色版本）
+      colorInfo: `${colors.light}20`,
+      colorInfoHover: `${colors.light}30`,
+      colorInfoPressed: `${colors.light}40`,
+      textColorInfo: colors.light,
+      borderInfo: `1px solid ${colors.light}50`
     },
     Dialog: {
       borderRadius: '12px',
@@ -213,8 +257,16 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       colorActive: '#27272a',
       border: '1px solid #3f3f46',
       borderHover: '1px solid #52525b',
-      borderActive: `1px solid ${colors.primary}`,
-      borderFocus: `1px solid ${colors.primary}`
+      borderActive: `1px solid ${colors.light}`,
+      borderFocus: `1px solid ${colors.light}`
+    },
+    Tabs: {
+      // 页签选中色也使用亮色
+      tabTextColorActiveLine: colors.light,
+      tabTextColorHoverLine: colors.lighter,
+      tabTextColorActiveBar: colors.light,
+      tabTextColorHoverBar: colors.lighter,
+      barColor: colors.light
     }
   }
 })
