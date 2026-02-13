@@ -7,6 +7,7 @@
           :key="tab.path"
           class="tab-item"
           :class="{ active: tab.path === tabsStore.activeTab }"
+          :style="tab.path === tabsStore.activeTab ? activeTabStyle : {}"
           @click="handleClick(tab)"
           @contextmenu.prevent="handleContextMenu($event, tab)"
         >
@@ -41,11 +42,23 @@ import { ref, computed, nextTick, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { CloseOutline } from '@vicons/ionicons5'
 import { useTabsStore, type TabItem } from '@/stores/tabs'
+import { useThemeStore } from '@/stores/theme'
 
 const router = useRouter()
 const route = useRoute()
 const tabsStore = useTabsStore()
+const themeStore = useThemeStore()
 const scrollRef = ref<HTMLElement | null>(null)
+
+// 激活页签的动态样式（跟随主题色）
+const activeTabStyle = computed(() => {
+  const color = themeStore.primaryColor
+  return {
+    color: color,
+    borderColor: color,
+    background: `${color}15`
+  }
+})
 
 // 右键菜单
 const contextMenuVisible = ref(false)

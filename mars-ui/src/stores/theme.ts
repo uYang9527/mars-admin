@@ -2,6 +2,20 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { darkTheme, type GlobalTheme } from 'naive-ui'
 
+// 预设主题色
+export const themeColors = [
+  { name: '拂晓蓝', color: '#1890FF' },
+  { name: '薄暮红', color: '#F5222D' },
+  { name: '火山橙', color: '#FA541C' },
+  { name: '日暮黄', color: '#FAAD14' },
+  { name: '极光绿', color: '#52C41A' },
+  { name: '明青', color: '#13C2C2' },
+  { name: '极客蓝', color: '#2F54EB' },
+  { name: '酱紫', color: '#722ED1' },
+  { name: '玫红', color: '#EB2F96' },
+  { name: '深邃黑', color: '#111827' },
+]
+
 export const useThemeStore = defineStore('theme', () => {
   // 主题模式: dark / light
   const mode = ref<'dark' | 'light'>(
@@ -16,6 +30,16 @@ export const useThemeStore = defineStore('theme', () => {
   // 是否显示页签
   const showTabs = ref<boolean>(
     localStorage.getItem('layout-show-tabs') !== 'false'
+  )
+
+  // 主题色
+  const primaryColor = ref<string>(
+    localStorage.getItem('layout-primary-color') || '#111827'
+  )
+
+  // 顶栏是否应用主题色
+  const headerUsePrimaryColor = ref<boolean>(
+    localStorage.getItem('layout-header-primary') === 'true'
   )
 
   // 是否是暗色主题
@@ -46,6 +70,20 @@ export const useThemeStore = defineStore('theme', () => {
     localStorage.setItem('layout-show-tabs', String(show))
   }
 
+  // 设置主题色
+  function setPrimaryColor(color: string) {
+    primaryColor.value = color
+    localStorage.setItem('layout-primary-color', color)
+    // 设置 CSS 变量，用于顶栏主题色
+    document.documentElement.style.setProperty('--primary-color', color)
+  }
+
+  // 设置顶栏是否应用主题色
+  function setHeaderUsePrimaryColor(use: boolean) {
+    headerUsePrimaryColor.value = use
+    localStorage.setItem('layout-header-primary', String(use))
+  }
+
   // 更新 body 类名
   function updateBodyClass() {
     if (isDark.value) {
@@ -59,16 +97,22 @@ export const useThemeStore = defineStore('theme', () => {
 
   // 初始化时更新 body 类名
   updateBodyClass()
+  // 初始化时设置 CSS 变量
+  document.documentElement.style.setProperty('--primary-color', primaryColor.value)
 
   return {
     mode,
     siderPosition,
     showTabs,
+    primaryColor,
+    headerUsePrimaryColor,
     isDark,
     naiveTheme,
     setMode,
     setSiderPosition,
     setShowTabs,
+    setPrimaryColor,
+    setHeaderUsePrimaryColor,
     updateBodyClass
   }
 }, {

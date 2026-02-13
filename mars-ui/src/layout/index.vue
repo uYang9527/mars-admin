@@ -18,7 +18,7 @@
       <!-- Logo -->
       <div class="logo" :class="{ 'logo-collapsed': collapsed }">
         <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-        <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+        <div v-else class="logo-icon" :style="themeStore.headerUsePrimaryColor ? { background: themeStore.primaryColor } : {}">{{ siteName.charAt(0) }}</div>
         <transition name="fade">
           <span v-if="!collapsed" class="logo-text">{{ siteName }}</span>
         </transition>
@@ -39,11 +39,11 @@
     <!-- 主内容区 -->
     <n-layout>
       <!-- 顶部导航 -->
-      <n-layout-header bordered class="layout-header" :class="`theme-${layoutConfig.theme}`">
+      <n-layout-header bordered class="layout-header" :class="[`theme-${layoutConfig.theme}`, { 'header-primary': themeStore.headerUsePrimaryColor }]" :style="headerStyle">
         <!-- 顶部菜单模式下的Logo -->
         <div v-if="layoutConfig.siderPosition === 'top'" class="header-logo">
           <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-          <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+          <div v-else class="logo-icon" :style="themeStore.headerUsePrimaryColor ? { background: '#fff', color: themeStore.primaryColor } : {}">{{ siteName.charAt(0) }}</div>
           <span class="logo-text">{{ siteName }}</span>
         </div>
 
@@ -172,6 +172,28 @@
                     </div>
                     <span>{{ theme.label }}</span>
                   </div>
+                </div>
+              </div>
+              <div class="theme-section">
+                <div class="theme-title">主题色</div>
+                <div class="color-options">
+                  <div
+                    v-for="item in themeColors"
+                    :key="item.color"
+                    class="color-option"
+                    :class="{ active: themeStore.primaryColor === item.color }"
+                    :style="{ backgroundColor: item.color }"
+                    :title="item.name"
+                    @click="themeStore.setPrimaryColor(item.color)"
+                  >
+                    <n-icon v-if="themeStore.primaryColor === item.color" color="#fff"><CheckmarkOutline /></n-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="theme-section">
+                <div class="theme-switch-row">
+                  <span class="theme-title" style="margin-bottom: 0">顶栏应用主题色</span>
+                  <n-switch :value="themeStore.headerUsePrimaryColor" @update:value="themeStore.setHeaderUsePrimaryColor" size="small" />
                 </div>
               </div>
               <div class="theme-section">
@@ -345,7 +367,7 @@ import {
 import { useUserStore } from '@/stores/user'
 import { useMessageStore } from '@/stores/message'
 import { useSiteStore } from '@/stores/site'
-import { useThemeStore } from '@/stores/theme'
+import { useThemeStore, themeColors } from '@/stores/theme'
 import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
@@ -401,6 +423,17 @@ const themeOptions = [
   { value: 'dark' as const, color: '#001529', label: '暗色主题' },
   { value: 'light' as const, color: '#ffffff', label: '亮色主题' }
 ]
+
+// 顶栏动态样式
+const headerStyle = computed(() => {
+  if (themeStore.headerUsePrimaryColor) {
+    return {
+      background: themeStore.primaryColor,
+      borderBottomColor: themeStore.primaryColor
+    }
+  }
+  return {}
+})
 
 // 初始化WebSocket和加载未读数
 onMounted(() => {
@@ -924,14 +957,48 @@ body.dark-theme .logo-text {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: #FFFFFF !important;
-  border-bottom: 1px solid #e8e8e8 !important;
+  background: #FFFFFF;
+  border-bottom: 1px solid #e8e8e8;
   transition: background-color 0.3s;
 }
 
 body.dark-theme .layout-header {
-  background: #18181c !important;
-  border-bottom: 1px solid #3f3f46 !important;
+  background: #18181c;
+  border-bottom: 1px solid #3f3f46;
+}
+
+// 顶栏应用主题色时的样式
+.layout-header.header-primary {
+  background: var(--primary-color) !important;
+  border-bottom-color: var(--primary-color) !important;
+
+  .header-icon {
+    color: #fff;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .user-info {
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .user-name {
+    color: #fff;
+  }
+
+  :deep(.n-breadcrumb-item__link),
+  :deep(.n-breadcrumb-item__separator) {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  // 顶部菜单模式下的 logo 文字颜色
+  .header-logo .logo-text {
+    color: #fff;
+  }
 }
 
 .header-left {
@@ -1272,6 +1339,37 @@ body.dark-theme .layout-preview {
 .theme-modes {
   display: flex;
   gap: 16px;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px currentColor;
+  }
+
+  :deep(.n-icon) {
+    font-size: 14px;
+  }
 }
 
 .theme-mode {

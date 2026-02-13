@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Mars Admin 启动类
  */
 @SpringBootApplication
-public class MarsApplication {
+public class MarsAdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MarsApplication.class, args);
+        SpringApplication.run(MarsAdminApplication.class, args);
     }
 }

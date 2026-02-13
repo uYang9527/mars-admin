@@ -39,169 +39,188 @@ const GlobalApiProvider = defineComponent({
   }
 })
 
-// 亮色主题配置
-const lightThemeOverrides: GlobalThemeOverrides = {
-  common: {
-    primaryColor: '#111827',
-    primaryColorHover: '#000000',
-    primaryColorPressed: '#1F2937',
-    primaryColorSuppl: '#374151',
-    warningColor: '#111827',
-    warningColorHover: '#000000',
-    warningColorPressed: '#1F2937',
-    warningColorSuppl: '#374151',
-    infoColor: '#111827',
-    infoColorHover: '#000000',
-    infoColorPressed: '#1F2937',
-    infoColorSuppl: '#374151',
-    successColor: '#111827',
-    successColorHover: '#000000',
-    successColorPressed: '#1F2937',
-    successColorSuppl: '#374151',
-    textColorBase: '#1F2937',
-    textColor1: '#1F2937',
-    textColor2: '#6B7280',
-    textColor3: '#9CA3AF',
-    borderColor: '#E5E7EB',
-    dividerColor: '#E5E7EB',
-    inputColor: '#F9FAFB',
-    tableColor: '#FFFFFF',
-    cardColor: '#FFFFFF',
-    modalColor: '#FFFFFF',
-    bodyColor: '#F3F4F6',
-    hoverColor: '#F3F4F6',
-    borderRadius: '8px',
-    borderRadiusSmall: '6px'
-  },
-  Button: {
-    borderRadiusMedium: '8px',
-    borderRadiusSmall: '6px',
-    heightMedium: '36px'
-  },
-  Card: {
-    borderRadius: '12px',
-    paddingMedium: '20px',
-    titleFontSizeMedium: '16px'
-  },
-  DataTable: {
-    borderRadius: '12px',
-    thColor: '#F9FAFB',
-    thTextColor: '#6B7280',
-    thFontWeight: '600',
-    tdColor: '#FFFFFF'
-  },
-  Input: {
-    borderRadius: '8px',
-    heightMedium: '36px'
-  },
-  Form: {
-    labelFontSizeTopMedium: '14px',
-    labelTextColor: '#374151'
-  },
-  Menu: {
-    itemHeight: '44px',
-    borderRadius: '8px',
-    itemColorActive: '#F3F4F6',
-    itemColorActiveHover: '#E5E7EB',
-    itemTextColorActive: '#111827',
-    itemTextColorActiveHover: '#111827',
-    itemIconColorActive: '#111827',
-    itemIconColorActiveHover: '#111827'
-  },
-  Tag: {
-    borderRadius: '6px'
-  },
-  Dialog: {
-    borderRadius: '12px'
+// 生成主题色配置
+function generateColorVariants(baseColor: string) {
+  // 计算较浅和较深的颜色
+  const lighten = (color: string, amount: number) => {
+    const hex = color.replace('#', '')
+    const r = Math.min(255, parseInt(hex.slice(0, 2), 16) + amount)
+    const g = Math.min(255, parseInt(hex.slice(2, 4), 16) + amount)
+    const b = Math.min(255, parseInt(hex.slice(4, 6), 16) + amount)
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
+  }
+  const darken = (color: string, amount: number) => {
+    const hex = color.replace('#', '')
+    const r = Math.max(0, parseInt(hex.slice(0, 2), 16) - amount)
+    const g = Math.max(0, parseInt(hex.slice(2, 4), 16) - amount)
+    const b = Math.max(0, parseInt(hex.slice(4, 6), 16) - amount)
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
+  }
+  return {
+    primary: baseColor,
+    hover: lighten(baseColor, 30),
+    pressed: darken(baseColor, 20),
+    suppl: darken(baseColor, 10)
   }
 }
 
-// 暗色主题配置
-const darkThemeOverrides: GlobalThemeOverrides = {
-  common: {
-    primaryColor: '#60A5FA',
-    primaryColorHover: '#93C5FD',
-    primaryColorPressed: '#3B82F6',
-    primaryColorSuppl: '#2563EB',
-    bodyColor: '#101014',
-    cardColor: '#18181c',
-    modalColor: '#18181c',
-    popoverColor: '#27272a',
-    tableColor: '#18181c',
-    inputColor: '#27272a',
-    borderColor: '#3f3f46',
-    dividerColor: '#3f3f46',
-    hoverColor: '#27272a',
-    borderRadius: '8px',
-    borderRadiusSmall: '6px'
-  },
-  Button: {
-    borderRadiusMedium: '8px',
-    borderRadiusSmall: '6px',
-    heightMedium: '36px',
-    colorSecondary: '#27272a',
-    colorSecondaryHover: '#3f3f46',
-    colorSecondaryPressed: '#52525b'
-  },
-  Card: {
-    borderRadius: '12px',
-    paddingMedium: '20px',
-    titleFontSizeMedium: '16px',
-    color: '#18181c',
-    borderColor: '#3f3f46'
-  },
-  DataTable: {
-    borderRadius: '12px',
-    thFontWeight: '600',
-    thColor: '#262629',
-    tdColor: '#18181c',
-    tdColorHover: '#262629',
-    borderColor: '#3f3f46'
-  },
-  Input: {
-    borderRadius: '8px',
-    heightMedium: '36px',
-    color: '#27272a',
-    colorFocus: '#27272a',
-    border: '1px solid #3f3f46',
-    borderHover: '1px solid #52525b',
-    borderFocus: '1px solid #60A5FA'
-  },
-  Form: {
-    labelFontSizeTopMedium: '14px'
-  },
-  Menu: {
-    itemHeight: '44px',
-    borderRadius: '8px',
-    color: '#18181c',
-    itemColorActive: '#27272a',
-    itemColorActiveHover: '#3f3f46'
-  },
-  Tag: {
-    borderRadius: '6px'
-  },
-  Dialog: {
-    borderRadius: '12px',
-    color: '#18181c'
-  },
-  Popover: {
-    color: '#27272a'
-  },
-  Dropdown: {
-    color: '#27272a'
-  },
-  InternalSelection: {
-    color: '#27272a',
-    colorActive: '#27272a',
-    border: '1px solid #3f3f46',
-    borderHover: '1px solid #52525b',
-    borderActive: '1px solid #60A5FA',
-    borderFocus: '1px solid #60A5FA'
+// 亮色主题配置
+const lightThemeOverrides = computed<GlobalThemeOverrides>(() => {
+  const colors = generateColorVariants(themeStore.primaryColor)
+  return {
+    common: {
+      primaryColor: colors.primary,
+      primaryColorHover: colors.hover,
+      primaryColorPressed: colors.pressed,
+      primaryColorSuppl: colors.suppl,
+      textColorBase: '#1F2937',
+      textColor1: '#1F2937',
+      textColor2: '#6B7280',
+      textColor3: '#9CA3AF',
+      borderColor: '#E5E7EB',
+      dividerColor: '#E5E7EB',
+      inputColor: '#F9FAFB',
+      tableColor: '#FFFFFF',
+      cardColor: '#FFFFFF',
+      modalColor: '#FFFFFF',
+      bodyColor: '#F3F4F6',
+      hoverColor: '#F3F4F6',
+      borderRadius: '8px',
+      borderRadiusSmall: '6px'
+    },
+    Button: {
+      borderRadiusMedium: '8px',
+      borderRadiusSmall: '6px',
+      heightMedium: '36px'
+    },
+    Card: {
+      borderRadius: '12px',
+      paddingMedium: '20px',
+      titleFontSizeMedium: '16px'
+    },
+    DataTable: {
+      borderRadius: '12px',
+      thColor: '#F9FAFB',
+      thTextColor: '#6B7280',
+      thFontWeight: '600',
+      tdColor: '#FFFFFF'
+    },
+    Input: {
+      borderRadius: '8px',
+      heightMedium: '36px'
+    },
+    Form: {
+      labelFontSizeTopMedium: '14px',
+      labelTextColor: '#374151'
+    },
+    Menu: {
+      itemHeight: '44px',
+      borderRadius: '8px',
+      itemColorActive: '#F3F4F6',
+      itemColorActiveHover: '#E5E7EB',
+      itemTextColorActive: colors.primary,
+      itemTextColorActiveHover: colors.primary,
+      itemIconColorActive: colors.primary,
+      itemIconColorActiveHover: colors.primary
+    },
+    Tag: {
+      borderRadius: '6px'
+    },
+    Dialog: {
+      borderRadius: '12px'
+    }
   }
-}
+})
+
+// 暗色主题配置
+const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
+  const colors = generateColorVariants(themeStore.primaryColor)
+  return {
+    common: {
+      primaryColor: colors.primary,
+      primaryColorHover: colors.hover,
+      primaryColorPressed: colors.pressed,
+      primaryColorSuppl: colors.suppl,
+      bodyColor: '#101014',
+      cardColor: '#18181c',
+      modalColor: '#18181c',
+      popoverColor: '#27272a',
+      tableColor: '#18181c',
+      inputColor: '#27272a',
+      borderColor: '#3f3f46',
+      dividerColor: '#3f3f46',
+      hoverColor: '#27272a',
+      borderRadius: '8px',
+      borderRadiusSmall: '6px'
+    },
+    Button: {
+      borderRadiusMedium: '8px',
+      borderRadiusSmall: '6px',
+      heightMedium: '36px',
+      colorSecondary: '#27272a',
+      colorSecondaryHover: '#3f3f46',
+      colorSecondaryPressed: '#52525b'
+    },
+    Card: {
+      borderRadius: '12px',
+      paddingMedium: '20px',
+      titleFontSizeMedium: '16px',
+      color: '#18181c',
+      borderColor: '#3f3f46'
+    },
+    DataTable: {
+      borderRadius: '12px',
+      thFontWeight: '600',
+      thColor: '#262629',
+      tdColor: '#18181c',
+      tdColorHover: '#262629',
+      borderColor: '#3f3f46'
+    },
+    Input: {
+      borderRadius: '8px',
+      heightMedium: '36px',
+      color: '#27272a',
+      colorFocus: '#27272a',
+      border: '1px solid #3f3f46',
+      borderHover: '1px solid #52525b',
+      borderFocus: `1px solid ${colors.primary}`
+    },
+    Form: {
+      labelFontSizeTopMedium: '14px'
+    },
+    Menu: {
+      itemHeight: '44px',
+      borderRadius: '8px',
+      color: '#18181c',
+      itemColorActive: '#27272a',
+      itemColorActiveHover: '#3f3f46'
+    },
+    Tag: {
+      borderRadius: '6px'
+    },
+    Dialog: {
+      borderRadius: '12px',
+      color: '#18181c'
+    },
+    Popover: {
+      color: '#27272a'
+    },
+    Dropdown: {
+      color: '#27272a'
+    },
+    InternalSelection: {
+      color: '#27272a',
+      colorActive: '#27272a',
+      border: '1px solid #3f3f46',
+      borderHover: '1px solid #52525b',
+      borderActive: `1px solid ${colors.primary}`,
+      borderFocus: `1px solid ${colors.primary}`
+    }
+  }
+})
 
 // 根据当前主题选择配置
 const currentThemeOverrides = computed(() => {
-  return themeStore.isDark ? darkThemeOverrides : lightThemeOverrides
+  return themeStore.isDark ? darkThemeOverrides.value : lightThemeOverrides.value
 })
 </script>
