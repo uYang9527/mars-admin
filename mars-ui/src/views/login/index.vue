@@ -669,7 +669,7 @@ function goRegister() {
 }
 
 :deep(.n-form-item) {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 :deep(.n-form-item-label) {
@@ -677,15 +677,15 @@ function goRegister() {
 }
 
 :deep(.n-input) {
-  --n-height: 44px;
-  --n-border-radius: 10px;
+  --n-height: 40px;
+  --n-border-radius: 8px;
 }
 
 :deep(.n-button) {
-  --n-height: 44px;
-  --n-border-radius: 10px;
+  --n-height: 40px;
+  --n-border-radius: 8px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 /* ==================== 样式一：左右分栏式 ==================== */
@@ -838,25 +838,25 @@ function goRegister() {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px;
+  padding: 32px;
 }
 
 .login-form {
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
 }
 
 .form-title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   color: #111827;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .form-subtitle {
-  font-size: 15px;
+  font-size: 14px;
   color: #6B7280;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 /* 验证码 */

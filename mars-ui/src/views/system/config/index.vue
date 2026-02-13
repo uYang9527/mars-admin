@@ -181,38 +181,106 @@
 
             <!-- 短信配置 -->
             <template v-else-if="group.groupCode === 'sms'">
-              <n-form :model="configs.sms" label-placement="left" label-width="120">
-                <n-form-item label="启用短信">
-                  <n-switch v-model:value="configs.sms.enabled" />
-                </n-form-item>
-                <n-form-item label="短信服务商">
-                  <n-select v-model:value="configs.sms.provider" :options="smsProviderOptions" style="width: 200px" />
-                </n-form-item>
-                <n-form-item label="AccessKeyId">
-                  <n-input v-model:value="configs.sms.accessKeyId" placeholder="请输入AccessKeyId" />
-                </n-form-item>
-                <n-form-item label="AccessKeySecret">
-                  <n-input v-model:value="configs.sms.accessKeySecret" type="password" show-password-on="click" placeholder="请输入AccessKeySecret" />
-                </n-form-item>
-                <n-form-item label="签名">
-                  <n-input v-model:value="configs.sms.signName" placeholder="短信签名" />
-                </n-form-item>
-              </n-form>
+              <div class="sms-config-layout">
+                <!-- 左侧：基础配置 -->
+                <div class="sms-config-left">
+                  <n-card title="基础配置" size="small">
+                    <n-form :model="configs.sms" label-placement="left" label-width="120">
+                      <n-form-item label="启用短信">
+                        <n-switch v-model:value="configs.sms.enabled" />
+                      </n-form-item>
+                      <n-form-item label="短信服务商">
+                        <n-select v-model:value="configs.sms.provider" :options="smsProviderOptions" style="width: 100%" />
+                      </n-form-item>
+                      <n-form-item label="AccessKeyId">
+                        <n-input v-model:value="configs.sms.accessKeyId" placeholder="请输入AccessKeyId" />
+                      </n-form-item>
+                      <n-form-item label="AccessKeySecret">
+                        <n-input v-model:value="configs.sms.accessKeySecret" type="password" show-password-on="click" placeholder="请输入AccessKeySecret" />
+                      </n-form-item>
+                      <n-form-item label="签名">
+                        <n-input v-model:value="configs.sms.signName" placeholder="短信签名" />
+                      </n-form-item>
+                      <n-form-item label="腾讯云AppId" v-if="configs.sms.provider === 'tencent'">
+                        <n-input v-model:value="configs.sms.tencentAppId" placeholder="腾讯云短信应用ID" />
+                      </n-form-item>
+                    </n-form>
+                  </n-card>
+
+                  <n-card title="模板配置" size="small" style="margin-top: 16px">
+                    <n-form :model="configs.sms" label-placement="left" label-width="120">
+                      <n-form-item label="验证码模板ID">
+                        <n-input v-model:value="configs.sms.templateVerifyCode" placeholder="如: SMS_123456789" />
+                        <span class="form-hint">用于登录/注册验证码</span>
+                      </n-form-item>
+                      <n-form-item label="重置密码模板ID">
+                        <n-input v-model:value="configs.sms.templateResetPassword" placeholder="如: SMS_123456790" />
+                        <span class="form-hint">用于重置密码验证</span>
+                      </n-form-item>
+                      <n-form-item label="通知模板ID">
+                        <n-input v-model:value="configs.sms.templateNotice" placeholder="如: SMS_123456791" />
+                        <span class="form-hint">用于系统通知短信</span>
+                      </n-form-item>
+                    </n-form>
+                  </n-card>
+                </div>
+
+                <!-- 右侧：测试与记录 -->
+                <div class="sms-config-right">
+                  <n-card title="测试发送" size="small">
+                    <n-form label-placement="left" label-width="80">
+                      <n-form-item label="手机号">
+                        <n-input-group>
+                          <n-input v-model:value="testSmsPhone" placeholder="请输入手机号" />
+                          <n-button type="primary" :loading="smsTesting" @click="handleTestSms">发送</n-button>
+                        </n-input-group>
+                      </n-form-item>
+                    </n-form>
+                    <n-alert type="info" :bordered="false" style="margin-top: 8px">
+                      将发送一条随机验证码到该手机，用于测试短信配置是否正确
+                    </n-alert>
+                  </n-card>
+
+                  <n-card size="small" style="margin-top: 16px">
+                    <template #header>
+                      <div style="display: flex; justify-content: space-between; align-items: center">
+                        <span>发送记录</span>
+                        <n-button text type="primary" size="small" @click="handleShowAllSmsLogs">查看全部</n-button>
+                      </div>
+                    </template>
+                    <n-table :bordered="true" :single-line="false" size="small" v-if="recentSmsLogs.length > 0">
+                      <thead>
+                        <tr>
+                          <th>手机号</th>
+                          <th>验证码</th>
+                          <th>状态</th>
+                          <th>时间</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="log in recentSmsLogs" :key="log.id">
+                          <td>{{ log.phone }}</td>
+                          <td>{{ log.content }}</td>
+                          <td>
+                            <n-tag :type="log.status === 1 ? 'success' : log.status === 2 ? 'error' : 'warning'" size="small">
+                              {{ log.status === 1 ? '成功' : log.status === 2 ? '失败' : '发送中' }}
+                            </n-tag>
+                          </td>
+                          <td>{{ log.createTime }}</td>
+                        </tr>
+                      </tbody>
+                    </n-table>
+                    <n-empty v-else description="暂无发送记录" size="small" />
+                  </n-card>
+                </div>
+              </div>
             </template>
 
-            <!-- 短信模板 -->
+            <!-- 短信模板（已吠弃，模板已各并到短信配置） -->
             <template v-else-if="group.groupCode === 'smsTemplate'">
-              <n-form :model="configs.smsTemplate" label-placement="left" label-width="150">
-                <n-form-item label="验证码模板ID">
-                  <n-input v-model:value="configs.smsTemplate.verifyCode" placeholder="请输入短信模板ID" />
-                </n-form-item>
-                <n-form-item label="重置密码模板ID">
-                  <n-input v-model:value="configs.smsTemplate.resetPassword" placeholder="请输入短信模板ID" />
-                </n-form-item>
-                <n-form-item label="通知模板ID">
-                  <n-input v-model:value="configs.smsTemplate.notification" placeholder="请输入短信模板ID" />
-                </n-form-item>
-              </n-form>
+              <n-alert type="info" :bordered="false">
+                短信模板配置已移至「短信配置」页面，请在短信配置中设置模板ID。
+              </n-alert>
             </template>
 
             <!-- 文件配置 -->
@@ -682,12 +750,7 @@
                     </span>
                   </n-form-item>
                 </template>
-                <n-form-item label="XSS过滤">
-                  <n-switch v-model:value="configs.security.xssFilter" />
-                </n-form-item>
-                <n-form-item label="SQL注入防护">
-                  <n-switch v-model:value="configs.security.sqlInject" />
-                </n-form-item>
+
 
                 <n-divider>Token 配置（Sa-Token）</n-divider>
                 <n-form-item label="Token 名称">
@@ -726,12 +789,7 @@
                 <n-form-item label="从Header读取">
                   <n-switch v-model:value="configs.security.tokenIsReadHeader" />
                 </n-form-item>
-                <n-form-item label="从Cookie读取">
-                  <n-switch v-model:value="configs.security.tokenIsReadCookie" />
-                </n-form-item>
-                <n-form-item label="从请求体读取">
-                  <n-switch v-model:value="configs.security.tokenIsReadBody" />
-                </n-form-item>
+
                 <n-form-item label="输出操作日志">
                   <n-switch v-model:value="configs.security.tokenIsLog" />
                   <span class="form-hint">是否输出 Sa-Token 操作日志</span>
@@ -766,14 +824,49 @@
         </n-tab-pane>
       </n-tabs>
     </n-card>
+
+    <!-- 短信记录模态框 -->
+    <n-modal v-model:show="showSmsLogsModal" preset="card" title="短信发送记录" style="width: 800px">
+      <n-space vertical>
+        <n-space>
+          <n-input v-model:value="smsLogsSearch.phone" placeholder="手机号" style="width: 180px" @keyup.enter="handleSearchSmsLogs" />
+          <n-select
+            v-model:value="smsLogsSearch.status"
+            placeholder="发送状态"
+            :options="[
+              { label: '全部', value: null },
+              { label: '成功', value: 1 },
+              { label: '失败', value: 2 },
+              { label: '发送中', value: 0 }
+            ]"
+            style="width: 120px"
+          />
+          <n-button type="primary" @click="handleSearchSmsLogs">搜索</n-button>
+          <n-button @click="handleResetSmsLogsSearch">重置</n-button>
+        </n-space>
+        <n-data-table
+          :columns="smsLogsColumns"
+          :data="smsLogsData"
+          :loading="smsLogsLoading"
+          :bordered="true"
+          size="small"
+        />
+        <n-pagination
+          v-model:page="smsLogsPagination.page"
+          :page-count="smsLogsPagination.pageCount"
+          :item-count="smsLogsPagination.itemCount"
+          @update:page="handleSmsLogsPageChange"
+        />
+      </n-space>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { ref, reactive, onMounted, computed, watch, h } from 'vue'
 import { useMessage, type UploadCustomRequestOptions } from 'naive-ui'
 import { ImageOutline, CloseOutline, AddOutline, TrashOutline } from '@vicons/ionicons5'
-import { configGroupApi, type SysConfigGroup } from '@/api/org'
+import { configGroupApi, type SysConfigGroup, type SmsLog } from '@/api/org'
 import { fileApi } from '@/api/system'
 import { wechatApi } from '@/api/wechat'
 import { useSiteStore } from '@/stores/site'
@@ -794,7 +887,7 @@ const configs = reactive<Record<string, any>>({
   password: { minLength: 6, maxLength: 20, requireUppercase: false, requireLowercase: false, requireNumber: false, requireSpecial: false, expireDays: 0 },
   email: { host: '', port: 465, username: '', password: '', fromName: '', ssl: true, enabled: false },
   emailTemplate: { verifyCode: '', resetPassword: '', welcome: '' },
-  sms: { provider: 'aliyun', accessKeyId: '', accessKeySecret: '', signName: '', enabled: false },
+  sms: { provider: 'aliyun', accessKeyId: '', accessKeySecret: '', signName: '', tencentAppId: '', templateVerifyCode: '', templateResetPassword: '', templateNotice: '', enabled: false },
   smsTemplate: { verifyCode: '', resetPassword: '', notification: '' },
   storage: {
     provider: 'local',
@@ -918,6 +1011,47 @@ function formatDuration(seconds: number): string {
 const emailTesting = ref(false)
 const testEmailAddress = ref('')
 
+// 短信测试相关
+const smsTesting = ref(false)
+const testSmsPhone = ref('')
+const recentSmsLogs = ref<SmsLog[]>([])
+const showSmsLogsModal = ref(false)
+const smsLogsLoading = ref(false)
+const smsLogsData = ref<SmsLog[]>([])
+const smsLogsPagination = reactive({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0,
+  pageCount: 0
+})
+const smsLogsSearch = reactive({
+  phone: '',
+  status: null as number | null
+})
+
+// 短信记录表格列
+const smsLogsColumns = [
+  { title: '手机号', key: 'phone', width: 130 },
+  { title: '验证码', key: 'content', width: 100 },
+  { title: '服务商', key: 'provider', width: 80 },
+  {
+    title: '状态',
+    key: 'status',
+    width: 80,
+    render: (row: SmsLog) => {
+      const statusMap: Record<number, { text: string; type: 'success' | 'error' | 'warning' }> = {
+        1: { text: '成功', type: 'success' },
+        2: { text: '失败', type: 'error' },
+        0: { text: '发送中', type: 'warning' }
+      }
+      const status = statusMap[row.status] || { text: '未知', type: 'warning' }
+      return h('span', { class: `status-${status.type}` }, status.text)
+    }
+  },
+  { title: '结果信息', key: 'resultMsg', ellipsis: { tooltip: true } },
+  { title: '发送时间', key: 'createTime', width: 170 }
+]
+
 // 密钥生成相关
 const generatingKeys = ref(false)
 
@@ -966,6 +1100,88 @@ async function handleTestEmail() {
   } finally {
     emailTesting.value = false
   }
+}
+
+// 测试发送短信
+async function handleTestSms() {
+  if (!testSmsPhone.value) {
+    message.warning('请输入手机号')
+    return
+  }
+
+  const phoneRegex = /^1[3-9]\d{9}$/
+  if (!phoneRegex.test(testSmsPhone.value)) {
+    message.warning('请输入正确的手机号格式')
+    return
+  }
+
+  smsTesting.value = true
+  try {
+    await configGroupApi.testSms(testSmsPhone.value)
+    message.success('测试短信发送成功')
+    // 刷新最近记录
+    await loadRecentSmsLogs()
+  } catch (error: any) {
+    message.error(error.message || '发送测试短信失败')
+  } finally {
+    smsTesting.value = false
+  }
+}
+
+// 加载最近5条短信记录
+async function loadRecentSmsLogs() {
+  try {
+    recentSmsLogs.value = await configGroupApi.getRecentSmsLogs(5)
+  } catch (error: any) {
+    console.error('加载短信记录失败', error)
+  }
+}
+
+// 查看全部短信记录
+function handleShowAllSmsLogs() {
+  showSmsLogsModal.value = true
+  smsLogsPagination.page = 1
+  loadSmsLogs()
+}
+
+// 加载短信记录分页数据
+async function loadSmsLogs() {
+  smsLogsLoading.value = true
+  try {
+    const res = await configGroupApi.getSmsLogs({
+      page: smsLogsPagination.page,
+      size: smsLogsPagination.pageSize,
+      phone: smsLogsSearch.phone || undefined,
+      status: smsLogsSearch.status ?? undefined
+    })
+    smsLogsData.value = res.records
+    smsLogsPagination.itemCount = res.total
+    smsLogsPagination.pageCount = res.pages
+  } catch (error: any) {
+    message.error(error.message || '加载短信记录失败')
+  } finally {
+    smsLogsLoading.value = false
+  }
+}
+
+// 短信记录分页变化
+function handleSmsLogsPageChange(page: number) {
+  smsLogsPagination.page = page
+  loadSmsLogs()
+}
+
+// 短信记录搜索
+function handleSearchSmsLogs() {
+  smsLogsPagination.page = 1
+  loadSmsLogs()
+}
+
+// 重置短信记录搜索
+function handleResetSmsLogsSearch() {
+  smsLogsSearch.phone = ''
+  smsLogsSearch.status = null
+  smsLogsPagination.page = 1
+  loadSmsLogs()
 }
 
 // 公众号菜单操作相关
@@ -1387,6 +1603,7 @@ async function handleLogoUpload(options: UploadCustomRequestOptions) {
 
 onMounted(() => {
   loadGroups()
+  loadRecentSmsLogs()
 })
 
 // 记录是否已加载过菜单
@@ -1414,7 +1631,44 @@ async function loadWechatMpMenu() {
 
 .config-content {
   padding: 20px 0;
-  max-width: 800px;
+
+  /* 默认表单最大宽度 */
+  :deep(.n-form) {
+    max-width: 600px;
+  }
+
+  /* 输入框最大宽度 */
+  :deep(.n-input),
+  :deep(.n-select),
+  :deep(.n-input-number) {
+    max-width: 400px;
+  }
+}
+
+/* 短信配置左右布局 */
+.sms-config-layout {
+  display: flex;
+  gap: 24px;
+
+  :deep(.n-form) {
+    max-width: none;
+  }
+
+  :deep(.n-input),
+  :deep(.n-select),
+  :deep(.n-input-number) {
+    max-width: none;
+  }
+}
+
+.sms-config-left {
+  flex: 6;
+  min-width: 0;
+}
+
+.sms-config-right {
+  flex: 4;
+  min-width: 320px;
 }
 
 .config-footer {

@@ -1,6 +1,14 @@
 package com.mars.sms;
 
+import com.mars.sms.service.SmsLogService;
 import com.mars.system.helper.SystemConfigHelper;
+import com.tencentcloudapi.common.Credential;
+import com.tencentcloudapi.common.profile.ClientProfile;
+import com.tencentcloudapi.common.profile.HttpProfile;
+import com.tencentcloudapi.sms.v20210111.SmsClient;
+import com.tencentcloudapi.sms.v20210111.models.SendSmsRequest;
+import com.tencentcloudapi.sms.v20210111.models.SendSmsResponse;
+import com.tencentcloudapi.sms.v20210111.models.SendStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,14 +22,15 @@ import org.springframework.stereotype.Service;
 public class TencentSmsService implements SmsService {
 
     private final SystemConfigHelper configHelper;
+    private final SmsLogService smsLogService;
 
     @Override
     public boolean sendCode(String phone, String code) {
-        String secretId = configHelper.getSmsTencentSecretId();
-        String secretKey = configHelper.getSmsTencentSecretKey();
+        String secretId = configHelper.getSmsAccessKeyId();
+        String secretKey = configHelper.getSmsAccessKeySecret();
         String appId = configHelper.getSmsTencentAppId();
-        String signName = configHelper.getSmsTencentSignName();
-        String templateId = configHelper.getSmsTencentTemplateId();
+        String signName = configHelper.getSmsSignName();
+        String templateId = configHelper.getSmsTemplateVerifyCode();
 
         if (secretId.isEmpty() || secretKey.isEmpty()) {
             log.warn("腾讯云短信配置不完整，使用控制台打印模式");
@@ -31,57 +40,69 @@ public class TencentSmsService implements SmsService {
             log.info("验证码: {}", code);
             log.info("有效期: 5分钟");
             log.info("============================================");
+            // 记录日志（控制台模式）
+            smsLogService.logVerifyCode(phone, code, "console", true, "控制台打印模式", null);
             return true;
         }
+
+        String bizId = null;
+        String resultMsg = null;
+        boolean success = false;
 
         try {
-            // TODO: 实际调用腾讯云短信API
-            // 参考文档: https://cloud.tencent.com/document/product/382/43194
-            // 1. 引入依赖 tencentcloud-sdk-java
-            // 2. 构建请求发送短信
-
-            /*
+            // 创建认证对象
             Credential cred = new Credential(secretId, secretKey);
+
+            // 配置HTTP连接
             HttpProfile httpProfile = new HttpProfile();
             httpProfile.setEndpoint("sms.tencentcloudapi.com");
+            httpProfile.setReqMethod("POST");
+            httpProfile.setConnTimeout(60);
 
+            // 配置客户端
             ClientProfile clientProfile = new ClientProfile();
             clientProfile.setHttpProfile(httpProfile);
+            clientProfile.setSignMethod("HmacSHA256");
 
+            // 创建短信客户端
             SmsClient client = new SmsClient(cred, "ap-guangzhou", clientProfile);
 
-            SendSmsRequest req = new SendSmsRequest();
-            req.setSmsSdkAppId(appId);
-            req.setSignName(signName);
-            req.setTemplateId(templateId);
-            req.setPhoneNumberSet(new String[]{"+86" + phone});
-            req.setTemplateParamSet(new String[]{code});
+            // 构建短信发送请求
+            SendSmsRequest request = new SendSmsRequest();
+            request.setSmsSdkAppId(appId);
+            request.setSignName(signName);
+            request.setTemplateId(templateId);
+            // 手机号需要加上+86国家码
+            request.setPhoneNumberSet(new String[]{"+86" + phone});
+            // 模板参数，与模板中的变量对应
+            request.setTemplateParamSet(new String[]{code});
 
-            SendSmsResponse resp = client.SendSms(req);
-            if ("Ok".equals(resp.getSendStatusSet()[0].getCode())) {
-                log.info("腾讯云短信发送成功: phone={}", phone);
-                return true;
+            // 发送短信
+            SendSmsResponse response = client.SendSms(request);
+            SendStatus[] sendStatusSet = response.getSendStatusSet();
+
+            if (sendStatusSet != null && sendStatusSet.length > 0) {
+                SendStatus status = sendStatusSet[0];
+                bizId = status.getSerialNo();
+                resultMsg = status.getMessage();
+                if ("Ok".equals(status.getCode())) {
+                    log.info("腾讯云短信发送成功: phone={}, serialNo={}", phone, bizId);
+                    success = true;
+                } else {
+                    log.error("腾讯云短信发送失败: code={}, message={}", status.getCode(), resultMsg);
+                }
             } else {
-                log.error("腾讯云短信发送失败: {}", resp.getSendStatusSet()[0].getMessage());
-                return false;
+                resultMsg = "响应结果为空";
+                log.error("腾讯云短信发送失败: {}", resultMsg);
             }
-            */
-
-            log.info("============================================");
-            log.info("【短信验证码 - 腾讯云(待实现)】");
-            log.info("手机号: {}", phone);
-            log.info("验证码: {}", code);
-            log.info("AppId: {}", appId);
-            log.info("签名: {}", signName);
-            log.info("模板: {}", templateId);
-            log.info("有效期: 5分钟");
-            log.info("============================================");
-            return true;
-
         } catch (Exception e) {
             log.error("腾讯云短信发送异常", e);
-            return false;
+            resultMsg = e.getMessage();
         }
+
+        // 记录发送日志
+        smsLogService.logVerifyCode(phone, code, getProviderName(), success, resultMsg, bizId);
+        return success;
     }
 
     @Override

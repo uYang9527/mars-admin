@@ -1,5 +1,10 @@
 package com.mars.sms;
 
+import com.aliyun.dysmsapi20170525.Client;
+import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
+import com.aliyun.teaopenapi.models.Config;
+import com.mars.sms.service.SmsLogService;
 import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +19,14 @@ import org.springframework.stereotype.Service;
 public class AliyunSmsService implements SmsService {
 
     private final SystemConfigHelper configHelper;
+    private final SmsLogService smsLogService;
 
     @Override
     public boolean sendCode(String phone, String code) {
-        String accessKeyId = configHelper.getSmsAliyunAccessKeyId();
-        String accessKeySecret = configHelper.getSmsAliyunAccessKeySecret();
-        String signName = configHelper.getSmsAliyunSignName();
-        String templateCode = configHelper.getSmsAliyunTemplateCode();
+        String accessKeyId = configHelper.getSmsAccessKeyId();
+        String accessKeySecret = configHelper.getSmsAccessKeySecret();
+        String signName = configHelper.getSmsSignName();
+        String templateCode = configHelper.getSmsTemplateVerifyCode();
 
         if (accessKeyId.isEmpty() || accessKeySecret.isEmpty()) {
             log.warn("阿里云短信配置不完整，使用控制台打印模式");
@@ -30,49 +36,50 @@ public class AliyunSmsService implements SmsService {
             log.info("验证码: {}", code);
             log.info("有效期: 5分钟");
             log.info("============================================");
+            // 记录日志（控制台模式）
+            smsLogService.logVerifyCode(phone, code, "console", true, "控制台打印模式", null);
             return true;
         }
+
+        String bizId = null;
+        String resultMsg = null;
+        boolean success = false;
 
         try {
-            // TODO: 实际调用阿里云短信API
-            // 参考文档: https://help.aliyun.com/document_detail/101414.html
-            // 1. 引入依赖 aliyun-java-sdk-core 和 aliyun-java-sdk-dysmsapi
-            // 2. 构建请求发送短信
+            // 创建阿里云短信客户端
+            Config config = new Config()
+                    .setAccessKeyId(accessKeyId)
+                    .setAccessKeySecret(accessKeySecret)
+                    .setEndpoint("dysmsapi.aliyuncs.com");
+            Client client = new Client(config);
 
-            /*
-            DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
-            IAcsClient client = new DefaultAcsClient(profile);
+            // 构建短信发送请求
+            SendSmsRequest request = new SendSmsRequest()
+                    .setPhoneNumbers(phone)
+                    .setSignName(signName)
+                    .setTemplateCode(templateCode)
+                    .setTemplateParam("{\"code\":\"" + code + "\"}");
 
-            SendSmsRequest request = new SendSmsRequest();
-            request.setPhoneNumbers(phone);
-            request.setSignName(signName);
-            request.setTemplateCode(templateCode);
-            request.setTemplateParam("{\"code\":\"" + code + "\"}");
+            // 发送短信
+            SendSmsResponse response = client.sendSms(request);
+            String respCode = response.getBody().getCode();
+            bizId = response.getBody().getBizId();
+            resultMsg = response.getBody().getMessage();
 
-            SendSmsResponse response = client.getAcsResponse(request);
-            if ("OK".equals(response.getCode())) {
-                log.info("阿里云短信发送成功: phone={}", phone);
-                return true;
+            if ("OK".equals(respCode)) {
+                log.info("阿里云短信发送成功: phone={}, bizId={}", phone, bizId);
+                success = true;
             } else {
-                log.error("阿里云短信发送失败: {}", response.getMessage());
-                return false;
+                log.error("阿里云短信发送失败: code={}, message={}", respCode, resultMsg);
             }
-            */
-
-            log.info("============================================");
-            log.info("【短信验证码 - 阿里云(待实现)】");
-            log.info("手机号: {}", phone);
-            log.info("验证码: {}", code);
-            log.info("签名: {}", signName);
-            log.info("模板: {}", templateCode);
-            log.info("有效期: 5分钟");
-            log.info("============================================");
-            return true;
-
         } catch (Exception e) {
             log.error("阿里云短信发送异常", e);
-            return false;
+            resultMsg = e.getMessage();
         }
+
+        // 记录发送日志
+        smsLogService.logVerifyCode(phone, code, getProviderName(), success, resultMsg, bizId);
+        return success;
     }
 
     @Override

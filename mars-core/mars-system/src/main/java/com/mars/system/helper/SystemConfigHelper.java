@@ -470,6 +470,13 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
     // ============ 短信配置 ============
 
     /**
+     * 是否启用短信
+     */
+    public boolean isSmsEnabled() {
+        return getBoolean(GROUP_SMS, "enabled");
+    }
+
+    /**
      * 获取短信服务商
      */
     public String getSmsProvider() {
@@ -477,45 +484,24 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
     }
 
     /**
-     * 获取阿里云短信AccessKeyId
+     * 获取短信AccessKeyId（阿里云）/ SecretId（腾讯云）
      */
-    public String getSmsAliyunAccessKeyId() {
-        return getString(GROUP_SMS, "aliyunAccessKeyId", "");
+    public String getSmsAccessKeyId() {
+        return getString(GROUP_SMS, "accessKeyId", "");
     }
 
     /**
-     * 获取阿里云短信AccessKeySecret
+     * 获取短信AccessKeySecret（阿里云）/ SecretKey（腾讯云）
      */
-    public String getSmsAliyunAccessKeySecret() {
-        return getString(GROUP_SMS, "aliyunAccessKeySecret", "");
+    public String getSmsAccessKeySecret() {
+        return getString(GROUP_SMS, "accessKeySecret", "");
     }
 
     /**
-     * 获取阿里云短信签名
+     * 获取短信签名
      */
-    public String getSmsAliyunSignName() {
-        return getString(GROUP_SMS, "aliyunSignName", "");
-    }
-
-    /**
-     * 获取阿里云短信模板ID
-     */
-    public String getSmsAliyunTemplateCode() {
-        return getString(GROUP_SMS, "aliyunTemplateCode", "");
-    }
-
-    /**
-     * 获取腾讯云短信SecretId
-     */
-    public String getSmsTencentSecretId() {
-        return getString(GROUP_SMS, "tencentSecretId", "");
-    }
-
-    /**
-     * 获取腾讯云短信SecretKey
-     */
-    public String getSmsTencentSecretKey() {
-        return getString(GROUP_SMS, "tencentSecretKey", "");
+    public String getSmsSignName() {
+        return getString(GROUP_SMS, "signName", "");
     }
 
     /**
@@ -525,18 +511,68 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
         return getString(GROUP_SMS, "tencentAppId", "");
     }
 
+    // ============ 短信模板配置（已合并到sms分组） ============
+
     /**
-     * 获取腾讯云短信签名
+     * 获取验证码短信模板ID
      */
-    public String getSmsTencentSignName() {
-        return getString(GROUP_SMS, "tencentSignName", "");
+    public String getSmsTemplateVerifyCode() {
+        return getString(GROUP_SMS, "templateVerifyCode", "");
     }
 
     /**
-     * 获取腾讯云短信模板ID
+     * 获取重置密码短信模板ID
      */
+    public String getSmsTemplateResetPassword() {
+        return getString(GROUP_SMS, "templateResetPassword", "");
+    }
+
+    /**
+     * 获取通知短信模板ID
+     */
+    public String getSmsTemplateNotice() {
+        return getString(GROUP_SMS, "templateNotice", "");
+    }
+
+    // 兼容旧方法（已废弃，建议使用新方法）
+    @Deprecated
+    public String getSmsAliyunAccessKeyId() {
+        return getSmsAccessKeyId();
+    }
+
+    @Deprecated
+    public String getSmsAliyunAccessKeySecret() {
+        return getSmsAccessKeySecret();
+    }
+
+    @Deprecated
+    public String getSmsAliyunSignName() {
+        return getSmsSignName();
+    }
+
+    @Deprecated
+    public String getSmsAliyunTemplateCode() {
+        return getSmsTemplateVerifyCode();
+    }
+
+    @Deprecated
+    public String getSmsTencentSecretId() {
+        return getSmsAccessKeyId();
+    }
+
+    @Deprecated
+    public String getSmsTencentSecretKey() {
+        return getSmsAccessKeySecret();
+    }
+
+    @Deprecated
+    public String getSmsTencentSignName() {
+        return getSmsSignName();
+    }
+
+    @Deprecated
     public String getSmsTencentTemplateId() {
-        return getString(GROUP_SMS, "tencentTemplateId", "");
+        return getSmsTemplateVerifyCode();
     }
 
     // ============ 邮件配置 ============

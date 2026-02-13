@@ -1,12 +1,18 @@
 package com.mars.admin.controller.system;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mars.common.result.Result;
 import com.mars.system.config.SaTokenConfigLoader;
 import com.mars.system.entity.SysConfigGroup;
 import com.mars.mail.EmailService;
+import com.mars.sms.SmsServiceFactory;
+import com.mars.sms.entity.SmsLog;
+import com.mars.sms.service.SmsLogService;
 import com.mars.system.service.SysConfigGroupService;
 import com.mars.system.helper.SystemConfigHelper;
 import com.mars.pay.PayServiceFactory;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +34,8 @@ public class SysConfigGroupController {
     private final PayServiceFactory payServiceFactory;
     private final EmailService emailService;
     private final SaTokenConfigLoader saTokenConfigLoader;
+    private final SmsServiceFactory smsServiceFactory;
+    private final SmsLogService smsLogService;
 
     /**
      * 获取所有配置分组
@@ -179,5 +187,60 @@ public class SysConfigGroupController {
         } catch (Exception e) {
             return Result.fail("生成密钥失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 测试发送短信
+     */
+    @PostMapping("/test-sms")
+    public Result<Void> testSms(@RequestBody TestSmsRequest request) {
+        try {
+            // 生成随机验证码
+            String code = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+            boolean success = smsServiceFactory.sendCode(request.getPhone(), code);
+            if (success) {
+                return Result.ok();
+            } else {
+                return Result.fail("短信发送失败");
+            }
+        } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+    }
+
+    @Data
+    public static class TestSmsRequest {
+        private String phone; // 手机号
+    }
+
+    /**
+     * 获取最近短信发送记录
+     */
+    @GetMapping("/sms-logs/recent")
+    public Result<List<SmsLog>> getRecentSmsLogs(@RequestParam(defaultValue = "5") Integer limit) {
+        LambdaQueryWrapper<SmsLog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(SmsLog::getCreateTime)
+                .last("LIMIT " + limit);
+        return Result.ok(smsLogService.list(wrapper));
+    }
+
+    /**
+     * 分页查询短信发送记录
+     */
+    @GetMapping("/sms-logs")
+    public Result<IPage<SmsLog>> getSmsLogs(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) Integer status) {
+        LambdaQueryWrapper<SmsLog> wrapper = new LambdaQueryWrapper<>();
+        if (phone != null && !phone.isEmpty()) {
+            wrapper.like(SmsLog::getPhone, phone);
+        }
+        if (status != null) {
+            wrapper.eq(SmsLog::getStatus, status);
+        }
+        wrapper.orderByDesc(SmsLog::getCreateTime);
+        return Result.ok(smsLogService.page(new Page<>(page, size), wrapper));
     }
 }
