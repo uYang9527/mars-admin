@@ -12,7 +12,7 @@
     <artifactId>mars-sms</artifactId>
     <packaging>jar</packaging>
     <name>Mars SMS</name>
-    <description>短信基础设施 - 阿里云/腾讯云短信</description>
+    <description>短信基础设施 - 阿里云/腾讯云/七牛云短信</description>
 
     <dependencies>
         <!-- 依赖系统模块（SystemConfigHelper读取配置） -->

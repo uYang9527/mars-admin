@@ -13,14 +13,14 @@ spring:
       max-request-size: 500MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mars-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://47.108.187.25:3306/mars-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: root
+    password: mars6662026@
   data:
     redis:
-      host: localhost
+      host: 47.108.187.25
       port: 6379
-      password:
+      password: 123456
       database: 10
       lettuce:
         pool:
@@ -48,7 +48,7 @@ mars:
   # 演示模式配置（此处为开发环境默认值，生产环境请在 application-prod.yml 中配置）
   # true: 开启演示模式，禁止新增、编辑、删除操作
   # false: 关闭演示模式，允许所有操作
-  demo-mode: false
+  demo-mode: true
 
 # 日志配置
 logging:
