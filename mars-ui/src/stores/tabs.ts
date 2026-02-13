@@ -30,7 +30,7 @@ export const useTabsStore = defineStore('tabs', () => {
     // 忽略登录、404 等非布局页面
     if (route.meta?.requiresAuth === false) return
     // 忽略重定向
-    if (route.path === '/') return
+    if (route.path === '/' || route.name === 'Redirect' || route.path.startsWith('/redirect/')) return
 
     const title = (route.meta?.title as string) || '未命名'
     const exists = tabs.value.find(t => t.path === route.path)
