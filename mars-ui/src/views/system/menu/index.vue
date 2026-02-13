@@ -84,10 +84,20 @@
         <n-form-item label="菜单名称" path="name">
           <n-input v-model:value="formData.name" placeholder="请输入菜单名称" />
         </n-form-item>
-        <n-form-item v-if="formData.type !== 3" label="路由地址" path="path">
+        <n-form-item v-if="formData.type !== 3" label="是否外链" path="isFrame">
+          <n-switch v-model:value="formData.isFrame" :checked-value="1" :unchecked-value="0">
+            <template #checked>是</template>
+            <template #unchecked>否</template>
+          </n-switch>
+          <span style="margin-left: 8px; color: #999; font-size: 12px;">外链点击后将在新窗口打开</span>
+        </n-form-item>
+        <n-form-item v-if="formData.type !== 3 && !formData.isFrame" label="路由地址" path="path">
           <n-input v-model:value="formData.path" placeholder="请输入路由地址" />
         </n-form-item>
-        <n-form-item v-if="formData.type === 2" label="组件路径" path="component">
+        <n-form-item v-if="formData.type !== 3 && formData.isFrame" label="外链地址" path="component">
+          <n-input v-model:value="formData.component" placeholder="请输入外链地址，如：https://example.com" />
+        </n-form-item>
+        <n-form-item v-if="formData.type === 2 && !formData.isFrame" label="组件路径" path="component">
           <n-input v-model:value="formData.component" placeholder="请输入组件路径" />
         </n-form-item>
         <n-form-item v-if="formData.type === 3" label="权限标识" path="permission">
@@ -284,7 +294,8 @@ const formData = reactive<SysMenu>({
   icon: '',
   sort: 0,
   visible: 1,
-  status: 1
+  status: 1,
+  isFrame: 0
 })
 
 const rules: FormRules = {
@@ -334,7 +345,8 @@ function handleAdd(parentId?: number) {
     icon: '',
     sort: 0,
     visible: 1,
-    status: 1
+    status: 1,
+    isFrame: 0
   })
   modalVisible.value = true
 }

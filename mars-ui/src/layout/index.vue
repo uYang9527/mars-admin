@@ -726,12 +726,19 @@ function convertMenus(menus: typeof userStore.menus): MenuOption[] {
       if (menuPath && !menuPath.startsWith('/') && menu.type === 2) {
         menuPath = '/' + menuPath
       }
+      
+      // 外链菜单（目录或菜单类型）使用特殊的 key 格式：external:url
+      const isExternal = menu.isFrame === 1 && menu.component
+      const menuKey = isExternal ? `external:${menu.component}` : menuPath
+      
       const option: MenuOption = {
         label: menu.name,
-        key: menuPath,
+        key: menuKey,
         icon: renderIcon(menu.icon)
       }
-      if (menu.children && menu.children.length > 0) {
+      
+      // 非外链菜单才处理子菜单
+      if (!isExternal && menu.children && menu.children.length > 0) {
         const children = convertMenus(menu.children)
         if (children.length > 0) {
           option.children = children
@@ -802,6 +809,12 @@ const userOptions = [
 
 // 菜单点击
 function handleMenuClick(key: string) {
+  // 判断是否是外链目录
+  if (key.startsWith('external:')) {
+    const url = key.replace('external:', '')
+    window.open(url, '_blank')
+    return
+  }
   router.push(key)
 }
 

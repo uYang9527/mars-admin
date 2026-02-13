@@ -215,6 +215,7 @@ export interface SysMenu {
   sort: number
   visible: number
   status: number
+  isFrame?: number  // 是否外链(0-否 1-是)
   children?: SysMenu[]
 }
 
