@@ -289,9 +289,6 @@
                 <n-form-item label="存储方式">
                   <n-select v-model:value="configs.storage.provider" :options="storageProviderOptions" style="width: 200px" />
                 </n-form-item>
-                <n-form-item label="访问域名">
-                  <n-input v-model:value="configs.storage.domain" placeholder="如: http://localhost:8080" />
-                </n-form-item>
                 <n-form-item label="最大文件大小(MB)">
                   <n-input-number v-model:value="configs.storage.maxSize" :min="1" :max="1024" />
                 </n-form-item>
@@ -305,6 +302,9 @@
                   <n-form-item label="存储路径">
                     <n-input v-model:value="configs.storage.localPath" placeholder="如: ./uploads" />
                   </n-form-item>
+                  <n-alert type="info" :bordered="false" style="margin-top: 8px">
+                    本地存储的访问地址与服务端一致，无需单独配置
+                  </n-alert>
                 </template>
 
                 <!-- MinIO配置 -->
@@ -321,6 +321,9 @@
                   </n-form-item>
                   <n-form-item label="存储桶名称">
                     <n-input v-model:value="configs.storage.minioBucket" placeholder="请输入存储桶名称" />
+                  </n-form-item>
+                  <n-form-item label="访问域名">
+                    <n-input v-model:value="configs.storage.domain" placeholder="如: https://cdn.example.com" />
                   </n-form-item>
                 </template>
 
@@ -339,6 +342,9 @@
                   <n-form-item label="存储桶名称">
                     <n-input v-model:value="configs.storage.aliyunBucket" placeholder="请输入Bucket名称" />
                   </n-form-item>
+                  <n-form-item label="访问域名">
+                    <n-input v-model:value="configs.storage.domain" placeholder="如: https://cdn.example.com" />
+                  </n-form-item>
                 </template>
 
                 <!-- 腾讯云COS配置 -->
@@ -355,6 +361,29 @@
                   </n-form-item>
                   <n-form-item label="地域">
                     <n-input v-model:value="configs.storage.tencentRegion" placeholder="如: ap-guangzhou" />
+                  </n-form-item>
+                  <n-form-item label="访问域名">
+                    <n-input v-model:value="configs.storage.domain" placeholder="如: https://cdn.example.com" />
+                  </n-form-item>
+                </template>
+
+                <!-- RustFS配置 -->
+                <template v-if="configs.storage.provider === 'rustfs'">
+                  <n-divider>RustFS配置</n-divider>
+                  <n-form-item label="服务端点">
+                    <n-input v-model:value="configs.storage.rustfsEndpoint" placeholder="如: http://localhost:9000" />
+                  </n-form-item>
+                  <n-form-item label="AccessKey">
+                    <n-input v-model:value="configs.storage.rustfsAccessKey" placeholder="请输入AccessKey" />
+                  </n-form-item>
+                  <n-form-item label="SecretKey">
+                    <n-input v-model:value="configs.storage.rustfsSecretKey" type="password" show-password-on="click" placeholder="请输入SecretKey" />
+                  </n-form-item>
+                  <n-form-item label="存储桶名称">
+                    <n-input v-model:value="configs.storage.rustfsBucket" placeholder="请输入存储桶名称" />
+                  </n-form-item>
+                  <n-form-item label="访问域名">
+                    <n-input v-model:value="configs.storage.domain" placeholder="如: https://cdn.example.com" />
                   </n-form-item>
                 </template>
               </n-form>
@@ -909,7 +938,12 @@ const configs = reactive<Record<string, any>>({
     tencentSecretId: '',
     tencentSecretKey: '',
     tencentBucket: '',
-    tencentRegion: ''
+    tencentRegion: '',
+    // RustFS配置
+    rustfsEndpoint: '',
+    rustfsAccessKey: '',
+    rustfsSecretKey: '',
+    rustfsBucket: ''
   },
   push: { enabled: false, provider: 'jpush', appKey: '', masterSecret: '' },
   thirdParty: {
@@ -971,7 +1005,8 @@ const storageProviderOptions = [
   { label: '本地存储', value: 'local' },
   { label: 'MinIO', value: 'minio' },
   { label: '阿里云OSS', value: 'aliyun' },
-  { label: '腾讯云COS', value: 'tencent' }
+  { label: '腾讯云COS', value: 'tencent' },
+  { label: 'RustFS', value: 'rustfs' }
 ]
 
 const pushProviderOptions = [

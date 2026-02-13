@@ -1,9 +1,6 @@
 package com.mars.system.storage;
 
-import com.mars.oss.AliyunOssFileStorage;
-import com.mars.oss.FileStorage;
-import com.mars.oss.LocalFileStorage;
-import com.mars.oss.MinioFileStorage;
+import com.mars.oss.*;
 import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +55,8 @@ public class FileStorageFactory {
             case LocalFileStorage.STORAGE_TYPE -> createLocalStorage();
             case MinioFileStorage.STORAGE_TYPE -> createMinioStorage();
             case AliyunOssFileStorage.STORAGE_TYPE -> createAliyunStorage();
+            case TencentCosFileStorage.STORAGE_TYPE -> createTencentStorage();
+            case RustFsFileStorage.STORAGE_TYPE -> createRustfsStorage();
             default -> {
                 log.warn("未知的存储类型: {}，使用本地存储", provider);
                 yield createLocalStorage();
@@ -105,6 +104,36 @@ public class FileStorageFactory {
             configHelper.getStorageAliyunAccessKey(),
             configHelper.getStorageAliyunSecretKey(),
             configHelper.getStorageAliyunBucket(),
+            configHelper.getStorageDomain()
+        );
+        return storage;
+    }
+
+    /**
+     * 创建腾讯云COS存储
+     */
+    private FileStorage createTencentStorage() {
+        TencentCosFileStorage storage = new TencentCosFileStorage();
+        storage.init(
+            configHelper.getStorageTencentSecretId(),
+            configHelper.getStorageTencentSecretKey(),
+            configHelper.getStorageTencentRegion(),
+            configHelper.getStorageTencentBucket(),
+            configHelper.getStorageDomain()
+        );
+        return storage;
+    }
+
+    /**
+     * 创建RustFS存储
+     */
+    private FileStorage createRustfsStorage() {
+        RustFsFileStorage storage = new RustFsFileStorage();
+        storage.init(
+            configHelper.getStorageRustfsEndpoint(),
+            configHelper.getStorageRustfsAccessKey(),
+            configHelper.getStorageRustfsSecretKey(),
+            configHelper.getStorageRustfsBucket(),
             configHelper.getStorageDomain()
         );
         return storage;

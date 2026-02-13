@@ -139,7 +139,14 @@
           <div class="file-content-wrapper">
             <n-spin :show="loading" class="file-spin">
               <div v-if="files.length === 0" class="empty-state">
-                <n-empty description="暂无数据"/>
+                <n-empty description="暂无数据">
+                  <template #extra>
+                    <p class="upload-hint">
+                      <n-icon size="16"><CloudUploadOutline/></n-icon>
+                      支持拖拽文件到此区域批量上传
+                    </p>
+                  </template>
+                </n-empty>
               </div>
 
               <!-- 平铺视图 -->
@@ -299,7 +306,7 @@
         </div>
         <!-- Office文档预览 -->
         <div v-else-if="isOffice(previewFile)" class="preview-office">
-          <iframe :src="getOfficePreviewUrl(previewFile)" class="preview-office-frame"/>
+          <iframe :src="getOfficePreviewUrl(previewFile)" class="preview-office-frame" frameborder="0" allowfullscreen />
         </div>
         <!-- 其他文件 -->
         <div v-else class="preview-other">
@@ -589,7 +596,11 @@ async function handleDrop(e: DragEvent) {
 // 预览
 async function handlePreview(file: SysFile) {
   previewFile.value = file
-  if (file.url && (file.url.startsWith('http') || file.url.startsWith('/'))) {
+  
+  // PDF、视频、音频等需要内嵌预览的文件，强制使用后端预览接口（避免云存储的attachment头导致下载）
+  if (isPdf(file) || isVideo(file) || isAudio(file)) {
+    previewUrl.value = fileApi.getPreviewUrl(file.id!)
+  } else if (file.url && (file.url.startsWith('http') || file.url.startsWith('/'))) {
     previewUrl.value = file.url
   } else {
     previewUrl.value = fileApi.getPreviewUrl(file.id!)
@@ -833,7 +844,8 @@ onMounted(() => {
 
 .file-spin { height: 100%; }
 
-.empty-state { height: 100%; display: flex; align-items: center; justify-content: center; }
+.empty-state { height: 100%; display: flex; align-items: center; justify-content: center; min-height: 300px; }
+.upload-hint { display: flex; align-items: center; gap: 6px; color: var(--n-text-color-3); font-size: 13px; margin-top: 8px; }
 
 /* 平铺视图 */
 .file-grid {
@@ -854,7 +866,7 @@ onMounted(() => {
 .file-card:hover { border-color: var(--n-primary-color); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 .file-card.selected { border-color: var(--n-primary-color); background: var(--n-primary-color-hover); }
 
-.file-checkbox { position: absolute; top: 8px; left: 8px; z-index: 1; }
+.file-card .file-checkbox { position: absolute; top: 8px; left: 8px; z-index: 1; }
 .file-preview { width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--n-hover-color); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
 .file-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .file-preview video { max-width: 100%; max-height: 100%; }
@@ -866,9 +878,11 @@ onMounted(() => {
 
 /* 列表视图 */
 .file-list { display: flex; flex-direction: column; }
-.file-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--n-border-color); cursor: pointer; gap: 12px; }
+.file-row { display: flex; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--n-border-color); cursor: pointer; gap: 12px; transition: background 0.2s; }
 .file-row:hover { background: var(--n-hover-color); }
-.file-preview-small { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--n-hover-color); border-radius: 4px; overflow: hidden; }
+.file-row.selected { background: var(--n-primary-color-hover); }
+.file-row .file-checkbox { flex-shrink: 0; }
+.file-preview-small { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--n-hover-color); border-radius: 4px; overflow: hidden; }
 .file-preview-small img { width: 100%; height: 100%; object-fit: cover; }
 .file-info { flex: 1; min-width: 0; }
 .file-meta { display: flex; gap: 12px; font-size: 12px; color: var(--n-text-color-3); margin-top: 2px; }
@@ -883,9 +897,11 @@ onMounted(() => {
 .goto { display: flex; align-items: center; gap: 4px; }
 
 /* 预览相关样式 */
-.preview-container { display: flex; justify-content: center; align-items: center; min-height: 300px; }
+.preview-container { display: flex; justify-content: center; align-items: center; min-height: 300px; width: 100%; }
 .preview-image, .preview-video { max-width: 100%; max-height: 70vh; }
-.preview-pdf, .preview-office { width: 100%; height: 75vh; border: none; }
+.preview-pdf { width: 100%; height: 75vh; border: none; }
+.preview-office { width: 100%; height: 75vh; }
+.preview-office-frame { width: 100%; height: 100%; border: none; }
 .preview-text { width: 100%; max-height: 70vh; overflow: auto; background: #1e1e1e; border-radius: 4px; padding: 12px; }
 
 /* 拖拽上传遮罩 */

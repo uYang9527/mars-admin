@@ -839,6 +839,34 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
         return getString(GROUP_STORAGE, "tencentRegion", "");
     }
 
+    /**
+     * 获取RustFS服务端点
+     */
+    public String getStorageRustfsEndpoint() {
+        return getString(GROUP_STORAGE, "rustfsEndpoint", "");
+    }
+
+    /**
+     * 获取RustFS AccessKey
+     */
+    public String getStorageRustfsAccessKey() {
+        return getString(GROUP_STORAGE, "rustfsAccessKey", "");
+    }
+
+    /**
+     * 获取RustFS SecretKey
+     */
+    public String getStorageRustfsSecretKey() {
+        return getString(GROUP_STORAGE, "rustfsSecretKey", "");
+    }
+
+    /**
+     * 获取RustFS存储桶
+     */
+    public String getStorageRustfsBucket() {
+        return getString(GROUP_STORAGE, "rustfsBucket", "");
+    }
+
     // ============ 微信小程序配置 ============
 
     /**
