@@ -360,6 +360,21 @@ const shortcuts = [
 // 更新日志
 const changelog = [
   {
+    version: 'v1.0.2',
+    date: '2026-02-13',
+    type: 'success' as const,
+    changes: [
+      '新增 RustFS 对象存储支持',
+      '新增腾讯云 COS 存储支持',
+      '优化存储配置页面布局，访问域名按存储类型分组',
+      '修复 Office 文档预览样式问题',
+      '修复 PDF 预览需要登录的问题',
+      '支持大文件上传（最大 500MB）',
+      '优化文件列表全选效果',
+      '文件管理新增拖拽上传提示'
+    ]
+  },
+  {
     version: 'v1.0.1',
     date: '2026-01-31',
     type: 'success' as const,
