@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mars.sms.entity.SmsLog;
 import com.mars.sms.mapper.SmsLogMapper;
 import com.mars.sms.service.SmsLogService;
+import com.mars.system.util.IpUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +41,9 @@ public class SmsLogServiceImpl extends ServiceImpl<SmsLogMapper, SmsLog> impleme
 
     @Override
     public void logVerifyCode(String phone, String code, String provider, boolean success, String resultMsg, String bizId) {
-        log(phone, code, "verify_code", null, null, provider, success, resultMsg, bizId, null, "login", null);
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attrs != null ? attrs.getRequest() : null;
+        String ip = IpUtils.getIpAddr(request);
+        log(phone, code, "verify_code", null, null, provider, success, resultMsg, bizId, null, "login", ip);
     }
 }
