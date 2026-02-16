@@ -6,6 +6,7 @@
         SELECT u.*, d.dept_name as deptName
         FROM sys_user u
         LEFT JOIN sys_dept d ON u.dept_id = d.id
+        WHERE u.deleted = 0
         ${ew.customSqlSegment}
     </select>
 
