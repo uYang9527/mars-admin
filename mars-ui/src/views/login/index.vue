@@ -292,14 +292,7 @@
             <n-icon size="20"><CloseOutline /></n-icon>
           </n-button>
         </div>
-        <div
-          class="slider-puzzle-image"
-          @mousemove="onSliderDragMove"
-          @mouseup="onSliderDragEnd"
-          @mouseleave="onSliderDragEnd"
-          @touchmove="onSliderDragMove"
-          @touchend="onSliderDragEnd"
-        >
+        <div class="slider-puzzle-image">
           <!-- 背景图片 -->
           <div class="puzzle-bg" :class="`puzzle-bg-${puzzleImageIndex}`"></div>
           <!-- 缺口位置 -->
@@ -449,11 +442,21 @@ function onSliderDragStart(e: MouseEvent | TouchEvent) {
   sliderDragging.value = true
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   sliderStartX.value = clientX - sliderPuzzleX.value
+
+  // 将事件监听器绑定到 window，确保拖动过程中能持续捕获鼠标移动
+  window.addEventListener('mousemove', onSliderDragMove)
+  window.addEventListener('mouseup', onSliderDragEnd)
+  window.addEventListener('touchmove', onSliderDragMove, { passive: false })
+  window.addEventListener('touchend', onSliderDragEnd)
 }
 
 // 滑块拖动中
 function onSliderDragMove(e: MouseEvent | TouchEvent) {
   if (!sliderDragging.value || sliderVerified.value) return
+  // 阻止触摸事件的默认行为（防止页面滚动）
+  if ('touches' in e) {
+    e.preventDefault()
+  }
   const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
   let newX = clientX - sliderStartX.value
   // 限制范围 0-280
@@ -463,8 +466,21 @@ function onSliderDragMove(e: MouseEvent | TouchEvent) {
 
 // 滑块拖动结束
 function onSliderDragEnd() {
-  if (!sliderDragging.value || sliderVerified.value) return
+  if (!sliderDragging.value || sliderVerified.value) {
+    // 移除事件监听器
+    window.removeEventListener('mousemove', onSliderDragMove)
+    window.removeEventListener('mouseup', onSliderDragEnd)
+    window.removeEventListener('touchmove', onSliderDragMove)
+    window.removeEventListener('touchend', onSliderDragEnd)
+    return
+  }
   sliderDragging.value = false
+
+  // 移除事件监听器
+  window.removeEventListener('mousemove', onSliderDragMove)
+  window.removeEventListener('mouseup', onSliderDragEnd)
+  window.removeEventListener('touchmove', onSliderDragMove)
+  window.removeEventListener('touchend', onSliderDragEnd)
 
   // 检查是否在目标位置附近（误差 5px）
   if (Math.abs(sliderPuzzleX.value - sliderTargetX.value) < 8) {
