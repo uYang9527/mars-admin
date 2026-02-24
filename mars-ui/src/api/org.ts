@@ -189,6 +189,7 @@ export const configGroupApi = {
     register: { enabled: boolean; verifyEmail: boolean; verifyPhone: boolean; needAudit: boolean }
     password: { minLength: number; maxLength: number; requireUppercase: boolean; requireLowercase: boolean; requireNumber: boolean; requireSpecial: boolean }
     storage: { maxSize: number; allowTypes: string }
+    security: { disableDevtool: boolean }
   }> {
     return request({ url: '/sys/config-group/public', method: 'get' })
   },

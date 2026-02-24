@@ -1,6 +1,13 @@
 <template>
   <div class="page-container">
     <n-card class="config-card">
+      <!-- 顶部操作栏 -->
+      <div class="">
+        <n-space justify="end">
+          <n-button type="primary" :loading="saving" @click="handleSave">保存配置</n-button>
+          <n-button @click="handleRefresh">刷新缓存</n-button>
+        </n-space>
+      </div>
       <!-- Tab 导航 -->
       <n-tabs v-model:value="activeTab" type="line" animated @update:value="handleTabChange">
         <n-tab-pane v-for="group in configGroups" :key="group.groupCode" :name="group.groupCode" :tab="group.groupName">
@@ -780,6 +787,11 @@
                   </n-form-item>
                 </template>
 
+                <n-divider>前端安全</n-divider>
+                <n-form-item label="禁止前端调试">
+                  <n-switch v-model:value="configs.security.disableDevtool" />
+                  <span class="form-hint">开启后将禁止打开开发者工具（F12），防止用户查看源码和调试</span>
+                </n-form-item>
 
                 <n-divider>Token 配置（Sa-Token）</n-divider>
                 <n-form-item label="Token 名称">
@@ -839,16 +851,6 @@
             <template v-else-if="group.groupCode === 'other'">
               <n-empty description="暂无其他配置项" />
             </template>
-
-            <!-- 保存按钮 -->
-            <div class="config-footer">
-              <n-button type="primary" :loading="saving" @click="handleSave">
-                保存配置
-              </n-button>
-              <n-button @click="handleRefresh" style="margin-left: 12px">
-                刷新缓存
-              </n-button>
-            </div>
           </div>
         </n-tab-pane>
       </n-tabs>
@@ -972,6 +974,7 @@ const configs = reactive<Record<string, any>>({
   },
   security: {
     encryptEnabled: false, encryptScope: 'partial', encryptPublicKey: '', encryptPrivateKey: '', xssFilter: true, sqlInject: true,
+    disableDevtool: false, // 前端禁止调试
     // Token 配置
     tokenName: 'Authorization', tokenTimeout: 86400, tokenActiveTimeout: 86400,
     tokenIsConcurrent: true, tokenIsShare: true, tokenStyle: 'uuid',
@@ -1706,10 +1709,8 @@ async function loadWechatMpMenu() {
   min-width: 320px;
 }
 
-.config-footer {
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+.config-header {
+  margin-bottom: 16px;
 }
 
 .form-hint {

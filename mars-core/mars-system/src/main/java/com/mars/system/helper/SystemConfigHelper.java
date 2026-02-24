@@ -467,6 +467,13 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
         return getBoolean(GROUP_SECURITY, "sqlInject", true);
     }
 
+    /**
+     * 是否禁止前端调试
+     */
+    public boolean isDisableDevtool() {
+        return getBoolean(GROUP_SECURITY, "disableDevtool", false);
+    }
+
     // ============ 短信配置 ============
 
     /**

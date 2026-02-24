@@ -1,4 +1,4 @@
-<template>
+  <template>
   <n-config-provider :theme="themeStore.naiveTheme" :theme-overrides="currentThemeOverrides">
     <n-loading-bar-provider>
       <n-message-provider>
@@ -76,6 +76,11 @@ const lightThemeOverrides = computed<GlobalThemeOverrides>(() => {
       primaryColorHover: colors.hover,
       primaryColorPressed: colors.pressed,
       primaryColorSuppl: colors.suppl,
+      // warning 颜色也使用主题色
+      warningColor: colors.primary,
+      warningColorHover: colors.hover,
+      warningColorPressed: colors.pressed,
+      warningColorSuppl: colors.suppl,
       textColorBase: '#1F2937',
       textColor1: '#1F2937',
       textColor2: '#6B7280',
@@ -94,7 +99,35 @@ const lightThemeOverrides = computed<GlobalThemeOverrides>(() => {
     Button: {
       borderRadiusMedium: '8px',
       borderRadiusSmall: '6px',
-      heightMedium: '36px'
+      heightMedium: '36px',
+      // warning 类型按钮使用主题色（用于 dialog.warning 的确认按钮）
+      colorWarning: colors.primary,
+      colorWarningHover: colors.hover,
+      colorWarningPressed: colors.pressed,
+      colorWarningFocus: colors.hover,
+      borderWarning: `1px solid ${colors.primary}`,
+      borderWarningHover: `1px solid ${colors.hover}`,
+      borderWarningPressed: `1px solid ${colors.pressed}`,
+      borderWarningFocus: `1px solid ${colors.hover}`,
+      textColorWarning: '#ffffff',
+      textColorWarningHover: '#ffffff',
+      textColorWarningPressed: '#ffffff',
+      textColorWarningFocus: '#ffffff',
+      rippleColorWarning: colors.primary,
+      // ghost 类型 warning 按钮
+      colorGhostWarning: 'transparent',
+      colorGhostWarningHover: `${colors.primary}15`,
+      colorGhostWarningPressed: `${colors.primary}25`,
+      colorGhostWarningFocus: `${colors.primary}15`,
+      textColorGhostWarning: colors.primary,
+      textColorGhostWarningHover: colors.hover,
+      textColorGhostWarningPressed: colors.pressed,
+      textColorGhostWarningFocus: colors.hover,
+      borderGhostWarning: `1px solid ${colors.primary}`,
+      borderGhostWarningHover: `1px solid ${colors.hover}`,
+      borderGhostWarningPressed: `1px solid ${colors.pressed}`,
+      borderGhostWarningFocus: `1px solid ${colors.hover}`,
+      rippleColorGhostWarning: colors.primary
     },
     Card: {
       borderRadius: '12px',
@@ -150,6 +183,11 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       primaryColorHover: colors.lighter,
       primaryColorPressed: colors.primary,
       primaryColorSuppl: colors.hover,
+      // warning 颜色也使用主题色
+      warningColor: colors.light,
+      warningColorHover: colors.lighter,
+      warningColorPressed: colors.primary,
+      warningColorSuppl: colors.hover,
       bodyColor: '#101014',
       cardColor: '#18181c',
       modalColor: '#18181c',
@@ -182,7 +220,35 @@ const darkThemeOverrides = computed<GlobalThemeOverrides>(() => {
       // 默认按钮文字颜色
       textColor: '#ffffffd1',
       textColorHover: '#ffffff',
-      textColorPressed: '#ffffffa6'
+      textColorPressed: '#ffffffa6',
+      // warning 类型按钮使用主题色（用于 dialog.warning 的确认按钮）
+      colorWarning: colors.light,
+      colorWarningHover: colors.lighter,
+      colorWarningPressed: colors.primary,
+      colorWarningFocus: colors.lighter,
+      borderWarning: `1px solid ${colors.light}`,
+      borderWarningHover: `1px solid ${colors.lighter}`,
+      borderWarningPressed: `1px solid ${colors.primary}`,
+      borderWarningFocus: `1px solid ${colors.lighter}`,
+      textColorWarning: '#ffffff',
+      textColorWarningHover: '#ffffff',
+      textColorWarningPressed: '#ffffff',
+      textColorWarningFocus: '#ffffff',
+      rippleColorWarning: colors.light,
+      // ghost 类型 warning 按钮
+      colorGhostWarning: 'transparent',
+      colorGhostWarningHover: `${colors.light}15`,
+      colorGhostWarningPressed: `${colors.light}25`,
+      colorGhostWarningFocus: `${colors.light}15`,
+      textColorGhostWarning: colors.light,
+      textColorGhostWarningHover: colors.lighter,
+      textColorGhostWarningPressed: colors.primary,
+      textColorGhostWarningFocus: colors.lighter,
+      borderGhostWarning: `1px solid ${colors.light}`,
+      borderGhostWarningHover: `1px solid ${colors.lighter}`,
+      borderGhostWarningPressed: `1px solid ${colors.primary}`,
+      borderGhostWarningFocus: `1px solid ${colors.lighter}`,
+      rippleColorGhostWarning: colors.light
     },
     Card: {
       borderRadius: '12px',

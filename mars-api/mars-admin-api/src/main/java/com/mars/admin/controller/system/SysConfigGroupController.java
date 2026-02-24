@@ -134,6 +134,11 @@ public class SysConfigGroupController {
         storage.put("allowTypes", configHelper.getStorageAllowTypes());
         config.put("storage", storage);
 
+        // 安全配置（仅返回前端需要的配置）
+        Map<String, Object> security = new HashMap<>();
+        security.put("disableDevtool", configHelper.isDisableDevtool());
+        config.put("security", security);
+
         return Result.ok(config);
     }
 

@@ -67,21 +67,31 @@
         label-width="80"
         class="modal-form"
       >
-        <n-form-item label="角色名称" path="name">
-          <n-input v-model:value="formData.name" placeholder="请输入角色名称" />
-        </n-form-item>
-        <n-form-item label="角色编码" path="code">
-          <n-input v-model:value="formData.code" placeholder="请输入角色编码" />
-        </n-form-item>
-        <n-form-item label="排序" path="sort">
-          <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
-        </n-form-item>
-        <n-form-item label="状态" path="status">
-          <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
-            <template #checked>启用</template>
-            <template #unchecked>禁用</template>
-          </n-switch>
-        </n-form-item>
+        <n-grid :cols="2" :x-gap="24">
+          <n-gi>
+            <n-form-item label="角色名称" path="name">
+              <n-input v-model:value="formData.name" placeholder="请输入角色名称" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="角色编码" path="code">
+              <n-input v-model:value="formData.code" placeholder="请输入角色编码" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="排序" path="sort">
+              <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="状态" path="status">
+              <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
+                <template #checked>启用</template>
+                <template #unchecked>禁用</template>
+              </n-switch>
+            </n-form-item>
+          </n-gi>
+        </n-grid>
         <n-form-item label="菜单权限" path="menuIds">
           <div class="menu-tree-wrapper">
             <n-tree

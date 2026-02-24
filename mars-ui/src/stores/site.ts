@@ -20,6 +20,8 @@ export const useSiteStore = defineStore('site', () => {
   const watermarkEnabled = ref(true)
   const watermarkType = ref('username')
   const watermarkOpacity = ref(0.1)
+  // 安全配置
+  const disableDevtool = ref(false)
   // 是否已加载
   const loaded = ref(false)
 
@@ -40,6 +42,10 @@ export const useSiteStore = defineStore('site', () => {
         watermarkType.value = config.system.watermarkType || 'username'
         watermarkOpacity.value = config.system.watermarkOpacity || 0.1
       }
+      // 安全配置
+      if (config.security) {
+        disableDevtool.value = config.security.disableDevtool || false
+      }
       loaded.value = true
     } catch (error) {
       console.error('加载站点配置失败', error)
@@ -55,6 +61,7 @@ export const useSiteStore = defineStore('site', () => {
     watermarkEnabled,
     watermarkType,
     watermarkOpacity,
+    disableDevtool,
     loaded,
     loadConfig
   }
