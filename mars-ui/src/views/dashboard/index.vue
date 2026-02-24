@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.2</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.3</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,18 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.3',
+    date: '2026-02-24',
+    type: 'success' as const,
+    changes: [
+      '新增前端反调试控制（安全配置开关）',
+      '优化系统配置页面按钮布局',
+      '优化弹窗按钮主题色适配',
+      '新增多种主题颜色选择',
+      '修复操作日志耗时统计问题'
+    ]
+  },
   {
     version: 'v1.0.2',
     date: '2026-02-13',
