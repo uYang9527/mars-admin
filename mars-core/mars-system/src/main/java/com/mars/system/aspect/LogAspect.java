@@ -15,6 +15,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -41,6 +42,14 @@ public class LogAspect {
      * 记录开始时间的 ThreadLocal
      */
     private static final ThreadLocal<Long> START_TIME = new ThreadLocal<>();
+
+    /**
+     * 方法执行前记录开始时间
+     */
+    @Before("@annotation(controllerLog)")
+    public void doBefore(JoinPoint joinPoint, Log controllerLog) {
+        START_TIME.set(System.currentTimeMillis());
+    }
 
     /**
      * 处理完请求后执行
@@ -116,11 +125,20 @@ public class LogAspect {
                 operLog.setErrorMsg(errorMsg != null && errorMsg.length() > 2000 ? errorMsg.substring(0, 2000) : errorMsg);
             }
             
+            // 计算耗时
+            Long startTime = START_TIME.get();
+            if (startTime != null) {
+                operLog.setCostTime(System.currentTimeMillis() - startTime);
+            }
+            
             // 异步保存日志
             operLogService.recordLog(operLog);
             
         } catch (Exception ex) {
             log.error("记录操作日志异常：", ex);
+        } finally {
+            // 清理ThreadLocal防止内存泄漏
+            START_TIME.remove();
         }
     }
 

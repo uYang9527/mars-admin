@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mars.common.entity.BaseEntity;
 import com.mars.common.exception.BusinessException;
 import com.mars.common.result.PageResult;
 import com.mars.system.entity.SysDept;
@@ -50,7 +51,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         wrapper.like(StringUtils.hasText(username), SysUser::getUsername, username)
                 .eq(status != null, SysUser::getStatus, status)
                 .eq(StringUtils.hasText(userType), SysUser::getUserType, userType)
-                .eq(deptId != null, SysUser::getDeptId, deptId);
+                .eq(deptId != null, SysUser::getDeptId, deptId)
+                .apply("u.deleted = 0");
 
         if (postId != null) {
             List<Long> userIds = userPostMapper.selectUserIdsByPostId(postId);
@@ -218,7 +220,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<Long> getPostIds(Long userId) {
         return userPostMapper.selectList(new LambdaQueryWrapper<SysUserPost>()
-                .eq(SysUserPost::getUserId, userId))
+                        .eq(SysUserPost::getUserId, userId))
                 .stream()
                 .map(SysUserPost::getPostId)
                 .collect(Collectors.toList());

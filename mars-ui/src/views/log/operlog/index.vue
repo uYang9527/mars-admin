@@ -205,7 +205,5 @@ onMounted(() => loadData())
   white-space: pre-wrap;
   word-break: break-all;
 }
-.page-layout{
-  height: calc(100vh - 160px);
-}
+
 </style>

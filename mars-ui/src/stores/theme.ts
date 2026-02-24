@@ -4,7 +4,8 @@ import { darkTheme, type GlobalTheme } from 'naive-ui'
 
 // 预设主题色
 export const themeColors = [
-  { name: '拂晓蓝', color: '#1890FF' },
+  { name: '深邃黑', color: '#111827' },
+  { name: '科技蓝', color: '#2E5CF6' },
   { name: '薄暮红', color: '#F5222D' },
   { name: '火山橙', color: '#FA541C' },
   { name: '日暮黄', color: '#FAAD14' },
@@ -13,7 +14,16 @@ export const themeColors = [
   { name: '极客蓝', color: '#2F54EB' },
   { name: '酱紫', color: '#722ED1' },
   { name: '玫红', color: '#EB2F96' },
-  { name: '深邃黑', color: '#111827' },
+  { name: '天空蓝', color: '#0EA5E9' },
+  { name: '薰衣草', color: '#8B5CF6' },
+  { name: '珊瑚粉', color: '#F472B6' },
+  { name: '薄荷绿', color: '#10B981' },
+  { name: '琥珀金', color: '#F59E0B' },
+  { name: '罗兰紫', color: '#A855F7' },
+  { name: '玫瑰红', color: '#E11D48' },
+  { name: '海洋蓝', color: '#0891B2' },
+  { name: '翡翠绿', color: '#059669' },
+  { name: '暮光橙', color: '#EA580C' },
 ]
 
 export const useThemeStore = defineStore('theme', () => {

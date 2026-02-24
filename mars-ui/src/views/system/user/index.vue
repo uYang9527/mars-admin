@@ -92,70 +92,93 @@
         label-width="80"
         class="modal-form"
       >
-        <n-form-item label="用户名" path="username">
-          <n-input v-model:value="formData.username" placeholder="请输入用户名" :disabled="!!formData.id" />
-        </n-form-item>
-        <n-form-item v-if="!formData.id" label="密码" path="password">
-          <n-input v-model:value="formData.password" type="password" placeholder="请输入密码，留空默认123456" show-password-on="click" />
-        </n-form-item>
-        <n-form-item label="昵称" path="nickname">
-          <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
-        </n-form-item>
-        <n-form-item label="归属部门" path="deptId">
-          <n-tree-select
-            v-model:value="formData.deptId"
-            :options="deptOptions"
-            key-field="id"
-            label-field="deptName"
-            children-field="children"
-            placeholder="请选择归属部门"
-            clearable
-            default-expand-all
-          />
-        </n-form-item>
-        <n-form-item label="邮箱" path="email">
-          <n-input v-model:value="formData.email" placeholder="请输入邮箱" />
-        </n-form-item>
-        <n-form-item label="手机号" path="phone">
-          <n-input v-model:value="formData.phone" placeholder="请输入手机号" />
-        </n-form-item>
-        <n-form-item label="性别" path="gender">
-          <n-radio-group v-model:value="formData.gender">
-            <n-radio :value="1">男</n-radio>
-            <n-radio :value="2">女</n-radio>
-            <n-radio :value="0">未知</n-radio>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item label="用户类型" path="userType">
-          <n-select
-            v-model:value="formData.userType"
-            :options="userTypeOptions"
-            placeholder="请选择用户类型"
-          />
-        </n-form-item>
-        <n-form-item label="角色" path="roleIds">
-          <n-select
-            v-model:value="roleIds"
-            multiple
-            :options="roleOptions"
-            placeholder="请选择角色"
-          />
-        </n-form-item>
-        <n-form-item label="岗位" path="postIds">
-          <n-select
-            v-model:value="postIds"
-            multiple
-            :options="postOptions"
-            placeholder="请选择岗位"
-          />
-        </n-form-item>
-        <n-form-item label="状态" path="status">
-          <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
-            <template #checked>启用</template>
-            <template #unchecked>禁用</template>
-          </n-switch>
-        </n-form-item>
-
+        <n-grid :cols="2" :x-gap="16">
+          <n-gi>
+            <n-form-item label="用户名" path="username">
+              <n-input v-model:value="formData.username" placeholder="请输入用户名" :disabled="!!formData.id" />
+            </n-form-item>
+          </n-gi>
+          <n-gi v-if="!formData.id">
+            <n-form-item label="密码" path="password">
+              <n-input v-model:value="formData.password" type="password" placeholder="留空默认123456" show-password-on="click" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="昵称" path="nickname">
+              <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="归属部门" path="deptId">
+              <n-tree-select
+                v-model:value="formData.deptId"
+                :options="deptOptions"
+                key-field="id"
+                label-field="deptName"
+                children-field="children"
+                placeholder="请选择归属部门"
+                clearable
+                default-expand-all
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="邮箱" path="email">
+              <n-input v-model:value="formData.email" placeholder="请输入邮箱" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="手机号" path="phone">
+              <n-input v-model:value="formData.phone" placeholder="请输入手机号" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="性别" path="gender">
+              <n-radio-group v-model:value="formData.gender">
+                <n-radio :value="1">男</n-radio>
+                <n-radio :value="2">女</n-radio>
+                <n-radio :value="0">未知</n-radio>
+              </n-radio-group>
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="用户类型" path="userType">
+              <n-select
+                v-model:value="formData.userType"
+                :options="userTypeOptions"
+                placeholder="请选择用户类型"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="角色" path="roleIds">
+              <n-select
+                v-model:value="roleIds"
+                multiple
+                :options="roleOptions"
+                placeholder="请选择角色"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="岗位" path="postIds">
+              <n-select
+                v-model:value="postIds"
+                multiple
+                :options="postOptions"
+                placeholder="请选择岗位"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="状态" path="status">
+              <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
+                <template #checked>启用</template>
+                <template #unchecked>禁用</template>
+              </n-switch>
+            </n-form-item>
+          </n-gi>
+        </n-grid>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -170,7 +193,7 @@
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
 import { useRoute } from 'vue-router'
-import { NButton, NTag, NSpace, NDropdown, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
+import { NButton, NTag, NSpace, NDropdown, NPagination, NGrid, NGi, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
 import { deptApi, type SysDept } from '@/api/org'
