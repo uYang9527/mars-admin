@@ -297,4 +297,5 @@ public class AdminAuthController {
     public static class SmsCodeRequest {
         private String phone;
     }
+
 }

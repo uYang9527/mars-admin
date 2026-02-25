@@ -1178,9 +1178,22 @@ body.dark-theme .user-name {
   color: #ffffffd1;
 }
 
+// 头部固定
+.layout-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+// 页签栏固定（紧跟在头部下方）
+:deep(.tab-bar) {
+  position: sticky;
+  top: 60px; // header高度
+  z-index: 99;
+}
+
 .layout-content {
   background: #F3F4F6;
-  overflow: auto;
   transition: background-color 0.3s;
 }
 
