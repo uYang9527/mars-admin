@@ -16,7 +16,7 @@ public @interface Log {
     String title() default "";
 
     /**
-     * 业务类型（0其它 1新增 2修改 3删除 4查询 5导出）
+     * 业务类型（0其它 1新增 2修改 3删除 4查询 5导出 6导入）
      */
     BusinessType businessType() default BusinessType.OTHER;
 
@@ -57,7 +57,11 @@ public @interface Log {
         /**
          * 导出
          */
-        EXPORT(5);
+        EXPORT(5),
+        /**
+         * 导入
+         */
+        IMPORT(6);
 
         private final int value;
 

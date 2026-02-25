@@ -1,6 +1,7 @@
 package com.mars.system.service.impl;
 
 import cn.hutool.crypto.digest.BCrypt;
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,10 +11,15 @@ import com.mars.common.exception.BusinessException;
 import com.mars.common.result.PageResult;
 import com.mars.system.entity.SysDept;
 import com.mars.system.entity.SysPost;
+import com.mars.system.entity.SysRole;
 import com.mars.system.entity.SysUser;
 import com.mars.system.entity.SysUserPost;
 import com.mars.system.entity.SysUserRole;
+import com.mars.system.excel.SysUserExcel;
+import com.mars.system.excel.SysUserImportListener;
 import com.mars.system.mapper.SysDeptMapper;
+import com.mars.system.mapper.SysPostMapper;
+import com.mars.system.mapper.SysRoleMapper;
 import com.mars.system.mapper.SysUserMapper;
 import com.mars.system.mapper.SysUserPostMapper;
 import com.mars.system.mapper.SysUserRoleMapper;
@@ -21,10 +27,15 @@ import com.mars.system.config.StpInterfaceImpl;
 import com.mars.system.service.SysUserService;
 import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,6 +43,7 @@ import java.util.stream.Collectors;
 /**
  * 用户服务实现
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
@@ -39,7 +51,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysUserRoleMapper userRoleMapper;
     private final SysUserPostMapper userPostMapper;
     private final SysDeptMapper deptMapper;
-    private final com.mars.system.mapper.SysPostMapper postMapper;
+    private final SysPostMapper postMapper;
+    private final SysRoleMapper roleMapper;
     private final SystemConfigHelper configHelper;
 
     private static final String DEFAULT_PASSWORD = "123456";
@@ -148,6 +161,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBatch(List<Long> ids) {
+        for (Long id : ids) {
+            this.removeById(id);
+            userRoleMapper.deleteByUserId(id);
+            userPostMapper.deleteByUserId(id);
+            StpInterfaceImpl.clearPermissionCache(id);
+        }
+    }
+
+    @Override
     public SysUser getByUsername(String username) {
         return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
     }
@@ -245,6 +269,113 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 userPost.setPostId(postId);
                 userPostMapper.insert(userPost);
             }
+        }
+    }
+
+    @Override
+    public List<SysUserExcel> exportUsers(String username, Integer status, String userType, Long deptId, List<Long> ids) {
+        // 查询用户列表
+        LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
+        // 如果指定了ID列表，则只导出指定用户
+        if (ids != null && !ids.isEmpty()) {
+            wrapper.in(SysUser::getId, ids);
+        } else {
+            wrapper.like(StringUtils.hasText(username), SysUser::getUsername, username)
+                    .eq(status != null, SysUser::getStatus, status)
+                    .eq(StringUtils.hasText(userType), SysUser::getUserType, userType)
+                    .eq(deptId != null, SysUser::getDeptId, deptId);
+        }
+        wrapper.eq(SysUser::getDeleted, 0)
+                .orderByDesc(SysUser::getCreateTime);
+
+        List<SysUser> users = this.list(wrapper);
+
+        // 获取部门映射
+        List<SysDept> depts = deptMapper.selectList(null);
+        Map<Long, String> deptMap = depts.stream().collect(Collectors.toMap(SysDept::getId, SysDept::getDeptName, (a, b) -> a));
+
+        // 获取岗位映射
+        List<SysPost> posts = postMapper.selectList(null);
+        Map<Long, String> postMap = posts.stream().collect(Collectors.toMap(SysPost::getId, SysPost::getPostName, (a, b) -> a));
+
+        // 转换为 Excel DTO
+        List<SysUserExcel> result = new ArrayList<>();
+        for (SysUser user : users) {
+            SysUserExcel excel = new SysUserExcel();
+            excel.setUsername(user.getUsername());
+            excel.setNickname(user.getNickname());
+            excel.setDeptName(user.getDeptId() != null ? deptMap.get(user.getDeptId()) : null);
+            excel.setEmail(user.getEmail());
+            excel.setPhone(user.getPhone());
+
+            // 性别转换
+            if (user.getGender() != null) {
+                switch (user.getGender()) {
+                    case 1 -> excel.setGenderStr("男");
+                    case 2 -> excel.setGenderStr("女");
+                    default -> excel.setGenderStr("未知");
+                }
+            }
+
+            // 用户类型转换
+            if (user.getUserType() != null) {
+                switch (user.getUserType()) {
+                    case "admin" -> excel.setUserTypeStr("后台管理员");
+                    case "pc" -> excel.setUserTypeStr("PC前台用户");
+                    case "app" -> excel.setUserTypeStr("App/小程序用户");
+                    default -> excel.setUserTypeStr(user.getUserType());
+                }
+            }
+
+            // 状态转换
+            if (user.getStatus() != null) {
+                switch (user.getStatus()) {
+                    case 1 -> excel.setStatusStr("启用");
+                    case 0 -> excel.setStatusStr("禁用");
+                    case 2 -> excel.setStatusStr("待审核");
+                    default -> excel.setStatusStr("未知");
+                }
+            }
+
+            // 获取用户角色
+            List<SysRole> userRoles = roleMapper.selectRolesByUserId(user.getId());
+            if (userRoles != null && !userRoles.isEmpty()) {
+                String roleNames = userRoles.stream()
+                        .map(SysRole::getName)
+                        .collect(Collectors.joining(","));
+                excel.setRoleNames(roleNames);
+            }
+
+            // 获取用户岗位
+            List<Long> userPostIds = getPostIds(user.getId());
+            if (userPostIds != null && !userPostIds.isEmpty()) {
+                String postNames = userPostIds.stream()
+                        .map(postMap::get)
+                        .filter(java.util.Objects::nonNull)
+                        .collect(Collectors.joining(","));
+                excel.setPostNames(postNames);
+            }
+
+            result.add(excel);
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> importUsers(MultipartFile file) {
+        try {
+            SysUserImportListener listener = new SysUserImportListener(
+                    baseMapper, deptMapper, roleMapper, postMapper, userRoleMapper, userPostMapper);
+            EasyExcel.read(file.getInputStream(), SysUserExcel.class, listener).sheet().doRead();
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("successCount", listener.getSuccessCount());
+            result.put("failCount", listener.getFailCount());
+            result.put("errors", listener.getErrorMessages());
+            return result;
+        } catch (IOException e) {
+            log.error("读取Excel文件失败", e);
+            throw new BusinessException("读取Excel文件失败");
         }
     }
 }

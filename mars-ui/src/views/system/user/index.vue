@@ -43,10 +43,28 @@
 
       <!-- 工具栏 -->
       <div class="table-toolbar">
-        <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
-          <template #icon><n-icon><AddOutline /></n-icon></template>
-          新增用户
-        </n-button>
+        <n-space>
+          <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
+            <template #icon><n-icon><AddOutline /></n-icon></template>
+            新增用户
+          </n-button>
+          <n-button v-if="hasPermission('sys:user:import')" @click="importModalVisible = true">
+            <template #icon><n-icon><CloudUploadOutline /></n-icon></template>
+            导入
+          </n-button>
+          <n-button v-if="hasPermission('sys:user:export')" @click="handleExport">
+            <template #icon><n-icon><DownloadOutline /></n-icon></template>
+            {{ checkedRowKeys.length > 0 ? `导出选中(${checkedRowKeys.length})` : '导出' }}
+          </n-button>
+          <n-button 
+            v-if="hasPermission('sys:user:delete') && checkedRowKeys.length > 0" 
+            type="error" 
+            @click="handleBatchDelete"
+          >
+            <template #icon><n-icon><TrashOutline /></n-icon></template>
+            批量删除({{ checkedRowKeys.length }})
+          </n-button>
+        </n-space>
       </div>
 
       <!-- 表格 -->
@@ -55,6 +73,7 @@
         :data="tableData"
         :loading="loading"
         :row-key="(row: SysUser) => row.id"
+        v-model:checked-row-keys="checkedRowKeys"
         remote
       />
 
@@ -187,14 +206,64 @@
         </n-space>
       </template>
     </n-modal>
+    <!-- 导入弹窗 -->
+    <n-modal
+      v-model:show="importModalVisible"
+      title="导入用户"
+      preset="card"
+      style="width: 500px"
+      :mask-closable="false"
+    >
+      <n-space vertical>
+        <n-alert type="info" :show-icon="true">
+          <template #header>导入说明</template>
+          <ul style="margin: 0; padding-left: 16px; line-height: 1.8">
+            <li>请先下载导入模板，按模板格式填写数据</li>
+            <li>用户名不能重复，否则导入失败</li>
+            <li>密码默认为 123456</li>
+            <li>性别填写：男/女/未知</li>
+            <li>用户类型填写：后台管理员/PC前台用户/App小程序用户</li>
+            <li>状态填写：启用/禁用</li>
+            <li>角色和岗位填写对应名称，多个用逗号分隔</li>
+          </ul>
+        </n-alert>
+        <n-space>
+          <n-button type="primary" @click="handleDownloadTemplate">
+            <template #icon><n-icon><DownloadOutline /></n-icon></template>
+            下载模板
+          </n-button>
+        </n-space>
+        <n-upload
+          :max="1"
+          accept=".xlsx,.xls"
+          :show-file-list="true"
+          :custom-request="handleImportUpload"
+        >
+          <n-upload-dragger>
+            <div style="margin-bottom: 12px">
+              <n-icon size="48" :depth="3">
+                <CloudUploadOutline />
+              </n-icon>
+            </div>
+            <n-text style="font-size: 16px">点击或拖拽文件到此处上传</n-text>
+            <n-p depth="3" style="margin: 8px 0 0 0">支持 .xlsx 或 .xls 格式</n-p>
+          </n-upload-dragger>
+        </n-upload>
+      </n-space>
+      <template #footer>
+        <n-space justify="end">
+          <n-button @click="importModalVisible = false">关闭</n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
 import { useRoute } from 'vue-router'
-import { NButton, NTag, NSpace, NDropdown, NPagination, NGrid, NGi, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
-import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline } from '@vicons/ionicons5'
+import { NButton, NTag, NSpace, NDropdown, NPagination, NGrid, NGi, NUploadDragger, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption, type UploadCustomRequestOptions } from 'naive-ui'
+import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline, CloudUploadOutline, DownloadOutline, TrashOutline } from '@vicons/ionicons5'
 import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
 import { deptApi, type SysDept } from '@/api/org'
 import { useUserStore } from '@/stores/user'
@@ -238,6 +307,7 @@ const statusOptions = [
 // ==================== 表格 ====================
 const tableData = ref<SysUser[]>([])
 const loading = ref(false)
+const checkedRowKeys = ref<number[]>([])
 const pagination = reactive({
   page: 1,
   pageSize: 10,
@@ -255,6 +325,7 @@ const userTypeOptions = [
 ]
 
 const columns: DataTableColumns<SysUser> = [
+  { type: 'selection' },
   { title: 'ID', key: 'id', width: 60 },
   { title: '用户名', key: 'username', width: 100 },
   { title: '昵称', key: 'nickname', width: 100 },
@@ -634,6 +705,91 @@ function handleToggleQuit(row: SysUser) {
       }
     }
   })
+}
+
+// ==================== 导入弹窗 ====================
+const importModalVisible = ref(false)
+
+// 导出用户
+async function handleExport() {
+  try {
+    const blob = await userApi.exportUsers({
+      username: searchForm.username || undefined,
+      status: searchForm.status ?? undefined,
+      userType: searchForm.userType || undefined,
+      deptId: selectedDeptId.value,
+      ids: checkedRowKeys.value.length > 0 ? checkedRowKeys.value : undefined
+    })
+    // 创建下载链接
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = '用户数据.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 批量删除
+function handleBatchDelete() {
+  if (checkedRowKeys.value.length === 0) {
+    message.warning('请选择要删除的用户')
+    return
+  }
+  dialog.warning({
+    title: '提示',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个用户吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.deleteBatch(checkedRowKeys.value)
+        message.success('删除成功')
+        checkedRowKeys.value = []
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
+// 下载导入模板
+async function handleDownloadTemplate() {
+  try {
+    const blob = await userApi.downloadTemplate()
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = '用户导入模板.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 导入上传
+async function handleImportUpload({ file }: UploadCustomRequestOptions) {
+  if (!file.file) return
+  try {
+    const result = await userApi.importUsers(file.file)
+    if (result.fail > 0) {
+      dialog.warning({
+        title: '导入结果',
+        content: `成功: ${result.success} 条，失败: ${result.fail} 条\n错误信息: ${result.errors?.join('\n') || '无'}`,
+        positiveText: '确定'
+      })
+    } else {
+      message.success(`导入成功，共 ${result.success} 条数据`)
+      importModalVisible.value = false
+    }
+    loadData()
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
 }
 
 onMounted(() => {

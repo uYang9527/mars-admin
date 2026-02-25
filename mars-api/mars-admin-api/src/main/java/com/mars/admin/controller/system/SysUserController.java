@@ -1,6 +1,7 @@
 package com.mars.admin.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.alibaba.excel.EasyExcel;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.crypto.EncryptResponse;
@@ -10,12 +11,19 @@ import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysRole;
 import com.mars.system.entity.SysUser;
 import com.mars.common.exception.BusinessException;
+import com.mars.system.excel.SysUserExcel;
 import com.mars.system.service.SysRoleService;
 import com.mars.system.service.SysUserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +112,20 @@ public class SysUserController {
     }
 
     /**
+     * 批量删除
+     */
+    @DeleteMapping("/batch")
+    @SaCheckPermission("sys:user:delete")
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+    public Result<Void> deleteBatch(@RequestBody List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            throw new BusinessException("请选择要删除的用户");
+        }
+        userService.deleteBatch(ids);
+        return Result.ok();
+    }
+
+    /**
      * 重置密码
      */
     @PostMapping("/{id}/reset-password")
@@ -166,6 +188,63 @@ public class SysUserController {
         user.setStatus(3);
         userService.updateById(user);
         return Result.ok();
+    }
+
+    /**
+     * 导出用户
+     */
+    @GetMapping("/export")
+    @SaCheckPermission("sys:user:export")
+    @Log(title = "用户管理", businessType = BusinessType.EXPORT)
+    public void export(
+            HttpServletResponse response,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) String userType,
+            @RequestParam(required = false) Long deptId,
+            @RequestParam(required = false) String ids) throws IOException {
+        // 解析逗号分隔的ID列表
+        List<Long> idList = null;
+        if (ids != null && !ids.isEmpty()) {
+            idList = java.util.Arrays.stream(ids.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+        }
+        List<SysUserExcel> list = userService.exportUsers(username, status, userType, deptId, idList);
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        String fileName = URLEncoder.encode("用户数据", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        EasyExcel.write(response.getOutputStream(), SysUserExcel.class).sheet("用户数据").doWrite(list);
+    }
+
+    /**
+     * 导入用户
+     */
+    @PostMapping("/import")
+    @SaCheckPermission("sys:user:import")
+    @Log(title = "用户管理", businessType = BusinessType.IMPORT)
+    public Result<Map<String, Object>> importData(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new BusinessException("请选择要导入的文件");
+        }
+        Map<String, Object> result = userService.importUsers(file);
+        return Result.ok(result);
+    }
+
+    /**
+     * 下载导入模板
+     */
+    @GetMapping("/template")
+    public void downloadTemplate(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        String fileName = URLEncoder.encode("用户导入模板", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+        // 写入空数据作为模板
+        EasyExcel.write(response.getOutputStream(), SysUserExcel.class).sheet("用户数据").doWrite(new ArrayList<>());
     }
 
     @Data

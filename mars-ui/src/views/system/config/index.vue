@@ -57,6 +57,9 @@
                 <n-form-item label="水印内容" v-if="configs.system.watermarkEnabled">
                   <n-select v-model:value="configs.system.watermarkType" :options="watermarkTypeOptions" style="width: 200px" />
                 </n-form-item>
+                <n-form-item label="自定义文本" v-if="configs.system.watermarkEnabled && configs.system.watermarkType === 'custom'">
+                  <n-input v-model:value="configs.system.watermarkCustomText" placeholder="请输入自定义水印文本" style="width: 300px" />
+                </n-form-item>
                 <n-form-item label="水印透明度" v-if="configs.system.watermarkEnabled">
                   <n-slider v-model:value="configs.system.watermarkOpacity" :min="0.01" :max="0.3" :step="0.01" style="width: 200px" />
                   <span class="form-hint" style="margin-left: 12px">{{ (configs.system.watermarkOpacity * 100).toFixed(0) }}%</span>
@@ -912,7 +915,7 @@ const saving = ref(false)
 
 // 所有配置数据
 const configs = reactive<Record<string, any>>({
-  system: { siteName: '', siteDescription: '', siteLogo: '', copyright: '', icp: '', watermarkEnabled: true, watermarkType: 'username', watermarkOpacity: 0.1 },
+  system: { siteName: '', siteDescription: '', siteLogo: '', copyright: '', icp: '', watermarkEnabled: true, watermarkType: 'username', watermarkCustomText: '', watermarkOpacity: 0.1 },
   register: { enabled: true, verifyEmail: false, verifyPhone: false, defaultRole: 'user', needAudit: false },
   login: { captchaEnabled: false, captchaType: 'image', maxRetryCount: 5, lockTime: 30, rememberMe: true, singleLogin: false },
   password: { minLength: 6, maxLength: 20, requireUppercase: false, requireLowercase: false, requireNumber: false, requireSpecial: false, expireDays: 0 },
@@ -1603,6 +1606,7 @@ async function handleSave() {
       siteStore.icp = configs.system.icp || ''
       siteStore.watermarkEnabled = configs.system.watermarkEnabled !== false
       siteStore.watermarkType = configs.system.watermarkType || 'username'
+      siteStore.watermarkCustomText = configs.system.watermarkCustomText || ''
       siteStore.watermarkOpacity = configs.system.watermarkOpacity || 0.1
     }
   } catch (error) {

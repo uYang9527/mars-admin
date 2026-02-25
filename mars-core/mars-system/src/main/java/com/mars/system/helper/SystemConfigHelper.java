@@ -723,6 +723,13 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
         return 0.1;
     }
 
+    /**
+     * 获取自定义水印文本
+     */
+    public String getWatermarkCustomText() {
+        return getString(GROUP_SYSTEM, "watermarkCustomText", "");
+    }
+
     // ============ 推送配置 ============
 
     /**

@@ -99,6 +99,7 @@ public class SysConfigGroupController {
         system.put("icp", configHelper.getIcp());
         system.put("watermarkEnabled", configHelper.isWatermarkEnabled());
         system.put("watermarkType", configHelper.getWatermarkType());
+        system.put("watermarkCustomText", configHelper.getWatermarkCustomText());
         system.put("watermarkOpacity", configHelper.getWatermarkOpacity());
         config.put("system", system);
 

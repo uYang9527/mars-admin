@@ -136,6 +136,11 @@ let isLoggingOut = false
 // 响应拦截器
 service.interceptors.response.use(
   async (response: AxiosResponse<ApiResponse>) => {
+    // 如果是 blob 类型响应（文件下载），直接返回
+    if (response.config.responseType === 'blob') {
+      return response.data
+    }
+
     const res = response.data
     
     if (res.code !== 200) {

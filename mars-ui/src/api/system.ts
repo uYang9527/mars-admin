@@ -69,6 +69,10 @@ export const userApi = {
   delete(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}`, method: 'delete' })
   },
+
+  deleteBatch(ids: number[]): Promise<void> {
+    return request({ url: '/sys/user/batch', method: 'delete', data: ids })
+  },
   
   resetPassword(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}/reset-password`, method: 'post' })
@@ -84,6 +88,44 @@ export const userApi = {
 
   toggleQuit(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}/quit`, method: 'post' })
+  },
+
+  // 导出用户
+  exportUsers(params?: { username?: string; status?: number; userType?: string; deptId?: number; ids?: number[] }): Promise<Blob> {
+    const searchParams: Record<string, any> = {}
+    if (params?.username) searchParams.username = params.username
+    if (params?.status !== undefined && params?.status !== null) searchParams.status = params.status
+    if (params?.userType) searchParams.userType = params.userType
+    if (params?.deptId) searchParams.deptId = params.deptId
+    // 数组转逗号分隔字符串
+    if (params?.ids && params.ids.length > 0) searchParams.ids = params.ids.join(',')
+    return request({
+      url: '/sys/user/export',
+      method: 'get',
+      params: searchParams,
+      responseType: 'blob'
+    })
+  },
+
+  // 导入用户
+  importUsers(file: File): Promise<{ success: number; fail: number; errors: string[] }> {
+    const formData = new FormData()
+    formData.append('file', file)
+    return request({
+      url: '/sys/user/import',
+      method: 'post',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  },
+
+  // 下载导入模板
+  downloadTemplate(): Promise<Blob> {
+    return request({
+      url: '/sys/user/template',
+      method: 'get',
+      responseType: 'blob'
+    })
   }
 }
 

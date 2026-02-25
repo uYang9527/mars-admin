@@ -57,6 +57,12 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- EasyExcel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.mars</groupId>
             <artifactId>mars-mail</artifactId>

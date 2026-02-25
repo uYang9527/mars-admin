@@ -42,4 +42,10 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
             "INNER JOIN sys_user_role ur ON rm.role_id = ur.role_id " +
             "WHERE ur.user_id = #{userId} AND m.status = 1 AND m.deleted = 0 AND m.permission IS NOT NULL AND m.permission != ''")
     List<String> selectPermissionsByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户名查询用户
+     */
+    @Select("SELECT * FROM sys_user WHERE username = #{username} AND deleted = 0")
+    SysUser selectByUsername(@Param("username") String username);
 }
