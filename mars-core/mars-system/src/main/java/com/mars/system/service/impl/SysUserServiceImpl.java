@@ -104,6 +104,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser user = this.getById(id);
         if (user != null) {
             user.setPassword(null);
+            // 填充部门名称
+            if (user.getDeptId() != null) {
+                SysDept dept = deptMapper.selectById(user.getDeptId());
+                if (dept != null) {
+                    user.setDeptName(dept.getDeptName());
+                }
+            }
+            // 填充岗位名称
+            List<Long> postIds = getPostIds(user.getId());
+            if (postIds != null && !postIds.isEmpty()) {
+                List<SysPost> posts = postMapper.selectBatchIds(postIds);
+                String postNames = posts.stream()
+                        .map(SysPost::getPostName)
+                        .collect(Collectors.joining(","));
+                user.setPostNames(postNames);
+            }
         }
         return user;
     }
@@ -218,11 +234,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (user == null) {
             throw new BusinessException("用户不存在");
         }
-        // 只允许更新昵称、邮箱、手机号、头像
-        user.setNickname(profile.getNickname());
-        user.setEmail(profile.getEmail());
-        user.setPhone(profile.getPhone());
-        user.setAvatar(profile.getAvatar());
+        // 只允许更新昵称、邮箱、手机号、头像、性别、备注
+        if (profile.getNickname() != null) {
+            user.setNickname(profile.getNickname());
+        }
+        if (profile.getEmail() != null) {
+            user.setEmail(profile.getEmail());
+        }
+        if (profile.getPhone() != null) {
+            user.setPhone(profile.getPhone());
+        }
+        if (profile.getAvatar() != null) {
+            user.setAvatar(profile.getAvatar());
+        }
+        if (profile.getGender() != null) {
+            user.setGender(profile.getGender());
+        }
+        if (profile.getRemark() != null) {
+            user.setRemark(profile.getRemark());
+        }
         this.updateById(user);
     }
 

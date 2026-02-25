@@ -72,7 +72,15 @@ export interface ProfileInfo {
   nickname: string
   avatar?: string
   email?: string
-  mobile?: string
+  phone?: string
+  gender?: number
+  status?: number
+  deptId?: number
+  deptName?: string
+  postNames?: string
+  remark?: string
+  userType?: string
+  createTime?: string
 }
 
 // 认证相关API

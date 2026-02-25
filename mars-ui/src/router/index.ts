@@ -34,6 +34,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/dashboard/index.vue'),
         meta: { title: '首页', icon: 'HomeOutline' }
       },
+      // 个人中心
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/profile/index.vue'),
+        meta: { title: '个人中心', icon: 'PersonOutline' }
+      },
       // 系统管理
       {
         path: 'system/user',

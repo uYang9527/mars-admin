@@ -820,7 +820,7 @@ const breadcrumbs = computed(() => {
 // 用户下拉选项
 const userOptions = [
   {
-    label: '个人信息',
+    label: '个人中心',
     key: 'profile',
     icon: () => h(NIcon, null, { default: () => h(PersonOutline) })
   },
@@ -865,7 +865,7 @@ function handleUserAction(key: string) {
       }
     })
   } else if (key === 'profile') {
-    showProfileModal.value = true
+    router.push('/profile')
   } else if (key === 'password') {
     showPasswordModal.value = true
   }
