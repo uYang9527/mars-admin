@@ -5,7 +5,7 @@
       <n-card class="post-tree-card" size="small">
         <template #header>
           <div class="post-tree-header">
-            <span>岗位体系</span><span style="color: gray">（支持拖拽）</span>
+            <span>岗位体系</span>
           </div>
         </template>
         <div class="post-search">

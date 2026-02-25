@@ -49,13 +49,13 @@ public class PushServiceFactory {
      * 创建推送服务实例
      */
     private PushService createPushService(String provider) {
-        String appKey = configHelper.getPushAppKey();
-        String masterSecret = configHelper.getPushMasterSecret();
+        String signName = configHelper.getPushSignName(provider);
+        String tokenId = configHelper.getPushTokenId(provider);
 
         PushService service = switch (provider) {
-            case JpushPushService.PROVIDER_TYPE -> new JpushPushService(appKey, masterSecret);
-            case UmengPushService.PROVIDER_TYPE -> new UmengPushService(appKey, masterSecret);
-            case GetuiPushService.PROVIDER_TYPE -> new GetuiPushService(appKey, masterSecret);
+            case DingtalkPushService.PROVIDER_TYPE -> new DingtalkPushService(signName, tokenId);
+            case FeishuPushService.PROVIDER_TYPE -> new FeishuPushService(signName, tokenId);
+            case WechatWorkPushService.PROVIDER_TYPE -> new WechatWorkPushService(signName, tokenId);
             default -> {
                 log.warn("未知的推送服务商: {}，使用控制台输出", provider);
                 yield new ConsolePushService();

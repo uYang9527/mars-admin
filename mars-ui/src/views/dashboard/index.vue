@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.3</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.4</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,18 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.4',
+    date: '2026-02-24',
+    type: 'success' as const,
+    changes: [
+      '新增用户批量导入导出功能（EasyExcel）',
+      '导入模板支持角色和岗位字段',
+      '新增用户多选导出功能',
+      '新增用户批量删除功能',
+      '优化文件下载认证处理'
+    ]
+  },
   {
     version: 'v1.0.3',
     date: '2026-02-24',

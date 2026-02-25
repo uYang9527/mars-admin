@@ -3,7 +3,7 @@
     <n-card class="config-card">
       <!-- 顶部操作栏 -->
       <div class="">
-        <n-space justify="end">
+        <n-space>
           <n-button type="primary" :loading="saving" @click="handleSave">保存配置</n-button>
           <n-button @click="handleRefresh">刷新缓存</n-button>
         </n-space>
@@ -401,20 +401,40 @@
 
             <!-- 推送配置 -->
             <template v-else-if="group.groupCode === 'push'">
-              <n-form :model="configs.push" label-placement="left" label-width="120">
-                <n-form-item label="启用推送">
-                  <n-switch v-model:value="configs.push.enabled" />
-                </n-form-item>
-                <n-form-item label="推送服务商">
-                  <n-select v-model:value="configs.push.provider" :options="pushProviderOptions" style="width: 200px" />
-                </n-form-item>
-                <n-form-item label="AppKey">
-                  <n-input v-model:value="configs.push.appKey" placeholder="请输入AppKey" />
-                </n-form-item>
-                <n-form-item label="MasterSecret">
-                  <n-input v-model:value="configs.push.masterSecret" type="password" show-password-on="click" placeholder="请输入MasterSecret" />
-                </n-form-item>
-              </n-form>
+              <div class="push-config-layout">
+                <n-tabs v-model:value="activePushTab" type="line" placement="left">
+                  <n-tab-pane name="dingtalk" tab="钉钉">
+                    <n-form :model="configs.push.dingtalk" label-placement="top" class="push-form">
+                      <n-form-item label="消息推送签名" required>
+                        <n-input v-model:value="configs.push.dingtalk.signName" placeholder="钉钉消息推送签名" />
+                      </n-form-item>
+                      <n-form-item label="消息推送TOKENID" required>
+                        <n-input v-model:value="configs.push.dingtalk.tokenId" placeholder="钉钉消息推送TOKENID" />
+                      </n-form-item>
+                    </n-form>
+                  </n-tab-pane>
+                  <n-tab-pane name="feishu" tab="飞书">
+                    <n-form :model="configs.push.feishu" label-placement="top" class="push-form">
+                      <n-form-item label="消息推送签名" required>
+                        <n-input v-model:value="configs.push.feishu.signName" placeholder="飞书消息推送签名" />
+                      </n-form-item>
+                      <n-form-item label="消息推送TOKENID" required>
+                        <n-input v-model:value="configs.push.feishu.tokenId" placeholder="飞书消息推送TOKENID" />
+                      </n-form-item>
+                    </n-form>
+                  </n-tab-pane>
+                  <n-tab-pane name="wechat_work" tab="企业微信">
+                    <n-form :model="configs.push.wechat_work" label-placement="top" class="push-form">
+                      <n-form-item label="消息推送签名" required>
+                        <n-input v-model:value="configs.push.wechat_work.signName" placeholder="企业微信消息推送签名" />
+                      </n-form-item>
+                      <n-form-item label="消息推送TOKENID" required>
+                        <n-input v-model:value="configs.push.wechat_work.tokenId" placeholder="企业微信消息推送TOKENID" />
+                      </n-form-item>
+                    </n-form>
+                  </n-tab-pane>
+                </n-tabs>
+              </div>
             </template>
 
             <!-- 第三方配置 -->
@@ -911,6 +931,7 @@ const siteStore = useSiteStore()
 // 配置分组列表
 const configGroups = ref<SysConfigGroup[]>([])
 const activeTab = ref('system')
+const activePushTab = ref('dingtalk')
 const saving = ref(false)
 
 // 所有配置数据
@@ -950,7 +971,11 @@ const configs = reactive<Record<string, any>>({
     rustfsSecretKey: '',
     rustfsBucket: ''
   },
-  push: { enabled: false, provider: 'jpush', appKey: '', masterSecret: '' },
+  push: {
+    dingtalk: { signName: '', tokenId: '' },
+    feishu: { signName: '', tokenId: '' },
+    wechat_work: { signName: '', tokenId: '' }
+  },
   thirdParty: {
     wechat: { enabled: false, appId: '', appSecret: '' },
     alipay: { enabled: false, appId: '', privateKey: '', publicKey: '' },
@@ -1016,9 +1041,9 @@ const storageProviderOptions = [
 ]
 
 const pushProviderOptions = [
-  { label: '极光推送', value: 'jpush' },
-  { label: '友盟推送', value: 'umeng' },
-  { label: '个推', value: 'getui' }
+  { label: '钉钉', value: 'dingtalk' },
+  { label: '飞书', value: 'feishu' },
+  { label: '企业微信', value: 'wechat_work' }
 ]
 
 const alipayGatewayOptions = [
@@ -1711,6 +1736,33 @@ async function loadWechatMpMenu() {
 .sms-config-right {
   flex: 4;
   min-width: 320px;
+}
+
+/* 推送配置布局 */
+.push-config-layout {
+  :deep(.n-tabs-nav) {
+    padding: 0;
+  }
+
+  :deep(.n-tabs-tab) {
+    padding: 12px 24px;
+  }
+
+  :deep(.n-tab-pane) {
+    padding: 0 24px;
+  }
+
+  .push-form {
+    max-width: 600px;
+
+    :deep(.n-form-item-label) {
+      font-weight: 500;
+    }
+
+    :deep(.n-input) {
+      max-width: none;
+    }
+  }
 }
 
 .config-header {

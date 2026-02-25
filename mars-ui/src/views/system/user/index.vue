@@ -54,7 +54,7 @@
           </n-button>
           <n-button v-if="hasPermission('sys:user:export')" @click="handleExport">
             <template #icon><n-icon><DownloadOutline /></n-icon></template>
-            {{ checkedRowKeys.length > 0 ? `导出选中(${checkedRowKeys.length})` : '导出' }}
+            导出{{ checkedRowKeys.length > 0 ? `(${checkedRowKeys.length})` : '' }}
           </n-button>
           <n-button 
             v-if="hasPermission('sys:user:delete') && checkedRowKeys.length > 0" 
@@ -712,13 +712,14 @@ const importModalVisible = ref(false)
 
 // 导出用户
 async function handleExport() {
+  // 必须先勾选数据
+  if (checkedRowKeys.value.length === 0) {
+    message.warning('请先勾选要导出的用户')
+    return
+  }
   try {
     const blob = await userApi.exportUsers({
-      username: searchForm.username || undefined,
-      status: searchForm.status ?? undefined,
-      userType: searchForm.userType || undefined,
-      deptId: selectedDeptId.value,
-      ids: checkedRowKeys.value.length > 0 ? checkedRowKeys.value : undefined
+      ids: checkedRowKeys.value
     })
     // 创建下载链接
     const url = window.URL.createObjectURL(blob)

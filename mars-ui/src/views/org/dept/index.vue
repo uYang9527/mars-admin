@@ -5,7 +5,7 @@
       <n-card class="dept-tree-card" size="small">
         <template #header>
           <div class="dept-tree-header">
-            <span>部门体系</span><span style="color: gray">（支持拖拽）</span>
+            <span>部门体系</span>
           </div>
         </template>
         <div class="dept-search">

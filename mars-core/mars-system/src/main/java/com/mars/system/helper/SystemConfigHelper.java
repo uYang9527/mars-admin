@@ -733,31 +733,88 @@ public class SystemConfigHelper implements com.mars.crypto.CryptoConfigProvider,
     // ============ 推送配置 ============
 
     /**
-     * 是否启用推送
-     */
-    public boolean isPushEnabled() {
-        return getBoolean(GROUP_PUSH, "enabled");
-    }
-
-    /**
-     * 获取推送服务商
+     * 获取推送服务商（默认使用钉钉）
      */
     public String getPushProvider() {
-        return getString(GROUP_PUSH, "provider", "console");
+        return "dingtalk";
     }
 
     /**
-     * 获取推送AppKey
+     * 获取指定服务商的推送签名
+     * @param provider 服务商类型（dingtalk/feishu/wechat_work）
      */
-    public String getPushAppKey() {
-        return getString(GROUP_PUSH, "appKey", "");
+    public String getPushSignName(String provider) {
+        JsonNode config = getConfig(GROUP_PUSH);
+        if (config != null) {
+            JsonNode providerNode = config.get(provider);
+            if (providerNode != null && !providerNode.isNull()) {
+                JsonNode signNameNode = providerNode.get("signName");
+                if (signNameNode != null && !signNameNode.isNull()) {
+                    return signNameNode.asText();
+                }
+            }
+        }
+        return "";
     }
 
     /**
-     * 获取推送MasterSecret
+     * 获取指定服务商的推送TokenId
+     * @param provider 服务商类型（dingtalk/feishu/wechat_work）
      */
-    public String getPushMasterSecret() {
-        return getString(GROUP_PUSH, "masterSecret", "");
+    public String getPushTokenId(String provider) {
+        JsonNode config = getConfig(GROUP_PUSH);
+        if (config != null) {
+            JsonNode providerNode = config.get(provider);
+            if (providerNode != null && !providerNode.isNull()) {
+                JsonNode tokenIdNode = providerNode.get("tokenId");
+                if (tokenIdNode != null && !tokenIdNode.isNull()) {
+                    return tokenIdNode.asText();
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 获取钉钉推送签名
+     */
+    public String getDingtalkSignName() {
+        return getPushSignName("dingtalk");
+    }
+
+    /**
+     * 获取钉钉推送TokenId
+     */
+    public String getDingtalkTokenId() {
+        return getPushTokenId("dingtalk");
+    }
+
+    /**
+     * 获取飞书推送签名
+     */
+    public String getFeishuSignName() {
+        return getPushSignName("feishu");
+    }
+
+    /**
+     * 获取飞书推送TokenId
+     */
+    public String getFeishuTokenId() {
+        return getPushTokenId("feishu");
+    }
+
+    /**
+     * 获取企业微信推送签名
+     */
+    public String getWechatWorkSignName() {
+        return getPushSignName("wechat_work");
+    }
+
+    /**
+     * 获取企业微信推送TokenId
+     */
+    public String getWechatWorkTokenId() {
+        return getPushTokenId("wechat_work");
     }
 
     // ============ 文件存储扩展配置 ============
