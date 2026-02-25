@@ -11,7 +11,7 @@
  Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 24/02/2026 20:53:48
+ Date: 25/02/2026 16:24:02
 */
 
 SET NAMES utf8mb4;
@@ -562,7 +562,7 @@ CREATE TABLE `sys_chat_message`  (
   INDEX `idx_sender_id`(`sender_id` ASC) USING BTREE,
   INDEX `idx_receiver_id`(`receiver_id` ASC) USING BTREE,
   INDEX `idx_send_time`(`send_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 501 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 504 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chat_message
@@ -853,6 +853,9 @@ INSERT INTO `sys_chat_message` VALUES (497, 1, '超级管理员', NULL, 2, '2', 
 INSERT INTO `sys_chat_message` VALUES (498, 1, '超级管理员', NULL, 2, '1', 1, 0, '2026-02-24 14:32:59');
 INSERT INTO `sys_chat_message` VALUES (499, 1, '超级管理员', NULL, 2, '哈哈哈', 1, 0, '2026-02-24 14:33:02');
 INSERT INTO `sys_chat_message` VALUES (500, 1, '超级管理员', NULL, 2, '牛逼的', 1, 0, '2026-02-24 14:33:05');
+INSERT INTO `sys_chat_message` VALUES (501, 1, '超级管理员', NULL, 5, '111', 1, 0, '2026-02-25 12:19:32');
+INSERT INTO `sys_chat_message` VALUES (502, 1, '超级管理员', NULL, 5, 'hahah', 1, 0, '2026-02-25 12:19:34');
+INSERT INTO `sys_chat_message` VALUES (503, 1, '超级管理员', NULL, 5, '牛逼啊', 1, 0, '2026-02-25 12:19:37');
 
 -- ----------------------------
 -- Table structure for sys_config_group
@@ -876,10 +879,10 @@ CREATE TABLE `sys_config_group`  (
 -- ----------------------------
 -- Records of sys_config_group
 -- ----------------------------
-INSERT INTO `sys_config_group` VALUES (1, 'system', '系统配置', NULL, '{\"siteName\":\"Mars-Admin\",\"siteDescription\":\"现代化企业级管理系统\",\"siteLogo\":\"\",\"copyright\":\"版权所有 © 成都火星网络科技有限公司 2025-2030\",\"icp\":\"\",\"watermarkEnabled\":true,\"watermarkType\":\"sitename\",\"watermarkOpacity\":0.05}', 1, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
+INSERT INTO `sys_config_group` VALUES (1, 'system', '系统配置', NULL, '{\"siteName\":\"Mars-Admin\",\"siteDescription\":\"现代化企业级管理系统\",\"siteLogo\":\"\",\"copyright\":\"版权所有 © 成都火星网络科技有限公司 2025-2030\",\"icp\":\"\",\"watermarkEnabled\":true,\"watermarkType\":\"sitename\",\"watermarkCustomText\":\"\",\"watermarkOpacity\":0.05}', 1, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (2, 'register', '注册配置', NULL, '{\"enabled\":true,\"verifyEmail\":false,\"verifyPhone\":false,\"defaultRole\":\"user\",\"needAudit\":true}', 2, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (3, 'login', '登录配置', NULL, '{\"captchaEnabled\":true,\"captchaType\":\"image\",\"maxRetryCount\":5,\"lockTime\":30,\"rememberMe\":true,\"singleLogin\":false}', 3, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 15:38:39');
-INSERT INTO `sys_config_group` VALUES (4, 'password', '密码配置', NULL, '{\"minLength\":6,\"maxLength\":20,\"requireUppercase\":true,\"requireLowercase\":true,\"requireNumber\":true,\"requireSpecial\":true,\"expireDays\":0}', 4, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
+INSERT INTO `sys_config_group` VALUES (4, 'password', '密码配置', NULL, '{\"minLength\":6,\"maxLength\":20,\"requireUppercase\":false,\"requireLowercase\":false,\"requireNumber\":false,\"requireSpecial\":false,\"expireDays\":0}', 4, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (5, 'email', '邮件配置', NULL, '{\"host\":\"smtp.qq.com\",\"port\":465,\"username\":\"850994281@qq.com\",\"password\":\"pbfbulghhkqmbedj\",\"fromName\":\"Mars管理系统\",\"ssl\":true,\"enabled\":true}', 5, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 22:13:14');
 INSERT INTO `sys_config_group` VALUES (6, 'emailTemplate', '邮件模板', NULL, '{\"verifyCode\":\"您的验证码是：{code}，有效期{expire}分钟。\",\"resetPassword\":\"您正在重置密码，验证码：{code}，有效期{expire}分钟。\",\"welcome\":\"欢迎注册{siteName}，您的账号已创建成功。\"}', 6, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (7, 'sms', '短信配置', NULL, '{\"provider\":\"aliyun\",\"accessKeyId\":\"LTAI5tEPLV6eFkXgFiRcNAjd\",\"accessKeySecret\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"signName\":\"测试签名\",\"tencentAppId\":\"\",\"templateVerifyCode\":\"SMS_225366344\",\"templateResetPassword\":\"\",\"templateNotice\":\"\",\"enabled\":true}', 7, 1, NULL, '2026-01-31 14:38:29', '2026-02-13 13:52:21');
@@ -1015,7 +1018,7 @@ CREATE TABLE `sys_file`  (
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_group_id`(`group_id` ASC) USING BTREE,
   INDEX `idx_file_type`(`file_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file
@@ -1025,6 +1028,7 @@ INSERT INTO `sys_file` VALUES (45, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e
 INSERT INTO `sys_file` VALUES (48, 'img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg', 'be55af87595046cdb2834cc611a81f30.jpg', '2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', '/api/files/2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', 108824, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-09 16:54:07');
 INSERT INTO `sys_file` VALUES (74, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', '2026/02/24/09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', '/api/files/2026/02/24/09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-24 14:18:04');
 INSERT INTO `sys_file` VALUES (75, 'caa41ac5c974e4fa96b1df176aeba849.png', 'cea0ee440cbd4b22a9385e58c8f0993c.png', '2026/02/24/cea0ee440cbd4b22a9385e58c8f0993c.png', '/api/files/2026/02/24/cea0ee440cbd4b22a9385e58c8f0993c.png', 16286, 'image/png', '.png', 'local', '', NULL, '', '1', '2026-02-24 14:18:21');
+INSERT INTO `sys_file` VALUES (76, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '4b7ec7ab82f64706a2fe36d913d303ac.jpg', '2026/02/24/4b7ec7ab82f64706a2fe36d913d303ac.jpg', '/api/files/2026/02/24/4b7ec7ab82f64706a2fe36d913d303ac.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-24 21:52:41');
 
 -- ----------------------------
 -- Table structure for sys_file_config
@@ -1070,7 +1074,7 @@ CREATE TABLE `sys_file_group`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file_group
@@ -1167,14 +1171,15 @@ CREATE TABLE `sys_login_log`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 257 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 269 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
-INSERT INTO `sys_login_log` VALUES (254, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-24 14:25:08');
-INSERT INTO `sys_login_log` VALUES (255, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-24 15:54:43');
-INSERT INTO `sys_login_log` VALUES (256, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-24 20:37:57');
+INSERT INTO `sys_login_log` VALUES (265, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 13:48:47');
+INSERT INTO `sys_login_log` VALUES (266, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 14:32:32');
+INSERT INTO `sys_login_log` VALUES (267, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 15:32:57');
+INSERT INTO `sys_login_log` VALUES (268, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 16:09:25');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1199,7 +1204,7 @@ CREATE TABLE `sys_menu`  (
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 280 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 282 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1307,6 +1312,8 @@ INSERT INTO `sys_menu` VALUES (276, 272, '学生管理修改', 3, NULL, NULL, 's
 INSERT INTO `sys_menu` VALUES (277, 272, '学生管理删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
 INSERT INTO `sys_menu` VALUES (278, 161, '接口文档', 2, '/tool/api-doc', 'https://s.apifox.cn/73166c1b-50fb-47b6-a015-50111f2fbf9e/417351170e0', '', 'DocumentOutline', 0, 1, 1, 1, '2026-02-13 15:18:16', '2026-02-13 15:18:16', 1, 1, 0);
 INSERT INTO `sys_menu` VALUES (279, 0, '系统官网', 1, '', 'https://mars-coder.cn', '', 'PlanetOutline', 100, 1, 1, 1, '2026-02-13 15:52:55', '2026-02-13 15:52:55', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (280, 2, '用户导入', 3, '', '', 'sys:user:import', '', 0, 1, 1, 0, '2026-02-25 15:56:46', '2026-02-25 15:56:46', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (281, 2, '用户导出', 3, '', '', 'sys:user:export', '', 0, 1, 1, 0, '2026-02-25 15:57:01', '2026-02-25 15:57:01', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1354,12 +1361,25 @@ CREATE TABLE `sys_oper_log`  (
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 605 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 625 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (604, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.resetPassword()', 'POST', 'admin', '/api/sys/user/11/reset-password', '127.0.0.1', '11', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-24 14:31:18', 88);
+INSERT INTO `sys_oper_log` VALUES (611, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":280,\"createTime\":\"2026-02-25 15:56:46\",\"updateTime\":\"2026-02-25 15:56:46\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":2,\"name\":\"用户导入\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:import\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:56:46', 38);
+INSERT INTO `sys_oper_log` VALUES (612, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":281,\"createTime\":\"2026-02-25 15:57:01\",\"updateTime\":\"2026-02-25 15:57:01\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":2,\"name\":\"用户导出\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:export\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:57:01', 13);
+INSERT INTO `sys_oper_log` VALUES (613, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,22,31,36,126,134,140,161,2,280,281,1],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:57:29', 167);
+INSERT INTO `sys_oper_log` VALUES (614, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 15:57:37', 272);
+INSERT INTO `sys_oper_log` VALUES (615, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":18,\"createTime\":\"2026-02-25 15:57:37\",\"updateTime\":\"2026-02-25 15:57:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"postNames\":null,\"username\":\"11\",\"password\":null,\"nickname\":\"11\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"18483689569\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:58:01', 22);
+INSERT INTO `sys_oper_log` VALUES (616, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 16:00:18', 118);
+INSERT INTO `sys_oper_log` VALUES (617, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.delete()', 'DELETE', 'admin', '/api/sys/user/19', '127.0.0.1', '19', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:13:45', 33);
+INSERT INTO `sys_oper_log` VALUES (618, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:13:53', 388);
+INSERT INTO `sys_oper_log` VALUES (619, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.delete()', 'DELETE', 'admin', '/api/sys/user/18', '127.0.0.1', '18', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:14:10', 11);
+INSERT INTO `sys_oper_log` VALUES (620, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:14:15', 105);
+INSERT INTO `sys_oper_log` VALUES (621, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:14:22', 104);
+INSERT INTO `sys_oper_log` VALUES (622, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 16:16:18', 113);
+INSERT INTO `sys_oper_log` VALUES (623, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '', NULL, 0, NULL, '2026-02-25 16:16:31', 61);
+INSERT INTO `sys_oper_log` VALUES (624, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '\"23\"', NULL, 0, NULL, '2026-02-25 16:19:07', 681);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1447,7 +1467,7 @@ CREATE TABLE `sys_role_menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE,
   INDEX `idx_menu_id`(`menu_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8320 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8415 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -1518,99 +1538,101 @@ INSERT INTO `sys_role_menu` VALUES (7519, 2, 166);
 INSERT INTO `sys_role_menu` VALUES (7520, 2, 167);
 INSERT INTO `sys_role_menu` VALUES (7521, 2, 168);
 INSERT INTO `sys_role_menu` VALUES (7522, 2, 169);
-INSERT INTO `sys_role_menu` VALUES (8227, 1, 7);
-INSERT INTO `sys_role_menu` VALUES (8228, 1, 8);
-INSERT INTO `sys_role_menu` VALUES (8229, 1, 9);
-INSERT INTO `sys_role_menu` VALUES (8230, 1, 143);
-INSERT INTO `sys_role_menu` VALUES (8231, 1, 142);
-INSERT INTO `sys_role_menu` VALUES (8232, 1, 3);
-INSERT INTO `sys_role_menu` VALUES (8233, 1, 4);
-INSERT INTO `sys_role_menu` VALUES (8234, 1, 5);
-INSERT INTO `sys_role_menu` VALUES (8235, 1, 144);
-INSERT INTO `sys_role_menu` VALUES (8236, 1, 11);
-INSERT INTO `sys_role_menu` VALUES (8237, 1, 12);
-INSERT INTO `sys_role_menu` VALUES (8238, 1, 13);
-INSERT INTO `sys_role_menu` VALUES (8239, 1, 145);
-INSERT INTO `sys_role_menu` VALUES (8240, 1, 15);
-INSERT INTO `sys_role_menu` VALUES (8241, 1, 16);
-INSERT INTO `sys_role_menu` VALUES (8242, 1, 17);
-INSERT INTO `sys_role_menu` VALUES (8243, 1, 19);
-INSERT INTO `sys_role_menu` VALUES (8244, 1, 20);
-INSERT INTO `sys_role_menu` VALUES (8245, 1, 21);
-INSERT INTO `sys_role_menu` VALUES (8246, 1, 146);
-INSERT INTO `sys_role_menu` VALUES (8247, 1, 24);
-INSERT INTO `sys_role_menu` VALUES (8248, 1, 25);
-INSERT INTO `sys_role_menu` VALUES (8249, 1, 26);
-INSERT INTO `sys_role_menu` VALUES (8250, 1, 147);
-INSERT INTO `sys_role_menu` VALUES (8251, 1, 28);
-INSERT INTO `sys_role_menu` VALUES (8252, 1, 29);
-INSERT INTO `sys_role_menu` VALUES (8253, 1, 30);
-INSERT INTO `sys_role_menu` VALUES (8254, 1, 148);
-INSERT INTO `sys_role_menu` VALUES (8255, 1, 33);
-INSERT INTO `sys_role_menu` VALUES (8256, 1, 149);
-INSERT INTO `sys_role_menu` VALUES (8257, 1, 35);
-INSERT INTO `sys_role_menu` VALUES (8258, 1, 150);
-INSERT INTO `sys_role_menu` VALUES (8259, 1, 38);
-INSERT INTO `sys_role_menu` VALUES (8260, 1, 151);
-INSERT INTO `sys_role_menu` VALUES (8261, 1, 40);
-INSERT INTO `sys_role_menu` VALUES (8262, 1, 41);
-INSERT INTO `sys_role_menu` VALUES (8263, 1, 42);
-INSERT INTO `sys_role_menu` VALUES (8264, 1, 44);
-INSERT INTO `sys_role_menu` VALUES (8265, 1, 45);
-INSERT INTO `sys_role_menu` VALUES (8266, 1, 153);
-INSERT INTO `sys_role_menu` VALUES (8267, 1, 136);
-INSERT INTO `sys_role_menu` VALUES (8268, 1, 137);
-INSERT INTO `sys_role_menu` VALUES (8269, 1, 138);
-INSERT INTO `sys_role_menu` VALUES (8270, 1, 139);
-INSERT INTO `sys_role_menu` VALUES (8271, 1, 141);
-INSERT INTO `sys_role_menu` VALUES (8272, 1, 155);
-INSERT INTO `sys_role_menu` VALUES (8273, 1, 156);
-INSERT INTO `sys_role_menu` VALUES (8274, 1, 157);
-INSERT INTO `sys_role_menu` VALUES (8275, 1, 158);
-INSERT INTO `sys_role_menu` VALUES (8276, 1, 159);
-INSERT INTO `sys_role_menu` VALUES (8277, 1, 160);
-INSERT INTO `sys_role_menu` VALUES (8278, 1, 171);
-INSERT INTO `sys_role_menu` VALUES (8279, 1, 172);
-INSERT INTO `sys_role_menu` VALUES (8280, 1, 173);
-INSERT INTO `sys_role_menu` VALUES (8281, 1, 174);
-INSERT INTO `sys_role_menu` VALUES (8282, 1, 175);
-INSERT INTO `sys_role_menu` VALUES (8283, 1, 152);
-INSERT INTO `sys_role_menu` VALUES (8284, 1, 128);
-INSERT INTO `sys_role_menu` VALUES (8285, 1, 129);
-INSERT INTO `sys_role_menu` VALUES (8286, 1, 278);
-INSERT INTO `sys_role_menu` VALUES (8287, 1, 163);
-INSERT INTO `sys_role_menu` VALUES (8288, 1, 164);
-INSERT INTO `sys_role_menu` VALUES (8289, 1, 165);
-INSERT INTO `sys_role_menu` VALUES (8290, 1, 166);
-INSERT INTO `sys_role_menu` VALUES (8291, 1, 167);
-INSERT INTO `sys_role_menu` VALUES (8292, 1, 168);
-INSERT INTO `sys_role_menu` VALUES (8293, 1, 169);
-INSERT INTO `sys_role_menu` VALUES (8294, 1, 2);
-INSERT INTO `sys_role_menu` VALUES (8295, 1, 170);
-INSERT INTO `sys_role_menu` VALUES (8296, 1, 6);
-INSERT INTO `sys_role_menu` VALUES (8297, 1, 10);
-INSERT INTO `sys_role_menu` VALUES (8298, 1, 14);
-INSERT INTO `sys_role_menu` VALUES (8299, 1, 18);
-INSERT INTO `sys_role_menu` VALUES (8300, 1, 23);
-INSERT INTO `sys_role_menu` VALUES (8301, 1, 27);
-INSERT INTO `sys_role_menu` VALUES (8302, 1, 32);
-INSERT INTO `sys_role_menu` VALUES (8303, 1, 34);
-INSERT INTO `sys_role_menu` VALUES (8304, 1, 37);
-INSERT INTO `sys_role_menu` VALUES (8305, 1, 39);
-INSERT INTO `sys_role_menu` VALUES (8306, 1, 43);
-INSERT INTO `sys_role_menu` VALUES (8307, 1, 154);
-INSERT INTO `sys_role_menu` VALUES (8308, 1, 127);
-INSERT INTO `sys_role_menu` VALUES (8309, 1, 135);
-INSERT INTO `sys_role_menu` VALUES (8310, 1, 162);
-INSERT INTO `sys_role_menu` VALUES (8311, 1, 1);
-INSERT INTO `sys_role_menu` VALUES (8312, 1, 22);
-INSERT INTO `sys_role_menu` VALUES (8313, 1, 31);
-INSERT INTO `sys_role_menu` VALUES (8314, 1, 36);
-INSERT INTO `sys_role_menu` VALUES (8315, 1, 126);
-INSERT INTO `sys_role_menu` VALUES (8316, 1, 134);
-INSERT INTO `sys_role_menu` VALUES (8317, 1, 140);
-INSERT INTO `sys_role_menu` VALUES (8318, 1, 161);
-INSERT INTO `sys_role_menu` VALUES (8319, 1, 279);
+INSERT INTO `sys_role_menu` VALUES (8320, 1, 7);
+INSERT INTO `sys_role_menu` VALUES (8321, 1, 8);
+INSERT INTO `sys_role_menu` VALUES (8322, 1, 9);
+INSERT INTO `sys_role_menu` VALUES (8323, 1, 143);
+INSERT INTO `sys_role_menu` VALUES (8324, 1, 142);
+INSERT INTO `sys_role_menu` VALUES (8325, 1, 3);
+INSERT INTO `sys_role_menu` VALUES (8326, 1, 4);
+INSERT INTO `sys_role_menu` VALUES (8327, 1, 5);
+INSERT INTO `sys_role_menu` VALUES (8328, 1, 144);
+INSERT INTO `sys_role_menu` VALUES (8329, 1, 11);
+INSERT INTO `sys_role_menu` VALUES (8330, 1, 12);
+INSERT INTO `sys_role_menu` VALUES (8331, 1, 13);
+INSERT INTO `sys_role_menu` VALUES (8332, 1, 145);
+INSERT INTO `sys_role_menu` VALUES (8333, 1, 15);
+INSERT INTO `sys_role_menu` VALUES (8334, 1, 16);
+INSERT INTO `sys_role_menu` VALUES (8335, 1, 17);
+INSERT INTO `sys_role_menu` VALUES (8336, 1, 19);
+INSERT INTO `sys_role_menu` VALUES (8337, 1, 20);
+INSERT INTO `sys_role_menu` VALUES (8338, 1, 21);
+INSERT INTO `sys_role_menu` VALUES (8339, 1, 146);
+INSERT INTO `sys_role_menu` VALUES (8340, 1, 24);
+INSERT INTO `sys_role_menu` VALUES (8341, 1, 25);
+INSERT INTO `sys_role_menu` VALUES (8342, 1, 26);
+INSERT INTO `sys_role_menu` VALUES (8343, 1, 147);
+INSERT INTO `sys_role_menu` VALUES (8344, 1, 28);
+INSERT INTO `sys_role_menu` VALUES (8345, 1, 29);
+INSERT INTO `sys_role_menu` VALUES (8346, 1, 30);
+INSERT INTO `sys_role_menu` VALUES (8347, 1, 148);
+INSERT INTO `sys_role_menu` VALUES (8348, 1, 33);
+INSERT INTO `sys_role_menu` VALUES (8349, 1, 149);
+INSERT INTO `sys_role_menu` VALUES (8350, 1, 35);
+INSERT INTO `sys_role_menu` VALUES (8351, 1, 150);
+INSERT INTO `sys_role_menu` VALUES (8352, 1, 38);
+INSERT INTO `sys_role_menu` VALUES (8353, 1, 151);
+INSERT INTO `sys_role_menu` VALUES (8354, 1, 40);
+INSERT INTO `sys_role_menu` VALUES (8355, 1, 41);
+INSERT INTO `sys_role_menu` VALUES (8356, 1, 42);
+INSERT INTO `sys_role_menu` VALUES (8357, 1, 44);
+INSERT INTO `sys_role_menu` VALUES (8358, 1, 45);
+INSERT INTO `sys_role_menu` VALUES (8359, 1, 153);
+INSERT INTO `sys_role_menu` VALUES (8360, 1, 136);
+INSERT INTO `sys_role_menu` VALUES (8361, 1, 137);
+INSERT INTO `sys_role_menu` VALUES (8362, 1, 138);
+INSERT INTO `sys_role_menu` VALUES (8363, 1, 139);
+INSERT INTO `sys_role_menu` VALUES (8364, 1, 141);
+INSERT INTO `sys_role_menu` VALUES (8365, 1, 155);
+INSERT INTO `sys_role_menu` VALUES (8366, 1, 156);
+INSERT INTO `sys_role_menu` VALUES (8367, 1, 157);
+INSERT INTO `sys_role_menu` VALUES (8368, 1, 158);
+INSERT INTO `sys_role_menu` VALUES (8369, 1, 159);
+INSERT INTO `sys_role_menu` VALUES (8370, 1, 160);
+INSERT INTO `sys_role_menu` VALUES (8371, 1, 171);
+INSERT INTO `sys_role_menu` VALUES (8372, 1, 172);
+INSERT INTO `sys_role_menu` VALUES (8373, 1, 173);
+INSERT INTO `sys_role_menu` VALUES (8374, 1, 174);
+INSERT INTO `sys_role_menu` VALUES (8375, 1, 175);
+INSERT INTO `sys_role_menu` VALUES (8376, 1, 152);
+INSERT INTO `sys_role_menu` VALUES (8377, 1, 128);
+INSERT INTO `sys_role_menu` VALUES (8378, 1, 129);
+INSERT INTO `sys_role_menu` VALUES (8379, 1, 278);
+INSERT INTO `sys_role_menu` VALUES (8380, 1, 163);
+INSERT INTO `sys_role_menu` VALUES (8381, 1, 164);
+INSERT INTO `sys_role_menu` VALUES (8382, 1, 165);
+INSERT INTO `sys_role_menu` VALUES (8383, 1, 166);
+INSERT INTO `sys_role_menu` VALUES (8384, 1, 167);
+INSERT INTO `sys_role_menu` VALUES (8385, 1, 168);
+INSERT INTO `sys_role_menu` VALUES (8386, 1, 169);
+INSERT INTO `sys_role_menu` VALUES (8387, 1, 279);
+INSERT INTO `sys_role_menu` VALUES (8388, 1, 170);
+INSERT INTO `sys_role_menu` VALUES (8389, 1, 6);
+INSERT INTO `sys_role_menu` VALUES (8390, 1, 10);
+INSERT INTO `sys_role_menu` VALUES (8391, 1, 14);
+INSERT INTO `sys_role_menu` VALUES (8392, 1, 18);
+INSERT INTO `sys_role_menu` VALUES (8393, 1, 23);
+INSERT INTO `sys_role_menu` VALUES (8394, 1, 27);
+INSERT INTO `sys_role_menu` VALUES (8395, 1, 32);
+INSERT INTO `sys_role_menu` VALUES (8396, 1, 34);
+INSERT INTO `sys_role_menu` VALUES (8397, 1, 37);
+INSERT INTO `sys_role_menu` VALUES (8398, 1, 39);
+INSERT INTO `sys_role_menu` VALUES (8399, 1, 43);
+INSERT INTO `sys_role_menu` VALUES (8400, 1, 154);
+INSERT INTO `sys_role_menu` VALUES (8401, 1, 127);
+INSERT INTO `sys_role_menu` VALUES (8402, 1, 135);
+INSERT INTO `sys_role_menu` VALUES (8403, 1, 162);
+INSERT INTO `sys_role_menu` VALUES (8404, 1, 22);
+INSERT INTO `sys_role_menu` VALUES (8405, 1, 31);
+INSERT INTO `sys_role_menu` VALUES (8406, 1, 36);
+INSERT INTO `sys_role_menu` VALUES (8407, 1, 126);
+INSERT INTO `sys_role_menu` VALUES (8408, 1, 134);
+INSERT INTO `sys_role_menu` VALUES (8409, 1, 140);
+INSERT INTO `sys_role_menu` VALUES (8410, 1, 161);
+INSERT INTO `sys_role_menu` VALUES (8411, 1, 2);
+INSERT INTO `sys_role_menu` VALUES (8412, 1, 280);
+INSERT INTO `sys_role_menu` VALUES (8413, 1, 281);
+INSERT INTO `sys_role_menu` VALUES (8414, 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_server
@@ -1706,12 +1728,12 @@ CREATE TABLE `sys_user`  (
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
   INDEX `idx_open_id`(`open_id` ASC) USING BTREE,
   INDEX `idx_user_type`(`user_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$zqQcoU.zIWJQy42DAzxj5usRR9RLNx.HZ729ocAzSgnB90/sI3s5u', '超级管理员', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-29 22:42:08', '2026-02-24 22:02:00', NULL, 1, 'admin', NULL, 0);
 INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888881', 1, 1, 1, '', '2026-01-29 23:21:12', '2026-02-09 14:59:31', 1, 1, 'admin', NULL, 0);
 INSERT INTO `sys_user` VALUES (3, 2, 'mars11', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars11', NULL, '1121@qq.com', '18888888881', 1, 1, 0, '', '2026-01-29 23:21:12', '2026-02-08 16:44:59', 1, 1, 'admin', NULL, 0);
 INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
@@ -1724,6 +1746,9 @@ INSERT INTO `sys_user` VALUES (14, 2, 'Mars222', '$2a$10$zr4zrzbZasuckIfyahZiL.L
 INSERT INTO `sys_user` VALUES (15, 2, 'Mars333', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
 INSERT INTO `sys_user` VALUES (16, 2, 'Mars444', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
 INSERT INTO `sys_user` VALUES (17, 2, 'Mars555', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (18, 2, '11', '$2a$10$WF34d4VPwUbL4zWfJKmE5OgbIbjgKtaFjy6zUBulu3ZSSQDEk2A6u', '11', NULL, '111@qq.com', '18483689569', 1, 1, 0, NULL, '2026-02-25 15:57:37', '2026-02-25 16:14:10', 1, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (19, 2, '222', '$2a$10$vIsmaa111WDaZGNmM2cc6unBgXEADOGEsKCy4BBOMbae56nq.KrHC', '222', NULL, '111@qq.com', '18483689511', 1, 1, 0, NULL, '2026-02-25 16:00:18', '2026-02-25 16:13:45', 1, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (23, 2, '121', '$2a$10$3yZ0uuskfjBSyJHokoXCG.AbQtXq6n2Z3ZSxF5lWtQ8HxmbnwSDeq', '1212', NULL, '11112@qq.com', '18483686589', 1, 1, 0, NULL, '2026-02-25 16:16:18', '2026-02-25 16:16:18', 1, 1, 'admin', NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_user_blacklist
@@ -1776,7 +1801,7 @@ CREATE TABLE `sys_user_post`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_post_id`(`post_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_post
@@ -1786,6 +1811,7 @@ INSERT INTO `sys_user_post` VALUES (6, 1, 1);
 INSERT INTO `sys_user_post` VALUES (7, 11, 2);
 INSERT INTO `sys_user_post` VALUES (10, 5, 3);
 INSERT INTO `sys_user_post` VALUES (11, 5, 4);
+INSERT INTO `sys_user_post` VALUES (13, 23, 4);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -1798,7 +1824,7 @@ CREATE TABLE `sys_user_role`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -1811,5 +1837,6 @@ INSERT INTO `sys_user_role` VALUES (37, 10, 2);
 INSERT INTO `sys_user_role` VALUES (38, 1, 1);
 INSERT INTO `sys_user_role` VALUES (39, 11, 2);
 INSERT INTO `sys_user_role` VALUES (41, 5, 2);
+INSERT INTO `sys_user_role` VALUES (43, 23, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;
