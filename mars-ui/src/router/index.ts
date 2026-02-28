@@ -149,6 +149,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '缓存监控', icon: 'ServerOutline' }
       },
       {
+        path: 'monitor/api-access',
+        name: 'MonitorApiAccess',
+        component: () => import('@/views/monitor/api-access/index.vue'),
+        meta: { title: 'API访问统计', icon: 'StatsChartOutline' }
+      },
+      {
         path: 'monitor/server',
         name: 'MonitorServer',
         component: () => import('@/views/monitor/server/index.vue'),

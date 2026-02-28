@@ -172,3 +172,43 @@ export const serverApi = {
     return request({ url: '/monitor/server/info', method: 'get' })
   }
 }
+
+// ==================== API 访问统计 ====================
+export interface ApiAccessLog {
+  id?: number
+  startTime?: string
+  endTime?: string
+  apiPath?: string
+  method?: string
+  statusCode?: number
+  success?: number
+  costTime?: number
+  ip?: string
+  userId?: number
+}
+
+export interface ApiAccessStatistics {
+  totalCount: number
+  successCount: number
+  failCount: number
+  dailyStats: Record<string, { total: number; success: number; fail: number }>
+  topPaths: Array<{ apiPath: string; count: number }>
+  methodCount: Record<string, number>
+}
+
+export const apiAccessApi = {
+  page(params: {
+    page: number
+    pageSize: number
+    apiPath?: string
+    method?: string
+    success?: number
+    startTime?: string
+    endTime?: string
+  }): Promise<PageResult<ApiAccessLog>> {
+    return request({ url: '/monitor/api-access/page', method: 'get', params })
+  },
+  statistics(params?: { startDate?: string; endDate?: string }): Promise<ApiAccessStatistics> {
+    return request({ url: '/monitor/api-access/statistics', method: 'get', params })
+  }
+}

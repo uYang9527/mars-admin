@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.4</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.5</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,20 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.5',
+    date: '2026-02-28',
+    type: 'success' as const,
+    changes: [
+      '整合 Druid 数据库连接池监控平台',
+      '定时任务新增 Cron 表达式常用预设选择',
+      '定时任务新增调度日志查看功能',
+      '定时任务新增调度统计图表（执行数、成功/失败比例）',
+      '缓存监控页面新增 ECharts 统计图（内存、QPS、命中率、连接数）',
+      '修复通知类型表单校验问题',
+      '优化统计卡片样式（透明背景）'
+    ]
+  },
   {
     version: 'v1.0.4',
     date: '2026-02-24',
