@@ -7,7 +7,7 @@
           :key="tab.path"
           class="tab-item"
           :class="{ active: tab.path === tabsStore.activeTab }"
-          :style="tab.path === tabsStore.activeTab ? activeTabStyle : {}"
+          :style="tab.path === tabsStore.activeTab ? activeTabStyle : undefined"
           @click="handleClick(tab)"
           @contextmenu.prevent="handleContextMenu($event, tab)"
         >
@@ -50,13 +50,51 @@ const tabsStore = useTabsStore()
 const themeStore = useThemeStore()
 const scrollRef = ref<HTMLElement | null>(null)
 
+// 将 hex 颜色转换为 rgba
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+// 计算颜色亮度（0-255）
+function getColorBrightness(hex: string): number {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  // 使用感知亮度公式
+  return (r * 299 + g * 587 + b * 114) / 1000
+}
+
+// 调亮颜色
+function lightenColor(hex: string, amount: number): string {
+  const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + amount)
+  const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + amount)
+  const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + amount)
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
+}
+
 // 激活页签的动态样式（跟随主题色）
 const activeTabStyle = computed(() => {
-  const color = themeStore.primaryColor
+  const baseColor = themeStore.primaryColor
+  const isDark = themeStore.isDark
+  
+  // 暗黑模式下，如果主题色较暗，使用亮化版本确保可见性
+  let textColor = baseColor
+  if (isDark) {
+    const brightness = getColorBrightness(baseColor)
+    // 如果亮度低于128，说明是深色，需要调亮
+    if (brightness < 128) {
+      textColor = lightenColor(baseColor, 100)
+    }
+  }
+  
+  const bgAlpha = isDark ? 0.2 : 0.1
   return {
-    color: color,
-    borderColor: color,
-    background: `${color}15`
+    '--tab-active-color': textColor,
+    '--tab-active-bg': hexToRgba(textColor, bgAlpha),
+    '--tab-active-border': textColor
   }
 })
 
@@ -216,9 +254,9 @@ body.dark-theme .tab-bar {
   }
 
   &.active {
-    color: #18a058;
-    background: #e8f5e9;
-    border-color: #18a058;
+    color: var(--tab-active-color) !important;
+    background: var(--tab-active-bg) !important;
+    border-color: var(--tab-active-border) !important;
   }
 }
 
@@ -231,9 +269,9 @@ body.dark-theme .tab-item {
   }
 
   &.active {
-    color: #63e2b7;
-    background: rgba(99, 226, 183, 0.1);
-    border-color: #63e2b7;
+    color: var(--tab-active-color) !important;
+    background: var(--tab-active-bg) !important;
+    border-color: var(--tab-active-border) !important;
   }
 }
 
