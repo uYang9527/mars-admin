@@ -4,10 +4,11 @@ import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * 推送服务工厂
- * 使用工厂模式 + 策略模式管理不同的推送服务实现
+ * 按配置创建钉钉/飞书/企业微信/控制台推送服务
  */
 @Slf4j
 @Component
@@ -15,30 +16,23 @@ import org.springframework.stereotype.Component;
 public class PushServiceFactory {
 
     private final SystemConfigHelper configHelper;
+    private final WebhookSender webhookSender;
 
-    /**
-     * 缓存的推送服务实例
-     */
     private volatile PushService cachedService;
     private volatile String cachedProvider;
 
     /**
-     * 获取推送服务实例
+     * 获取当前配置的推送服务（基于 push.provider）
      */
     public PushService getPushService() {
         String provider = configHelper.getPushProvider();
-
-        // 如果服务商未变化，使用缓存的实例
         if (cachedService != null && provider.equals(cachedProvider)) {
             return cachedService;
         }
-
         synchronized (this) {
-            // 双重检查
             if (cachedService != null && provider.equals(cachedProvider)) {
                 return cachedService;
             }
-
             cachedService = createPushService(provider);
             cachedProvider = provider;
             return cachedService;
@@ -46,28 +40,37 @@ public class PushServiceFactory {
     }
 
     /**
-     * 创建推送服务实例
+     * 获取指定平台的推送服务（用于多渠道发送）
      */
+    public PushService getPushService(String provider) {
+        if (DingtalkPushService.PROVIDER_TYPE.equals(provider)
+            || FeishuPushService.PROVIDER_TYPE.equals(provider)
+            || WechatWorkPushService.PROVIDER_TYPE.equals(provider)) {
+            return createPushService(provider);
+        }
+        return createPushService(configHelper.getPushProvider());
+    }
+
     private PushService createPushService(String provider) {
         String signName = configHelper.getPushSignName(provider);
         String tokenId = configHelper.getPushTokenId(provider);
 
         PushService service = switch (provider) {
-            case DingtalkPushService.PROVIDER_TYPE -> new DingtalkPushService(signName, tokenId);
-            case FeishuPushService.PROVIDER_TYPE -> new FeishuPushService(signName, tokenId);
-            case WechatWorkPushService.PROVIDER_TYPE -> new WechatWorkPushService(signName, tokenId);
+            case DingtalkPushService.PROVIDER_TYPE -> new DingtalkPushService(webhookSender, signName, tokenId);
+            case FeishuPushService.PROVIDER_TYPE -> new FeishuPushService(webhookSender, signName, tokenId);
+            case WechatWorkPushService.PROVIDER_TYPE -> new WechatWorkPushService(webhookSender, signName, tokenId);
             default -> {
-                log.warn("未知的推送服务商: {}，使用控制台输出", provider);
+                log.warn("未知推送服务商: {}，使用控制台输出", provider);
                 yield new ConsolePushService();
             }
         };
 
-        log.info("创建推送服务实例: {} - {}", provider, service.getProviderName());
+        log.info("创建推送服务: {} - {}", provider, service.getProviderName());
         return service;
     }
 
     /**
-     * 刷新推送服务
+     * 刷新推送服务缓存
      */
     public void refresh() {
         synchronized (this) {
@@ -78,14 +81,14 @@ public class PushServiceFactory {
     }
 
     /**
-     * 推送给单个用户的便捷方法
+     * 推送给单个用户（实际发到群）
      */
     public boolean pushToUser(String userId, String title, String content) {
         return getPushService().pushToUser(userId, title, content, null);
     }
 
     /**
-     * 推送给所有用户的便捷方法
+     * 推送给所有人（实际发到群）
      */
     public boolean pushToAll(String title, String content) {
         return getPushService().pushToAll(title, content, null);

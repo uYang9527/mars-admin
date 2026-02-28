@@ -35,6 +35,21 @@ public class SysNotice implements Serializable {
     private Integer noticeType;
 
     /**
+     * 推送渠道(JSON): station站内信,email邮件,dingtalk钉钉,feishu飞书,wechat_work企业微信
+     */
+    private String channels;
+
+    /**
+     * 推送对象类型(1指定用户 2按部门 3全部)
+     */
+    private Integer targetType;
+
+    /**
+     * 推送对象ID(JSON): 用户ID或部门ID数组
+     */
+    private String targetIds;
+
+    /**
      * 状态（0草稿 1发布）
      */
     private Integer status;

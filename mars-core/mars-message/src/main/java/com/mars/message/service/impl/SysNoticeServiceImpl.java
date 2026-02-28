@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mars.message.entity.SysNotice;
+import com.mars.message.service.NoticeSendService;
 import com.mars.system.entity.SysUser;
 import com.mars.message.entity.SysUserNotice;
 import com.mars.message.mapper.SysNoticeMapper;
@@ -31,6 +32,7 @@ public class SysNoticeServiceImpl implements SysNoticeService {
     private final SysNoticeMapper noticeMapper;
     private final SysUserNoticeMapper userNoticeMapper;
     private final SysUserMapper userMapper;
+    private final NoticeSendService noticeSendService;
 
     @Override
     public Page<SysNotice> page(Integer page, Integer pageSize, String title, Integer noticeType, Integer status) {
@@ -116,22 +118,10 @@ public class SysNoticeServiceImpl implements SysNoticeService {
         if (notice == null) {
             throw new RuntimeException("通知不存在");
         }
-        
-        // 更新状态为已发布
         notice.setStatus(1);
         noticeMapper.updateById(notice);
-        
-        // 为所有用户创建通知记录
-        List<SysUser> users = userMapper.selectList(null);
-        for (SysUser user : users) {
-            SysUserNotice userNotice = new SysUserNotice();
-            userNotice.setUserId(user.getId());
-            userNotice.setNoticeId(id);
-            userNotice.setIsRead(0);
-            userNoticeMapper.insert(userNotice);
-        }
-        
-        log.info("通知发布成功，ID: {}，推送用户数: {}", id, users.size());
+        noticeSendService.send(notice);
+        log.info("通知发布成功，ID: {}", id);
     }
 
     @Override

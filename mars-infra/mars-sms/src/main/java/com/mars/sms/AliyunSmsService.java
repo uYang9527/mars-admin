@@ -83,6 +83,41 @@ public class AliyunSmsService implements SmsService {
     }
 
     @Override
+    public boolean sendNotice(String phone, String title, String content) {
+        String templateCode = configHelper.getSmsTemplateNotice();
+        if (templateCode == null || templateCode.isEmpty()) {
+            log.warn("通知短信模板未配置，使用控制台打印");
+            log.info("【短信通知】phone={}, title={}, content={}", phone, title, content);
+            smsLogService.logVerifyCode(phone, content != null ? content.substring(0, Math.min(20, content.length())) : "", "aliyun", true, "模板未配置", null);
+            return true;
+        }
+        String accessKeyId = configHelper.getSmsAccessKeyId();
+        String accessKeySecret = configHelper.getSmsAccessKeySecret();
+        String signName = configHelper.getSmsSignName();
+        if (accessKeyId.isEmpty() || accessKeySecret.isEmpty()) {
+            log.warn("阿里云短信配置不完整");
+            return false;
+        }
+        try {
+            String param = "{\"content\":\"" + (content != null ? content.replace("\"", "\\\"").substring(0, Math.min(100, content.length())) : "") + "\"}";
+            Config config = new Config().setAccessKeyId(accessKeyId).setAccessKeySecret(accessKeySecret).setEndpoint("dysmsapi.aliyuncs.com");
+            Client client = new Client(config);
+            SendSmsRequest request = new SendSmsRequest()
+                .setPhoneNumbers(phone)
+                .setSignName(signName)
+                .setTemplateCode(templateCode)
+                .setTemplateParam(param);
+            SendSmsResponse response = client.sendSms(request);
+            boolean success = "OK".equals(response.getBody().getCode());
+            smsLogService.logVerifyCode(phone, content != null ? content.substring(0, Math.min(20, content.length())) : "", "aliyun", success, response.getBody().getMessage(), response.getBody().getBizId());
+            return success;
+        } catch (Exception e) {
+            log.error("阿里云通知短信发送失败", e);
+            return false;
+        }
+    }
+
+    @Override
     public String getProviderName() {
         return "aliyun";
     }

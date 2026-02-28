@@ -20,6 +20,19 @@
             <groupId>com.mars</groupId>
             <artifactId>mars-system</artifactId>
         </dependency>
+        <!-- 邮件、短信、推送（通知多渠道） -->
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-push</artifactId>
+        </dependency>
 
         <!-- Lombok -->
         <dependency>

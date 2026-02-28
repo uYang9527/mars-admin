@@ -21,6 +21,12 @@
             <artifactId>mars-system</artifactId>
         </dependency>
 
+        <!-- HTTP 客户端 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>

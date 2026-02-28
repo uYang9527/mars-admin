@@ -61,4 +61,11 @@ public class SmsServiceFactory {
     public boolean sendCode(String phone, String code) {
         return getService().sendCode(phone, code);
     }
+
+    /**
+     * 发送通知短信（使用当前配置的服务商）
+     */
+    public boolean sendNotice(String phone, String title, String content) {
+        return getService().sendNotice(phone, title, content);
+    }
 }

@@ -405,31 +405,36 @@
                 <n-tabs v-model:value="activePushTab" type="line" placement="left">
                   <n-tab-pane name="dingtalk" tab="钉钉">
                     <n-form :model="configs.push.dingtalk" label-placement="top" class="push-form">
-                      <n-form-item label="消息推送签名" required>
-                        <n-input v-model:value="configs.push.dingtalk.signName" placeholder="钉钉消息推送签名" />
+                      <n-form-item label="加签密钥">
+                        <n-input
+                          v-model:value="configs.push.dingtalk.signName"
+                          type="password"
+                          show-password-on="click"
+                          placeholder="使用加签安全设置时必填，以 SEC 开头的完整密钥"
+                        />
                       </n-form-item>
-                      <n-form-item label="消息推送TOKENID" required>
-                        <n-input v-model:value="configs.push.dingtalk.tokenId" placeholder="钉钉消息推送TOKENID" />
+                      <n-form-item label="Webhook URL" required>
+                        <n-input v-model:value="configs.push.dingtalk.tokenId" placeholder="https://oapi.dingtalk.com/robot/send?access_token=..." />
                       </n-form-item>
                     </n-form>
                   </n-tab-pane>
                   <n-tab-pane name="feishu" tab="飞书">
                     <n-form :model="configs.push.feishu" label-placement="top" class="push-form">
-                      <n-form-item label="消息推送签名" required>
-                        <n-input v-model:value="configs.push.feishu.signName" placeholder="飞书消息推送签名" />
+                      <n-form-item label="机器人签名（可选）">
+                        <n-input v-model:value="configs.push.feishu.signName" placeholder="如：自定义机器人" />
                       </n-form-item>
-                      <n-form-item label="消息推送TOKENID" required>
-                        <n-input v-model:value="configs.push.feishu.tokenId" placeholder="飞书消息推送TOKENID" />
+                      <n-form-item label="Webhook URL" required>
+                        <n-input v-model:value="configs.push.feishu.tokenId" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxx" />
                       </n-form-item>
                     </n-form>
                   </n-tab-pane>
                   <n-tab-pane name="wechat_work" tab="企业微信">
                     <n-form :model="configs.push.wechat_work" label-placement="top" class="push-form">
-                      <n-form-item label="消息推送签名" required>
-                        <n-input v-model:value="configs.push.wechat_work.signName" placeholder="企业微信消息推送签名" />
+                      <n-form-item label="机器人签名（可选）">
+                        <n-input v-model:value="configs.push.wechat_work.signName" placeholder="如：自定义机器人" />
                       </n-form-item>
-                      <n-form-item label="消息推送TOKENID" required>
-                        <n-input v-model:value="configs.push.wechat_work.tokenId" placeholder="企业微信消息推送TOKENID" />
+                      <n-form-item label="Webhook URL" required>
+                        <n-input v-model:value="configs.push.wechat_work.tokenId" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=..." />
                       </n-form-item>
                     </n-form>
                   </n-tab-pane>

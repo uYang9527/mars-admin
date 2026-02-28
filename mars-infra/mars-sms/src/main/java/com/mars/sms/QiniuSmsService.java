@@ -125,6 +125,16 @@ public class QiniuSmsService implements SmsService {
     }
 
     @Override
+    public boolean sendNotice(String phone, String title, String content) {
+        String templateId = configHelper.getSmsTemplateNotice();
+        if (templateId == null || templateId.isEmpty()) {
+            log.info("【短信通知 - 七牛云】模板未配置, phone={}, content={}", phone, content);
+            return true;
+        }
+        return sendCode(phone, content != null ? content.substring(0, Math.min(20, content.length())) : "");
+    }
+
+    @Override
     public String getProviderName() {
         return "qiniu";
     }

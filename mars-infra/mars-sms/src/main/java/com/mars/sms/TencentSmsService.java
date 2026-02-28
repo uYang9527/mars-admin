@@ -106,6 +106,36 @@ public class TencentSmsService implements SmsService {
     }
 
     @Override
+    public boolean sendNotice(String phone, String title, String content) {
+        String templateId = configHelper.getSmsTemplateNotice();
+        if (templateId == null || templateId.isEmpty()) {
+            log.info("【短信通知 - 腾讯云】模板未配置, phone={}, content={}", phone, content);
+            return true;
+        }
+        try {
+            SendSmsRequest request = new SendSmsRequest();
+            request.setSmsSdkAppId(configHelper.getSmsTencentAppId());
+            request.setSignName(configHelper.getSmsSignName());
+            request.setTemplateId(templateId);
+            request.setPhoneNumberSet(new String[]{"+86" + phone});
+            request.setTemplateParamSet(new String[]{content != null ? content.substring(0, Math.min(100, content.length())) : ""});
+            Credential cred = new Credential(configHelper.getSmsAccessKeyId(), configHelper.getSmsAccessKeySecret());
+            HttpProfile httpProfile = new HttpProfile();
+            httpProfile.setEndpoint("sms.tencentcloudapi.com");
+            ClientProfile clientProfile = new ClientProfile();
+            clientProfile.setHttpProfile(httpProfile);
+            SmsClient client = new SmsClient(cred, "ap-guangzhou", clientProfile);
+            SendSmsResponse response = client.SendSms(request);
+            if (response.getSendStatusSet() != null && response.getSendStatusSet().length > 0) {
+                return "Ok".equals(response.getSendStatusSet()[0].getCode());
+            }
+        } catch (Exception e) {
+            log.error("腾讯云通知短信发送失败", e);
+        }
+        return false;
+    }
+
+    @Override
     public String getProviderName() {
         return "tencent";
     }

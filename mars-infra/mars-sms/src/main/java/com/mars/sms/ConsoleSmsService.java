@@ -23,6 +23,12 @@ public class ConsoleSmsService implements SmsService {
     }
 
     @Override
+    public boolean sendNotice(String phone, String title, String content) {
+        log.info("【短信通知 - 控制台模式】phone={}, title={}, content={}", phone, title, content);
+        return true;
+    }
+
+    @Override
     public String getProviderName() {
         return "console";
     }
