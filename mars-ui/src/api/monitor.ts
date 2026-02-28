@@ -131,21 +131,35 @@ export const jobApi = {
   logPage(params: { page: number; pageSize: number; jobName?: string; jobGroup?: string; status?: number }): Promise<PageResult<SysJobLog>> {
     return request({ url: '/monitor/job/log/page', method: 'get', params })
   },
+  logStatistics(): Promise<{ totalCount: number; successCount: number; failCount: number; dailyStats: Array<{ exec_date: string; success_count: number; fail_count: number }> }> {
+    return request({ url: '/monitor/job/log/statistics', method: 'get' })
+  },
   cleanLog(): Promise<void> {
     return request({ url: '/monitor/job/log/clean', method: 'delete' })
   }
 }
 
 // ==================== 缓存监控 ====================
+export interface CacheStats {
+  usedMemory: number
+  maxMemory: number
+  ops: number
+  hitRate: number
+  connectedClients: number
+}
+
 export const cacheApi = {
   info(): Promise<any> {
     return request({ url: '/monitor/cache/info', method: 'get' })
+  },
+  stats(): Promise<CacheStats> {
+    return request({ url: '/monitor/cache/stats', method: 'get' })
   },
   keys(pattern?: string): Promise<string[]> {
     return request({ url: '/monitor/cache/keys', method: 'get', params: { pattern } })
   },
   delete(key: string): Promise<void> {
-    return request({ url: `/monitor/cache/${encodeURIComponent(key)}`, method: 'delete' })
+    return request({ url: '/monitor/cache', method: 'delete', params: { key } })
   },
   getValue(key: string): Promise<any> {
     return request({ url: '/monitor/cache/value', method: 'get', params: { key } })

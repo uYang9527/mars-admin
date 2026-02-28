@@ -11,6 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 定时任务日志服务实现
  */
@@ -27,6 +31,20 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
                 .eq(status != null, SysJobLog::getStatus, status)
                 .orderByDesc(SysJobLog::getStartTime);
         return PageResult.of(this.page(pageParam, wrapper));
+    }
+
+    @Override
+    public Map<String, Object> statistics() {
+        Map<String, Object> result = new HashMap<>();
+        long total = this.count();
+        long successCount = this.count(new LambdaQueryWrapper<SysJobLog>().eq(SysJobLog::getStatus, 0));
+        long failCount = this.count(new LambdaQueryWrapper<SysJobLog>().eq(SysJobLog::getStatus, 1));
+        List<Map<String, Object>> dailyStats = baseMapper.selectDailyStats();
+        result.put("totalCount", total);
+        result.put("successCount", successCount);
+        result.put("failCount", failCount);
+        result.put("dailyStats", dailyStats);
+        return result;
     }
 
     @Override

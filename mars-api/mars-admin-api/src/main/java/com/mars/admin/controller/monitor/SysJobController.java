@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 定时任务控制器
  */
@@ -93,6 +95,15 @@ public class SysJobController {
     public Result<Void> run(@PathVariable Long id) {
         jobService.run(id);
         return Result.ok();
+    }
+
+    /**
+     * 调度统计
+     */
+    @GetMapping("/log/statistics")
+    @SaCheckPermission("monitor:job:list")
+    public Result<Map<String, Object>> logStatistics() {
+        return Result.ok(jobLogService.statistics());
     }
 
     /**

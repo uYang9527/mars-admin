@@ -92,6 +92,46 @@ public class MonitorController {
     }
 
     /**
+     * 获取缓存统计（用于图表：内存、QPS、命中率、连接数）
+     */
+    @GetMapping("/cache/stats")
+    @SaCheckPermission("monitor:cache:list")
+    public Result<Map<String, Object>> cacheStats() {
+        Properties info = redisTemplate.execute((RedisCallback<Properties>) connection ->
+            connection.serverCommands().info());
+
+        Map<String, Object> result = new HashMap<>();
+        if (info != null) {
+            long usedMemory = parseLong(info.getProperty("used_memory", "0"));
+            long maxMemory = parseLong(info.getProperty("maxmemory", "0"));
+            if (maxMemory == 0) maxMemory = usedMemory > 0 ? usedMemory * 2 : 1;
+
+            long hits = parseLong(info.getProperty("keyspace_hits", "0"));
+            long misses = parseLong(info.getProperty("keyspace_misses", "0"));
+            long ops = parseLong(info.getProperty("instantaneous_ops_per_sec", "0"));
+            long clients = parseLong(info.getProperty("connected_clients", "0"));
+
+            double hitRate = (hits + misses) == 0 ? 1.0 : (double) hits / (hits + misses);
+
+            result.put("usedMemory", usedMemory);
+            result.put("maxMemory", maxMemory);
+            result.put("ops", ops);
+            result.put("hitRate", hitRate);
+            result.put("connectedClients", clients);
+        }
+        return Result.ok(result);
+    }
+
+    private long parseLong(String s) {
+        if (s == null || s.isEmpty()) return 0;
+        try {
+            return Long.parseLong(s.trim());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    /**
      * 获取缓存监控信息
      */
     @GetMapping("/cache/info")
@@ -144,11 +184,14 @@ public class MonitorController {
     /**
      * 删除缓存
      */
-    @DeleteMapping("/cache/{key}")
+    @DeleteMapping("/cache")
     @SaCheckPermission("monitor:cache:delete")
-    public Result<Void> deleteCache(@PathVariable String key) {
-        redisTemplate.delete(key);
-        return Result.ok();
+    public Result<Void> deleteCache(@RequestParam String key) {
+        Boolean deleted = redisTemplate.delete(key);
+        if (Boolean.TRUE.equals(deleted)) {
+            return Result.ok();
+        }
+        return Result.fail("缓存键不存在或已被删除");
     }
 
     /**
