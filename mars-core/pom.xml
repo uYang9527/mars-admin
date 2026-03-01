@@ -20,5 +20,6 @@
         <module>mars-gen</module>
         <module>mars-message</module>
         <module>mars-auth</module>
+        <module>mars-biz</module>
     </modules>
 </project>

@@ -2,6 +2,10 @@ package ${packageName}.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${packageName}.entity.${className};
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * ${functionName} Service
@@ -35,4 +39,14 @@ public interface ${className}Service {
      * 删除
      */
     void delete(${pkColumn.javaType}[] ${pkColumn.javaField}s);
+
+    /**
+     * 导出数据列表
+     */
+    List<${className}> listForExport(java.util.List<${pkColumn.javaType}> ids#foreach($column in $columns)#if($column.isQuery == 1), $column.javaType $column.javaField#end#end);
+
+    /**
+     * 导入数据
+     */
+    Map<String, Object> importData(MultipartFile file);
 }

@@ -104,9 +104,10 @@ public class GenTableServiceImpl implements GenTableService {
             table.setTableName(tableName);
             table.setTableComment(dbTable.getTableComment());
             table.setClassName(toClassName(tableName));
-            table.setPackageName("com.mars.system");
-            table.setModuleName("system");
+            table.setPackageName("com.mars.biz");
+            table.setModuleName("biz");
             table.setBusinessName(toBusinessName(tableName));
+            table.setFormLayout("vertical");
             table.setFunctionName(StrUtil.isNotBlank(dbTable.getTableComment()) ? 
                     dbTable.getTableComment() : toClassName(tableName));
             table.setAuthor("Mars");
@@ -148,6 +149,7 @@ public class GenTableServiceImpl implements GenTableService {
                 column.setIsQuery(column.getIsPk() == 1 || "name".equals(javaField) || "status".equals(javaField) ? 1 : 0);
                 column.setQueryType("EQ");
                 column.setHtmlType(getHtmlType(column));
+                column.setDictType(getDictType(column));
 
                 genTableColumnMapper.insert(column);
             }
@@ -572,11 +574,11 @@ public class GenTableServiceImpl implements GenTableService {
         String businessName = table.getBusinessName();
         
         return switch (fileName) {
-            case "Entity.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/entity/" + className + ".java";
-            case "Mapper.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/mapper/" + className + "Mapper.java";
-            case "Service.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/service/" + className + "Service.java";
-            case "ServiceImpl.java" -> projectRoot + "/mars-core/mars-system/src/main/java/com/mars/system/service/impl/" + className + "ServiceImpl.java";
-            case "Controller.java" -> projectRoot + "/mars-api/mars-admin-api/src/main/java/com/mars/admin/controller/" + moduleName + "/" + className + "Controller.java";
+            case "Entity.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/entity/" + className + ".java";
+            case "Mapper.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/" + className + "Mapper.java";
+            case "Service.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/service/" + className + "Service.java";
+            case "ServiceImpl.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/" + className + "ServiceImpl.java";
+            case "Controller.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/controller/" + className + "Controller.java";
             case "api.ts" -> projectRoot + "/mars-ui/src/api/" + businessName + ".ts";
             case "index.vue" -> projectRoot + "/mars-ui/src/views/" + moduleName + "/" + businessName + "/index.vue";
             case "menu.sql" -> null; // SQL 文件不自动写入
@@ -650,6 +652,7 @@ public class GenTableServiceImpl implements GenTableService {
                 newCol.setIsQuery(0);
                 newCol.setQueryType("EQ");
                 newCol.setHtmlType(getHtmlType(newCol));
+                newCol.setDictType(getDictType(newCol));
                 newCol.setSort(dbCol.getOrdinalPosition());
                 genTableColumnMapper.insert(newCol);
             }
@@ -760,6 +763,27 @@ public class GenTableServiceImpl implements GenTableService {
     }
 
     /**
+     * 根据字段名推断字典类型（仅对 select/radio/checkbox 有效）
+     */
+    private String getDictType(GenTableColumn column) {
+        if (!"select".equals(column.getHtmlType()) && !"radio".equals(column.getHtmlType()) && !"checkbox".equals(column.getHtmlType())) {
+            return "";
+        }
+        String columnName = column.getColumnName().toLowerCase();
+        String javaField = column.getJavaField().toLowerCase();
+        if (columnName.contains("gender") || columnName.contains("sex") || javaField.contains("gender") || javaField.contains("sex")) {
+            return "sex";
+        }
+        if (columnName.contains("status") || javaField.contains("status")) {
+            return "sys_status";
+        }
+        if (columnName.contains("yes_no") || columnName.contains("yn") || javaField.contains("yesno")) {
+            return "sys_yes_no";
+        }
+        return "";
+    }
+
+    /**
      * 准备模板上下文
      */
     private VelocityContext prepareContext(GenTable table) {
@@ -777,6 +801,7 @@ public class GenTableServiceImpl implements GenTableService {
         context.put("columns", table.getColumns());
         context.put("pkColumn", table.getPkColumn());
         context.put("table", table);
+        context.put("formLayout", table.getFormLayout() != null ? table.getFormLayout() : "vertical");
         
         // 判断是否需要导入 BigDecimal、LocalDateTime 等
         boolean hasBigDecimal = false;
@@ -837,7 +862,7 @@ public class GenTableServiceImpl implements GenTableService {
             case "Mapper.java" -> packagePath + "/mapper/" + className + "Mapper.java";
             case "Service.java" -> packagePath + "/service/" + className + "Service.java";
             case "ServiceImpl.java" -> packagePath + "/service/impl/" + className + "ServiceImpl.java";
-            case "Controller.java" -> "com/mars/web/controller/" + table.getModuleName() + "/" + className + "Controller.java";
+            case "Controller.java" -> packagePath + "/controller/" + className + "Controller.java";
             case "api.ts" -> "frontend/api/" + table.getBusinessName() + ".ts";
             case "index.vue" -> "frontend/views/" + table.getModuleName() + "/" + table.getBusinessName() + "/index.vue";
             case "menu.sql" -> "sql/" + table.getTableName() + "_menu.sql";

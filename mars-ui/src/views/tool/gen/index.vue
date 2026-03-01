@@ -127,7 +127,7 @@
     </n-modal>
 
     <!-- 编辑配置弹窗 -->
-    <n-modal v-model:show="showEditModal" preset="card" title="编辑生成配置" style="width: 1000px">
+    <n-modal v-model:show="showEditModal" preset="card" title="编辑生成配置" style="width: 1100px">
       <n-tabs type="line">
         <n-tab-pane name="basic" tab="基本信息">
           <n-form ref="editFormRef" :model="editForm" label-placement="left" label-width="100px">
@@ -162,6 +162,21 @@
         <n-tab-pane name="columns" tab="字段配置">
           <n-data-table :columns="columnEditColumns" :data="editForm.columns" :max-height="400" />
         </n-tab-pane>
+        <n-tab-pane name="layout" tab="布局配置">
+          <n-form ref="editFormRef" :model="editForm" label-placement="left" label-width="120px">
+            <n-form-item label="表单布局">
+              <n-radio-group v-model:value="editForm.formLayout">
+                <n-space>
+                  <n-radio value="vertical">从上到下（单列）</n-radio>
+                  <n-radio value="grid">一行两列</n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+            <n-alert type="info" style="margin-top: 12px">
+              表单布局将影响新增/编辑弹窗中表单项的排列方式。选择「一行两列」时，表单项将并排显示；选择「从上到下」时，表单项将垂直排列。
+            </n-alert>
+          </n-form>
+        </n-tab-pane>
       </n-tabs>
       <template #footer>
         <n-space justify="end">
@@ -180,6 +195,32 @@
           </n-tab-pane>
         </n-tabs>
       </div>
+      <template #footer>
+        <n-space justify="end">
+
+          <n-button @click="showPreviewModal = false">关闭</n-button>
+        </n-space>
+      </template>
+    </n-modal>
+
+    <!-- 预览效果弹窗 - 渲染 Vue 页面查看样式布局 -->
+    <n-modal
+      v-model:show="showPreviewEffectModal"
+      preset="card"
+      title="预览效果"
+      style="width: 90vw; height: 90vh"
+      :mask-closable="false"
+    >
+      <div class="preview-effect-container">
+        <iframe
+          :src="previewEffectPath"
+          class="preview-effect-iframe"
+          frameborder="0"
+        />
+      </div>
+      <template #footer>
+        <n-button @click="showPreviewEffectModal = false">关闭</n-button>
+      </template>
     </n-modal>
 
     <!-- 生成方式选择弹窗 -->
@@ -303,8 +344,9 @@
 <script setup lang="ts">
 import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NSpace, NIcon, NTag, NSwitch, NSelect, NInput, NText, NList, NListItem, NScrollbar, NAlert, NEmpty, NSpin, NPagination, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
-import { SearchOutline, RefreshOutline, CloudDownloadOutline, CodeSlashOutline, TrashOutline, SettingsOutline, EyeOutline, SyncOutline, CloseCircleOutline } from '@vicons/ionicons5'
+import { SearchOutline, RefreshOutline, CloudDownloadOutline, CodeSlashOutline, TrashOutline, SettingsOutline, EyeOutline, SyncOutline, CloseCircleOutline, ExpandOutline } from '@vicons/ionicons5'
 import { genApi, type GenTable, type GenTableColumn, type DatabaseTable } from '@/api/gen'
+import { dictTypeApi } from '@/api/org'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -345,6 +387,7 @@ const importPagination = reactive({
 // 编辑配置
 const showEditModal = ref(false)
 const editFormRef = ref()
+const dictTypeOptions = ref<{ label: string; value: string }[]>([])
 const editForm = reactive<GenTable>({
   id: undefined,
   tableName: '',
@@ -357,6 +400,7 @@ const editForm = reactive<GenTable>({
   author: '',
   genType: 'crud',
   frontType: 'naive-ui',
+  formLayout: 'vertical',
   columns: []
 })
 
@@ -364,6 +408,11 @@ const editForm = reactive<GenTable>({
 const showPreviewModal = ref(false)
 const previewTab = ref('')
 const previewCodes = ref<Record<string, string>>({})
+const currentPreviewTable = ref<GenTable | null>(null)
+
+// 预览效果弹窗（渲染 Vue 页面查看样式布局）
+const showPreviewEffectModal = ref(false)
+const previewEffectPath = ref('')
 
 // 生成代码
 const showGenerateModal = ref(false)
@@ -385,12 +434,12 @@ const columns: DataTableColumns<GenTable> = [
   { type: 'selection' },
   { title: '表名', key: 'tableName', width: 200 },
   { title: '表描述', key: 'tableComment', ellipsis: { tooltip: true } },
-  { title: '实体类', key: 'className', width: 150 },
+  { title: '实体类', key: 'className', width: 200 },
   { title: '创建时间', key: 'createTime', width: 180 },
   {
     title: '操作',
     key: 'actions',
-    width: 320,
+    width: 500,
     render(row) {
       return h(NSpace, null, {
         default: () => [
@@ -410,7 +459,7 @@ const columns: DataTableColumns<GenTable> = [
             default: () => [h(NIcon, null, { default: () => h(CloseCircleOutline) }), ' 移除']
           }),
           h(NButton, { size: 'small', quaternary: true, type: 'error', onClick: () => handleDelete(row) }, {
-            default: () => [h(NIcon, null, { default: () => h(TrashOutline) })]
+            default: () => [h(NIcon, null, { default: () => h(TrashOutline) }),'删除']
           })
         ]
       })
@@ -504,7 +553,25 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
           { label: '文件上传', value: 'fileUpload' },
           { label: '富文本', value: 'editor' }
         ],
-        onUpdateValue: (v: string) => { row.htmlType = v }
+        onUpdateValue: (v: string) => {
+          row.htmlType = v
+          if (!['select', 'radio', 'checkbox'].includes(v)) row.dictType = ''
+        }
+      })
+    }
+  },
+  { title: '字典类型', key: 'dictType', width: 150,
+    render(row) {
+      const isDictField = ['select', 'radio', 'checkbox'].includes(row.htmlType || '')
+      if (!isDictField) return '-'
+      return h(NSelect, {
+        value: row.dictType || null,
+        size: 'small',
+        style: { width: '140px' },
+        options: dictTypeOptions.value,
+        clearable: true,
+        placeholder: '选择字典',
+        onUpdateValue: (v: string | null) => { row.dictType = v || '' }
       })
     }
   }
@@ -626,8 +693,12 @@ async function handleImport() {
 // 编辑配置
 async function handleEdit(row: GenTable) {
   try {
-    const table = await genApi.getTable(row.id!)
+    const [table, dictTypes] = await Promise.all([
+      genApi.getTable(row.id!),
+      dictTypeApi.list()
+    ])
     Object.assign(editForm, table)
+    dictTypeOptions.value = dictTypes.map(d => ({ label: `${d.dictName} (${d.dictType})`, value: d.dictType }))
     showEditModal.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -649,6 +720,7 @@ async function handleSaveEdit() {
 // 预览代码
 async function handlePreview(row: GenTable) {
   try {
+    currentPreviewTable.value = row
     previewCodes.value = await genApi.previewCode(row.id!)
     const keys = Object.keys(previewCodes.value)
     previewTab.value = keys.length > 0 ? keys[0] : ''
@@ -656,6 +728,14 @@ async function handlePreview(row: GenTable) {
   } catch (error) {
     // 错误已在拦截器处理
   }
+}
+
+// 查看预览效果 - 在弹窗中通过 iframe 渲染页面查看样式布局
+function handleViewPreview() {
+  const table = currentPreviewTable.value
+  if (!table?.moduleName || !table?.businessName) return
+  previewEffectPath.value = `/${table.moduleName}/${table.businessName}`
+  showPreviewEffectModal.value = true
 }
 
 // 生成代码 - 打开选择弹窗
@@ -833,6 +913,19 @@ onMounted(() => {
   font-size: 13px;
   max-height: calc(90vh - 200px);
   overflow: auto;
+}
+
+.preview-effect-container {
+  height: calc(90vh - 120px);
+  min-height: 400px;
+}
+
+.preview-effect-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border: 1px solid var(--n-border-color);
+  border-radius: 4px;
 }
 
 .generate-options {

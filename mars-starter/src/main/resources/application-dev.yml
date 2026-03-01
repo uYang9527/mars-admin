@@ -53,7 +53,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
-  type-aliases-package: com.mars.common.entity,com.mars.system.entity,com.mars.file.entity,com.mars.gen.entity,com.mars.message.entity,com.mars.mall.entity,com.mars.job.entity
+  type-aliases-package: com.mars.common.entity,com.mars.system.entity,com.mars.file.entity,com.mars.gen.entity,com.mars.message.entity,com.mars.mall.entity,com.mars.job.entity,com.mars.biz.entity
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

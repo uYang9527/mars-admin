@@ -22,6 +22,7 @@
         <module name="mars-social" />
         <module name="mars-message" />
         <module name="mars-admin-api" />
+        <module name="mars-biz" />
         <module name="mars-push" />
         <module name="mars-file" />
         <module name="mars-gen" />
@@ -44,6 +45,7 @@
       <module name="mars-api" options="-parameters" />
       <module name="mars-app-api" options="-parameters" />
       <module name="mars-auth" options="-parameters" />
+      <module name="mars-biz" options="-parameters" />
       <module name="mars-common" options="-parameters" />
       <module name="mars-core" options="-parameters" />
       <module name="mars-crypto" options="-parameters" />

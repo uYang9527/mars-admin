@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.5</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.6</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,18 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.6',
+    date: '2026-03-01',
+    type: 'success' as const,
+    changes: [
+      '系统通知：移除短信渠道，Webhook 拆分为飞书/钉钉/企业微信分别选择',
+      '钉钉推送：支持加签密钥（SEC），确保安全校验',
+      'mars-push 模块重构：支持文本和图片，统一 Webhook 发送逻辑',
+      '新增通知记录：可查看各渠道推送触达情况及成功/失败状态',
+      '推送失败支持重试：通知记录中失败渠道可一键重试'
+    ]
+  },
   {
     version: 'v1.0.5',
     date: '2026-02-28',
