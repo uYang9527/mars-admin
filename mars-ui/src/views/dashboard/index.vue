@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.6</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.7</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,18 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.7',
+    date: '2026-03-01',
+    type: 'success' as const,
+    changes: [
+      '代码生成：新增表单布局配置，支持「一行两列」和「从上到下」两种布局',
+      '代码生成：编辑配置弹窗新增「布局配置」标签页',
+      '代码生成：修复 LocalDate/LocalDateTime 字段 JSON 解析错误',
+      '代码生成：日期时间字段提交格式与 Jackson 配置（yyyy-MM-dd HH:mm:ss）兼容',
+      '代码生成：编辑时日期字符串正确转换为时间戳供日期选择器使用'
+    ]
+  },
   {
     version: 'v1.0.6',
     date: '2026-03-01',
