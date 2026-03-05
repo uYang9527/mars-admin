@@ -16,7 +16,7 @@
 
 ## 在线演示
 
-**演示地址：** [https://marsadmin.cn/](https://marsadmin.mars-coder.cn/)
+**演示地址：** [https://marsadmin.cn/](https://marsadmin.cn/)
 
 | 账号 | 密码 | 说明 |
 |------|------|------|
