@@ -802,18 +802,54 @@ const activeMenu = computed(() => route.path)
 // 面包屑
 const breadcrumbs = computed(() => {
   const items: Array<{ path: string; title: string }> = []
-  if (route.path === '/dashboard') {
-    items.push({ path: '/dashboard', title: '首页' })
-  } else if (route.path.startsWith('/system')) {
-    items.push({ path: '/system', title: '系统管理' })
-    if (route.path === '/system/user') {
-      items.push({ path: '/system/user', title: '用户管理' })
-    } else if (route.path === '/system/role') {
-      items.push({ path: '/system/role', title: '角色管理' })
-    } else if (route.path === '/system/menu') {
-      items.push({ path: '/system/menu', title: '菜单管理' })
-    }
+
+  // 获取当前路由的 path  segments
+  const pathSegments = route.path.split('/').filter(Boolean)
+
+  if (pathSegments.length === 0) {
+    return items
   }
+
+  // 从菜单树中动态获取第一级菜单名称
+  const getMenuTitleByPath = (path: string, menus: typeof userStore.menus): string | null => {
+    for (const menu of menus) {
+      // 移除路径开头的 /
+      const menuPath = menu.path?.replace(/^\//, '') || ''
+      if (menuPath === path) {
+        return menu.name
+      }
+      // 递归查找子菜单
+      if (menu.children && menu.children.length > 0) {
+        const result = getMenuTitleByPath(path, menu.children)
+        if (result) return result
+      }
+    }
+    return null
+  }
+
+  const firstLevel = pathSegments[0]
+
+  // 特殊处理首页
+  if (firstLevel === 'dashboard') {
+    items.push({ path: '/dashboard', title: '首页' })
+    return items
+  }
+
+  // 从用户菜单中查找第一级菜单标题
+  const firstLevelTitle = getMenuTitleByPath(firstLevel, userStore.menus) || firstLevel
+
+  // 添加第一级面包屑
+  if (pathSegments.length >= 1) {
+    items.push({ path: '/' + firstLevel, title: firstLevelTitle })
+  }
+
+  // 添加第二级面包屑（如果有）
+  if (pathSegments.length >= 2) {
+    const currentRoute = route.matched.find(r => r.path === route.path)
+    const currentTitle = currentRoute?.meta?.title as string || pathSegments[pathSegments.length - 1]
+    items.push({ path: route.path, title: currentTitle })
+  }
+
   return items
 })
 
