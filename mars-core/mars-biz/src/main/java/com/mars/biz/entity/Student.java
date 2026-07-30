@@ -1,4 +1,4 @@
-package com.mars.system.entity;
+package com.mars.biz.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;

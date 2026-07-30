@@ -1,7 +1,7 @@
-package com.mars.system.mapper;
+package com.mars.biz.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mars.system.entity.Student;
+import com.mars.biz.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
