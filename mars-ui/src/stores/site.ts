@@ -19,7 +19,10 @@ export const useSiteStore = defineStore('site', () => {
   // 水印配置
   const watermarkEnabled = ref(true)
   const watermarkType = ref('username')
+  const watermarkCustomText = ref('')
   const watermarkOpacity = ref(0.1)
+  // 安全配置
+  const disableDevtool = ref(false)
   // 是否已加载
   const loaded = ref(false)
 
@@ -38,7 +41,12 @@ export const useSiteStore = defineStore('site', () => {
         // 水印配置，默认开启
         watermarkEnabled.value = config.system.watermarkEnabled !== false
         watermarkType.value = config.system.watermarkType || 'username'
+        watermarkCustomText.value = config.system.watermarkCustomText || ''
         watermarkOpacity.value = config.system.watermarkOpacity || 0.1
+      }
+      // 安全配置
+      if (config.security) {
+        disableDevtool.value = config.security.disableDevtool || false
       }
       loaded.value = true
     } catch (error) {
@@ -54,7 +62,9 @@ export const useSiteStore = defineStore('site', () => {
     icp,
     watermarkEnabled,
     watermarkType,
+    watermarkCustomText,
     watermarkOpacity,
+    disableDevtool,
     loaded,
     loadConfig
   }

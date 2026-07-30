@@ -7,10 +7,19 @@ export interface SysNotice {
   title: string
   content: string
   noticeType: number
+  channels?: string[]
+  targetType?: number
+  targetIds?: number[]
   status: number
   createBy?: number
   createName?: string
   createTime?: string
+}
+
+export interface NoticeChannelOption {
+  code: string
+  name: string
+  enabled: boolean
 }
 
 export const noticeApi = {
@@ -24,8 +33,8 @@ export const noticeApi = {
     return request({ url: '/sys/notice/my', method: 'get', params })
   },
   
-  // 获取详情
-  detail(id: number): Promise<SysNotice> {
+  // 获取详情（含 channels、targetIds 数组）
+  detail(id: number): Promise<SysNotice & { channels?: string[]; targetIds?: number[] }> {
     return request({ url: `/sys/notice/${id}`, method: 'get' })
   },
   
@@ -62,7 +71,32 @@ export const noticeApi = {
   // 获取未读数量
   getUnreadCount(): Promise<number> {
     return request({ url: '/sys/notice/unread-count', method: 'get' })
+  },
+  // 获取可用推送渠道（从 sys_config_group 读取）
+  getChannels(): Promise<NoticeChannelOption[]> {
+    return request({ url: '/sys/notice/channels', method: 'get' })
+  },
+
+  // 获取通知推送记录（触达情况）
+  getSendLogs(id: number): Promise<NoticeSendLog[]> {
+    return request({ url: `/sys/notice/${id}/send-logs`, method: 'get' })
+  },
+
+  // 重试失败渠道的推送
+  retry(id: number, channel: string): Promise<void> {
+    return request({ url: `/sys/notice/${id}/retry`, method: 'post', params: { channel } })
   }
+}
+
+export interface NoticeSendLog {
+  id?: number
+  noticeId: number
+  channel: string
+  status: number
+  targetCount: number
+  successCount: number
+  errorMsg?: string
+  sendTime: string
 }
 
 // ==================== 即时聊天 ====================

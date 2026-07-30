@@ -136,21 +136,29 @@ let isLoggingOut = false
 // 响应拦截器
 service.interceptors.response.use(
   async (response: AxiosResponse<ApiResponse>) => {
+    // 如果是 blob 类型响应（文件下载），直接返回
+    if (response.config.responseType === 'blob') {
+      return response.data
+    }
+
     const res = response.data
     
     if (res.code !== 200) {
       // logout 接口返回 401 时不显示错误消息（避免干扰）
       const isLogoutRequest = response.config.url?.includes('/auth/logout')
-      if (!isLogoutRequest) {
-        window.$message?.error(res.message || '请求失败')
-      }
       
-      // 401 未授权，跳转登录（防止重复调用）
+      // 401 未授权，弹出明确提示并跳转登录（防止重复调用）
       if (res.code === 401 && !isLoggingOut && !isLogoutRequest) {
         isLoggingOut = true
+        window.$message?.error('当前用户登录已过期，请重新登录')
         const userStore = useUserStore()
         await userStore.logout()
         isLoggingOut = false
+        return Promise.reject(new Error('登录已过期'))
+      }
+
+      if (!isLogoutRequest) {
+        window.$message?.error(res.message || '请求失败')
       }
       
       return Promise.reject(new Error(res.message || '请求失败'))

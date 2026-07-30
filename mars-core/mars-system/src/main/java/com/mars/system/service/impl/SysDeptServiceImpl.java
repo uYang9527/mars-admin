@@ -8,6 +8,7 @@ import com.mars.system.mapper.SysDeptMapper;
 import com.mars.system.service.SysDeptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -82,6 +83,53 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             throw new BusinessException("存在子部门，无法删除");
         }
         this.removeById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void move(Long id, Long parentId, Integer sort) {
+        SysDept dept = this.getById(id);
+        if (dept == null) {
+            throw new BusinessException("部门不存在");
+        }
+        if (id.equals(parentId)) {
+            throw new BusinessException("上级部门不能选择自己");
+        }
+
+        // 修改父ID和排序
+        dept.setParentId(parentId);
+        if (sort != null) {
+            dept.setSort(sort);
+        }
+        
+        // 更新祖级列表
+        if (parentId == 0) {
+            dept.setAncestors("0");
+        } else {
+            SysDept parent = this.getById(parentId);
+            if (parent == null) {
+                throw new BusinessException("父部门不存在");
+            }
+            dept.setAncestors(parent.getAncestors() + "," + parentId);
+        }
+        
+        // 显式更新，确保字段变更被持久化
+        this.updateById(dept);
+        
+        // 递归更新子部门的 ancestors
+        updateChildAncestors(dept);
+    }
+
+    /**
+     * 递归更新子部门的祖级列表
+     */
+    private void updateChildAncestors(SysDept parentDept) {
+        List<SysDept> children = this.list(new LambdaQueryWrapper<SysDept>().eq(SysDept::getParentId, parentDept.getId()));
+        for (SysDept child : children) {
+            child.setAncestors(parentDept.getAncestors() + "," + parentDept.getId());
+            this.updateById(child);
+            updateChildAncestors(child);
+        }
     }
 
     /**

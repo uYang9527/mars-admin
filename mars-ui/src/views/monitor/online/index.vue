@@ -1,13 +1,13 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="table-toolbar">
         <n-button @click="loadData">
           <template #icon><n-icon><RefreshOutline /></n-icon></template>
           刷新
         </n-button>
       </div>
-      
+
       <n-data-table :columns="columns" :data="tableData" :loading="loading" :row-key="(row: OnlineUser) => row.tokenId" />
     </n-card>
   </div>
@@ -73,3 +73,8 @@ function handleForceLogout(row: OnlineUser) {
 
 onMounted(() => loadData())
 </script>
+<style lang="scss" scoped>
+.page-layout{
+  height: calc(100vh - 160px);
+}
+</style>

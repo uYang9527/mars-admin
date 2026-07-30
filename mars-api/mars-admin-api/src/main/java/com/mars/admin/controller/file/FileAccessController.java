@@ -1,6 +1,6 @@
 package com.mars.admin.controller.file;
 
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

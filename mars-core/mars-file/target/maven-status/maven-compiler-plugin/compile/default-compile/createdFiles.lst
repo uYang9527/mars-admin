@@ -1,8 +1,0 @@
-com\mars\file\mapper\SysFileMapper.class
-com\mars\file\service\impl\SysFileGroupServiceImpl.class
-com\mars\file\entity\SysFile.class
-com\mars\file\service\SysFileService.class
-com\mars\file\service\impl\SysFileServiceImpl.class
-com\mars\file\service\SysFileGroupService.class
-com\mars\file\mapper\SysFileGroupMapper.class
-com\mars\file\entity\SysFileGroup.class

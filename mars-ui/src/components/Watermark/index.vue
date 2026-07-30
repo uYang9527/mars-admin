@@ -30,7 +30,7 @@ const watermarkText = computed(() => {
     case 'sitename':
       return siteStore.siteName || 'Mars Admin'
     case 'custom':
-      return siteStore.siteName || 'Mars Admin'
+      return siteStore.watermarkCustomText || siteStore.siteName || 'Mars Admin'
     default:
       return username
   }
@@ -76,6 +76,7 @@ watch(
     watermarkText, 
     () => siteStore.watermarkOpacity,
     () => siteStore.watermarkType,
+    () => siteStore.watermarkCustomText,
     () => siteStore.watermarkEnabled,
     () => siteStore.siteName,
     () => userStore.user

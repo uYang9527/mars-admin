@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
           <n-form-item label="用户名">
@@ -23,23 +23,45 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:loginlog:delete')" type="error" @click="handleClean">
           <template #icon><n-icon><TrashOutline /></n-icon></template>
           清空日志
         </n-button>
       </div>
-      
-      <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
-        :row-key="(row: SysLoginLog) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
+
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysLoginLog) => row.id"
+        remote
+      />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
+import { ref, reactive, h, onMounted, computed } from 'vue'
+import { NButton, NTag, NSpace, NPagination, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
 import { SearchOutline, RefreshOutline, TrashOutline } from '@vicons/ionicons5'
 import { loginLogApi, type SysLoginLog } from '@/api/monitor'
 import { useUserStore } from '@/stores/user'
@@ -53,22 +75,28 @@ const searchForm = reactive({ username: '', status: null as number | null })
 const statusOptions = [{ label: '成功', value: 0 }, { label: '失败', value: 1 }]
 const tableData = ref<SysLoginLog[]>([])
 const loading = ref(false)
-const pagination = reactive({ page: 1, pageSize: 10, itemCount: 0, showSizePicker: true, pageSizes: [10, 20, 50] })
+const pagination = reactive({
+  page: 1,
+  pageSize: 10,
+  itemCount: 0
+})
+
+const pageCount = computed(() => Math.ceil(pagination.itemCount / pagination.pageSize))
 
 const columns: DataTableColumns<SysLoginLog> = [
   { title: 'ID', key: 'id', width: 80 },
   { title: '用户名', key: 'username', width: 120 },
   { title: 'IP地址', key: 'ipaddr', width: 140 },
   { title: '登录地点', key: 'loginLocation', width: 150 },
-  { title: '浏览器', key: 'browser', width: 120 },
-  { title: '操作系统', key: 'os', width: 150 },
+  { title: '浏览器', key: 'browser', width: 200 },
+  { title: '操作系统', key: 'os', width: 300 },
   { title: '状态', key: 'status', width: 80, render(row) {
     return h(NTag, { type: row.status === 0 ? 'success' : 'error', size: 'small' }, { default: () => row.status === 0 ? '成功' : '失败' })
   }},
   { title: '提示信息', key: 'msg', ellipsis: { tooltip: true } },
   { title: '登录时间', key: 'loginTime', width: 180 },
   { title: '操作', key: 'actions', width: 80, fixed: 'right', render(row) {
-    return hasPermission('sys:loginlog:delete') 
+    return hasPermission('sys:loginlog:delete')
       ? h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
       : '-'
   }}
@@ -79,7 +107,7 @@ async function loadData() {
   try {
     const res = await loginLogApi.page({ page: pagination.page, pageSize: pagination.pageSize, ...searchForm })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } finally { loading.value = false }
 }
 
@@ -104,3 +132,5 @@ function handleClean() {
 
 onMounted(() => loadData())
 </script>
+
+

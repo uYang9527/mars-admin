@@ -16,9 +16,9 @@
       :class="[`theme-${layoutConfig.theme}`, layoutConfig.siderPosition === 'right' ? 'sider-right' : '']"
     >
       <!-- Logo -->
-      <div class="logo" :class="{ 'logo-collapsed': collapsed }">
+      <div class="logo" :class="{ 'logo-collapsed': collapsed, 'logo-primary': themeStore.headerUsePrimaryColor }" :style="themeStore.headerUsePrimaryColor ? { background: themeStore.primaryColor, borderBottomColor: themeStore.primaryColor } : {}">
         <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-        <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+        <div v-else class="logo-icon" :style="{ background: themeStore.headerUsePrimaryColor ? '#fff' : themeStore.primaryColor, color: themeStore.headerUsePrimaryColor ? themeStore.primaryColor : '#fff' }">{{ siteName.charAt(0) }}</div>
         <transition name="fade">
           <span v-if="!collapsed" class="logo-text">{{ siteName }}</span>
         </transition>
@@ -39,11 +39,11 @@
     <!-- 主内容区 -->
     <n-layout>
       <!-- 顶部导航 -->
-      <n-layout-header bordered class="layout-header" :class="`theme-${layoutConfig.theme}`">
+      <n-layout-header bordered class="layout-header" :class="[`theme-${layoutConfig.theme}`, { 'header-primary': themeStore.headerUsePrimaryColor }]" :style="headerStyle">
         <!-- 顶部菜单模式下的Logo -->
         <div v-if="layoutConfig.siderPosition === 'top'" class="header-logo">
           <img v-if="siteLogo" :src="siteLogo" class="logo-img" alt="Logo" />
-          <div v-else class="logo-icon">{{ siteName.charAt(0) }}</div>
+          <div v-else class="logo-icon" :style="{ background: themeStore.headerUsePrimaryColor ? '#fff' : themeStore.primaryColor, color: themeStore.headerUsePrimaryColor ? themeStore.primaryColor : '#fff' }">{{ siteName.charAt(0) }}</div>
           <span class="logo-text">{{ siteName }}</span>
         </div>
 
@@ -174,6 +174,34 @@
                   </div>
                 </div>
               </div>
+              <div class="theme-section">
+                <div class="theme-title">主题色</div>
+                <div class="color-options">
+                  <div
+                    v-for="item in themeColors"
+                    :key="item.color"
+                    class="color-option"
+                    :class="{ active: themeStore.primaryColor === item.color }"
+                    :style="{ backgroundColor: item.color }"
+                    :title="item.name"
+                    @click="themeStore.setPrimaryColor(item.color)"
+                  >
+                    <n-icon v-if="themeStore.primaryColor === item.color" color="#fff"><CheckmarkOutline /></n-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="theme-section">
+                <div class="theme-switch-row">
+                  <span class="theme-title" style="margin-bottom: 0">顶栏应用主题色</span>
+                  <n-switch :value="themeStore.headerUsePrimaryColor" @update:value="themeStore.setHeaderUsePrimaryColor" size="small" />
+                </div>
+              </div>
+              <div class="theme-section">
+                <div class="theme-switch-row">
+                  <span class="theme-title" style="margin-bottom: 0">显示页签</span>
+                  <n-switch :value="themeStore.showTabs" @update:value="themeStore.setShowTabs" size="small" />
+                </div>
+              </div>
             </div>
           </n-popover>
 
@@ -275,6 +303,9 @@
         </div>
       </n-layout-header>
 
+      <!-- 页签栏 -->
+      <TabBar v-if="themeStore.showTabs" />
+
       <!-- 内容区 -->
       <n-layout-content class="layout-content">
         <router-view v-slot="{ Component }">
@@ -336,10 +367,11 @@ import {
 import { useUserStore } from '@/stores/user'
 import { useMessageStore } from '@/stores/message'
 import { useSiteStore } from '@/stores/site'
-import { useThemeStore } from '@/stores/theme'
+import { useThemeStore, themeColors } from '@/stores/theme'
 import ProfileModal from '@/components/ProfileModal.vue'
 import PasswordModal from '@/components/PasswordModal.vue'
 import MessageNotification from '@/components/MessageNotification.vue'
+import TabBar from '@/components/TabBar.vue'
 import { noticeApi, chatApi, type SysNotice, type ChatMessage } from '@/api/message'
 import { iconMap as externalIconMap } from '@/utils/icons'
 
@@ -391,6 +423,17 @@ const themeOptions = [
   { value: 'dark' as const, color: '#001529', label: '暗色主题' },
   { value: 'light' as const, color: '#ffffff', label: '亮色主题' }
 ]
+
+// 顶栏动态样式
+const headerStyle = computed(() => {
+  if (themeStore.headerUsePrimaryColor) {
+    return {
+      background: themeStore.primaryColor,
+      borderBottomColor: themeStore.primaryColor
+    }
+  }
+  return {}
+})
 
 // 初始化WebSocket和加载未读数
 onMounted(() => {
@@ -716,12 +759,19 @@ function convertMenus(menus: typeof userStore.menus): MenuOption[] {
       if (menuPath && !menuPath.startsWith('/') && menu.type === 2) {
         menuPath = '/' + menuPath
       }
+      
+      // 外链菜单（目录或菜单类型）使用特殊的 key 格式：external:url
+      const isExternal = menu.isFrame === 1 && menu.component
+      const menuKey = isExternal ? `external:${menu.component}` : menuPath
+      
       const option: MenuOption = {
         label: menu.name,
-        key: menuPath,
+        key: menuKey,
         icon: renderIcon(menu.icon)
       }
-      if (menu.children && menu.children.length > 0) {
+      
+      // 非外链菜单才处理子菜单
+      if (!isExternal && menu.children && menu.children.length > 0) {
         const children = convertMenus(menu.children)
         if (children.length > 0) {
           option.children = children
@@ -770,7 +820,7 @@ const breadcrumbs = computed(() => {
 // 用户下拉选项
 const userOptions = [
   {
-    label: '个人信息',
+    label: '个人中心',
     key: 'profile',
     icon: () => h(NIcon, null, { default: () => h(PersonOutline) })
   },
@@ -792,6 +842,12 @@ const userOptions = [
 
 // 菜单点击
 function handleMenuClick(key: string) {
+  // 判断是否是外链目录
+  if (key.startsWith('external:')) {
+    const url = key.replace('external:', '')
+    window.open(url, '_blank')
+    return
+  }
   router.push(key)
 }
 
@@ -809,7 +865,7 @@ function handleUserAction(key: string) {
       }
     })
   } else if (key === 'profile') {
-    showProfileModal.value = true
+    router.push('/profile')
   } else if (key === 'password') {
     showPasswordModal.value = true
   }
@@ -828,6 +884,7 @@ function handleUserAction(key: string) {
   :deep(.n-layout-sider-scroll-container) {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 }
 
@@ -852,6 +909,17 @@ body.dark-theme .layout-sider {
 
 body.dark-theme .logo {
   border-bottom-color: #3f3f46;
+}
+
+// 侧边栏logo区域应用主题色时的样式
+.logo.logo-primary {
+  .logo-text {
+    color: #fff;
+  }
+
+  .logo-icon {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .logo-img {
@@ -891,6 +959,7 @@ body.dark-theme .logo-text {
 .layout-menu {
   flex: 1;
   padding: 12px 8px;
+  overflow-y: auto;
 }
 
 .layout-header {
@@ -899,14 +968,48 @@ body.dark-theme .logo-text {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: #FFFFFF !important;
-  border-bottom: 1px solid #e8e8e8 !important;
+  background: #FFFFFF;
+  border-bottom: 1px solid #e8e8e8;
   transition: background-color 0.3s;
 }
 
 body.dark-theme .layout-header {
-  background: #18181c !important;
-  border-bottom: 1px solid #3f3f46 !important;
+  background: #18181c;
+  border-bottom: 1px solid #3f3f46;
+}
+
+// 顶栏应用主题色时的样式
+.layout-header.header-primary {
+  background: var(--primary-color) !important;
+  border-bottom-color: var(--primary-color) !important;
+
+  .header-icon {
+    color: #fff;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .user-info {
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .user-name {
+    color: #fff;
+  }
+
+  :deep(.n-breadcrumb-item__link),
+  :deep(.n-breadcrumb-item__separator) {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  // 顶部菜单模式下的 logo 文字颜色
+  .header-logo .logo-text {
+    color: #fff;
+  }
 }
 
 .header-left {
@@ -1075,9 +1178,22 @@ body.dark-theme .user-name {
   color: #ffffffd1;
 }
 
+// 头部固定
+.layout-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+// 页签栏固定（紧跟在头部下方）
+:deep(.tab-bar) {
+  position: sticky;
+  top: 60px; // header高度
+  z-index: 99;
+}
+
 .layout-content {
   background: #F3F4F6;
-  overflow: auto;
   transition: background-color 0.3s;
 }
 
@@ -1238,9 +1354,46 @@ body.dark-theme .layout-preview {
   }
 }
 
+.theme-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .theme-modes {
   display: flex;
   gap: 16px;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.active {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px currentColor;
+  }
+
+  :deep(.n-icon) {
+    font-size: 14px;
+  }
 }
 
 .theme-mode {

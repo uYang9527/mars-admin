@@ -1,63 +1,55 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/category/index",
-    "pages/cart/index",
-    "pages/profile/index",
-    "pages/detail/index",
-    "pages/search/index",
     "pages/login/index",
-    "pages/orders/index",
-    "pages/settings/index",
-    "pages/login/password",
-    "pages/order/index",
-    "pages/order/success"
+    "pages/chat/index",
+    "pages/contacts/index",
+    "pages/group-chat/index",
+    "pages/group/create",
+    "pages/group/detail",
+    "pages/profile/index",
+    "pages/profile/edit",
+    "pages/profile/password"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "GreenMall",
-    "navigationBarBackgroundColor": "#FFFFFF",
-    "backgroundColor": "#F8FAFC"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Mars办公",
+    "navigationBarBackgroundColor": "#07C160",
+    "backgroundColor": "#EDEDED",
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#94a3b8",
-    "selectedColor": "#059669",
-    "borderStyle": "white",
+    "color": "#999999",
+    "selectedColor": "#07C160",
     "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/tabbar/home.png",
-        "selectedIconPath": "static/tabbar/home-active.png",
-        "text": "首页"
+        "text": "消息",
+        "iconPath": "static/tabbar/chat.png",
+        "selectedIconPath": "static/tabbar/chat-active.png"
       },
       {
-        "pagePath": "pages/category/index",
-        "iconPath": "static/tabbar/category.png",
-        "selectedIconPath": "static/tabbar/category-active.png",
-        "text": "分类"
-      },
-      {
-        "pagePath": "pages/cart/index",
-        "iconPath": "static/tabbar/cart.png",
-        "selectedIconPath": "static/tabbar/cart-active.png",
-        "text": "购物车"
+        "pagePath": "pages/contacts/index",
+        "text": "通讯录",
+        "iconPath": "static/tabbar/contacts.png",
+        "selectedIconPath": "static/tabbar/contacts-active.png"
       },
       {
         "pagePath": "pages/profile/index",
+        "text": "我的",
         "iconPath": "static/tabbar/profile.png",
-        "selectedIconPath": "static/tabbar/profile-active.png",
-        "text": "我的"
+        "selectedIconPath": "static/tabbar/profile-active.png"
       }
     ]
   },
   "permission": {
     "scope.userLocation": {
-      "desc": "您的位置信息将用于显示附近的商家"
+      "desc": "你的位置信息将用于展示"
     }
   },
   "requiredPrivateInfos": [
-    "getLocation",
     "chooseAddress"
   ],
   "usingComponents": {}

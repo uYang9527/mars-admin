@@ -111,7 +111,7 @@
         <n-card title="系统信息" class="system-card">
           <n-descriptions :column="1" label-placement="left">
             <n-descriptions-item label="系统名称">Mars Admin</n-descriptions-item>
-            <n-descriptions-item label="系统版本">v1.0.0</n-descriptions-item>
+            <n-descriptions-item label="系统版本">v1.0.7</n-descriptions-item>
             <n-descriptions-item label="前端框架">Vue 3.4 + Naive UI</n-descriptions-item>
             <n-descriptions-item label="后端框架">Spring Boot 3.2</n-descriptions-item>
             <n-descriptions-item label="数据库">MySQL 8.0</n-descriptions-item>
@@ -359,6 +359,83 @@ const shortcuts = [
 
 // 更新日志
 const changelog = [
+  {
+    version: 'v1.0.7',
+    date: '2026-03-01',
+    type: 'success' as const,
+    changes: [
+      '代码生成：新增表单布局配置，支持「一行两列」和「从上到下」两种布局',
+      '代码生成：编辑配置弹窗新增「布局配置」标签页',
+      '代码生成：修复 LocalDate/LocalDateTime 字段 JSON 解析错误',
+      '代码生成：日期时间字段提交格式与 Jackson 配置（yyyy-MM-dd HH:mm:ss）兼容',
+      '代码生成：编辑时日期字符串正确转换为时间戳供日期选择器使用'
+    ]
+  },
+  {
+    version: 'v1.0.6',
+    date: '2026-03-01',
+    type: 'success' as const,
+    changes: [
+      '系统通知：移除短信渠道，Webhook 拆分为飞书/钉钉/企业微信分别选择',
+      '钉钉推送：支持加签密钥（SEC），确保安全校验',
+      'mars-push 模块重构：支持文本和图片，统一 Webhook 发送逻辑',
+      '新增通知记录：可查看各渠道推送触达情况及成功/失败状态',
+      '推送失败支持重试：通知记录中失败渠道可一键重试'
+    ]
+  },
+  {
+    version: 'v1.0.5',
+    date: '2026-02-28',
+    type: 'success' as const,
+    changes: [
+      '整合 Druid 数据库连接池监控平台',
+      '定时任务新增 Cron 表达式常用预设选择',
+      '定时任务新增调度日志查看功能',
+      '定时任务新增调度统计图表（执行数、成功/失败比例）',
+      '缓存监控页面新增 ECharts 统计图（内存、QPS、命中率、连接数）',
+      '修复通知类型表单校验问题',
+      '优化统计卡片样式（透明背景）'
+    ]
+  },
+  {
+    version: 'v1.0.4',
+    date: '2026-02-24',
+    type: 'success' as const,
+    changes: [
+      '新增用户批量导入导出功能（EasyExcel）',
+      '导入模板支持角色和岗位字段',
+      '新增用户多选导出功能',
+      '新增用户批量删除功能',
+      '优化文件下载认证处理'
+    ]
+  },
+  {
+    version: 'v1.0.3',
+    date: '2026-02-24',
+    type: 'success' as const,
+    changes: [
+      '新增前端反调试控制（安全配置开关）',
+      '优化系统配置页面按钮布局',
+      '优化弹窗按钮主题色适配',
+      '新增多种主题颜色选择',
+      '修复操作日志耗时统计问题'
+    ]
+  },
+  {
+    version: 'v1.0.2',
+    date: '2026-02-13',
+    type: 'success' as const,
+    changes: [
+      '新增 RustFS 对象存储支持',
+      '新增腾讯云 COS 存储支持',
+      '优化存储配置页面布局，访问域名按存储类型分组',
+      '修复 Office 文档预览样式问题',
+      '修复 PDF 预览需要登录的问题',
+      '支持大文件上传（最大 500MB）',
+      '优化文件列表全选效果',
+      '文件管理新增拖拽上传提示'
+    ]
+  },
   {
     version: 'v1.0.1',
     date: '2026-01-31',

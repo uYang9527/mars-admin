@@ -131,21 +131,38 @@ export const jobApi = {
   logPage(params: { page: number; pageSize: number; jobName?: string; jobGroup?: string; status?: number }): Promise<PageResult<SysJobLog>> {
     return request({ url: '/monitor/job/log/page', method: 'get', params })
   },
+  logStatistics(): Promise<{ totalCount: number; successCount: number; failCount: number; dailyStats: Array<{ exec_date: string; success_count: number; fail_count: number }> }> {
+    return request({ url: '/monitor/job/log/statistics', method: 'get' })
+  },
   cleanLog(): Promise<void> {
     return request({ url: '/monitor/job/log/clean', method: 'delete' })
   }
 }
 
 // ==================== 缓存监控 ====================
+export interface CacheStats {
+  usedMemory: number
+  maxMemory: number
+  ops: number
+  hitRate: number
+  connectedClients: number
+}
+
 export const cacheApi = {
   info(): Promise<any> {
     return request({ url: '/monitor/cache/info', method: 'get' })
+  },
+  stats(): Promise<CacheStats> {
+    return request({ url: '/monitor/cache/stats', method: 'get' })
   },
   keys(pattern?: string): Promise<string[]> {
     return request({ url: '/monitor/cache/keys', method: 'get', params: { pattern } })
   },
   delete(key: string): Promise<void> {
-    return request({ url: `/monitor/cache/${key}`, method: 'delete' })
+    return request({ url: '/monitor/cache', method: 'delete', params: { key } })
+  },
+  getValue(key: string): Promise<any> {
+    return request({ url: '/monitor/cache/value', method: 'get', params: { key } })
   }
 }
 
@@ -153,5 +170,45 @@ export const cacheApi = {
 export const serverApi = {
   info(): Promise<any> {
     return request({ url: '/monitor/server/info', method: 'get' })
+  }
+}
+
+// ==================== API 访问统计 ====================
+export interface ApiAccessLog {
+  id?: number
+  startTime?: string
+  endTime?: string
+  apiPath?: string
+  method?: string
+  statusCode?: number
+  success?: number
+  costTime?: number
+  ip?: string
+  userId?: number
+}
+
+export interface ApiAccessStatistics {
+  totalCount: number
+  successCount: number
+  failCount: number
+  dailyStats: Record<string, { total: number; success: number; fail: number }>
+  topPaths: Array<{ apiPath: string; count: number }>
+  methodCount: Record<string, number>
+}
+
+export const apiAccessApi = {
+  page(params: {
+    page: number
+    pageSize: number
+    apiPath?: string
+    method?: string
+    success?: number
+    startTime?: string
+    endTime?: string
+  }): Promise<PageResult<ApiAccessLog>> {
+    return request({ url: '/monitor/api-access/page', method: 'get', params })
+  },
+  statistics(params?: { startDate?: string; endDate?: string }): Promise<ApiAccessStatistics> {
+    return request({ url: '/monitor/api-access/statistics', method: 'get', params })
   }
 }

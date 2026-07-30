@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "通讯录",
+  "usingComponents": {
+    "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon"
+  }
+}

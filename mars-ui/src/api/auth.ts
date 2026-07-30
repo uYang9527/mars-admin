@@ -49,6 +49,7 @@ export interface MenuInfo {
   sort: number
   visible: number
   status: number
+  isFrame: number  // 是否外链(0-否 1-是)
   children?: MenuInfo[]
 }
 
@@ -71,7 +72,15 @@ export interface ProfileInfo {
   nickname: string
   avatar?: string
   email?: string
-  mobile?: string
+  phone?: string
+  gender?: number
+  status?: number
+  deptId?: number
+  deptName?: string
+  postNames?: string
+  remark?: string
+  userType?: string
+  createTime?: string
 }
 
 // 认证相关API

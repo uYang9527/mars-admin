@@ -1,380 +1,139 @@
 /**
- * API接口定义
+ * API 接口定义
+ * 所有后端接口统一管理
  */
-import { get, post, put, del } from './request.js'
+import { get, post, put, del, upload } from './request.js'
 
-// 获取会员ID
-const getMemberId = () => {
-	const memberInfo = uni.getStorageSync('memberInfo')
-	return memberInfo ? memberInfo.memberId : null
-}
+// ==================== 认证相关 ====================
 
-// ==================== 登录相关 ====================
+/** 微信小程序登录 */
+export const wxLogin = (data) => post('/api/app/auth/login', data)
 
-/**
- * 微信授权登录
- * @param code 微信登录code
- * @param nickname 用户昵称
- * @param avatar 用户头像
- */
-export const login = (code, nickname, avatar) => {
-	return post('/api/mall/login', { code, nickname, avatar })
-}
+/** 发送短信验证码 */
+export const sendSmsCode = (data) => post('/api/app/auth/sms-code', data)
 
-/**
- * 手机号一键登录
- * @param loginCode 微信登录code
- * @param phoneCode 手机号授权code
- * @param nickname 用户昵称
- * @param avatar 用户头像
- */
-export const loginByPhone = (loginCode, phoneCode, nickname, avatar) => {
-	return post('/api/mall/loginByPhone', { loginCode, phoneCode, nickname, avatar })
-}
+/** 获取当前用户信息 */
+export const getUserInfo = () => get('/api/auth/info')
 
-/**
- * 绑定手机号
- */
-export const getPhone = (code) => {
-	return post('/api/mall/phone', { code, memberId: getMemberId() })
-}
+/** 获取个人资料 */
+export const getProfile = () => get('/api/auth/profile')
 
-/**
- * 获取会员信息
- */
-export const getMemberInfo = () => {
-	return get('/api/mall/member/info', { memberId: getMemberId() })
-}
+/** 更新个人资料 */
+export const updateProfile = (data) => put('/api/auth/profile', data)
 
-/**
- * 更新会员信息
- */
-export const updateMemberInfo = (data) => {
-	return put('/api/mall/member/info', { ...data, id: getMemberId() })
-}
+/** App端获取个人资料 */
+export const getAppProfile = () => get('/api/app/auth/profile')
 
-// ==================== 首页数据 ====================
+/** App端更新个人资料（头像、昵称、邮箱、手机、性别） */
+export const updateAppProfile = (data) => put('/api/app/auth/profile', data)
 
-/**
- * 获取首页数据
- */
-export const getHomeData = () => {
-	return get('/api/mall/home')
-}
+/** App端上传头像（无需文件管理权限） */
+export const uploadAvatar = (filePath) => upload('/api/app/auth/upload-avatar', filePath)
 
-// ==================== 分类相关 ====================
+/** 修改密码 */
+export const changePassword = (data) => post('/api/auth/password', data)
 
-/**
- * 获取分类树
- */
-export const getCategoryTree = () => {
-	return get('/api/mall/category/tree')
-}
+/** App端修改密码 */
+export const changeAppPassword = (data) => post('/api/app/auth/password', data)
 
-/**
- * 获取分类列表
- */
-export const getCategoryList = () => {
-	return get('/api/mall/category/list')
-}
+/** 退出登录 */
+export const logout = () => post('/api/auth/logout')
 
-// ==================== 商品相关 ====================
+// ==================== 私聊相关 ====================
 
-/**
- * 获取商品列表
- */
-export const getProductList = (params) => {
-	return get('/api/mall/product/list', params)
-}
+/** 发送私聊消息 */
+export const sendMessage = (data) => post('/api/sys/chat/send', data)
 
-/**
- * 获取商品详情
- */
-export const getProductDetail = (id) => {
-	return get(`/api/mall/product/${id}`, { memberId: getMemberId() })
-}
+/** 获取聊天记录 */
+export const getChatHistory = (targetId, page = 1, pageSize = 20) =>
+  get(`/api/sys/chat/history/${targetId}`, { page, pageSize })
 
-// ==================== 购物车相关 ====================
+/** 获取最近联系人 */
+export const getRecentContacts = () => get('/api/sys/chat/contacts')
 
-/**
- * 获取购物车列表
- */
-export const getCartList = () => {
-	return get('/api/mall/cart/list', { memberId: getMemberId() })
-}
+/** 获取用户列表（通讯录） */
+export const getChatUsers = () => get('/api/sys/chat/users')
 
-/**
- * 获取购物车数量
- */
-export const getCartCount = () => {
-	return get('/api/mall/cart/count', { memberId: getMemberId() })
-}
+/** 标记消息已读 */
+export const markAsRead = (senderId) => post(`/api/sys/chat/read/${senderId}`)
 
-/**
- * 添加到购物车
- */
-export const addToCart = (productId, skuId, quantity = 1) => {
-	return post('/api/mall/cart/add', {
-		memberId: getMemberId(),
-		productId,
-		skuId,
-		quantity
-	})
-}
+/** 获取未读消息数 */
+export const getUnreadCount = () => get('/api/sys/chat/unread-count')
 
-/**
- * 更新购物车数量
- */
-export const updateCartQuantity = (cartId, quantity) => {
-	return put('/api/mall/cart/quantity', {
-		memberId: getMemberId(),
-		cartId,
-		quantity
-	})
-}
+/** 获取消息统计 */
+export const getMessageStats = () => get('/api/sys/chat/stats')
 
-/**
- * 更新购物车选中状态
- */
-export const updateCartSelected = (cartId, selected) => {
-	return put('/api/mall/cart/selected', {
-		memberId: getMemberId(),
-		cartId,
-		selected
-	})
-}
+/** 检查用户是否在线 */
+export const checkOnline = (userId) => get(`/api/sys/chat/online/${userId}`)
 
-/**
- * 全选/取消全选
- */
-export const selectAllCart = (selected) => {
-	return put('/api/mall/cart/selectAll', {
-		memberId: getMemberId(),
-		selected
-	})
-}
+/** 清空聊天记录 */
+export const clearChatHistory = (targetId) => del(`/api/sys/chat/clear/${targetId}`)
 
-/**
- * 删除购物车商品
- */
-export const deleteCart = (cartIds) => {
-	return del('/api/mall/cart', {
-		memberId: getMemberId(),
-		cartIds: cartIds.join(',')
-	})
-}
+/** 拉黑用户 */
+export const blockUser = (targetId) => post(`/api/sys/chat/block/${targetId}`)
 
-/**
- * 获取选中商品金额
- */
-export const getCartSelectedAmount = () => {
-	return get('/api/mall/cart/amount', { memberId: getMemberId() })
-}
+/** 取消拉黑 */
+export const unblockUser = (targetId) => del(`/api/sys/chat/block/${targetId}`)
 
-// ==================== 地址相关 ====================
+/** 获取黑名单 */
+export const getBlacklist = () => get('/api/sys/chat/blacklist')
 
-/**
- * 获取地址列表
- */
-export const getAddressList = () => {
-	return get('/api/mall/address/list', { memberId: getMemberId() })
-}
+/** 检查是否拉黑 */
+export const checkBlocked = (targetId) => get(`/api/sys/chat/blocked/${targetId}`)
 
-/**
- * 获取地址详情
- */
-export const getAddressDetail = (id) => {
-	return get(`/api/mall/address/${id}`)
-}
+// ==================== 群聊相关 ====================
 
-/**
- * 获取默认地址
- */
-export const getDefaultAddress = () => {
-	return get('/api/mall/address/default', { memberId: getMemberId() })
-}
+/** 创建群聊 */
+export const createGroup = (data) => post('/api/chat/group/create', data)
 
-/**
- * 新增地址
- */
-export const createAddress = (data) => {
-	return post('/api/mall/address', { ...data, memberId: getMemberId() })
-}
+/** 获取我的群列表 */
+export const getGroupList = () => get('/api/chat/group/list')
 
-/**
- * 修改地址
- */
-export const updateAddress = (data) => {
-	return put('/api/mall/address', data)
-}
+/** 获取群详情 */
+export const getGroupDetail = (groupId) => get(`/api/chat/group/${groupId}`)
 
-/**
- * 删除地址
- */
-export const deleteAddress = (id) => {
-	return del(`/api/mall/address/${id}`, { memberId: getMemberId() })
-}
+/** 更新群信息 */
+export const updateGroup = (data) => put('/api/chat/group/update', data)
 
-/**
- * 设为默认地址
- */
-export const setDefaultAddress = (id) => {
-	return put(`/api/mall/address/${id}/default`, { memberId: getMemberId() })
-}
+/** 解散群聊 */
+export const dissolveGroup = (groupId) => del(`/api/chat/group/${groupId}`)
 
-// ==================== 订单相关 ====================
+/** 退出群聊 */
+export const quitGroup = (groupId) => post(`/api/chat/group/${groupId}/quit`)
 
-/**
- * 获取订单列表
- */
-export const getOrderList = (params) => {
-	return get('/api/mall/order/list', { ...params, memberId: getMemberId() })
-}
+/** 获取群成员列表 */
+export const getGroupMembers = (groupId) => get(`/api/chat/group/${groupId}/members`)
 
-/**
- * 获取订单详情
- */
-export const getOrderDetail = (id) => {
-	return get(`/api/mall/order/${id}`)
-}
+/** 添加群成员 */
+export const addGroupMembers = (groupId, userIds) =>
+  post(`/api/chat/group/${groupId}/members`, { userIds })
 
-/**
- * 获取各状态订单数量
- */
-export const getOrderCount = () => {
-	return get('/api/mall/order/count', { memberId: getMemberId() })
-}
+/** 移除群成员 */
+export const removeGroupMember = (groupId, memberId) =>
+  del(`/api/chat/group/${groupId}/members/${memberId}`)
 
-/**
- * 从购物车创建订单
- */
-export const createOrderFromCart = (addressId, remark, couponId) => {
-	return post('/api/mall/order/fromCart', {
-		memberId: getMemberId(),
-		addressId,
-		remark,
-		couponId
-	})
-}
+/** 发送群消息 */
+export const sendGroupMessage = (groupId, data) =>
+  post(`/api/chat/group/${groupId}/message`, data)
 
-/**
- * 直接购买创建订单
- */
-export const createOrderDirect = (productId, skuId, quantity, addressId, remark, couponId) => {
-	return post('/api/mall/order/direct', {
-		memberId: getMemberId(),
-		productId,
-		skuId,
-		quantity,
-		addressId,
-		remark,
-		couponId
-	})
-}
+/** 获取群消息历史 */
+export const getGroupMessages = (groupId, page = 1, pageSize = 50) =>
+  get(`/api/chat/group/${groupId}/messages`, { page, pageSize })
 
-/**
- * 取消订单
- */
-export const cancelOrder = (id) => {
-	return put(`/api/mall/order/${id}/cancel`, { memberId: getMemberId() })
-}
+/** 转让群主 */
+export const transferGroupOwner = (groupId, newOwnerId) =>
+  post(`/api/chat/group/${groupId}/transfer/${newOwnerId}`)
 
-/**
- * 支付订单（拉起微信支付）
- */
-export const payOrder = (id, payType = 1) => {
-	return post(`/api/mall/order/${id}/pay`, { payType })
-}
+// ==================== 文件相关 ====================
 
-/**
- * 确认收货
- */
-export const receiveOrder = (id) => {
-	return put(`/api/mall/order/${id}/receive`, { memberId: getMemberId() })
-}
+/** 上传文件 */
+export const uploadFile = (filePath) => upload('/api/sys/file/upload', filePath)
 
-/**
- * 删除订单
- */
-export const deleteOrder = (id) => {
-	return del(`/api/mall/order/${id}`, { memberId: getMemberId() })
-}
+// ==================== 系统通知 ====================
 
-// ==================== 收藏相关 ====================
+/** 获取通知列表 */
+export const getNoticeList = (page = 1, pageSize = 10) =>
+  get('/api/sys/notice/my', { page, pageSize })
 
-/**
- * 获取收藏列表
- */
-export const getFavoriteList = (params) => {
-	return get('/api/mall/favorite/list', { ...params, memberId: getMemberId() })
-}
-
-/**
- * 添加收藏
- */
-export const addFavorite = (productId) => {
-	return post('/api/mall/favorite', { memberId: getMemberId(), productId })
-}
-
-/**
- * 取消收藏
- */
-export const removeFavorite = (productId) => {
-	return del('/api/mall/favorite', { memberId: getMemberId(), productId })
-}
-
-/**
- * 切换收藏状态
- */
-export const toggleFavorite = (productId) => {
-	return post('/api/mall/favorite/toggle', { memberId: getMemberId(), productId })
-}
-
-/**
- * 获取收藏数量
- */
-export const getFavoriteCount = () => {
-	return get('/api/mall/favorite/count', { memberId: getMemberId() })
-}
-
-export default {
-	login,
-	loginByPhone,
-	getPhone,
-	getMemberInfo,
-	updateMemberInfo,
-	getHomeData,
-	getCategoryTree,
-	getCategoryList,
-	getProductList,
-	getProductDetail,
-	getCartList,
-	getCartCount,
-	addToCart,
-	updateCartQuantity,
-	updateCartSelected,
-	selectAllCart,
-	deleteCart,
-	getCartSelectedAmount,
-	getAddressList,
-	getAddressDetail,
-	getDefaultAddress,
-	createAddress,
-	updateAddress,
-	deleteAddress,
-	setDefaultAddress,
-	getOrderList,
-	getOrderDetail,
-	getOrderCount,
-	createOrderFromCart,
-	createOrderDirect,
-	cancelOrder,
-	payOrder,
-	receiveOrder,
-	deleteOrder,
-	getFavoriteList,
-	addFavorite,
-	removeFavorite,
-	toggleFavorite,
-	getFavoriteCount
-}
+/** 标记通知已读 */
+export const readNotice = (id) => post(`/api/sys/notice/read/${id}`)

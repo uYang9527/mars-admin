@@ -1,0 +1,139 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.page.data-v-858a584d {
+  height: 100vh;
+  background: #EDEDED;
+}
+.content.data-v-858a584d {
+  height: 100%;
+}
+.card.data-v-858a584d {
+  background: #FFF;
+  margin: 16rpx;
+  border-radius: 8rpx;
+  padding: 28rpx;
+}
+.group-header.data-v-858a584d {
+  display: flex;
+  align-items: center;
+}
+.group-avatar.data-v-858a584d {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 8rpx;
+  margin-right: 24rpx;
+  background: #E0E0E0;
+}
+.group-info.data-v-858a584d {
+  flex: 1;
+}
+.group-name.data-v-858a584d {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+  display: block;
+}
+.group-member-count.data-v-858a584d {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+.card-title.data-v-858a584d {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.card-title text.data-v-858a584d {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+.more-text.data-v-858a584d, .edit-text.data-v-858a584d {
+  font-size: 26rpx;
+  color: #07C160;
+  font-weight: 400 !important;
+}
+.member-grid.data-v-858a584d {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.member-item.data-v-858a584d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 110rpx;
+}
+.member-avatar.data-v-858a584d {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  background: #E0E0E0;
+}
+.member-name.data-v-858a584d {
+  font-size: 22rpx;
+  color: #666;
+  margin-top: 8rpx;
+  max-width: 110rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.member-role.data-v-858a584d {
+  font-size: 18rpx;
+  color: #07C160;
+  background: #E8F8EE;
+  padding: 2rpx 8rpx;
+  border-radius: 4rpx;
+  margin-top: 4rpx;
+}
+.member-role.admin.data-v-858a584d {
+  color: #3182CE;
+  background: #EBF8FF;
+}
+.add-member .add-member-icon.data-v-858a584d {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  border: 3rpx dashed #CCC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.announcement-text.data-v-858a584d {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+}
+.action-section.data-v-858a584d {
+  margin: 32rpx 16rpx;
+}
+.action-item.data-v-858a584d {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFF;
+  border-radius: 8rpx;
+  padding: 28rpx 32rpx;
+  margin-bottom: 16rpx;
+}
+.action-item.data-v-858a584d:active {
+  background: #F0F0F0;
+}
+.action-text.data-v-858a584d {
+  font-size: 30rpx;
+  color: #1A1A1A;
+}
+.danger .action-text.data-v-858a584d {
+  color: #FA5151;
+}

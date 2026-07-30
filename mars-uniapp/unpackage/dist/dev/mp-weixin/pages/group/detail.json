@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "群设置",
+  "usingComponents": {
+    "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon"
+  }
+}

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mars.file.entity.SysFile;
 import com.mars.file.mapper.SysFileMapper;
 import com.mars.file.service.SysFileService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import com.mars.oss.FileStorage;
 import com.mars.system.storage.FileStorageFactory;
 import lombok.RequiredArgsConstructor;
@@ -40,14 +40,14 @@ public class SysFileServiceImpl implements SysFileService {
     public Page<SysFile> page(Integer page, Integer pageSize, String originalName, String fileType) {
         Page<SysFile> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<SysFile> wrapper = new LambdaQueryWrapper<>();
-        
+
         if (StringUtils.hasText(originalName)) {
             wrapper.like(SysFile::getOriginalName, originalName);
         }
         if (StringUtils.hasText(fileType)) {
             wrapper.like(SysFile::getFileType, fileType);
         }
-        
+
         wrapper.orderByDesc(SysFile::getCreateTime);
         return fileMapper.selectPage(pageParam, wrapper);
     }
@@ -56,7 +56,7 @@ public class SysFileServiceImpl implements SysFileService {
     public Page<SysFile> pageByGroup(Integer page, Integer pageSize, Long groupId, String fileCategory, String originalName) {
         Page<SysFile> pageParam = new Page<>(page, pageSize);
         LambdaQueryWrapper<SysFile> wrapper = new LambdaQueryWrapper<>();
-        
+
         // 分组过滤：-1表示全部，null表示未分组，其他表示指定分组
         if (groupId != null && groupId != -1) {
             wrapper.eq(SysFile::getGroupId, groupId);
@@ -64,7 +64,7 @@ public class SysFileServiceImpl implements SysFileService {
             wrapper.isNull(SysFile::getGroupId);
         }
         // groupId == -1 时不添加分组条件，查询全部
-        
+
         // 文件类别过滤
         if (StringUtils.hasText(fileCategory)) {
             switch (fileCategory) {
@@ -77,12 +77,12 @@ public class SysFileServiceImpl implements SysFileService {
                         .notLike(SysFile::getFileType, "audio/"));
             }
         }
-        
+
         // 文件名搜索
         if (StringUtils.hasText(originalName)) {
             wrapper.like(SysFile::getOriginalName, originalName);
         }
-        
+
         wrapper.orderByDesc(SysFile::getCreateTime);
         return fileMapper.selectPage(pageParam, wrapper);
     }
@@ -98,25 +98,25 @@ public class SysFileServiceImpl implements SysFileService {
     public SysFile upload(MultipartFile file, String path, Long groupId) {
         // 验证文件大小
         configHelper.validateFileSize(file.getSize());
-        
+
         // 验证文件类型
         String originalName = file.getOriginalFilename();
         if (originalName != null) {
             configHelper.validateFileType(originalName);
         }
-        
+
         // 获取存储实例
         FileStorage storage = storageFactory.getStorage();
         String suffix = getFileSuffix(originalName);
         String fileName = generateFileName(suffix);
-        
+
         // 生成存储路径
         String storagePath = StringUtils.hasText(path) ? path : generatePath();
-        
+
         try {
             // 上传文件
             String url = storage.upload(file.getInputStream(), storagePath, fileName);
-            
+
             // 保存文件记录
             SysFile sysFile = new SysFile();
             sysFile.setOriginalName(originalName);
@@ -130,9 +130,9 @@ public class SysFileServiceImpl implements SysFileService {
             sysFile.setGroupId(groupId);
             sysFile.setCreateBy(StpUtil.getLoginIdAsString());
             sysFile.setCreateTime(LocalDateTime.now());
-            
+
             fileMapper.insert(sysFile);
-            
+
             log.info("文件上传成功: {} -> {}", originalName, url);
             return sysFile;
         } catch (IOException e) {
@@ -149,7 +149,7 @@ public class SysFileServiceImpl implements SysFileService {
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new RuntimeException("请上传图片文件");
         }
-        
+
         // 上传到 images 目录
         return upload(file, "images/" + generatePath());
     }
@@ -165,7 +165,7 @@ public class SysFileServiceImpl implements SysFileService {
         if (sysFile == null) {
             throw new RuntimeException("文件不存在");
         }
-        
+
         // 使用当前存储获取文件
         FileStorage storage = storageFactory.getStorage();
         return storage.getFile(sysFile.getFilePath());
@@ -178,7 +178,7 @@ public class SysFileServiceImpl implements SysFileService {
         if (sysFile == null) {
             return;
         }
-        
+
         // 删除存储文件
         try {
             FileStorage storage = storageFactory.getStorage();
@@ -186,7 +186,7 @@ public class SysFileServiceImpl implements SysFileService {
         } catch (Exception e) {
             log.error("删除存储文件失败", e);
         }
-        
+
         // 删除记录
         fileMapper.deleteById(id);
     }

@@ -10,7 +10,7 @@ import com.mars.auth.enums.LoginType;
 import com.mars.common.exception.BusinessException;
 import com.mars.system.entity.SysUser;
 import com.mars.system.service.SysUserService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -162,6 +162,10 @@ public class PasswordLoginStrategy implements LoginStrategy {
         if (user.getStatus() != 1) {
             loginHelper.recordFailLog(user.getUsername(), "用户已被禁用");
             throw new BusinessException("用户已被禁用");
+        }
+        if (user.getIsQuit() == 1) {
+            loginHelper.recordFailLog(user.getUsername(), "用户已离职");
+            throw new BusinessException("用户已离职");
         }
     }
 }

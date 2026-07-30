@@ -1,123 +1,69 @@
-/**
- * GreenMall 全局样式变量
- * 主题色: #059669
- */
+/* uview-plus 主题 */
+@import 'uview-plus/theme.scss';
 
-/* 颜色变量 */
-$primary-color: #059669;
-$secondary-color: #047857;
-$accent-color: #d1fae5;
-$success-color: #059669;
-$warning-color: #f59e0b;
-$error-color: #ef4444;
-$info-color: #3b82f6;
+/* Mars办公 - 主题变量 */
+
+/* 品牌颜色 - 微信绿 */
+$brand-primary: #07C160;
+$brand-primary-light: #38D677;
+$brand-primary-lighter: #69E599;
+$brand-primary-dark: #059B4B;
+$brand-primary-bg: #E8F8EE;
+
+$brand-success: #07C160;
+$brand-warning: #FAAD14;
+$brand-error: #E53E3E;
 
 /* 文字颜色 */
-$text-color: #1e293b;
-$text-color-secondary: #64748b;
-$text-color-placeholder: #94a3b8;
-$text-color-disabled: #cbd5e1;
+$text-primary: #1A1A1A;
+$text-secondary: #4A4A4A;
+$text-muted: #999999;
+$text-inverse: #FFFFFF;
 
 /* 背景颜色 */
-$bg-color: #F8FAFC;
-$bg-color-white: #ffffff;
-$bg-color-gray: #f1f5f9;
-$bg-color-dark: #0f172a;
+$bg-page: #EDEDED;
+$bg-white: #FFFFFF;
+$bg-grey: #F5F5F5;
+$bg-hover: #F0F0F0;
 
 /* 边框颜色 */
-$border-color: #e2e8f0;
-$border-color-light: #f1f5f9;
-$border-color-dark: #cbd5e1;
+$border-color: #E5E5E5;
+$border-light: #F0F0F0;
 
-/* 间距 */
-$spacing-xs: 8rpx;
-$spacing-sm: 16rpx;
-$spacing-md: 24rpx;
-$spacing-lg: 32rpx;
-$spacing-xl: 48rpx;
-$spacing-2xl: 64rpx;
-
-/* 圆角 */
-$radius-sm: 8rpx;
-$radius-md: 16rpx;
-$radius-lg: 24rpx;
-$radius-xl: 32rpx;
-$radius-2xl: 48rpx;
-$radius-full: 100rpx;
+/* 聊天气泡 */
+$chat-bubble-self: #95EC69;
+$chat-bubble-other: #FFFFFF;
+$chat-text-self: #1A1A1A;
+$chat-text-other: #1A1A1A;
 
 /* 字体大小 */
-$font-size-xs: 20rpx;
-$font-size-sm: 24rpx;
-$font-size-base: 28rpx;
-$font-size-lg: 32rpx;
-$font-size-xl: 36rpx;
-$font-size-2xl: 40rpx;
-$font-size-3xl: 48rpx;
-$font-size-4xl: 60rpx;
+$font-xs: 22rpx;
+$font-sm: 24rpx;
+$font-base: 28rpx;
+$font-md: 30rpx;
+$font-lg: 32rpx;
+$font-xl: 36rpx;
+$font-xxl: 44rpx;
 
-/* 阴影 */
-$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.03);
-$shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
-$shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
-$shadow-primary: 0 8rpx 24rpx rgba(5, 150, 105, 0.2);
+/* uni-app 内置变量覆盖 */
+$uni-color-primary: #07C160;
+$uni-color-success: #07C160;
+$uni-color-warning: #FAAD14;
+$uni-color-error: #E53E3E;
 
-/* 过渡 */
-$transition-fast: 0.2s;
-$transition-base: 0.3s;
-$transition-slow: 0.5s;
+$uni-text-color: #1A1A1A;
+$uni-text-color-inverse: #FFFFFF;
+$uni-text-color-grey: #999999;
+$uni-text-color-placeholder: #BBBBBB;
+$uni-text-color-disable: #CCCCCC;
 
-/* Mixins */
-@mixin flex-center {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+$uni-bg-color: #FFFFFF;
+$uni-bg-color-grey: #EDEDED;
+$uni-bg-color-hover: #F0F0F0;
+$uni-bg-color-mask: rgba(0, 0, 0, 0.5);
 
-@mixin flex-between {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
+$uni-border-color: #E5E5E5;
 
-@mixin text-ellipsis {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
-@mixin text-ellipsis-multi($lines: 2) {
-	display: -webkit-box;
-	-webkit-line-clamp: $lines;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-}
-
-@mixin card {
-	background: #fff;
-	border-radius: $radius-xl;
-	padding: $spacing-lg;
-	box-shadow: $shadow-sm;
-}
-
-@mixin button-primary {
-	background: $primary-color;
-	color: #fff;
-	border-radius: $radius-full;
-	box-shadow: $shadow-primary;
-	font-weight: 700;
-	
-	&:active {
-		opacity: 0.9;
-	}
-}
-
-@mixin button-secondary {
-	background: rgba(5, 150, 105, 0.1);
-	color: $primary-color;
-	border-radius: $radius-full;
-	font-weight: 700;
-	
-	&:active {
-		background: rgba(5, 150, 105, 0.15);
-	}
-}
+$uni-font-size-sm: 24rpx;
+$uni-font-size-base: 28rpx;
+$uni-font-size-lg: 32rpx;

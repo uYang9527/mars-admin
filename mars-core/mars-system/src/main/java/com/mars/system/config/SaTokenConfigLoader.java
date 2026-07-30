@@ -1,7 +1,7 @@
 package com.mars.system.config;
 
 import cn.dev33.satoken.SaManager;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

@@ -50,6 +50,9 @@ public class GenTable implements Serializable {
     /** 前端模板类型（element-plus / naive-ui） */
     private String frontType;
 
+    /** 表单布局（vertical-从上到下 / grid-一行两列） */
+    private String formLayout;
+
     /** 父菜单ID */
     private Long parentMenuId;
 

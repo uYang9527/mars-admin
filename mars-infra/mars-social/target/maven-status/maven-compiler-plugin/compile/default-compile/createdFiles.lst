@@ -1,7 +1,0 @@
-com\mars\social\impl\WechatMiniSocialLogin.class
-com\mars\social\SocialLoginService.class
-com\mars\social\impl\WechatMpSocialLogin.class
-com\mars\social\impl\AlipayLogin.class
-com\mars\social\SocialLoginFactory.class
-com\mars\social\SocialLoginService$SocialUserInfo.class
-com\mars\social\impl\AppleLogin.class

@@ -39,11 +39,11 @@
         </dependency>
         <dependency>
             <groupId>com.mars</groupId>
-            <artifactId>mars-message</artifactId>
+            <artifactId>mars-biz</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mars</groupId>
-            <artifactId>mars-mall</artifactId>
+            <artifactId>mars-message</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mars</groupId>

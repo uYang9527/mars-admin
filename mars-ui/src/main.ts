@@ -22,6 +22,13 @@ fetchCryptoConfig()
 
 // 预加载站点配置
 const siteStore = useSiteStore()
-siteStore.loadConfig()
+siteStore.loadConfig().then(() => {
+  // 根据配置动态启用前端禁止调试
+  if (siteStore.disableDevtool) {
+    import('disable-devtool').then((DisableDevtool) => {
+      DisableDevtool.default()
+    })
+  }
+})
 
 app.mount('#app')

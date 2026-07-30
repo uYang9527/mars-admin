@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -27,7 +27,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:dict:add')" type="primary" @click="handleAdd">
@@ -35,12 +35,34 @@
           新增字典
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
-      <n-data-table :columns="columns" :data="tableData" :loading="loading" :pagination="pagination"
-        :row-key="(row: SysDictType) => row.id" @update:page="handlePageChange" @update:page-size="handlePageSizeChange" />
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysDictType) => row.id"
+        remote
+      />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
-    
+
     <!-- 字典类型弹窗 -->
     <n-modal v-model:show="modalVisible" :title="modalTitle" preset="card" style="width: 500px" :mask-closable="false">
       <n-form ref="formRef" :model="formData" :rules="rules" label-placement="left" label-width="80">
@@ -115,8 +137,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
+import { ref, reactive, h, onMounted, computed } from 'vue'
+import { NButton, NTag, NSpace, NPagination, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
 import { dictTypeApi, dictDataApi, type SysDictType, type SysDictData } from '@/api/org'
 import { useUserStore } from '@/stores/user'
@@ -149,7 +171,7 @@ const columns: DataTableColumns<SysDictType> = [
   { title: '状态', key: 'status', width: 80, render(row) {
     return h(NTag, { type: row.status === 1 ? 'success' : 'error', size: 'small' }, { default: () => row.status === 1 ? '启用' : '禁用' })
   }},
-  { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
+  { title: '备注', key: 'remark', width: 80, ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   { title: '操作', key: 'actions', width: 220, fixed: 'right', render(row) {
     const buttons = [h(NButton, { size: 'small', onClick: () => handleViewData(row) }, { default: () => '字典数据' })]
@@ -301,3 +323,9 @@ function handleDeleteData(row: SysDictData) {
 
 onMounted(() => loadData())
 </script>
+
+<style lang="scss" scoped>
+.page-layout{
+  height: calc(100vh - 160px);
+}
+</style>

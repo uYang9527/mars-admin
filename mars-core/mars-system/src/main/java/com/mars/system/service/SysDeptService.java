@@ -34,4 +34,9 @@ public interface SysDeptService extends IService<SysDept> {
      * 删除部门
      */
     void delete(Long id);
+
+    /**
+     * 移动部门
+     */
+    void move(Long id, Long parentId, Integer sort);
 }

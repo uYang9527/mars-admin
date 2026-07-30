@@ -12,7 +12,7 @@
     <artifactId>mars-oss</artifactId>
     <packaging>jar</packaging>
     <name>Mars OSS</name>
-    <description>对象存储基础设施 - 本地/MinIO/阿里云OSS</description>
+    <description>对象存储基础设施 - 本地/MinIO/阿里云OSS/腾讯云COS/RustFS</description>
 
     <dependencies>
         <!-- MinIO -->
@@ -27,6 +27,13 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.17.4</version>
+        </dependency>
+
+        <!-- 腾讯云COS -->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.227</version>
         </dependency>
 
         <!-- Lombok -->

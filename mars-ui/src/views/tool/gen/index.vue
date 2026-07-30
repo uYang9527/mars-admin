@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -45,12 +45,27 @@
         :columns="columns"
         :data="tableData"
         :loading="loading"
-        :pagination="pagination"
         :row-key="(row: GenTable) => row.id"
-        @update:page="handlePageChange"
-        @update:page-size="handlePageSizeChange"
+        remote
         @update:checked-row-keys="handleCheck"
       />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
+          @update:page="handlePageChange"
+          @update:page-size="handlePageSizeChange"
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
     </n-card>
 
     <!-- 导入表弹窗 -->
@@ -80,12 +95,26 @@
           :columns="importColumns"
           :data="dbTables"
           :row-key="(row: DatabaseTable) => row.tableName"
-          :pagination="importPagination"
           max-height="400px"
-          @update:page="handleImportPageChange"
-          @update:page-size="handleImportPageSizeChange"
+          remote
           @update:checked-row-keys="handleImportCheck"
         />
+        <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+          <n-pagination
+            v-model:page="importPagination.page"
+            v-model:page-size="importPagination.pageSize"
+            :item-count="importPagination.itemCount"
+            :page-sizes="[10, 20, 50, 100]"
+            show-size-picker
+            show-quick-jumper
+            @update:page="handleImportPageChange"
+            @update:page-size="handleImportPageSizeChange"
+          >
+            <template #prefix>
+              共 {{ importPagination.itemCount }} 条
+            </template>
+          </n-pagination>
+        </div>
       </n-spin>
       <template #footer>
         <n-space justify="end">
@@ -98,7 +127,7 @@
     </n-modal>
 
     <!-- 编辑配置弹窗 -->
-    <n-modal v-model:show="showEditModal" preset="card" title="编辑生成配置" style="width: 1000px">
+    <n-modal v-model:show="showEditModal" preset="card" title="编辑生成配置" style="width: 1100px">
       <n-tabs type="line">
         <n-tab-pane name="basic" tab="基本信息">
           <n-form ref="editFormRef" :model="editForm" label-placement="left" label-width="100px">
@@ -133,6 +162,21 @@
         <n-tab-pane name="columns" tab="字段配置">
           <n-data-table :columns="columnEditColumns" :data="editForm.columns" :max-height="400" />
         </n-tab-pane>
+        <n-tab-pane name="layout" tab="布局配置">
+          <n-form ref="editFormRef" :model="editForm" label-placement="left" label-width="120px">
+            <n-form-item label="表单布局">
+              <n-radio-group v-model:value="editForm.formLayout">
+                <n-space>
+                  <n-radio value="vertical">从上到下（单列）</n-radio>
+                  <n-radio value="grid">一行两列</n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+            <n-alert type="info" style="margin-top: 12px">
+              表单布局将影响新增/编辑弹窗中表单项的排列方式。选择「一行两列」时，表单项将并排显示；选择「从上到下」时，表单项将垂直排列。
+            </n-alert>
+          </n-form>
+        </n-tab-pane>
       </n-tabs>
       <template #footer>
         <n-space justify="end">
@@ -151,6 +195,32 @@
           </n-tab-pane>
         </n-tabs>
       </div>
+      <template #footer>
+        <n-space justify="end">
+
+          <n-button @click="showPreviewModal = false">关闭</n-button>
+        </n-space>
+      </template>
+    </n-modal>
+
+    <!-- 预览效果弹窗 - 渲染 Vue 页面查看样式布局 -->
+    <n-modal
+      v-model:show="showPreviewEffectModal"
+      preset="card"
+      title="预览效果"
+      style="width: 90vw; height: 90vh"
+      :mask-closable="false"
+    >
+      <div class="preview-effect-container">
+        <iframe
+          :src="previewEffectPath"
+          class="preview-effect-iframe"
+          frameborder="0"
+        />
+      </div>
+      <template #footer>
+        <n-button @click="showPreviewEffectModal = false">关闭</n-button>
+      </template>
     </n-modal>
 
     <!-- 生成方式选择弹窗 -->
@@ -160,9 +230,9 @@
           请选择生成方式
         </n-alert>
         <n-space vertical size="large">
-          <n-card 
-            hoverable 
-            :class="['generate-option', { 'generate-option-selected': generateType === 'project' }]" 
+          <n-card
+            hoverable
+            :class="['generate-option', { 'generate-option-selected': generateType === 'project' }]"
             @click="generateType = 'project'"
           >
             <template #header>
@@ -180,9 +250,9 @@
               </ul>
             </n-text>
           </n-card>
-          <n-card 
-            hoverable 
-            :class="['generate-option', { 'generate-option-selected': generateType === 'download' }]" 
+          <n-card
+            hoverable
+            :class="['generate-option', { 'generate-option-selected': generateType === 'download' }]"
             @click="generateType = 'download'"
           >
             <template #header>
@@ -225,9 +295,9 @@
       <template #footer>
         <n-space justify="end">
           <n-button @click="showPreviewFilesModal = false">取消</n-button>
-          <n-button 
-            :type="previewAction === 'generate' ? 'primary' : 'error'" 
-            :loading="generateLoading" 
+          <n-button
+            :type="previewAction === 'generate' ? 'primary' : 'error'"
+            :loading="generateLoading"
             @click="handleExecuteAction"
           >
             {{ previewAction === 'generate' ? '确认生成' : '确认删除' }}
@@ -273,9 +343,10 @@
 
 <script setup lang="ts">
 import { ref, reactive, h, onMounted } from 'vue'
-import { NButton, NSpace, NIcon, NTag, NSwitch, NSelect, NInput, NText, NList, NListItem, NScrollbar, NAlert, NEmpty, NSpin, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
-import { SearchOutline, RefreshOutline, CloudDownloadOutline, CodeSlashOutline, TrashOutline, SettingsOutline, EyeOutline, SyncOutline, CloseCircleOutline } from '@vicons/ionicons5'
+import { NButton, NSpace, NIcon, NTag, NSwitch, NSelect, NInput, NText, NList, NListItem, NScrollbar, NAlert, NEmpty, NSpin, NPagination, useMessage, useDialog, type DataTableColumns } from 'naive-ui'
+import { SearchOutline, RefreshOutline, CloudDownloadOutline, CodeSlashOutline, TrashOutline, SettingsOutline, EyeOutline, SyncOutline, CloseCircleOutline, ExpandOutline } from '@vicons/ionicons5'
 import { genApi, type GenTable, type GenTableColumn, type DatabaseTable } from '@/api/gen'
+import { dictTypeApi } from '@/api/org'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -316,6 +387,7 @@ const importPagination = reactive({
 // 编辑配置
 const showEditModal = ref(false)
 const editFormRef = ref()
+const dictTypeOptions = ref<{ label: string; value: string }[]>([])
 const editForm = reactive<GenTable>({
   id: undefined,
   tableName: '',
@@ -328,6 +400,7 @@ const editForm = reactive<GenTable>({
   author: '',
   genType: 'crud',
   frontType: 'naive-ui',
+  formLayout: 'vertical',
   columns: []
 })
 
@@ -335,6 +408,11 @@ const editForm = reactive<GenTable>({
 const showPreviewModal = ref(false)
 const previewTab = ref('')
 const previewCodes = ref<Record<string, string>>({})
+const currentPreviewTable = ref<GenTable | null>(null)
+
+// 预览效果弹窗（渲染 Vue 页面查看样式布局）
+const showPreviewEffectModal = ref(false)
+const previewEffectPath = ref('')
 
 // 生成代码
 const showGenerateModal = ref(false)
@@ -356,12 +434,12 @@ const columns: DataTableColumns<GenTable> = [
   { type: 'selection' },
   { title: '表名', key: 'tableName', width: 200 },
   { title: '表描述', key: 'tableComment', ellipsis: { tooltip: true } },
-  { title: '实体类', key: 'className', width: 150 },
+  { title: '实体类', key: 'className', width: 200 },
   { title: '创建时间', key: 'createTime', width: 180 },
   {
     title: '操作',
     key: 'actions',
-    width: 320,
+    width: 500,
     render(row) {
       return h(NSpace, null, {
         default: () => [
@@ -381,7 +459,7 @@ const columns: DataTableColumns<GenTable> = [
             default: () => [h(NIcon, null, { default: () => h(CloseCircleOutline) }), ' 移除']
           }),
           h(NButton, { size: 'small', quaternary: true, type: 'error', onClick: () => handleDelete(row) }, {
-            default: () => [h(NIcon, null, { default: () => h(TrashOutline) })]
+            default: () => [h(NIcon, null, { default: () => h(TrashOutline) }),'删除']
           })
         ]
       })
@@ -400,14 +478,14 @@ const importColumns: DataTableColumns<DatabaseTable> = [
 // 字段编辑列
 const columnEditColumns: DataTableColumns<GenTableColumn> = [
   { title: '字段名', key: 'columnName', width: 120 },
-  { title: '字段描述', key: 'columnComment', width: 120, 
+  { title: '字段描述', key: 'columnComment', width: 120,
     render(row) {
       return h(NInput, { value: row.columnComment, size: 'small', onUpdateValue: (v: string) => { row.columnComment = v } })
     }
   },
   { title: 'Java类型', key: 'javaType', width: 100,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.javaType, size: 'small', style: { width: '100px' },
         options: [
           { label: 'Long', value: 'Long' },
@@ -446,7 +524,7 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
   },
   { title: '查询方式', key: 'queryType', width: 100,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.queryType, size: 'small', style: { width: '90px' },
         options: [
           { label: '=', value: 'EQ' },
@@ -462,7 +540,7 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
   },
   { title: '显示类型', key: 'htmlType', width: 120,
     render(row) {
-      return h(NSelect, { 
+      return h(NSelect, {
         value: row.htmlType, size: 'small', style: { width: '110px' },
         options: [
           { label: '文本框', value: 'input' },
@@ -475,7 +553,25 @@ const columnEditColumns: DataTableColumns<GenTableColumn> = [
           { label: '文件上传', value: 'fileUpload' },
           { label: '富文本', value: 'editor' }
         ],
-        onUpdateValue: (v: string) => { row.htmlType = v }
+        onUpdateValue: (v: string) => {
+          row.htmlType = v
+          if (!['select', 'radio', 'checkbox'].includes(v)) row.dictType = ''
+        }
+      })
+    }
+  },
+  { title: '字典类型', key: 'dictType', width: 150,
+    render(row) {
+      const isDictField = ['select', 'radio', 'checkbox'].includes(row.htmlType || '')
+      if (!isDictField) return '-'
+      return h(NSelect, {
+        value: row.dictType || null,
+        size: 'small',
+        style: { width: '140px' },
+        options: dictTypeOptions.value,
+        clearable: true,
+        placeholder: '选择字典',
+        onUpdateValue: (v: string | null) => { row.dictType = v || '' }
       })
     }
   }
@@ -491,7 +587,7 @@ async function loadData() {
       tableName: searchForm.tableName || undefined
     })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
   } finally {
     loading.value = false
   }
@@ -507,7 +603,7 @@ async function loadDbTables() {
       tableName: importSearchForm.tableName || undefined
     })
     dbTables.value = res.list
-    importPagination.itemCount = res.total
+    importPagination.itemCount = Number(res.total)
   } finally {
     importLoading.value = false
   }
@@ -597,8 +693,12 @@ async function handleImport() {
 // 编辑配置
 async function handleEdit(row: GenTable) {
   try {
-    const table = await genApi.getTable(row.id!)
+    const [table, dictTypes] = await Promise.all([
+      genApi.getTable(row.id!),
+      dictTypeApi.list()
+    ])
     Object.assign(editForm, table)
+    dictTypeOptions.value = dictTypes.map(d => ({ label: `${d.dictName} (${d.dictType})`, value: d.dictType }))
     showEditModal.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -620,6 +720,7 @@ async function handleSaveEdit() {
 // 预览代码
 async function handlePreview(row: GenTable) {
   try {
+    currentPreviewTable.value = row
     previewCodes.value = await genApi.previewCode(row.id!)
     const keys = Object.keys(previewCodes.value)
     previewTab.value = keys.length > 0 ? keys[0] : ''
@@ -627,6 +728,14 @@ async function handlePreview(row: GenTable) {
   } catch (error) {
     // 错误已在拦截器处理
   }
+}
+
+// 查看预览效果 - 在弹窗中通过 iframe 渲染页面查看样式布局
+function handleViewPreview() {
+  const table = currentPreviewTable.value
+  if (!table?.moduleName || !table?.businessName) return
+  previewEffectPath.value = `/${table.moduleName}/${table.businessName}`
+  showPreviewEffectModal.value = true
 }
 
 // 生成代码 - 打开选择弹窗
@@ -644,7 +753,7 @@ function handleBatchGenerate() {
 // 确认生成 - 下一步（预览文件）
 async function handleConfirmGenerate() {
   if (!currentGenerateId.value || !generateType.value) return
-  
+
   if (generateType.value === 'project') {
     // 先预览将要生成的文件
     previewLoading.value = true
@@ -666,7 +775,7 @@ async function handleConfirmGenerate() {
 // 执行操作（生成或移除）
 async function handleExecuteAction() {
   if (!currentGenerateId.value) return
-  
+
   generateLoading.value = true
   try {
     if (previewAction.value === 'generate') {
@@ -701,7 +810,7 @@ async function handleRemoveCodeDirect(row: GenTable) {
   previewAction.value = 'remove'
   previewFiles.value = []
   showPreviewFilesModal.value = true
-  
+
   try {
     previewFiles.value = await genApi.previewRemoveFiles(row.id!)
   } catch (error) {
@@ -806,6 +915,19 @@ onMounted(() => {
   overflow: auto;
 }
 
+.preview-effect-container {
+  height: calc(90vh - 120px);
+  min-height: 400px;
+}
+
+.preview-effect-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border: 1px solid var(--n-border-color);
+  border-radius: 4px;
+}
+
 .generate-options {
   padding: 8px 0;
 }
@@ -824,5 +946,8 @@ onMounted(() => {
   border-color: #18a058;
   background-color: rgba(24, 160, 88, 0.08);
   box-shadow: 0 2px 12px rgba(24, 160, 88, 0.2);
+}
+.page-layout{
+  height: calc(100vh - 160px);
 }
 </style>

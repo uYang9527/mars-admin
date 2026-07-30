@@ -78,6 +78,26 @@ public class SysPostController {
     }
 
     /**
+     * 获取岗位树
+     */
+    @GetMapping("/tree")
+    @SaCheckPermission("sys:post:list")
+    public Result<List<SysPost>> tree() {
+        return Result.ok(postService.tree());
+    }
+
+    /**
+     * 移动岗位
+     */
+    @PostMapping("/{id}/move")
+    @SaCheckPermission("sys:post:edit")
+    @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
+    public Result<Void> move(@PathVariable Long id, @RequestParam Long parentId) {
+        postService.move(id, parentId);
+        return Result.ok();
+    }
+
+    /**
      * 删除
      */
     @DeleteMapping("/{id}")

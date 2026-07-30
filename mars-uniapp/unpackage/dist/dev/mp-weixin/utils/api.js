@@ -1,88 +1,47 @@
 "use strict";
-const common_vendor = require("../common/vendor.js");
 const utils_request = require("./request.js");
-const getMemberId = () => {
-  const memberInfo = common_vendor.index.getStorageSync("memberInfo");
-  return memberInfo ? memberInfo.memberId : null;
-};
-const login = (code, nickname, avatar) => {
-  return utils_request.post("/api/mall/login", { code, nickname, avatar });
-};
-const loginByPhone = (loginCode, phoneCode, nickname, avatar) => {
-  return utils_request.post("/api/mall/loginByPhone", { loginCode, phoneCode, nickname, avatar });
-};
-const getMemberInfo = () => {
-  return utils_request.get("/api/mall/member/info", { memberId: getMemberId() });
-};
-const getHomeData = () => {
-  return utils_request.get("/api/mall/home");
-};
-const getCategoryList = () => {
-  return utils_request.get("/api/mall/category/list");
-};
-const getProductList = (params) => {
-  return utils_request.get("/api/mall/product/list", params);
-};
-const getProductDetail = (id) => {
-  return utils_request.get(`/api/mall/product/${id}`, { memberId: getMemberId() });
-};
-const getCartList = () => {
-  return utils_request.get("/api/mall/cart/list", { memberId: getMemberId() });
-};
-const addToCart = (productId, skuId, quantity = 1) => {
-  return utils_request.post("/api/mall/cart/add", {
-    memberId: getMemberId(),
-    productId,
-    skuId,
-    quantity
-  });
-};
-const updateCartQuantity = (cartId, quantity) => {
-  return utils_request.put("/api/mall/cart/quantity", {
-    memberId: getMemberId(),
-    cartId,
-    quantity
-  });
-};
-const updateCartSelected = (cartId, selected) => {
-  return utils_request.put("/api/mall/cart/selected", {
-    memberId: getMemberId(),
-    cartId,
-    selected
-  });
-};
-const selectAllCart = (selected) => {
-  return utils_request.put("/api/mall/cart/selectAll", {
-    memberId: getMemberId(),
-    selected
-  });
-};
-const getOrderList = (params) => {
-  return utils_request.get("/api/mall/order/list", { ...params, memberId: getMemberId() });
-};
-const getOrderCount = () => {
-  return utils_request.get("/api/mall/order/count", { memberId: getMemberId() });
-};
-const receiveOrder = (id) => {
-  return utils_request.put(`/api/mall/order/${id}/receive`, { memberId: getMemberId() });
-};
-const toggleFavorite = (productId) => {
-  return utils_request.post("/api/mall/favorite/toggle", { memberId: getMemberId(), productId });
-};
-exports.addToCart = addToCart;
-exports.getCartList = getCartList;
-exports.getCategoryList = getCategoryList;
-exports.getHomeData = getHomeData;
-exports.getMemberInfo = getMemberInfo;
-exports.getOrderCount = getOrderCount;
-exports.getOrderList = getOrderList;
-exports.getProductDetail = getProductDetail;
-exports.getProductList = getProductList;
-exports.login = login;
-exports.loginByPhone = loginByPhone;
-exports.receiveOrder = receiveOrder;
-exports.selectAllCart = selectAllCart;
-exports.toggleFavorite = toggleFavorite;
-exports.updateCartQuantity = updateCartQuantity;
-exports.updateCartSelected = updateCartSelected;
+const wxLogin = (data) => utils_request.post("/api/app/auth/login", data);
+const sendSmsCode = (data) => utils_request.post("/api/app/auth/sms-code", data);
+const getAppProfile = () => utils_request.get("/api/app/auth/profile");
+const updateAppProfile = (data) => utils_request.put("/api/app/auth/profile", data);
+const uploadAvatar = (filePath) => utils_request.upload("/api/app/auth/upload-avatar", filePath);
+const changeAppPassword = (data) => utils_request.post("/api/app/auth/password", data);
+const logout = () => utils_request.post("/api/auth/logout");
+const sendMessage = (data) => utils_request.post("/api/sys/chat/send", data);
+const getChatHistory = (targetId, page = 1, pageSize = 20) => utils_request.get(`/api/sys/chat/history/${targetId}`, { page, pageSize });
+const getRecentContacts = () => utils_request.get("/api/sys/chat/contacts");
+const getChatUsers = () => utils_request.get("/api/sys/chat/users");
+const markAsRead = (senderId) => utils_request.post(`/api/sys/chat/read/${senderId}`);
+const createGroup = (data) => utils_request.post("/api/chat/group/create", data);
+const getGroupList = () => utils_request.get("/api/chat/group/list");
+const getGroupDetail = (groupId) => utils_request.get(`/api/chat/group/${groupId}`);
+const updateGroup = (data) => utils_request.put("/api/chat/group/update", data);
+const dissolveGroup = (groupId) => utils_request.del(`/api/chat/group/${groupId}`);
+const quitGroup = (groupId) => utils_request.post(`/api/chat/group/${groupId}/quit`);
+const getGroupMembers = (groupId) => utils_request.get(`/api/chat/group/${groupId}/members`);
+const sendGroupMessage = (groupId, data) => utils_request.post(`/api/chat/group/${groupId}/message`, data);
+const getGroupMessages = (groupId, page = 1, pageSize = 50) => utils_request.get(`/api/chat/group/${groupId}/messages`, { page, pageSize });
+const uploadFile = (filePath) => utils_request.upload("/api/sys/file/upload", filePath);
+exports.changeAppPassword = changeAppPassword;
+exports.createGroup = createGroup;
+exports.dissolveGroup = dissolveGroup;
+exports.getAppProfile = getAppProfile;
+exports.getChatHistory = getChatHistory;
+exports.getChatUsers = getChatUsers;
+exports.getGroupDetail = getGroupDetail;
+exports.getGroupList = getGroupList;
+exports.getGroupMembers = getGroupMembers;
+exports.getGroupMessages = getGroupMessages;
+exports.getRecentContacts = getRecentContacts;
+exports.logout = logout;
+exports.markAsRead = markAsRead;
+exports.quitGroup = quitGroup;
+exports.sendGroupMessage = sendGroupMessage;
+exports.sendMessage = sendMessage;
+exports.sendSmsCode = sendSmsCode;
+exports.updateAppProfile = updateAppProfile;
+exports.updateGroup = updateGroup;
+exports.uploadAvatar = uploadAvatar;
+exports.uploadFile = uploadFile;
+exports.wxLogin = wxLogin;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/utils/api.js.map

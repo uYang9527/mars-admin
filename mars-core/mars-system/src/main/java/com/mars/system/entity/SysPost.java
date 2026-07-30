@@ -1,5 +1,6 @@
 package com.mars.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.mars.common.entity.BaseEntity;
 import lombok.Data;
@@ -12,6 +13,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_post")
 public class SysPost extends BaseEntity {
+
+    /**
+     * 父岗位ID
+     */
+    private Long parentId;
+
+    /**
+     * 子岗位
+     */
+    @TableField(exist = false)
+    private java.util.List<SysPost> children;
 
     /**
      * 岗位编码

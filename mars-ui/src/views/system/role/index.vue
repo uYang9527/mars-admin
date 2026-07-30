@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -30,7 +30,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:role:add')" type="primary" @click="handleAdd">
@@ -38,7 +38,7 @@
           新增角色
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table
         :columns="columns"
@@ -50,7 +50,7 @@
         @update:page-size="handlePageSizeChange"
       />
     </n-card>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -67,21 +67,31 @@
         label-width="80"
         class="modal-form"
       >
-        <n-form-item label="角色名称" path="name">
-          <n-input v-model:value="formData.name" placeholder="请输入角色名称" />
-        </n-form-item>
-        <n-form-item label="角色编码" path="code">
-          <n-input v-model:value="formData.code" placeholder="请输入角色编码" />
-        </n-form-item>
-        <n-form-item label="排序" path="sort">
-          <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
-        </n-form-item>
-        <n-form-item label="状态" path="status">
-          <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
-            <template #checked>启用</template>
-            <template #unchecked>禁用</template>
-          </n-switch>
-        </n-form-item>
+        <n-grid :cols="2" :x-gap="24">
+          <n-gi>
+            <n-form-item label="角色名称" path="name">
+              <n-input v-model:value="formData.name" placeholder="请输入角色名称" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="角色编码" path="code">
+              <n-input v-model:value="formData.code" placeholder="请输入角色编码" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="排序" path="sort">
+              <n-input-number v-model:value="formData.sort" :min="0" style="width: 100%" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="状态" path="status">
+              <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
+                <template #checked>启用</template>
+                <template #unchecked>禁用</template>
+              </n-switch>
+            </n-form-item>
+          </n-gi>
+        </n-grid>
         <n-form-item label="菜单权限" path="menuIds">
           <div class="menu-tree-wrapper">
             <n-tree
@@ -100,6 +110,27 @@
         <n-form-item label="备注" path="remark">
           <n-input v-model:value="formData.remark" type="textarea" placeholder="请输入备注" />
         </n-form-item>
+        <n-form-item label="数据权限" path="dataScope">
+          <n-select
+            v-model:value="formData.dataScope"
+            placeholder="请选择数据范围"
+            :options="dataScopeOptions"
+          />
+        </n-form-item>
+        <n-form-item v-if="formData.dataScope === 2" label="部门权限">
+          <div class="menu-tree-wrapper">
+            <n-tree
+              :data="deptTreeData"
+              :checked-keys="deptIds"
+              checkable
+              cascade
+              check-strategy="all"
+              selectable
+              block-line
+              @update:checked-keys="handleDeptCheck"
+            />
+          </div>
+        </n-form-item>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -115,7 +146,7 @@
 import { ref, reactive, h, onMounted } from 'vue'
 import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
 import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
-import { roleApi, menuApi, type SysRole, type SysMenu } from '@/api/system'
+import { roleApi, menuApi, deptApi, type SysRole, type SysMenu, type SysDept } from '@/api/system'
 import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
@@ -137,6 +168,15 @@ const statusOptions = [
   { label: '禁用', value: 0 }
 ]
 
+// 数据范围选项
+const dataScopeOptions = [
+  { label: '全部数据权限', value: 1 },
+  { label: '自定数据权限', value: 2 },
+  { label: '本部门数据权限', value: 3 },
+  { label: '本部门及以下数据权限', value: 4 },
+  { label: '仅本人数据权限', value: 5 }
+]
+
 // 表格数据
 const tableData = ref<SysRole[]>([])
 const loading = ref(false)
@@ -151,6 +191,10 @@ const pagination = reactive({
 // 菜单树
 const menuTreeData = ref<TreeOption[]>([])
 const menuIds = ref<number[]>([])
+
+// 部门树
+const deptTreeData = ref<TreeOption[]>([])
+const deptIds = ref<number[]>([])
 
 // 表格列
 const columns: DataTableColumns<SysRole> = [
@@ -170,7 +214,7 @@ const columns: DataTableColumns<SysRole> = [
       )
     }
   },
-  { title: '备注', key: 'remark', ellipsis: { tooltip: true } },
+  { title: '备注', key: 'remark',width: 180, ellipsis: { tooltip: true } },
   { title: '创建时间', key: 'createTime', width: 180 },
   {
     title: '操作',
@@ -219,6 +263,15 @@ function convertMenuToTree(menus: SysMenu[]): TreeOption[] {
   }))
 }
 
+// 转换部门为树结构
+function convertDeptToTree(depts: SysDept[]): TreeOption[] {
+  return depts.map(dept => ({
+    key: dept.id,
+    label: dept.deptName,
+    children: dept.children ? convertDeptToTree(dept.children) : undefined
+  }))
+}
+
 // 加载数据
 async function loadData() {
   loading.value = true
@@ -243,6 +296,16 @@ async function loadMenuTree() {
   try {
     const menus = await menuApi.tree()
     menuTreeData.value = convertMenuToTree(menus)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 加载部门树
+async function loadDeptTree() {
+  try {
+    const depts = await deptApi.tree()
+    deptTreeData.value = convertDeptToTree(depts)
   } catch (error) {
     // 错误已在拦截器处理
   }
@@ -284,6 +347,11 @@ function handleIndeterminateChange(keys: number[]) {
   halfCheckedKeys.value = keys
 }
 
+// 部门选择
+function handleDeptCheck(keys: number[]) {
+  deptIds.value = keys
+}
+
 // 新增
 function handleAdd() {
   modalTitle.value = '新增角色'
@@ -293,9 +361,11 @@ function handleAdd() {
     code: '',
     sort: 0,
     status: 1,
+    dataScope: 1,
     remark: ''
   })
   menuIds.value = []
+  deptIds.value = []
   modalVisible.value = true
 }
 
@@ -324,6 +394,8 @@ async function handleEdit(row: SysRole) {
     // 只选中叶子节点，父节点会自动计算半选状态
     const leafIds = getLeafNodeIds(menuTreeData.value)
     menuIds.value = res.menuIds.filter((id: number) => leafIds.includes(id))
+    // 部门回显
+    deptIds.value = res.deptIds || []
     modalVisible.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -335,15 +407,16 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     // 合并选中的节点和半选的父节点
     const allMenuIds = [...new Set([...menuIds.value, ...halfCheckedKeys.value])]
-    
+
     const data = {
       role: { ...formData },
-      menuIds: allMenuIds
+      menuIds: allMenuIds,
+      deptIds: formData.dataScope === 2 ? deptIds.value : []
     }
-    
+
     if (formData.id) {
       await roleApi.update(data)
       message.success('更新成功')
@@ -351,7 +424,7 @@ async function handleSubmit() {
       await roleApi.create(data)
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -383,6 +456,7 @@ function handleDelete(row: SysRole) {
 onMounted(() => {
   loadData()
   loadMenuTree()
+  loadDeptTree()
 })
 </script>
 
@@ -395,4 +469,9 @@ onMounted(() => {
   border-radius: 8px;
   padding: 12px;
 }
+
+.page-layout{
+  height: calc(100vh - 160px);
+}
+
 </style>

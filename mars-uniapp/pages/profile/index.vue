@@ -1,588 +1,362 @@
 <template>
-  <view class="page">
-    <!-- 整体滚动区域 -->
-    <scroll-view class="scroll-container" scroll-y>
-      <!-- 头部渐变区域 -->
-      <view class="header">
-        <view :style="{ height: statusBarHeight + 'px' }"></view>
-        <view class="header-nav">
-          <text class="header-title">我的</text>
-        </view>
+	<view class="page">
+		<!-- 自定义顶部 -->
+		<view class="header-wrap">
+			<view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
+			<view class="nav-bar">
+				<text class="nav-title">我的</text>
+			</view>
 
-        <!-- 用户卡片 -->
-        <view class="user-card" @click="goProfile">
-          <view class="user-avatar-wrap">
-            <image class="user-avatar" :src="userInfo.avatar" mode="aspectFill"></image>
-            <view class="vip-badge">
-              <text class="fas fa-crown"></text>
-            </view>
-          </view>
-          <view class="user-info">
-            <text class="user-name">{{ userInfo.name }}</text>
-            <view class="vip-tag">黄金会员</view>
-          </view>
-          <text class="fas fa-qrcode"></text>
-        </view>
-      </view>
+			<!-- 用户头像区域 居中 -->
+			<view class="user-center">
+				<view class="avatar-wrap" @tap="handleChangeAvatar">
+					<image class="user-avatar" :src="userInfo.avatar || '/static/default-avatar.png'"
+						mode="aspectFill"></image>
+					<view class="avatar-camera">
+						<u-icon name="camera-fill" color="#FFF" size="11"></u-icon>
+					</view>
+				</view>
+				<text class="user-nickname">{{ userInfo.nickname || '未设置昵称' }}</text>
+				<text class="user-id">ID: {{ userInfo.userId || '--' }}</text>
+			</view>
+		</view>
 
-      <!-- 内容区域 -->
-      <view class="content">
-        <!-- 数据统计 -->
-    
+		<!-- 菜单区域 -->
+		<scroll-view scroll-y class="menu-scroll">
+			<view class="menu-group">
+				<view class="menu-item" @tap="handleEditProfile">
+					<view class="menu-icon-wrap" style="background: rgba(7,193,96,0.1);">
+						<u-icon name="account" color="#07C160" size="18"></u-icon>
+					</view>
+					<text class="menu-text">个人信息</text>
+					<u-icon name="arrow-right" color="#CCCCCC" size="14"></u-icon>
+				</view>
+				<view class="menu-item" @tap="handleChangePassword">
+					<view class="menu-icon-wrap" style="background: rgba(24,144,255,0.1);">
+						<u-icon name="lock" color="#1890FF" size="18"></u-icon>
+					</view>
+					<text class="menu-text">修改密码</text>
+					<u-icon name="arrow-right" color="#CCCCCC" size="14"></u-icon>
+				</view>
+			</view>
 
-        <!-- 订单 -->
-        <view class="order-card">
-          <view class="card-header">
-            <text class="card-title">我的订单</text>
-            <view class="card-more" @click="goOrders">
-              <text>查看全部</text>
-              <text class="fas fa-chevron-right"></text>
-            </view>
-          </view>
-          <view class="order-list">
-            <view class="order-item" v-for="order in orders" :key="order.id" @click="handleOrder(order)">
-              <view class="order-icon" :class="{ active: order.badge }">
-                <text :class="order.icon"></text>
-                <view class="order-badge" v-if="order.badge">{{ order.badge }}</view>
-              </view>
-              <text class="order-label">{{ order.label }}</text>
-            </view>
-          </view>
-        </view>
+			<view class="menu-group">
+				<view class="menu-item" @tap="handleBlacklist">
+					<view class="menu-icon-wrap" style="background: rgba(250,173,20,0.1);">
+						<u-icon name="minus-circle" color="#FAAD14" size="18"></u-icon>
+					</view>
+					<text class="menu-text">黑名单</text>
+					<u-icon name="arrow-right" color="#CCCCCC" size="14"></u-icon>
+				</view>
+				<view class="menu-item" @tap="handleClearCache">
+					<view class="menu-icon-wrap" style="background: rgba(153,153,153,0.08);">
+						<u-icon name="trash" color="#999" size="18"></u-icon>
+					</view>
+					<text class="menu-text">清除缓存</text>
+					<text class="menu-value">{{ cacheSize }}</text>
+					<u-icon name="arrow-right" color="#CCCCCC" size="14"></u-icon>
+				</view>
+			</view>
 
-        <!-- 服务菜单 -->
-        <view class="menu-card">
-          <view class="menu-item" v-for="(menu, index) in menus1" :key="index" @click="handleMenu(menu)">
-            <view class="menu-icon" :style="{ background: menu.bg }">
-              <text :class="menu.icon" :style="{ color: menu.color }"></text>
-            </view>
-            <text class="menu-label">{{ menu.label }}</text>
-            <text class="fas fa-chevron-right"></text>
-          </view>
-        </view>
+			<view class="menu-group">
+				<view class="menu-item" @tap="handleAbout">
+					<view class="menu-icon-wrap" style="background: rgba(114,46,209,0.08);">
+						<u-icon name="info-circle" color="#722ED1" size="18"></u-icon>
+					</view>
+					<text class="menu-text">关于</text>
+					<text class="menu-value">v1.0.0</text>
+					<u-icon name="arrow-right" color="#CCCCCC" size="14"></u-icon>
+				</view>
+			</view>
 
-        <view class="menu-card">
-          <view class="menu-item" v-for="(menu, index) in menus2" :key="index" @click="handleMenu(menu)">
-            <view class="menu-icon" :style="{ background: menu.bg }">
-              <text :class="menu.icon" :style="{ color: menu.color }"></text>
-            </view>
-            <text class="menu-label">{{ menu.label }}</text>
-            <text class="fas fa-chevron-right"></text>
-          </view>
-        </view>
-
-        <view class="safe-bottom"></view>
-      </view>
-    </scroll-view>
-  </view>
+			<view class="logout-wrap">
+				<button class="logout-btn" @tap="handleLogout">退出登录</button>
+			</view>
+		</scroll-view>
+	</view>
 </template>
 
 <script>
-import { getMemberInfo, getOrderCount } from '@/utils/api.js'
+	import { logout, getAppProfile, updateAppProfile, uploadAvatar } from '../../utils/api.js'
+	import { getUserInfo, setUserInfo, clearAuth } from '../../utils/auth.js'
+	import wsClient from '../../utils/websocket.js'
 
-export default {
-  data() {
-    return {
-      statusBarHeight: 0,
-      isLoggedIn: false,
-      userInfo: {
-        name: '请登录',
-        avatar: '/static/default-avatar.png'
-      },
-      stats: [
-        {
-          icon: 'fas fa-ticket-alt',
-          label: '优惠券',
-          value: '0',
-          color: '#059669',
-          bg: 'linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05))'
-        },
-        {
-          icon: 'fas fa-star',
-          label: '积分',
-          value: '0',
-          color: '#f59e0b',
-          bg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))'
-        },
-        {
-          icon: 'fas fa-coins',
-          label: '余额',
-          value: '¥0.00',
-          color: '#ef4444',
-          bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))'
-        },
-        {
-          icon: 'fas fa-wallet',
-          label: '钱包',
-          value: '',
-          color: '#6366f1',
-          bg: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05))'
-        }
-      ],
-      orders: [
-        {id: 0, icon: 'far fa-credit-card', label: '待付款', badge: 0},
-        {id: 1, icon: 'fas fa-box', label: '待发货', badge: 0},
-        {id: 2, icon: 'fas fa-shipping-fast', label: '待收货', badge: 0},
-        {id: 3, icon: 'far fa-comment-dots', label: '已完成', badge: 0}
-      ],
-      menus1: [
-        {
-          id: 1,
-          icon: 'fas fa-map-marker-alt',
-          label: '收货地址',
-          color: '#059669',
-          bg: 'linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05))',
-          url: '/pages/address/list'
-        },
-        {
-          id: 2,
-          icon: 'fas fa-heart',
-          label: '我的收藏',
-          color: '#ef4444',
-          bg: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))',
-          url: '/pages/favorite/index'
-        }
-      ],
-      menus2: [
-        {
-          id: 3,
-          icon: 'fas fa-headset',
-          label: '客服中心',
-          color: '#3b82f6',
-          bg: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))'
-        },
-        {
-          id: 4,
-          icon: 'fas fa-cog',
-          label: '设置',
-          color: '#6b7280',
-          bg: 'linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05))',
-          url: '/pages/settings/index'
-        }
-      ]
-    }
-  },
-  onLoad() {
-    const systemInfo = uni.getSystemInfoSync()
-    this.statusBarHeight = systemInfo.statusBarHeight || 0
-  },
-  onShow() {
-    this.checkLoginAndLoad()
-  },
-  methods: {
-    // 检查登录状态并加载数据
-    async checkLoginAndLoad() {
-      const memberInfo = uni.getStorageSync('memberInfo')
-      this.isLoggedIn = !!(memberInfo && memberInfo.memberId)
-      
-      if (this.isLoggedIn) {
-        this.userInfo = {
-          name: memberInfo.nickname || '用户',
-          avatar: memberInfo.avatar || '/static/default-avatar.png'
-        }
-        // 更新积分
-        this.stats[1].value = memberInfo.points || '0'
-        
-        // 加载最新会员信息
-        this.loadMemberInfo()
-        // 加载订单数量
-        this.loadOrderCount()
-      } else {
-        this.userInfo = {
-          name: '请登录',
-          avatar: '/static/default-avatar.png'
-        }
-      }
-    },
-    // 加载会员信息
-    async loadMemberInfo() {
-      try {
-        const res = await getMemberInfo()
-        if (res.code === 200 && res.data) {
-          this.userInfo.name = res.data.nickname || '用户'
-          this.userInfo.avatar = res.data.avatar || '/static/default-avatar.png'
-          this.stats[1].value = res.data.points || '0'
-          this.stats[2].value = `¥${res.data.balance || '0.00'}`
-          
-          // 更新本地存储
-          const stored = uni.getStorageSync('memberInfo')
-          uni.setStorageSync('memberInfo', { ...stored, ...res.data })
-        }
-      } catch (e) {
-        console.error('加载会员信息失败', e)
-      }
-    },
-    // 加载订单数量
-    async loadOrderCount() {
-      try {
-        const res = await getOrderCount()
-        if (res.code === 200 && res.data) {
-          // 待付款
-          this.orders[0].badge = res.data.pendingPay || 0
-          // 待发货
-          this.orders[1].badge = res.data.pendingShip || 0
-          // 待收货
-          this.orders[2].badge = res.data.pendingReceive || 0
-          // 已完成
-          this.orders[3].badge = res.data.completed || 0
-        }
-      } catch (e) {
-        console.error('加载订单数量失败', e)
-      }
-    },
-    goSettings() {
-      uni.navigateTo({url: '/pages/settings/index'})
-    },
-    goProfile() {
-      if (!this.isLoggedIn) {
-        uni.navigateTo({url: '/pages/login/index'})
-        return
-      }
-      uni.showToast({title: '编辑资料', icon: 'none'})
-    },
-    goOrders() {
-      if (!this.isLoggedIn) {
-        uni.navigateTo({url: '/pages/login/index'})
-        return
-      }
-      uni.navigateTo({url: '/pages/orders/index'})
-    },
-    handleStat(stat) {
-      if (!this.isLoggedIn) {
-        uni.navigateTo({url: '/pages/login/index'})
-        return
-      }
-      uni.showToast({title: stat.label, icon: 'none'})
-    },
-    handleOrder(order) {
-      if (!this.isLoggedIn) {
-        uni.navigateTo({url: '/pages/login/index'})
-        return
-      }
-      uni.navigateTo({url: `/pages/orders/index?status=${order.id}`})
-    },
-    handleMenu(menu) {
-      if (menu.url) {
-        if (!this.isLoggedIn && menu.id !== 4 && menu.id !== 3) {
-          uni.navigateTo({url: '/pages/login/index'})
-          return
-        }
-        uni.navigateTo({url: menu.url})
-      } else {
-        uni.showToast({title: menu.label, icon: 'none'})
-      }
-    }
-  }
-}
+	export default {
+		data() {
+			return {
+				userInfo: {},
+				cacheSize: '0 KB',
+				statusBarHeight: 20
+			}
+		},
+		onLoad() {
+			const sysInfo = uni.getSystemInfoSync()
+			this.statusBarHeight = sysInfo.statusBarHeight || 20
+		},
+		onShow() {
+			this.userInfo = getUserInfo() || {}
+			this.loadProfile()
+			this.calcCacheSize()
+		},
+		methods: {
+			async loadProfile() {
+				try {
+					const res = await getAppProfile()
+					if (res.data) {
+						this.userInfo = { ...this.userInfo, ...res.data }
+						setUserInfo(this.userInfo)
+					}
+				} catch (err) {}
+			},
+			calcCacheSize() {
+				try {
+					const info = uni.getStorageInfoSync()
+					const s = info.currentSize || 0
+					this.cacheSize = s > 1024 ? (s / 1024).toFixed(1) + ' MB' : s + ' KB'
+				} catch (e) { this.cacheSize = '0 KB' }
+			},
+			handleChangeAvatar() {
+				uni.chooseImage({
+					count: 1,
+					sizeType: ['compressed'],
+					success: async (res) => {
+						uni.showLoading({ title: '上传中...' })
+						try {
+							const r = await uploadAvatar(res.tempFilePaths[0])
+							const url = r.data || ''
+							await updateAppProfile({ avatar: url })
+							this.userInfo.avatar = url
+							setUserInfo(this.userInfo)
+							uni.showToast({ title: '头像已更新', icon: 'success' })
+						} catch (e) {
+							uni.showToast({ title: '上传失败', icon: 'none' })
+						} finally { uni.hideLoading() }
+					}
+				})
+			},
+		handleEditProfile() {
+			uni.navigateTo({ url: '/pages/profile/edit' })
+		},
+		handleChangePassword() {
+			uni.navigateTo({ url: '/pages/profile/password' })
+		},
+			handleBlacklist() {
+				uni.showToast({ title: '功能开发中', icon: 'none' })
+			},
+			handleClearCache() {
+				uni.showModal({
+					title: '清除缓存',
+					content: `当前缓存 ${this.cacheSize}，确定清除？`,
+					success: (res) => {
+						if (res.confirm) {
+							const t = uni.getStorageSync('token')
+							const u = uni.getStorageSync('userInfo')
+							uni.clearStorageSync()
+							if (t) uni.setStorageSync('token', t)
+							if (u) uni.setStorageSync('userInfo', u)
+							this.calcCacheSize()
+							uni.showToast({ title: '已清除', icon: 'success' })
+						}
+					}
+				})
+			},
+			handleAbout() {
+				uni.showModal({
+					title: 'Mars办公',
+					content: 'v1.0.0\n高效沟通，智慧办公',
+					showCancel: false
+				})
+			},
+			handleLogout() {
+				uni.showModal({
+					title: '退出登录',
+					content: '确定要退出当前账号吗？',
+					confirmColor: '#FA5151',
+					success: async (res) => {
+						if (res.confirm) {
+							try { await logout().catch(() => {}) } catch (e) {}
+							wsClient.close()
+							clearAuth()
+							uni.reLaunch({ url: '/pages/login/index' })
+						}
+					}
+				})
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
+	.page {
+		min-height: 100vh;
+		background: #F0F0F0;
+	}
 
-.page {
-  width: 100%;
-  min-height: 100vh;
-  background: #f5f7fa;
-  display: flex;
-  flex-direction: column;
-}
+	/* ---- 顶部区域 ---- */
+	.header-wrap {
+		background: linear-gradient(160deg, #059B4B 0%, #07C160 45%, #2BD373 100%);
+		padding-bottom: 48rpx;
+		position: relative;
+		overflow: hidden;
+	}
+	/* 装饰圆 */
+	.header-wrap::before {
+		content: '';
+		position: absolute;
+		width: 400rpx;
+		height: 400rpx;
+		border-radius: 50%;
+		background: rgba(255,255,255,0.06);
+		top: -160rpx;
+		right: -80rpx;
+	}
+	.header-wrap::after {
+		content: '';
+		position: absolute;
+		width: 260rpx;
+		height: 260rpx;
+		border-radius: 50%;
+		background: rgba(255,255,255,0.04);
+		bottom: -40rpx;
+		left: -60rpx;
+	}
 
-.scroll-container {
-  width: 100%;
-  height: 100vh;
-}
+	.status-bar {
+		width: 100%;
+	}
+	.nav-bar {
+		height: 88rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		z-index: 2;
+	}
+	.nav-title {
+		font-size: 34rpx;
+		font-weight: 600;
+		color: #FFFFFF;
+		letter-spacing: 2rpx;
+	}
 
-.header {
-  width: 100%;
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  padding: 0 32rpx 64rpx;
-  position: relative;
-  box-sizing: border-box;
-}
+	/* ---- 用户居中区域 ---- */
+	.user-center {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 20rpx 0 8rpx;
+		position: relative;
+		z-index: 2;
+	}
+	.avatar-wrap {
+		position: relative;
+		margin-bottom: 18rpx;
+	}
+	.user-avatar {
+		width: 148rpx;
+		height: 148rpx;
+		border-radius: 50%;
+		border: 6rpx solid rgba(255,255,255,0.5);
+		background: #E0E0E0;
+		box-shadow: 0 8rpx 32rpx rgba(0,0,0,0.15);
+	}
+	.avatar-camera {
+		position: absolute;
+		right: 4rpx;
+		bottom: 4rpx;
+		width: 44rpx;
+		height: 44rpx;
+		border-radius: 50%;
+		background: #07C160;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: 4rpx solid #FFFFFF;
+		box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.12);
+	}
+	.user-nickname {
+		font-size: 36rpx;
+		font-weight: 700;
+		color: #FFFFFF;
+		letter-spacing: 1rpx;
+		text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+	}
+	.user-id {
+		font-size: 22rpx;
+		color: rgba(255,255,255,0.65);
+		margin-top: 6rpx;
+	}
 
-.header-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 0 48rpx;
+	/* ---- 菜单区域 ---- */
+	.menu-scroll {
+		flex: 1;
+	}
+	.menu-group {
+		margin: 20rpx 24rpx 0;
+		background: #FFFFFF;
+		border-radius: 16rpx;
+		overflow: hidden;
+		box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.03);
+	}
+	.menu-item {
+		display: flex;
+		align-items: center;
+		padding: 28rpx 28rpx;
+		position: relative;
 
-  .header-title {
-    font-size: 40rpx;
-    font-weight: 700;
-    color: #fff;
-  }
+		&:active {
+			background: #F7F7F7;
+		}
 
-  .fa-cog {
-    font-size: 40rpx;
-    color: #fff;
-    opacity: 0.9;
-  }
-}
+		/* 分割线 - 除最后一个 */
+		& + .menu-item::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 80rpx;
+			right: 28rpx;
+			height: 1rpx;
+			background: #F2F2F2;
+		}
+	}
+	.menu-icon-wrap {
+		width: 52rpx;
+		height: 52rpx;
+		border-radius: 12rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 20rpx;
+		flex-shrink: 0;
+	}
+	.menu-text {
+		flex: 1;
+		font-size: 28rpx;
+		color: #1A1A1A;
+		font-weight: 400;
+	}
+	.menu-value {
+		font-size: 24rpx;
+		color: #BBBBBB;
+		margin-right: 8rpx;
+	}
 
-.user-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 32rpx;
-  padding: 32rpx;
-  display: flex;
-  align-items: center;
-  gap: 32rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
-}
-
-.user-avatar-wrap {
-  position: relative;
-}
-
-.user-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  border-radius: 32rpx;
-  border: 8rpx solid rgba(255, 255, 255, 0.5);
-}
-
-.vip-badge {
-  position: absolute;
-  bottom: -8rpx;
-  right: -8rpx;
-  width: 48rpx;
-  height: 48rpx;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
-
-  .fa {
-    font-size: 20rpx;
-    color: #fff;
-  }
-}
-
-.user-info {
-  flex: 1;
-}
-
-.user-name {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #1e293b;
-  display: block;
-  margin-bottom: 12rpx;
-}
-
-.vip-tag {
-  display: inline-block;
-  background: #059669;
-  color: #fff;
-  font-size: 20rpx;
-  font-weight: 600;
-  padding: 6rpx 20rpx;
-  border-radius: 8rpx;
-}
-
-.fa-qrcode {
-  font-size: 48rpx;
-  color: #94a3b8;
-}
-
-.content {
-  width: 100%;
-  padding: 32rpx;
-  margin-top: -32rpx;
-  box-sizing: border-box;
-  background: #f5f7fa;
-}
-
-.stats-card {
-  background: #fff;
-  border-radius: 32rpx;
-  padding: 48rpx 32rpx;
-  margin-bottom: 32rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 32rpx;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.stat-icon {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16rpx;
-  transition: transform 0.3s;
-
-  .fa {
-    font-size: 40rpx;
-  }
-}
-
-.stat-item:active .stat-icon {
-  transform: scale(1.1);
-}
-
-.stat-value {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 8rpx;
-}
-
-.stat-label {
-  font-size: 22rpx;
-  color: #64748b;
-}
-
-.order-card, .menu-card {
-  background: #fff;
-  border-radius: 32rpx;
-  padding: 48rpx 40rpx;
-  margin-bottom: 32rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32rpx;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.card-more {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  color: #059669;
-  font-size: 24rpx;
-
-  .fa {
-    font-size: 20rpx;
-  }
-}
-
-.order-list {
-  display: flex;
-  justify-content: space-between;
-}
-
-.order-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.order-icon {
-  position: relative;
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 24rpx;
-  background: rgba(0, 0, 0, 0.03);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-
-  .fa {
-    font-size: 40rpx;
-    color: #64748b;
-  }
-
-  &.active {
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05));
-
-    .fa {
-      color: #059669;
-    }
-  }
-}
-
-.order-item:active .order-icon {
-  transform: scale(1.1);
-}
-
-.order-badge {
-  position: absolute;
-  top: -8rpx;
-  right: -8rpx;
-  min-width: 32rpx;
-  height: 32rpx;
-  background: #ef4444;
-  color: #fff;
-  font-size: 18rpx;
-  font-weight: 700;
-  border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(239, 68, 68, 0.3);
-}
-
-.order-label {
-  font-size: 22rpx;
-  color: #64748b;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 32rpx 0;
-  border-bottom: 2rpx solid #f1f5f9;
-  transition: background 0.3s;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:active {
-    background: #f8fafc;
-  }
-}
-
-.menu-icon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 32rpx;
-
-  .fa {
-    font-size: 36rpx;
-  }
-}
-
-.menu-label {
-  flex: 1;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #1e293b;
-}
-
-.fa-chevron-right {
-  font-size: 24rpx;
-  color: #cbd5e1;
-}
-
-.safe-bottom {
-  height: 240rpx;
-}
+	/* ---- 退出按钮 ---- */
+	.logout-wrap {
+		padding: 40rpx 24rpx 80rpx;
+	}
+	.logout-btn {
+		height: 88rpx;
+		line-height: 88rpx;
+		background: #FFFFFF;
+		color: #FA5151;
+		font-size: 28rpx;
+		font-weight: 500;
+		border-radius: 16rpx;
+		border: none;
+		box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.03);
+	}
+	.logout-btn::after {
+		border: none;
+	}
 </style>

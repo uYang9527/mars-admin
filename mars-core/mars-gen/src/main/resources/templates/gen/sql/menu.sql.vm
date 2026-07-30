@@ -18,4 +18,6 @@ INSERT INTO sys_menu (parent_id, name, type, path, component, permission, icon, 
 (@parentId, '${functionName}详情', 3, NULL, NULL, '${moduleName}:${businessName}:query', NULL, 2, 1, 1, 0, 0),
 (@parentId, '${functionName}新增', 3, NULL, NULL, '${moduleName}:${businessName}:add', NULL, 3, 1, 1, 0, 0),
 (@parentId, '${functionName}修改', 3, NULL, NULL, '${moduleName}:${businessName}:edit', NULL, 4, 1, 1, 0, 0),
-(@parentId, '${functionName}删除', 3, NULL, NULL, '${moduleName}:${businessName}:remove', NULL, 5, 1, 1, 0, 0);
+(@parentId, '${functionName}删除', 3, NULL, NULL, '${moduleName}:${businessName}:remove', NULL, 5, 1, 1, 0, 0),
+(@parentId, '${functionName}导出', 3, NULL, NULL, '${moduleName}:${businessName}:export', NULL, 6, 1, 1, 0, 0),
+(@parentId, '${functionName}导入', 3, NULL, NULL, '${moduleName}:${businessName}:import', NULL, 7, 1, 1, 0, 0);

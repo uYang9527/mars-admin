@@ -2,7 +2,7 @@ package com.mars.pay;
 
 import cn.hutool.core.util.IdUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import com.wechat.pay.java.core.Config;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.payments.nativepay.NativePayService;
@@ -103,7 +103,7 @@ public class WechatPayService extends AbstractPayService {
      */
     public Map<String, String> createMiniProgramOrder(String orderNo, java.math.BigDecimal amount, String description, String openId) {
         Map<String, String> result = new HashMap<>();
-        
+
         try {
             JsonNode paymentConfig = configHelper.getConfig("payment");
             if (paymentConfig == null || paymentConfig.get("wechatPay") == null) {
@@ -136,13 +136,13 @@ public class WechatPayService extends AbstractPayService {
                     .build();
 
             // 创建JSAPI支付服务
-            com.wechat.pay.java.service.payments.jsapi.JsapiService jsapiService = 
+            com.wechat.pay.java.service.payments.jsapi.JsapiService jsapiService =
                 new com.wechat.pay.java.service.payments.jsapi.JsapiService.Builder()
                     .config(wechatConfig)
                     .build();
 
             // 构建请求
-            com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest request = 
+            com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest request =
                 new com.wechat.pay.java.service.payments.jsapi.model.PrepayRequest();
             request.setAppid(appId);
             request.setMchid(mchId);
@@ -150,13 +150,13 @@ public class WechatPayService extends AbstractPayService {
             request.setOutTradeNo(orderNo);
             request.setNotifyUrl(notifyUrl);
 
-            com.wechat.pay.java.service.payments.jsapi.model.Amount jsapiAmount = 
+            com.wechat.pay.java.service.payments.jsapi.model.Amount jsapiAmount =
                 new com.wechat.pay.java.service.payments.jsapi.model.Amount();
             jsapiAmount.setTotal(amount.multiply(new java.math.BigDecimal(100)).intValue()); // 转换为分
             jsapiAmount.setCurrency("CNY");
             request.setAmount(jsapiAmount);
 
-            com.wechat.pay.java.service.payments.jsapi.model.Payer payer = 
+            com.wechat.pay.java.service.payments.jsapi.model.Payer payer =
                 new com.wechat.pay.java.service.payments.jsapi.model.Payer();
             payer.setOpenid(openId);
             request.setPayer(payer);
@@ -174,7 +174,7 @@ public class WechatPayService extends AbstractPayService {
             String signStr = appId + "\n" + timestamp + "\n" + nonceStr + "\n" + packageStr + "\n";
             java.security.Signature sign = java.security.Signature.getInstance("SHA256withRSA");
             java.security.KeyFactory keyFactory = java.security.KeyFactory.getInstance("RSA");
-            
+
             // 解析私钥
             String privateKeyContent = privateKey
                 .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -183,7 +183,7 @@ public class WechatPayService extends AbstractPayService {
             byte[] keyBytes = java.util.Base64.getDecoder().decode(privateKeyContent);
             java.security.spec.PKCS8EncodedKeySpec keySpec = new java.security.spec.PKCS8EncodedKeySpec(keyBytes);
             java.security.PrivateKey key = keyFactory.generatePrivate(keySpec);
-            
+
             sign.initSign(key);
             sign.update(signStr.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             String paySign = java.util.Base64.getEncoder().encodeToString(sign.sign());

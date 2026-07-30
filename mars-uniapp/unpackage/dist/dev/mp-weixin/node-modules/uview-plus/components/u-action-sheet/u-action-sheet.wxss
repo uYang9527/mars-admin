@@ -1,0 +1,87 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.u-empty.data-v-05ea451b,
+.u-empty__wrap.data-v-05ea451b,
+.u-tabs.data-v-05ea451b,
+.u-tabs__wrapper.data-v-05ea451b,
+.u-tabs__wrapper__scroll-view-wrapper.data-v-05ea451b,
+.u-tabs__wrapper__scroll-view.data-v-05ea451b,
+.u-tabs__wrapper__nav.data-v-05ea451b,
+.u-tabs__wrapper__nav__line.data-v-05ea451b,
+.up-empty.data-v-05ea451b,
+.up-empty__wrap.data-v-05ea451b,
+.up-tabs.data-v-05ea451b,
+.up-tabs__wrapper.data-v-05ea451b,
+.up-tabs__wrapper__scroll-view-wrapper.data-v-05ea451b,
+.up-tabs__wrapper__scroll-view.data-v-05ea451b,
+.up-tabs__wrapper__nav.data-v-05ea451b,
+.up-tabs__wrapper__nav__line.data-v-05ea451b {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-reset-button.data-v-05ea451b {
+  width: 100%;
+}
+.u-action-sheet.data-v-05ea451b {
+  text-align: center;
+}
+.u-action-sheet__header.data-v-05ea451b {
+  position: relative;
+  padding: 12px 30px;
+}
+.u-action-sheet__header__title.data-v-05ea451b {
+  font-size: 16px;
+  color: #303133;
+  font-weight: bold;
+  text-align: center;
+}
+.u-action-sheet__header__icon-wrap.data-v-05ea451b {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+.u-action-sheet__description.data-v-05ea451b {
+  font-size: 13px;
+  color: #909193;
+  margin: 18px 15px;
+  text-align: center;
+}
+.u-action-sheet__item-wrap__item.data-v-05ea451b {
+  padding: 17px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.u-action-sheet__item-wrap__item__name.data-v-05ea451b {
+  font-size: 16px;
+  color: #303133;
+  text-align: center;
+}
+.u-action-sheet__item-wrap__item__subname.data-v-05ea451b {
+  font-size: 13px;
+  color: #c0c4cc;
+  margin-top: 10px;
+  text-align: center;
+}
+.u-action-sheet__cancel-text.data-v-05ea451b {
+  font-size: 16px;
+  color: #606266;
+  text-align: center;
+}
+.u-action-sheet--hover.data-v-05ea451b {
+  background-color: #f2f3f5;
+}

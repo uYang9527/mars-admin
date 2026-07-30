@@ -83,4 +83,15 @@ public class SysDeptController {
         deptService.delete(id);
         return Result.ok();
     }
+
+    /**
+     * 移动部门（拖拽修改层级和排序）
+     */
+    @PutMapping("/move")
+    @SaCheckPermission("sys:dept:edit")
+    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
+    public Result<Void> move(@RequestParam Long id, @RequestParam Long parentId, @RequestParam(required = false) Integer sort) {
+        deptService.move(id, parentId, sort);
+        return Result.ok();
+    }
 }

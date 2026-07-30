@@ -11,13 +11,17 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: resolve(__dirname, '../mars-web/src/main/resources/static'),
+    outDir: resolve(__dirname, '../mars-starter/src/main/resources/static'),
     emptyOutDir: true
   },
   server: {
     port: 3000,
     proxy: {
       '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      },
+      '/druid': {
         target: 'http://localhost:8080',
         changeOrigin: true
       },

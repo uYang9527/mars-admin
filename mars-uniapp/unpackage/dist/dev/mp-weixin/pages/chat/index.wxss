@@ -1,0 +1,298 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.chat-page.data-v-5a559478 {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #EDEDED;
+}
+.message-list.data-v-5a559478 {
+  flex: 1;
+  overflow: hidden;
+  padding: 0 20rpx;
+}
+.loading-wrap.data-v-5a559478 {
+  text-align: center;
+  padding: 20rpx;
+  color: #BBB;
+  font-size: 22rpx;
+}
+
+/* ===== 时间分割线 ===== */
+.time-divider.data-v-5a559478 {
+  text-align: center;
+  padding: 24rpx 0 16rpx;
+}
+.time-divider text.data-v-5a559478 {
+  font-size: 22rpx;
+  color: #B2B2B2;
+  background: #DADADA;
+  padding: 4rpx 16rpx;
+  border-radius: 6rpx;
+}
+
+/* ===== 消息行 ===== */
+.message-row.data-v-5a559478 {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 30rpx;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* 对方消息 - 左对齐 */
+.msg-row-other.data-v-5a559478 {
+  justify-content: flex-start;
+}
+
+/* 自己消息 - 右对齐 */
+.msg-row-self.data-v-5a559478 {
+  justify-content: flex-end;
+  padding-right: 34rpx;
+}
+
+/* ===== 头像 ===== */
+.msg-avatar.data-v-5a559478 {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  background: #E0E0E0;
+}
+.avatar-text.data-v-5a559478 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-text text.data-v-5a559478 {
+  font-size: 32rpx;
+  color: #FFF;
+  font-weight: 600;
+}
+
+/* ===== 气泡容器 ===== */
+.bubble-box.data-v-5a559478 {
+  position: relative;
+  max-width: 60%;
+  margin-left: 12rpx;
+  flex-shrink: 1;
+  min-width: 0;
+}
+.bubble-box-self.data-v-5a559478 {
+  margin-left: 0;
+  margin-right: 12rpx;
+}
+
+/* ===== 气泡主体 ===== */
+.msg-bubble.data-v-5a559478 {
+  padding: 20rpx 24rpx;
+  word-break: break-all;
+}
+.bubble-other.data-v-5a559478 {
+  background: #FFFFFF;
+  border-radius: 8rpx;
+}
+.bubble-self.data-v-5a559478 {
+  background: #95EC69;
+  border-radius: 8rpx;
+}
+
+/* ===== 气泡三角箭头 ===== */
+.bubble-arrow-left.data-v-5a559478 {
+  position: absolute;
+  left: -16rpx;
+  top: 26rpx;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12rpx 16rpx 12rpx 0;
+  border-color: transparent #FFFFFF transparent transparent;
+}
+.bubble-arrow-right.data-v-5a559478 {
+  position: absolute;
+  right: -16rpx;
+  top: 26rpx;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12rpx 0 12rpx 16rpx;
+  border-color: transparent transparent transparent #95EC69;
+}
+
+/* ===== 消息内容 ===== */
+.msg-text.data-v-5a559478 {
+  font-size: 32rpx;
+  line-height: 1.5;
+  color: #111111;
+}
+.msg-image.data-v-5a559478 {
+  max-width: 360rpx;
+  min-width: 140rpx;
+  border-radius: 8rpx;
+  display: block;
+}
+.msg-file.data-v-5a559478 {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+.msg-file .file-name.data-v-5a559478 {
+  font-size: 26rpx;
+  color: #555;
+}
+
+/* ===== 微信风格底部输入栏 ===== */
+.input-bar.data-v-5a559478 {
+  background: #F7F7F7;
+  border-top: 1rpx solid #E0E0E0;
+}
+.input-bar-main.data-v-5a559478 {
+  display: flex;
+  align-items: flex-end;
+  padding: 16rpx 8rpx;
+}
+.bar-icon-btn.data-v-5a559478 {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 语音按钮 */
+.voice-btn.data-v-5a559478 {
+  flex: 1;
+  height: 72rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #DEDEDE;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.voice-btn text.data-v-5a559478 {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+}
+.voice-btn.data-v-5a559478:active {
+  background: #C6C6C6;
+}
+
+/* 输入框容器 */
+.input-wrap.data-v-5a559478 {
+  flex: 1;
+  min-height: 72rpx;
+  max-height: 240rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #DEDEDE;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  padding: 12rpx 16rpx;
+  box-sizing: border-box;
+}
+.msg-input.data-v-5a559478 {
+  flex: 1;
+  font-size: 30rpx;
+  line-height: 1.5;
+  color: #333;
+  width: 100%;
+  min-height: 44rpx;
+  max-height: 210rpx;
+}
+.input-placeholder.data-v-5a559478 {
+  color: #BCBCBC;
+}
+
+/* 发送按钮 */
+.send-btn-new.data-v-5a559478 {
+  height: 64rpx;
+  padding: 0 28rpx;
+  margin: 4rpx 4rpx;
+  background: #07C160;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.send-btn-new text.data-v-5a559478 {
+  font-size: 28rpx;
+  color: #FFF;
+  font-weight: 600;
+}
+.send-btn-new.data-v-5a559478:active {
+  background: #06AD56;
+}
+
+/* ===== 表情面板 ===== */
+.emoji-panel.data-v-5a559478 {
+  border-top: 1rpx solid #E8E8E8;
+  background: #F7F7F7;
+}
+.emoji-scroll.data-v-5a559478 {
+  height: 400rpx;
+  padding: 16rpx;
+}
+.emoji-grid.data-v-5a559478 {
+  display: flex;
+  flex-wrap: wrap;
+}
+.emoji-item.data-v-5a559478 {
+  width: 12.5%;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.emoji-item text.data-v-5a559478 {
+  font-size: 44rpx;
+}
+.emoji-item.data-v-5a559478:active {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 8rpx;
+}
+
+/* ===== 更多功能面板 ===== */
+.extra-panel.data-v-5a559478 {
+  border-top: 1rpx solid #E8E8E8;
+  background: #F7F7F7;
+  padding: 30rpx 20rpx;
+}
+.extra-grid.data-v-5a559478 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30rpx;
+  padding: 0 20rpx;
+}
+.extra-item.data-v-5a559478 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120rpx;
+}
+.extra-item.data-v-5a559478:active {
+  opacity: 0.7;
+}
+.extra-icon.data-v-5a559478 {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+.extra-label.data-v-5a559478 {
+  font-size: 22rpx;
+  color: #666;
+}

@@ -7,6 +7,7 @@ import com.mars.system.annotation.Log;
 import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
 import com.mars.system.entity.SysRole;
+import com.mars.system.mapper.SysRoleDeptMapper;
 import com.mars.system.service.SysRoleService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class SysRoleController {
 
     private final SysRoleService roleService;
+    private final SysRoleDeptMapper roleDeptMapper;
 
     /**
      * 分页查询
@@ -47,10 +49,12 @@ public class SysRoleController {
     public Result<Map<String, Object>> detail(@PathVariable Long id) {
         SysRole role = roleService.getDetail(id);
         List<Long> menuIds = roleService.getMenuIds(id);
+        List<Long> deptIds = roleDeptMapper.selectDeptIdsByRoleId(id);
 
         Map<String, Object> result = new HashMap<>();
         result.put("role", role);
         result.put("menuIds", menuIds);
+        result.put("deptIds", deptIds);
         return Result.ok(result);
     }
 
@@ -70,7 +74,7 @@ public class SysRoleController {
     @RepeatSubmit
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     public Result<Void> create(@RequestBody RoleRequest request) {
-        roleService.create(request.getRole(), request.getMenuIds());
+        roleService.create(request.getRole(), request.getMenuIds(), request.getDeptIds());
         return Result.ok();
     }
 
@@ -81,7 +85,7 @@ public class SysRoleController {
     @SaCheckPermission("sys:role:edit")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     public Result<Void> update(@RequestBody RoleRequest request) {
-        roleService.update(request.getRole(), request.getMenuIds());
+        roleService.update(request.getRole(), request.getMenuIds(), request.getDeptIds());
         return Result.ok();
     }
 
@@ -100,5 +104,6 @@ public class SysRoleController {
     public static class RoleRequest {
         private SysRole role;
         private List<Long> menuIds;
+        private List<Long> deptIds;
     }
 }

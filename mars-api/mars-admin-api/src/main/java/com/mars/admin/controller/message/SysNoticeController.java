@@ -8,9 +8,15 @@ import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
 import com.mars.system.annotation.RepeatSubmit;
 import com.mars.system.annotation.Log.BusinessType;
+import com.mars.admin.controller.message.dto.NoticeRequest;
 import com.mars.message.entity.SysNotice;
+import com.mars.message.entity.SysNoticeSendLog;
+import com.mars.message.service.NoticeSendService;
 import com.mars.message.service.SysNoticeService;
+import com.mars.message.service.SysNoticeSendLogService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 public class SysNoticeController {
 
     private final SysNoticeService noticeService;
+    private final NoticeSendService noticeSendService;
+    private final SysNoticeSendLogService sendLogService;
     private final MessageWebSocketHandler webSocketHandler;
 
     /**
@@ -56,8 +64,9 @@ public class SysNoticeController {
      * 获取通知详情
      */
     @GetMapping("/{id}")
-    public Result<SysNotice> detail(@PathVariable Long id) {
-        return Result.ok(noticeService.getById(id));
+    public Result<NoticeRequest> detail(@PathVariable Long id) {
+        SysNotice notice = noticeService.getById(id);
+        return Result.ok(notice != null ? NoticeRequest.fromEntity(notice) : null);
     }
 
     /**
@@ -67,8 +76,8 @@ public class SysNoticeController {
     @SaCheckPermission("sys:notice:add")
     @RepeatSubmit
     @Log(title = "新增通知", businessType = BusinessType.INSERT)
-    public Result<Void> create(@RequestBody SysNotice notice) {
-        noticeService.create(notice);
+    public Result<Void> create(@RequestBody NoticeRequest request) {
+        noticeService.create(request.toEntity());
         return Result.ok();
     }
 
@@ -78,8 +87,16 @@ public class SysNoticeController {
     @PutMapping
     @SaCheckPermission("sys:notice:edit")
     @Log(title = "修改通知", businessType = BusinessType.UPDATE)
-    public Result<Void> update(@RequestBody SysNotice notice) {
-        noticeService.update(notice);
+    public Result<Void> update(@RequestBody NoticeRequest request) {
+        SysNotice existing = noticeService.getById(request.getId());
+        if (existing == null) {
+            return Result.fail("通知不存在");
+        }
+        SysNotice entity = request.toEntity();
+        entity.setCreateBy(existing.getCreateBy());
+        entity.setCreateName(existing.getCreateName());
+        entity.setCreateTime(existing.getCreateTime());
+        noticeService.update(entity);
         return Result.ok();
     }
 
@@ -139,5 +156,34 @@ public class SysNoticeController {
     public Result<Integer> getUnreadCount() {
         Long userId = StpUtil.getLoginIdAsLong();
         return Result.ok(noticeService.getUnreadCount(userId));
+    }
+
+    /**
+     * 获取可用推送渠道（从 sys_config_group 读取配置）
+     */
+    @GetMapping("/channels")
+    @SaCheckPermission("sys:notice:list")
+    public Result<List<NoticeSendService.ChannelOption>> getChannels() {
+        return Result.ok(noticeSendService.getAvailableChannels());
+    }
+
+    /**
+     * 获取通知推送记录（触达情况）
+     */
+    @GetMapping("/{id}/send-logs")
+    @SaCheckPermission("sys:notice:list")
+    public Result<List<SysNoticeSendLog>> getSendLogs(@PathVariable Long id) {
+        return Result.ok(sendLogService.listByNoticeId(id));
+    }
+
+    /**
+     * 重试失败渠道的推送
+     */
+    @PostMapping("/{id}/retry")
+    @SaCheckPermission("sys:notice:edit")
+    @Log(title = "重试通知推送", businessType = BusinessType.UPDATE)
+    public Result<Void> retry(@PathVariable Long id, @RequestParam String channel) {
+        noticeSendService.retryChannel(id, channel);
+        return Result.ok();
     }
 }

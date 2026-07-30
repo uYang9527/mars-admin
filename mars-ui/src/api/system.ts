@@ -38,16 +38,19 @@ export interface SysUser {
   remark?: string
   userType?: string   // 用户类型: admin-后台管理员 pc-PC前台用户 app-App/小程序用户
   openId?: string     // 微信openId
+  isQuit?: number     // 是否离职(0-否 1-是)
+  postNames?: string  // 岗位名称列表
   createTime?: string
 }
 
 export interface UserDetailResult {
   user: SysUser
   roleIds: number[]
+  postIds: number[]
 }
 
 export const userApi = {
-  page(params: { page: number; pageSize: number; username?: string; status?: number; deptId?: number }): Promise<PageResult<SysUser>> {
+  page(params: { page: number; pageSize: number; username?: string; status?: number; userType?: string; deptId?: number; postId?: number }): Promise<PageResult<SysUser>> {
     return request({ url: '/sys/user/page', method: 'get', params })
   },
   
@@ -55,16 +58,20 @@ export const userApi = {
     return request({ url: `/sys/user/${id}`, method: 'get' })
   },
   
-  create(data: { user: SysUser; roleIds: number[] }): Promise<void> {
+  create(data: { user: SysUser; roleIds: number[]; postIds: number[] }): Promise<void> {
     return request({ url: '/sys/user', method: 'post', data })
   },
   
-  update(data: { user: SysUser; roleIds: number[] }): Promise<void> {
+  update(data: { user: SysUser; roleIds: number[]; postIds: number[] }): Promise<void> {
     return request({ url: '/sys/user', method: 'put', data })
   },
   
   delete(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}`, method: 'delete' })
+  },
+
+  deleteBatch(ids: number[]): Promise<void> {
+    return request({ url: '/sys/user/batch', method: 'delete', data: ids })
   },
   
   resetPassword(id: number): Promise<void> {
@@ -77,6 +84,48 @@ export const userApi = {
 
   reject(id: number): Promise<void> {
     return request({ url: `/sys/user/${id}/reject`, method: 'post' })
+  },
+
+  toggleQuit(id: number): Promise<void> {
+    return request({ url: `/sys/user/${id}/quit`, method: 'post' })
+  },
+
+  // 导出用户
+  exportUsers(params?: { username?: string; status?: number; userType?: string; deptId?: number; ids?: number[] }): Promise<Blob> {
+    const searchParams: Record<string, any> = {}
+    if (params?.username) searchParams.username = params.username
+    if (params?.status !== undefined && params?.status !== null) searchParams.status = params.status
+    if (params?.userType) searchParams.userType = params.userType
+    if (params?.deptId) searchParams.deptId = params.deptId
+    // 数组转逗号分隔字符串
+    if (params?.ids && params.ids.length > 0) searchParams.ids = params.ids.join(',')
+    return request({
+      url: '/sys/user/export',
+      method: 'get',
+      params: searchParams,
+      responseType: 'blob'
+    })
+  },
+
+  // 导入用户
+  importUsers(file: File): Promise<{ success: number; fail: number; errors: string[] }> {
+    const formData = new FormData()
+    formData.append('file', file)
+    return request({
+      url: '/sys/user/import',
+      method: 'post',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  },
+
+  // 下载导入模板
+  downloadTemplate(): Promise<Blob> {
+    return request({
+      url: '/sys/user/template',
+      method: 'get',
+      responseType: 'blob'
+    })
   }
 }
 
@@ -87,6 +136,7 @@ export interface SysRole {
   code: string
   sort: number
   status: number
+  dataScope?: number  // 数据范围: 1-全部, 2-自定义, 3-本部门, 4-本部门及下级, 5-仅本人
   remark?: string
   createTime?: string
 }
@@ -94,8 +144,57 @@ export interface SysRole {
 export interface RoleDetailResult {
   role: SysRole
   menuIds: number[]
+  deptIds: number[]
 }
 
+// ==================== 岗位管理 ====================
+export interface SysPost {
+  id?: number
+  parentId?: number
+  postCode: string
+  postName: string
+  sort: number
+  status: number
+  remark?: string
+  createTime?: string
+  children?: SysPost[]
+}
+
+export const postApi = {
+  page(params: { page: number; pageSize: number; postCode?: string; postName?: string; status?: number }): Promise<PageResult<SysPost>> {
+    return request({ url: '/sys/post/page', method: 'get', params })
+  },
+
+  list(): Promise<SysPost[]> {
+    return request({ url: '/sys/post/list', method: 'get' })
+  },
+
+  tree(): Promise<SysPost[]> {
+    return request({ url: '/sys/post/tree', method: 'get' })
+  },
+
+  detail(id: number): Promise<SysPost> {
+    return request({ url: `/sys/post/${id}`, method: 'get' })
+  },
+
+  create(data: SysPost): Promise<void> {
+    return request({ url: '/sys/post', method: 'post', data })
+  },
+
+  update(data: SysPost): Promise<void> {
+    return request({ url: '/sys/post', method: 'put', data })
+  },
+
+  delete(id: number): Promise<void> {
+    return request({ url: `/sys/post/${id}`, method: 'delete' })
+  },
+
+  move(id: number, parentId: number): Promise<void> {
+    return request({ url: `/sys/post/${id}/move`, method: 'post', params: { parentId } })
+  }
+}
+
+// ==================== 角色管理 ====================
 export const roleApi = {
   page(params: { page: number; pageSize: number; name?: string; status?: number }): Promise<PageResult<SysRole>> {
     return request({ url: '/sys/role/page', method: 'get', params })
@@ -109,16 +208,39 @@ export const roleApi = {
     return request({ url: `/sys/role/${id}`, method: 'get' })
   },
   
-  create(data: { role: SysRole; menuIds: number[] }): Promise<void> {
+  create(data: { role: SysRole; menuIds: number[]; deptIds?: number[] }): Promise<void> {
     return request({ url: '/sys/role', method: 'post', data })
   },
   
-  update(data: { role: SysRole; menuIds: number[] }): Promise<void> {
+  update(data: { role: SysRole; menuIds: number[]; deptIds?: number[] }): Promise<void> {
     return request({ url: '/sys/role', method: 'put', data })
   },
   
   delete(id: number): Promise<void> {
     return request({ url: `/sys/role/${id}`, method: 'delete' })
+  }
+}
+
+// ==================== 部门管理 ====================
+export interface SysDept {
+  id?: number
+  parentId: number
+  deptName: string
+  sort: number
+  leader?: string
+  phone?: string
+  email?: string
+  status: number
+  children?: SysDept[]
+}
+
+export const deptApi = {
+  tree(): Promise<SysDept[]> {
+    return request({ url: '/sys/dept/tree', method: 'get' })
+  },
+  
+  list(): Promise<SysDept[]> {
+    return request({ url: '/sys/dept/list', method: 'get' })
   }
 }
 
@@ -135,6 +257,7 @@ export interface SysMenu {
   sort: number
   visible: number
   status: number
+  isFrame?: number  // 是否外链(0-否 1-是)
   children?: SysMenu[]
 }
 

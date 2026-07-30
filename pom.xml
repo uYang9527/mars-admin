@@ -29,6 +29,8 @@
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <sa-token.version>1.37.0</sa-token.version>
         <hutool.version>5.8.25</hutool.version>
+        <easyexcel.version>3.3.3</easyexcel.version>
+        <druid.version>1.2.23</druid.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
 
@@ -74,6 +76,20 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- EasyExcel -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+
+            <!-- Druid 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
             <!-- ==================== 内部模块 ==================== -->
@@ -131,6 +147,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.mars</groupId>
+                <artifactId>mars-mail</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- 业务核心层 -->
             <dependency>
                 <groupId>com.mars</groupId>
@@ -149,12 +171,12 @@
             </dependency>
             <dependency>
                 <groupId>com.mars</groupId>
-                <artifactId>mars-message</artifactId>
+                <artifactId>mars-biz</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.mars</groupId>
-                <artifactId>mars-mall</artifactId>
+                <artifactId>mars-message</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

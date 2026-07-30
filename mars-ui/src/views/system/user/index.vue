@@ -1,87 +1,100 @@
 <template>
   <div class="page-container">
-    <div class="user-layout">
-      <!-- 左侧部门树 -->
-      <n-card class="dept-tree-card" size="small">
-        <template #header>
-          <div class="dept-tree-header">
-            <span>部门列表</span>
-          </div>
-        </template>
-        <div class="dept-search">
-          <n-input v-model:value="deptSearch" placeholder="搜索部门" clearable size="small">
-            <template #prefix><n-icon><SearchOutline /></n-icon></template>
-          </n-input>
-        </div>
-        <div class="dept-tree-wrapper">
-          <n-tree
-            :data="deptTreeData"
-            :pattern="deptSearch"
-            :default-expand-all="true"
-            :selected-keys="selectedDeptKeys"
-            :node-props="deptNodeProps"
-            key-field="id"
-            label-field="deptName"
-            children-field="children"
-            selectable
-            block-line
-          />
-        </div>
-      </n-card>
+    <!-- 用户列表 -->
+    <n-card class="user-list-card" size="small">
+      <!-- 搜索表单 -->
+      <div class="search-form">
+        <n-form inline :model="searchForm" label-placement="left">
+          <n-form-item label="用户名">
+            <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
+          </n-form-item>
+          <n-form-item label="用户类型">
+            <n-select
+              v-model:value="searchForm.userType"
+              placeholder="请选择用户类型"
+              :options="userTypeOptions"
+              clearable
+              style="width: 140px"
+            />
+          </n-form-item>
+          <n-form-item label="状态">
+            <n-select
+              v-model:value="searchForm.status"
+              placeholder="请选择状态"
+              :options="statusOptions"
+              clearable
+              style="width: 120px"
+            />
+          </n-form-item>
+          <n-form-item>
+            <n-space>
+              <n-button type="primary" @click="handleSearch">
+                <template #icon><n-icon><SearchOutline /></n-icon></template>
+                搜索
+              </n-button>
+              <n-button @click="handleReset">
+                <template #icon><n-icon><RefreshOutline /></n-icon></template>
+                重置
+              </n-button>
+            </n-space>
+          </n-form-item>
+        </n-form>
+      </div>
 
-      <!-- 右侧用户列表 -->
-      <n-card class="user-list-card" size="small">
-        <!-- 搜索表单 -->
-        <div class="search-form">
-          <n-form inline :model="searchForm" label-placement="left">
-            <n-form-item label="用户名">
-              <n-input v-model:value="searchForm.username" placeholder="请输入用户名" clearable />
-            </n-form-item>
-            <n-form-item label="状态">
-              <n-select
-                v-model:value="searchForm.status"
-                placeholder="请选择状态"
-                :options="statusOptions"
-                clearable
-                style="width: 120px"
-              />
-            </n-form-item>
-            <n-form-item>
-              <n-space>
-                <n-button type="primary" @click="handleSearch">
-                  <template #icon><n-icon><SearchOutline /></n-icon></template>
-                  搜索
-                </n-button>
-                <n-button @click="handleReset">
-                  <template #icon><n-icon><RefreshOutline /></n-icon></template>
-                  重置
-                </n-button>
-              </n-space>
-            </n-form-item>
-          </n-form>
-        </div>
-        
-        <!-- 工具栏 -->
-        <div class="table-toolbar">
+      <!-- 工具栏 -->
+      <div class="table-toolbar">
+        <n-space>
           <n-button v-if="hasPermission('sys:user:add')" type="primary" @click="handleAdd">
             <template #icon><n-icon><AddOutline /></n-icon></template>
             新增用户
           </n-button>
-        </div>
-        
-        <!-- 表格 -->
-        <n-data-table
-          :columns="columns"
-          :data="tableData"
-          :loading="loading"
-          :pagination="pagination"
-          :row-key="(row: SysUser) => row.id"
+          <n-button v-if="hasPermission('sys:user:import')" @click="importModalVisible = true">
+            <template #icon><n-icon><CloudUploadOutline /></n-icon></template>
+            导入
+          </n-button>
+          <n-button v-if="hasPermission('sys:user:export')" @click="handleExport">
+            <template #icon><n-icon><DownloadOutline /></n-icon></template>
+            导出{{ checkedRowKeys.length > 0 ? `(${checkedRowKeys.length})` : '' }}
+          </n-button>
+          <n-button 
+            v-if="hasPermission('sys:user:delete') && checkedRowKeys.length > 0" 
+            type="error" 
+            @click="handleBatchDelete"
+          >
+            <template #icon><n-icon><TrashOutline /></n-icon></template>
+            批量删除({{ checkedRowKeys.length }})
+          </n-button>
+        </n-space>
+      </div>
+
+      <!-- 表格 -->
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :loading="loading"
+        :row-key="(row: SysUser) => row.id"
+        v-model:checked-row-keys="checkedRowKeys"
+        remote
+      />
+
+      <div class="pagination-container" style="display: flex; justify-content: flex-end; margin-top: 12px">
+        <n-pagination
+          v-model:page="pagination.page"
+          v-model:page-size="pagination.pageSize"
+          :item-count="pagination.itemCount"
+          :page-sizes="[10, 20, 50, 100]"
+          show-size-picker
+          show-quick-jumper
           @update:page="handlePageChange"
           @update:page-size="handlePageSizeChange"
-        />
-      </n-card>
-    </div>
-    
+        >
+          <template #prefix>
+            共 {{ pagination.itemCount }} 条
+          </template>
+        </n-pagination>
+      </div>
+    </n-card>
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -98,64 +111,93 @@
         label-width="80"
         class="modal-form"
       >
-        <n-form-item label="用户名" path="username">
-          <n-input v-model:value="formData.username" placeholder="请输入用户名" :disabled="!!formData.id" />
-        </n-form-item>
-        <n-form-item v-if="!formData.id" label="密码" path="password">
-          <n-input v-model:value="formData.password" type="password" placeholder="请输入密码，留空默认123456" show-password-on="click" />
-        </n-form-item>
-        <n-form-item label="昵称" path="nickname">
-          <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
-        </n-form-item>
-        <n-form-item label="归属部门" path="deptId">
-          <n-tree-select
-            v-model:value="formData.deptId"
-            :options="deptOptions"
-            key-field="id"
-            label-field="deptName"
-            children-field="children"
-            placeholder="请选择归属部门"
-            clearable
-            default-expand-all
-          />
-        </n-form-item>
-        <n-form-item label="邮箱" path="email">
-          <n-input v-model:value="formData.email" placeholder="请输入邮箱" />
-        </n-form-item>
-        <n-form-item label="手机号" path="phone">
-          <n-input v-model:value="formData.phone" placeholder="请输入手机号" />
-        </n-form-item>
-        <n-form-item label="性别" path="gender">
-          <n-radio-group v-model:value="formData.gender">
-            <n-radio :value="1">男</n-radio>
-            <n-radio :value="2">女</n-radio>
-            <n-radio :value="0">未知</n-radio>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item label="用户类型" path="userType">
-          <n-select
-            v-model:value="formData.userType"
-            :options="userTypeOptions"
-            placeholder="请选择用户类型"
-          />
-        </n-form-item>
-        <n-form-item label="角色" path="roleIds">
-          <n-select
-            v-model:value="roleIds"
-            multiple
-            :options="roleOptions"
-            placeholder="请选择角色"
-          />
-        </n-form-item>
-        <n-form-item label="状态" path="status">
-          <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
-            <template #checked>启用</template>
-            <template #unchecked>禁用</template>
-          </n-switch>
-        </n-form-item>
-        <n-form-item label="备注" path="remark">
-          <n-input v-model:value="formData.remark" type="textarea" placeholder="请输入备注" />
-        </n-form-item>
+        <n-grid :cols="2" :x-gap="16">
+          <n-gi>
+            <n-form-item label="用户名" path="username">
+              <n-input v-model:value="formData.username" placeholder="请输入用户名" :disabled="!!formData.id" />
+            </n-form-item>
+          </n-gi>
+          <n-gi v-if="!formData.id">
+            <n-form-item label="密码" path="password">
+              <n-input v-model:value="formData.password" type="password" placeholder="留空默认123456" show-password-on="click" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="昵称" path="nickname">
+              <n-input v-model:value="formData.nickname" placeholder="请输入昵称" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="归属部门" path="deptId">
+              <n-tree-select
+                v-model:value="formData.deptId"
+                :options="deptOptions"
+                key-field="id"
+                label-field="deptName"
+                children-field="children"
+                placeholder="请选择归属部门"
+                clearable
+                default-expand-all
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="邮箱" path="email">
+              <n-input v-model:value="formData.email" placeholder="请输入邮箱" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="手机号" path="phone">
+              <n-input v-model:value="formData.phone" placeholder="请输入手机号" />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="性别" path="gender">
+              <n-radio-group v-model:value="formData.gender">
+                <n-radio :value="1">男</n-radio>
+                <n-radio :value="2">女</n-radio>
+                <n-radio :value="0">未知</n-radio>
+              </n-radio-group>
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="用户类型" path="userType">
+              <n-select
+                v-model:value="formData.userType"
+                :options="userTypeOptions"
+                placeholder="请选择用户类型"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="角色" path="roleIds">
+              <n-select
+                v-model:value="roleIds"
+                multiple
+                :options="roleOptions"
+                placeholder="请选择角色"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="岗位" path="postIds">
+              <n-select
+                v-model:value="postIds"
+                multiple
+                :options="postOptions"
+                placeholder="请选择岗位"
+              />
+            </n-form-item>
+          </n-gi>
+          <n-gi>
+            <n-form-item label="状态" path="status">
+              <n-switch v-model:value="formData.status" :checked-value="1" :unchecked-value="0">
+                <template #checked>启用</template>
+                <template #unchecked>禁用</template>
+              </n-switch>
+            </n-form-item>
+          </n-gi>
+        </n-grid>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -164,55 +206,84 @@
         </n-space>
       </template>
     </n-modal>
+    <!-- 导入弹窗 -->
+    <n-modal
+      v-model:show="importModalVisible"
+      title="导入用户"
+      preset="card"
+      style="width: 500px"
+      :mask-closable="false"
+    >
+      <n-space vertical>
+        <n-alert type="info" :show-icon="true">
+          <template #header>导入说明</template>
+          <ul style="margin: 0; padding-left: 16px; line-height: 1.8">
+            <li>请先下载导入模板，按模板格式填写数据</li>
+            <li>用户名不能重复，否则导入失败</li>
+            <li>密码默认为 123456</li>
+            <li>性别填写：男/女/未知</li>
+            <li>用户类型填写：后台管理员/PC前台用户/App小程序用户</li>
+            <li>状态填写：启用/禁用</li>
+            <li>角色和岗位填写对应名称，多个用逗号分隔</li>
+          </ul>
+        </n-alert>
+        <n-space>
+          <n-button type="primary" @click="handleDownloadTemplate">
+            <template #icon><n-icon><DownloadOutline /></n-icon></template>
+            下载模板
+          </n-button>
+        </n-space>
+        <n-upload
+          :max="1"
+          accept=".xlsx,.xls"
+          :show-file-list="true"
+          :custom-request="handleImportUpload"
+        >
+          <n-upload-dragger>
+            <div style="margin-bottom: 12px">
+              <n-icon size="48" :depth="3">
+                <CloudUploadOutline />
+              </n-icon>
+            </div>
+            <n-text style="font-size: 16px">点击或拖拽文件到此处上传</n-text>
+            <n-p depth="3" style="margin: 8px 0 0 0">支持 .xlsx 或 .xls 格式</n-p>
+          </n-upload-dragger>
+        </n-upload>
+      </n-space>
+      <template #footer>
+        <n-space justify="end">
+          <n-button @click="importModalVisible = false">关闭</n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, h, onMounted, type HTMLAttributes } from 'vue'
-import { NButton, NTag, NSpace, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption } from 'naive-ui'
-import { SearchOutline, RefreshOutline, AddOutline } from '@vicons/ionicons5'
-import { userApi, roleApi, type SysUser, type SysRole } from '@/api/system'
+import { ref, reactive, h, onMounted, computed, type HTMLAttributes } from 'vue'
+import { useRoute } from 'vue-router'
+import { NButton, NTag, NSpace, NDropdown, NPagination, NGrid, NGi, NUploadDragger, useMessage, useDialog, type DataTableColumns, type FormInst, type FormRules, type TreeOption, type UploadCustomRequestOptions } from 'naive-ui'
+import { SearchOutline, RefreshOutline, AddOutline, ChevronDownOutline, CloudUploadOutline, DownloadOutline, TrashOutline } from '@vicons/ionicons5'
+import { userApi, roleApi, postApi, type SysUser, type SysRole } from '@/api/system'
 import { deptApi, type SysDept } from '@/api/org'
 import { useUserStore } from '@/stores/user'
 
 const message = useMessage()
 const dialog = useDialog()
 const userStore = useUserStore()
+const route = useRoute()
 
 // 权限检查
 const hasPermission = (permission: string) => userStore.hasPermission(permission)
 
-// ==================== 部门树 ====================
-const deptSearch = ref('')
-const deptTreeData = ref<SysDept[]>([])
+// ==================== 部门选择 ====================
 const deptOptions = ref<SysDept[]>([])
-const selectedDeptKeys = ref<Array<string | number>>([])
 const selectedDeptId = ref<number | undefined>(undefined)
 
-// 部门节点属性
-const deptNodeProps = ({ option }: { option: TreeOption }): HTMLAttributes => {
-  return {
-    onClick() {
-      const deptId = option.id as number
-      if (selectedDeptId.value === deptId) {
-        // 再次点击取消选择
-        selectedDeptId.value = undefined
-        selectedDeptKeys.value = []
-      } else {
-        selectedDeptId.value = deptId
-        selectedDeptKeys.value = [deptId]
-      }
-      pagination.page = 1
-      loadData()
-    }
-  }
-}
-
-// 加载部门树
-async function loadDeptTree() {
+// 加载部门树（用于下拉选择）
+async function loadDeptOptions() {
   try {
     const tree = await deptApi.tree()
-    deptTreeData.value = tree
     deptOptions.value = tree
   } catch (error) {
     // 错误已在拦截器处理
@@ -222,7 +293,8 @@ async function loadDeptTree() {
 // ==================== 搜索表单 ====================
 const searchForm = reactive({
   username: '',
-  status: null as number | null
+  status: null as number | null,
+  userType: null as string | null
 })
 
 const statusOptions = [
@@ -235,13 +307,14 @@ const statusOptions = [
 // ==================== 表格 ====================
 const tableData = ref<SysUser[]>([])
 const loading = ref(false)
+const checkedRowKeys = ref<number[]>([])
 const pagination = reactive({
   page: 1,
   pageSize: 10,
-  itemCount: 0,
-  showSizePicker: true,
-  pageSizes: [10, 20, 50]
+  itemCount: 0
 })
+
+const pageCount = computed(() => Math.ceil(pagination.itemCount / pagination.pageSize))
 
 const roleOptions = ref<Array<{ label: string; value: number }>>([])
 
@@ -252,11 +325,15 @@ const userTypeOptions = [
 ]
 
 const columns: DataTableColumns<SysUser> = [
+  { type: 'selection' },
   { title: 'ID', key: 'id', width: 60 },
   { title: '用户名', key: 'username', width: 100 },
   { title: '昵称', key: 'nickname', width: 100 },
   { title: '部门', key: 'deptName', width: 100, render(row) {
     return row.deptName || '-'
+  }},
+  { title: '岗位', key: 'postNames', width: 150, render(row) {
+    return row.postNames || '-'
   }},
   {
     title: '用户类型',
@@ -272,7 +349,18 @@ const columns: DataTableColumns<SysUser> = [
       return h(NTag, { type: t.type, size: 'small' }, { default: () => t.label })
     }
   },
-  { title: '手机号', key: 'phone', width: 120 },
+  { title: '手机号', key: 'phone', width: 120 , render(row) {
+      return row.phone || '-'
+    }},
+  {
+    title: '离职',
+    key: 'isQuit',
+    width: 80,
+    render(row) {
+      const quit = row.isQuit === 1
+      return h(NTag, { type: quit ? 'error' : 'success', size: 'small' }, { default: () => (quit ? '是' : '否') })
+    }
+  },
   {
     title: '状态',
     key: 'status',
@@ -309,17 +397,59 @@ const columns: DataTableColumns<SysUser> = [
         buttons.push(
           h(NButton, { size: 'small', onClick: () => handleEdit(row) }, { default: () => '编辑' })
         )
-        if (row.status !== 2) {
-          buttons.push(
-            h(NButton, { size: 'small', onClick: () => handleResetPassword(row) }, { default: () => '重置密码' })
-          )
-        }
       }
       if (hasPermission('sys:user:delete')) {
         buttons.push(
           h(NButton, { size: 'small', type: 'error', onClick: () => handleDelete(row) }, { default: () => '删除' })
         )
       }
+
+      // 更多操作
+      if (hasPermission('sys:user:edit')) {
+        const moreOptions = []
+
+        // 重置密码移入更多
+        if (row.status !== 2) {
+          moreOptions.push({
+            label: '重置密码',
+            key: 'resetPassword'
+          })
+        }
+
+        moreOptions.push({
+          label: row.isQuit === 1 ? '取消离职' : '离职',
+          key: 'toggleQuit'
+        })
+
+        buttons.push(
+          h(
+            NDropdown,
+            {
+              trigger: 'click',
+              options: moreOptions,
+              onSelect: (key) => {
+                if (key === 'toggleQuit') {
+                  handleToggleQuit(row)
+                } else if (key === 'resetPassword') {
+                  handleResetPassword(row)
+                }
+              }
+            },
+            {
+              default: () =>
+                h(
+                  NButton,
+                  { size: 'small' },
+                  {
+                    default: () => '更多',
+                    icon: () => h(ChevronDownOutline)
+                  }
+                )
+            }
+          )
+        )
+      }
+
       return buttons.length > 0 ? h(NSpace, null, { default: () => buttons }) : '-'
     }
   }
@@ -331,6 +461,8 @@ const modalTitle = ref('新增用户')
 const formRef = ref<FormInst | null>(null)
 const submitLoading = ref(false)
 const roleIds = ref<number[]>([])
+const postIds = ref<number[]>([])
+const postOptions = ref<Array<{ label: string; value: number }>>([])
 
 const formData = reactive<SysUser>({
   id: undefined,
@@ -360,10 +492,12 @@ async function loadData() {
       pageSize: pagination.pageSize,
       username: searchForm.username || undefined,
       status: searchForm.status ?? undefined,
+      userType: searchForm.userType || undefined,
       deptId: selectedDeptId.value
     })
     tableData.value = res.list
-    pagination.itemCount = res.total
+    pagination.itemCount = Number(res.total)
+    console.log('Pagination updated:', pagination.itemCount)
   } catch (error) {
     // 错误已在拦截器处理
   } finally {
@@ -383,6 +517,18 @@ async function loadRoles() {
   }
 }
 
+async function loadPostOptions() {
+  try {
+    const posts = await postApi.list()
+    postOptions.value = posts.map(p => ({
+      label: p.postName,
+      value: p.id!
+    }))
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
 // ==================== 操作方法 ====================
 function handleSearch() {
   pagination.page = 1
@@ -392,8 +538,8 @@ function handleSearch() {
 function handleReset() {
   searchForm.username = ''
   searchForm.status = null
+  searchForm.userType = null
   selectedDeptId.value = undefined
-  selectedDeptKeys.value = []
   handleSearch()
 }
 
@@ -412,7 +558,7 @@ function handleAdd() {
   modalTitle.value = '新增用户'
   Object.assign(formData, {
     id: undefined,
-    deptId: selectedDeptId.value || null,
+    deptId: null,
     username: '',
     password: '',
     nickname: '',
@@ -424,6 +570,7 @@ function handleAdd() {
     remark: ''
   })
   roleIds.value = []
+  postIds.value = []
   modalVisible.value = true
 }
 
@@ -433,6 +580,7 @@ async function handleEdit(row: SysUser) {
     const res = await userApi.detail(row.id!)
     Object.assign(formData, res.user)
     roleIds.value = res.roleIds
+    postIds.value = res.postIds
     modalVisible.value = true
   } catch (error) {
     // 错误已在拦截器处理
@@ -443,12 +591,13 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     const data = {
       user: { ...formData },
-      roleIds: roleIds.value
+      roleIds: roleIds.value,
+      postIds: postIds.value
     }
-    
+
     if (formData.id) {
       await userApi.update(data)
       message.success('更新成功')
@@ -456,7 +605,7 @@ async function handleSubmit() {
       await userApi.create(data)
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -539,49 +688,123 @@ function handleResetPassword(row: SysUser) {
   })
 }
 
+function handleToggleQuit(row: SysUser) {
+  const nextQuit = row.isQuit === 1 ? 0 : 1
+  dialog.warning({
+    title: '提示',
+    content: nextQuit === 1 ? `确定将用户"${row.username}"设置为离职吗？` : `确定将用户"${row.username}"取消离职吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.toggleQuit(row.id!)
+        message.success(nextQuit === 1 ? '已设置离职' : '已取消离职')
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
+// ==================== 导入弹窗 ====================
+const importModalVisible = ref(false)
+
+// 导出用户
+async function handleExport() {
+  // 必须先勾选数据
+  if (checkedRowKeys.value.length === 0) {
+    message.warning('请先勾选要导出的用户')
+    return
+  }
+  try {
+    const blob = await userApi.exportUsers({
+      ids: checkedRowKeys.value
+    })
+    // 创建下载链接
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = '用户数据.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 批量删除
+function handleBatchDelete() {
+  if (checkedRowKeys.value.length === 0) {
+    message.warning('请选择要删除的用户')
+    return
+  }
+  dialog.warning({
+    title: '提示',
+    content: `确定要删除选中的 ${checkedRowKeys.value.length} 个用户吗？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: async () => {
+      try {
+        await userApi.deleteBatch(checkedRowKeys.value)
+        message.success('删除成功')
+        checkedRowKeys.value = []
+        loadData()
+      } catch (error) {
+        // 错误已在拦截器处理
+      }
+    }
+  })
+}
+
+// 下载导入模板
+async function handleDownloadTemplate() {
+  try {
+    const blob = await userApi.downloadTemplate()
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = '用户导入模板.xlsx'
+    link.click()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
+// 导入上传
+async function handleImportUpload({ file }: UploadCustomRequestOptions) {
+  if (!file.file) return
+  try {
+    const result = await userApi.importUsers(file.file)
+    if (result.fail > 0) {
+      dialog.warning({
+        title: '导入结果',
+        content: `成功: ${result.success} 条，失败: ${result.fail} 条\n错误信息: ${result.errors?.join('\n') || '无'}`,
+        positiveText: '确定'
+      })
+    } else {
+      message.success(`导入成功，共 ${result.success} 条数据`)
+      importModalVisible.value = false
+    }
+    loadData()
+  } catch (error) {
+    // 错误已在拦截器处理
+  }
+}
+
 onMounted(() => {
-  loadDeptTree()
+  const deptId = route.query.deptId
+  if (deptId) {
+    selectedDeptId.value = Number(deptId)
+  }
+  loadDeptOptions()
   loadData()
   loadRoles()
+  loadPostOptions()
 })
 </script>
 
 <style scoped>
-.user-layout {
-  display: flex;
-  gap: 12px;
-  height: 100%;
-}
 
-.dept-tree-card {
-  width: 240px;
-  flex-shrink: 0;
-}
-
-.dept-tree-card :deep(.n-card-header) {
-  padding: 12px 16px;
-}
-
-.dept-tree-header {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.dept-search {
-  margin-bottom: 8px;
-}
-
-.dept-tree-wrapper {
-  max-height: calc(100vh - 260px);
-  overflow-y: auto;
-}
-
-.dept-tree-wrapper :deep(.n-tree-node) {
-  padding: 2px 0;
-}
-
-.user-list-card {
-  flex: 1;
-  min-width: 0;
-}
 </style>

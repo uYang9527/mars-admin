@@ -1,48 +1,41 @@
 "use strict";
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const common_vendor = require("./common/vendor.js");
+const utils_auth = require("./utils/auth.js");
+const utils_websocket = require("./utils/websocket.js");
+const utils_crypto = require("./utils/crypto.js");
 if (!Math) {
   "./pages/index/index.js";
-  "./pages/category/index.js";
-  "./pages/cart/index.js";
-  "./pages/profile/index.js";
-  "./pages/detail/index.js";
-  "./pages/search/index.js";
   "./pages/login/index.js";
-  "./pages/orders/index.js";
-  "./pages/settings/index.js";
-  "./pages/login/password.js";
-  "./pages/order/index.js";
-  "./pages/order/success.js";
+  "./pages/chat/index.js";
+  "./pages/contacts/index.js";
+  "./pages/group-chat/index.js";
+  "./pages/group/create.js";
+  "./pages/group/detail.js";
+  "./pages/profile/index.js";
+  "./pages/profile/edit.js";
+  "./pages/profile/password.js";
 }
 const _sfc_main = {
   onLaunch: function() {
-    common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
-    const systemInfo = common_vendor.index.getSystemInfoSync();
-    common_vendor.index.setStorageSync("statusBarHeight", systemInfo.statusBarHeight);
-    common_vendor.index.getStorageSync("token");
+    common_vendor.index.__f__("log", "at App.vue:8", "App Launch");
+    utils_crypto.fetchCryptoConfig();
+    if (utils_auth.isLoggedIn()) {
+      utils_websocket.wsClient.connect();
+    } else {
+      common_vendor.index.reLaunch({ url: "/pages/login/index" });
+    }
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:19", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:18", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:22", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:21", "App Hide");
   }
-};
-const globalData = {
-  // 后端API地址 - 开发环境使用本地地址，生产环境需要改成实际域名
-  baseUrl: "http://localhost:8080",
-  // 用户信息
-  userInfo: null,
-  // 会员信息
-  memberInfo: null
 };
 function createApp() {
   const app = common_vendor.createSSRApp(_sfc_main);
-  app.config.globalProperties.$globalData = globalData;
-  if (!getApp()) {
-    _sfc_main.globalData = globalData;
-  }
+  app.use(common_vendor.uviewPlus);
   return {
     app
   };

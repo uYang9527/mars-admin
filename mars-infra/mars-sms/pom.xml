@@ -12,7 +12,7 @@
     <artifactId>mars-sms</artifactId>
     <packaging>jar</packaging>
     <name>Mars SMS</name>
-    <description>短信基础设施 - 阿里云/腾讯云短信</description>
+    <description>短信基础设施 - 阿里云/腾讯云/七牛云短信</description>
 
     <dependencies>
         <!-- 依赖系统模块（SystemConfigHelper读取配置） -->
@@ -25,6 +25,20 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- 阿里云短信SDK -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <!-- 腾讯云短信SDK -->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java-sms</artifactId>
+            <version>3.1.754</version>
         </dependency>
     </dependencies>
 </project>

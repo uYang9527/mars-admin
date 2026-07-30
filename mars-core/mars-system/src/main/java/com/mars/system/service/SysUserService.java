@@ -3,8 +3,11 @@ package com.mars.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mars.common.result.PageResult;
 import com.mars.system.entity.SysUser;
+import com.mars.system.excel.SysUserExcel;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务接口
@@ -14,27 +17,32 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 分页查询用户
      */
-    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, Long deptId);
+    PageResult<SysUser> page(Integer page, Integer pageSize, String username, Integer status, String userType, Long deptId, Long postId);
 
     /**
-     * 获取用户详情（包含角色）
+     * 获取用户详情（包含角色和岗位）
      */
     SysUser getDetail(Long id);
 
     /**
      * 创建用户
      */
-    void create(SysUser user, List<Long> roleIds);
+    void create(SysUser user, List<Long> roleIds, List<Long> postIds);
 
     /**
      * 更新用户
      */
-    void update(SysUser user, List<Long> roleIds);
+    void update(SysUser user, List<Long> roleIds, List<Long> postIds);
 
     /**
      * 删除用户
      */
     void delete(Long id);
+
+    /**
+     * 批量删除用户
+     */
+    void deleteBatch(List<Long> ids);
 
     /**
      * 根据用户名获取用户
@@ -72,7 +80,24 @@ public interface SysUserService extends IService<SysUser> {
     List<SysUser> listAll();
 
     /**
+     * 获取用户岗位ID列表
+     */
+    List<Long> getPostIds(Long userId);
+
+    /**
      * 根据微信openId获取用户
      */
     SysUser getByOpenId(String openId);
+
+    /**
+     * 导出用户列表
+     * @param ids 指定导出的用户ID列表，为空则根据查询条件导出
+     */
+    List<SysUserExcel> exportUsers(String username, Integer status, String userType, Long deptId, List<Long> ids);
+
+    /**
+     * 导入用户
+     * @return 导入结果，包含successCount、failCount、errors
+     */
+    Map<String, Object> importUsers(MultipartFile file);
 }

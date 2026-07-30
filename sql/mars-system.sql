@@ -3,43 +3,44 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80042 (8.0.42)
+ Source Server Version : 80032 (8.0.32)
  Source Host           : localhost:3306
  Source Schema         : mars-system
 
  Target Server Type    : MySQL
- Target Server Version : 80042 (8.0.42)
+ Target Server Version : 80032 (8.0.32)
  File Encoding         : 65001
 
- Date: 07/02/2026 16:49:26
+ Date: 01/03/2026 12:22:44
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for customer
+-- Table structure for coder_banner
 -- ----------------------------
-DROP TABLE IF EXISTS `customer`;
-CREATE TABLE `customer`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '客户ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '客户姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `id_card` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '身份证号',
-  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地址',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '客户表' ROW_FORMAT = DYNAMIC;
+DROP TABLE IF EXISTS `coder_banner`;
+CREATE TABLE `coder_banner`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `link` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `tag` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `btn_text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sort` int NULL DEFAULT 0,
+  `status` tinyint NULL DEFAULT 1,
+  `position` tinyint NULL DEFAULT 1,
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of customer
+-- Records of coder_banner
 -- ----------------------------
-INSERT INTO `customer` VALUES (5, '12', '12', '12', '12', NULL, 0, '2026-02-02 20:09:32', '2026-02-02 20:10:03');
+INSERT INTO `coder_banner` VALUES (1, '2026新年活动', '新年特惠活动进行中', 'https://file.xdclass.net/xdclass/2026newyear/2026XCDT.gif', '', '活动', '了解详情', 1, 1, 2, '2026-02-11 14:11:51', '2026-02-11 14:11:51');
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -58,19 +59,18 @@ CREATE TABLE `gen_table`  (
   `gen_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'crud' COMMENT '生成类型（crud单表 tree树表）',
   `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '/' COMMENT '生成路径',
   `front_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'naive-ui' COMMENT '前端模板类型',
+  `form_layout` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'vertical' COMMENT '表单布局（vertical-从上到下 grid-一行两列）',
   `parent_menu_id` bigint NULL DEFAULT NULL COMMENT '上级菜单ID',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
-INSERT INTO `gen_table` VALUES (1, 'sys_file', '文件记录表', 'File', 'com.mars.system', 'system', 'file', '文件记录表', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 19:53:23', '2026-02-02 19:53:23');
-INSERT INTO `gen_table` VALUES (2, 'customer', '客户表', 'Customer', 'com.mars.system', 'system', 'customer', '客户表', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 19:54:31', '2026-02-02 19:54:31');
-INSERT INTO `gen_table` VALUES (3, 'student', '学生表', 'Student', 'com.mars.system', 'system', 'student', '学生管理', 'Mars', 'crud', '/', 'naive-ui', NULL, NULL, '2026-02-02 22:21:29', '2026-02-02 22:21:29');
+INSERT INTO `gen_table` VALUES (4, 'student', '学生表', 'Student', 'com.mars.system', 'system', 'student', '学生表', 'Mars', 'crud', '/', 'naive-ui', 'grid', NULL, NULL, '2026-02-09 12:44:26', '2026-02-09 12:44:26');
 
 -- ----------------------------
 -- Table structure for gen_table_column
@@ -97,390 +97,24 @@ CREATE TABLE `gen_table_column`  (
   `sort` int NULL DEFAULT 0 COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_table_id`(`table_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成字段表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成字段表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
-INSERT INTO `gen_table_column` VALUES (1, 1, 'id', '文件ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (2, 1, 'original_name', '原始文件名', 'varchar(200)', 'String', 'originalName', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (3, 1, 'file_name', '存储文件名', 'varchar(200)', 'String', 'fileName', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 3);
-INSERT INTO `gen_table_column` VALUES (4, 1, 'file_path', '文件路径', 'varchar(500)', 'String', 'filePath', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 4);
-INSERT INTO `gen_table_column` VALUES (5, 1, 'url', '文件访问URL', 'varchar(500)', 'String', 'url', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (6, 1, 'file_size', '文件大小（字节）', 'bigint', 'Long', 'fileSize', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 6);
-INSERT INTO `gen_table_column` VALUES (7, 1, 'file_type', '文件类型（MIME类型）', 'varchar(100)', 'String', 'fileType', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', '', 7);
-INSERT INTO `gen_table_column` VALUES (8, 1, 'file_suffix', '文件后缀', 'varchar(20)', 'String', 'fileSuffix', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'fileUpload', '', 8);
-INSERT INTO `gen_table_column` VALUES (9, 1, 'storage_type', '存储类型', 'varchar(20)', 'String', 'storageType', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', '', 9);
-INSERT INTO `gen_table_column` VALUES (10, 1, 'bucket_name', '存储桶名称', 'varchar(100)', 'String', 'bucketName', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 10);
-INSERT INTO `gen_table_column` VALUES (11, 1, 'group_id', '分组ID', 'bigint', 'Long', 'groupId', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 11);
-INSERT INTO `gen_table_column` VALUES (12, 1, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 12);
-INSERT INTO `gen_table_column` VALUES (13, 1, 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'input', '', 13);
-INSERT INTO `gen_table_column` VALUES (14, 1, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 14);
-INSERT INTO `gen_table_column` VALUES (15, 2, 'id', '客户ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (16, 2, 'name', '客户姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 1, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (17, 2, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 3);
-INSERT INTO `gen_table_column` VALUES (18, 2, 'id_card', '身份证号', 'varchar(30)', 'String', 'idCard', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 4);
-INSERT INTO `gen_table_column` VALUES (19, 2, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (20, 2, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 6);
-INSERT INTO `gen_table_column` VALUES (21, 2, 'deleted', '删除标记', 'tinyint', 'Integer', 'deleted', 0, 0, 1, 0, 0, 0, 0, 'EQ', 'input', '', 7);
-INSERT INTO `gen_table_column` VALUES (22, 2, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 8);
-INSERT INTO `gen_table_column` VALUES (23, 2, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 9);
-INSERT INTO `gen_table_column` VALUES (24, 3, 'id', '学生ID', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
-INSERT INTO `gen_table_column` VALUES (25, 3, 'name', '姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 2);
-INSERT INTO `gen_table_column` VALUES (26, 3, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 3);
-INSERT INTO `gen_table_column` VALUES (27, 3, 'id_card', '身份证号', 'varchar(30)', 'String', 'idCard', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 4);
-INSERT INTO `gen_table_column` VALUES (28, 3, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 5);
-INSERT INTO `gen_table_column` VALUES (29, 3, 'remark', '备注', 'varchar(500)', 'String', 'remark', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'textarea', '', 6);
-INSERT INTO `gen_table_column` VALUES (30, 3, 'deleted', '删除标记', 'tinyint', 'Integer', 'deleted', 0, 0, 1, 0, 0, 0, 0, 'EQ', 'input', '', 7);
-INSERT INTO `gen_table_column` VALUES (31, 3, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 8);
-INSERT INTO `gen_table_column` VALUES (32, 3, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 1, 0, 'EQ', 'datetime', '', 9);
-INSERT INTO `gen_table_column` VALUES (33, 3, 'image', 'image', 'varchar(255)', 'String', 'image', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'imageUpload', '', 6);
-
--- ----------------------------
--- Table structure for mall_address
--- ----------------------------
-DROP TABLE IF EXISTS `mall_address`;
-CREATE TABLE `mall_address`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '地址ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
-  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
-  `district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
-  `detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
-  `postal_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮政编码',
-  `is_default` tinyint NOT NULL DEFAULT 0 COMMENT '是否默认(0-否 1-是)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收货地址表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_address
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_banner
--- ----------------------------
-DROP TABLE IF EXISTS `mall_banner`;
-CREATE TABLE `mall_banner`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '轮播图ID',
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
-  `subtitle` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
-  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '图片地址',
-  `link_type` tinyint NOT NULL DEFAULT 0 COMMENT '链接类型(0-无 1-商品 2-分类 3-外链)',
-  `link_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '链接值',
-  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'home' COMMENT '位置(home-首页)',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_position`(`position` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '轮播图表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_banner
--- ----------------------------
-INSERT INTO `mall_banner` VALUES (1, '有机牛油果 5折起', '新品上市', 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop', 1, '1', 'home', 1, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_banner` VALUES (2, '秋季水果节', '满199减50', 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?q=80&w=1000&auto=format&fit=crop', 2, '1', 'home', 2, 1, NULL, NULL, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_cart
--- ----------------------------
-DROP TABLE IF EXISTS `mall_cart`;
-CREATE TABLE `mall_cart`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '购物车ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
-  `quantity` int NOT NULL DEFAULT 1 COMMENT '数量',
-  `selected` tinyint NOT NULL DEFAULT 1 COMMENT '是否选中(0-否 1-是)',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_member_product_sku`(`member_id` ASC, `product_id` ASC, `sku_id` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '购物车表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_cart
--- ----------------------------
-INSERT INTO `mall_cart` VALUES (1, 3, 1, 1, 2, 1, '2026-02-03 16:08:55', '2026-02-03 16:08:55');
-
--- ----------------------------
--- Table structure for mall_category
--- ----------------------------
-DROP TABLE IF EXISTS `mall_category`;
-CREATE TABLE `mall_category`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类ID',
-  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父分类ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '分类名称',
-  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图标',
-  `image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分类图片',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE,
-  INDEX `idx_sort`(`sort` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_category
--- ----------------------------
-INSERT INTO `mall_category` VALUES (1, 0, '新鲜水果', 'fa-apple-alt', NULL, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (2, 0, '时令蔬菜', 'fa-carrot', NULL, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (3, 0, '海鲜水产', 'fa-fish', NULL, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (4, 0, '肉禽蛋品', 'fa-drumstick-bite', NULL, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (5, 0, '乳品烘焙', 'fa-cheese', NULL, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_category` VALUES (6, 0, '粮油调味', 'fa-wheat-awn', NULL, 6, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `mall_coupon`;
-CREATE TABLE `mall_coupon`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '优惠券ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '优惠券名称',
-  `type` tinyint NOT NULL DEFAULT 1 COMMENT '类型(1-满减券 2-折扣券 3-无门槛券)',
-  `amount` decimal(10, 2) NOT NULL COMMENT '优惠金额/折扣',
-  `min_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '最低消费金额',
-  `total_count` int NOT NULL DEFAULT 0 COMMENT '发放总量(0-不限)',
-  `receive_count` int NOT NULL DEFAULT 0 COMMENT '已领取数量',
-  `use_count` int NOT NULL DEFAULT 0 COMMENT '已使用数量',
-  `per_limit` int NOT NULL DEFAULT 1 COMMENT '每人限领数量',
-  `start_time` datetime NOT NULL COMMENT '开始时间',
-  `end_time` datetime NOT NULL COMMENT '结束时间',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '优惠券表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_coupon
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_favorite
--- ----------------------------
-DROP TABLE IF EXISTS `mall_favorite`;
-CREATE TABLE `mall_favorite`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '收藏ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_member_product`(`member_id` ASC, `product_id` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品收藏表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_favorite
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_member
--- ----------------------------
-DROP TABLE IF EXISTS `mall_member`;
-CREATE TABLE `mall_member`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '会员ID',
-  `open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '微信openId',
-  `union_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '微信unionId',
-  `nickname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '昵称',
-  `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '头像',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
-  `gender` tinyint NULL DEFAULT 0 COMMENT '性别(0-未知 1-男 2-女)',
-  `birthday` date NULL DEFAULT NULL COMMENT '生日',
-  `points` int NOT NULL DEFAULT 0 COMMENT '积分',
-  `balance` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '余额',
-  `level` tinyint NOT NULL DEFAULT 1 COMMENT '会员等级(1-普通 2-银卡 3-金卡 4-钻石)',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `last_login_time` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_open_id`(`open_id` ASC) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_union_id`(`union_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商城会员表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_member
--- ----------------------------
-INSERT INTO `mall_member` VALUES (3, 'opzUF43XlvnVUw5S9qS2cI6L7p9M', NULL, 'Mars', 'http://tmp/eEJVcFP9vatD5c93d5c9b774a7413682c69382756288.jpeg', '18483678377', 0, NULL, 0, 0.00, 1, 1, '2026-02-03 16:24:29', 0, '2026-02-03 16:05:17', '2026-02-03 16:24:29');
-
--- ----------------------------
--- Table structure for mall_member_coupon
--- ----------------------------
-DROP TABLE IF EXISTS `mall_member_coupon`;
-CREATE TABLE `mall_member_coupon`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `coupon_id` bigint NOT NULL COMMENT '优惠券ID',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态(0-未使用 1-已使用 2-已过期)',
-  `use_time` datetime NULL DEFAULT NULL COMMENT '使用时间',
-  `order_id` bigint NULL DEFAULT NULL COMMENT '使用订单ID',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领取时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_coupon_id`(`coupon_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '会员优惠券表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_member_coupon
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_order
--- ----------------------------
-DROP TABLE IF EXISTS `mall_order`;
-CREATE TABLE `mall_order`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单ID',
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `member_id` bigint NOT NULL COMMENT '会员ID',
-  `total_amount` decimal(10, 2) NOT NULL COMMENT '订单总金额',
-  `pay_amount` decimal(10, 2) NOT NULL COMMENT '实付金额',
-  `freight_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '运费',
-  `discount_amount` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '优惠金额',
-  `coupon_id` bigint NULL DEFAULT NULL COMMENT '优惠券ID',
-  `pay_type` tinyint NULL DEFAULT NULL COMMENT '支付方式(1-微信 2-支付宝)',
-  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `pay_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '支付流水号',
-  `status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态(0-待付款 1-待发货 2-待收货 3-已完成 4-已取消 5-已退款)',
-  `receiver_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人姓名',
-  `receiver_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '收货人电话',
-  `receiver_province` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '省份',
-  `receiver_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '城市',
-  `receiver_district` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '区县',
-  `receiver_detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '详细地址',
-  `delivery_company` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流公司',
-  `delivery_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物流单号',
-  `delivery_time` datetime NULL DEFAULT NULL COMMENT '发货时间',
-  `receive_time` datetime NULL DEFAULT NULL COMMENT '收货时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
-  INDEX `idx_member_id`(`member_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_order
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_order_item
--- ----------------------------
-DROP TABLE IF EXISTS `mall_order_item`;
-CREATE TABLE `mall_order_item`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '订单商品ID',
-  `order_id` bigint NOT NULL COMMENT '订单ID',
-  `order_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '订单号',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_id` bigint NULL DEFAULT NULL COMMENT 'SKU ID',
-  `product_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `product_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品图片',
-  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU名称',
-  `price` decimal(10, 2) NOT NULL COMMENT '商品单价',
-  `quantity` int NOT NULL COMMENT '购买数量',
-  `total_amount` decimal(10, 2) NOT NULL COMMENT '小计金额',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_order_id`(`order_id` ASC) USING BTREE,
-  INDEX `idx_order_no`(`order_no` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_order_item
--- ----------------------------
-
--- ----------------------------
--- Table structure for mall_product
--- ----------------------------
-DROP TABLE IF EXISTS `mall_product`;
-CREATE TABLE `mall_product`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '商品ID',
-  `category_id` bigint NOT NULL COMMENT '分类ID',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品名称',
-  `subtitle` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '副标题',
-  `main_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '主图',
-  `images` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '图片列表(JSON数组)',
-  `detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '商品详情(富文本)',
-  `price` decimal(10, 2) NOT NULL COMMENT '价格',
-  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
-  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
-  `unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '单位',
-  `weight` decimal(10, 2) NULL DEFAULT NULL COMMENT '重量(kg)',
-  `is_hot` tinyint NOT NULL DEFAULT 0 COMMENT '是否热门(0-否 1-是)',
-  `is_new` tinyint NOT NULL DEFAULT 0 COMMENT '是否新品(0-否 1-是)',
-  `is_recommend` tinyint NOT NULL DEFAULT 0 COMMENT '是否推荐(0-否 1-是)',
-  `sort` int NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-下架 1-上架)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_category_id`(`category_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_sort`(`sort` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_product
--- ----------------------------
-INSERT INTO `mall_product` VALUES (1, 1, '智利进口菠萝', '单果重约1.5kg', 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=800\"]', '<p>金钻凤梨，自然成熟，果肉细腻，甜度高无酸涩感。</p>', 29.90, 39.90, 100, 56, '个', 1.50, 1, 0, 1, 1, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (2, 1, '有机阳光草莓', '甜度15+ 500g/盒', 'https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=800\"]', '<p>精选有机草莓，甜蜜多汁。</p>', 45.00, 58.00, 200, 128, '盒', 0.50, 1, 1, 1, 2, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (3, 1, '进口香蕉', '约1kg/份', 'https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=800\"]', '<p>进口优质香蕉，香甜软糯。</p>', 12.90, 15.90, 500, 320, '份', 1.00, 0, 0, 1, 3, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (4, 1, '新疆葡萄', '约500g/盒', 'https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1573501740349-335c03c80a6d?auto=format&fit=crop&w=800\"]', '<p>新疆阳光葡萄，皮薄肉厚。</p>', 25.00, 32.00, 150, 89, '盒', 0.50, 0, 1, 0, 4, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product` VALUES (5, 1, '进口柠檬', '约500g/份', 'https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=400', '[\"https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=800\"]', '<p>进口柠檬，新鲜多汁。</p>', 9.90, 12.90, 300, 156, '份', 0.50, 0, 0, 0, 5, 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-
--- ----------------------------
--- Table structure for mall_product_sku
--- ----------------------------
-DROP TABLE IF EXISTS `mall_product_sku`;
-CREATE TABLE `mall_product_sku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'SKU ID',
-  `product_id` bigint NOT NULL COMMENT '商品ID',
-  `sku_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'SKU名称',
-  `sku_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'SKU图片',
-  `price` decimal(10, 2) NOT NULL COMMENT '价格',
-  `original_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '原价',
-  `stock` int NOT NULL DEFAULT 0 COMMENT '库存',
-  `sales` int NOT NULL DEFAULT 0 COMMENT '销量',
-  `specs` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '规格属性(JSON)',
-  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-正常)',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_product_id`(`product_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '商品SKU表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of mall_product_sku
--- ----------------------------
-INSERT INTO `mall_product_sku` VALUES (1, 1, '单果 1.5kg', NULL, 29.90, 39.90, 80, 40, '{\"规格\": \"单果 1.5kg\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product_sku` VALUES (2, 1, '双果礼盒装', NULL, 55.00, 75.00, 20, 16, '{\"规格\": \"双果礼盒装\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
-INSERT INTO `mall_product_sku` VALUES (3, 2, '500g/盒', NULL, 45.00, 58.00, 200, 128, '{\"规格\": \"500g/盒\"}', 1, 0, '2026-02-03 12:11:32', '2026-02-03 12:11:32');
+INSERT INTO `gen_table_column` VALUES (34, 4, 'id', 'id', 'bigint', 'Long', 'id', 1, 1, 1, 0, 0, 1, 1, 'EQ', 'input', '', 1);
+INSERT INTO `gen_table_column` VALUES (35, 4, 'student_no', '学号', 'varchar(50)', 'String', 'studentNo', 0, 0, 1, 1, 1, 1, 0, 'EQ', 'input', '', 2);
+INSERT INTO `gen_table_column` VALUES (36, 4, 'name', '姓名', 'varchar(50)', 'String', 'name', 0, 0, 1, 1, 1, 1, 1, 'EQ', 'input', '', 3);
+INSERT INTO `gen_table_column` VALUES (37, 4, 'gender', '性别', 'tinyint', 'Integer', 'gender', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'select', 'gender', 4);
+INSERT INTO `gen_table_column` VALUES (38, 4, 'birthday', '出生日期', 'date', 'LocalDate', 'birthday', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'datetime', '', 5);
+INSERT INTO `gen_table_column` VALUES (39, 4, 'phone', '手机号', 'varchar(20)', 'String', 'phone', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 6);
+INSERT INTO `gen_table_column` VALUES (40, 4, 'email', '邮箱', 'varchar(100)', 'String', 'email', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 7);
+INSERT INTO `gen_table_column` VALUES (41, 4, 'address', '地址', 'varchar(200)', 'String', 'address', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'imageUpload', '', 8);
+INSERT INTO `gen_table_column` VALUES (42, 4, 'class_id', '班级ID', 'bigint', 'Long', 'classId', 0, 0, 0, 1, 1, 1, 0, 'EQ', 'input', '', 9);
+INSERT INTO `gen_table_column` VALUES (43, 4, 'status', '状态', 'tinyint', 'Integer', 'status', 0, 0, 0, 1, 1, 1, 1, 'EQ', 'select', 'sys_status', 10);
+INSERT INTO `gen_table_column` VALUES (44, 4, 'deleted', 'deleted', 'tinyint', 'Integer', 'deleted', 0, 0, 0, 0, 0, 0, 0, 'EQ', 'input', '', 11);
+INSERT INTO `gen_table_column` VALUES (45, 4, 'create_time', '创建时间', 'datetime', 'LocalDateTime', 'createTime', 0, 0, 0, 0, 0, 0, 0, 'EQ', 'datetime', '', 12);
+INSERT INTO `gen_table_column` VALUES (46, 4, 'update_time', '更新时间', 'datetime', 'LocalDateTime', 'updateTime', 0, 0, 0, 0, 0, 0, 0, 'EQ', 'datetime', '', 13);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -704,38 +338,1890 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '学生ID',
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `student_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '姓名',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
-  `id_card` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '身份证号',
+  `gender` tinyint NULL DEFAULT NULL COMMENT '性别 1男 2女',
+  `birthday` date NULL DEFAULT NULL COMMENT '出生日期',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
   `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地址',
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  `deleted` tinyint NOT NULL DEFAULT 0 COMMENT '删除标记',
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_phone`(`phone` ASC) USING BTREE,
-  INDEX `idx_name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生表' ROW_FORMAT = DYNAMIC;
+  `class_id` bigint NULL DEFAULT NULL COMMENT '班级ID',
+  `status` tinyint NULL DEFAULT 1 COMMENT '状态',
+  `deleted` tinyint NULL DEFAULT 0,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学生表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (6, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:10:24', '2026-02-02 23:22:18');
-INSERT INTO `student` VALUES (7, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:22:26', '2026-02-02 23:25:44');
-INSERT INTO `student` VALUES (8, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:25:39', '2026-02-02 23:25:42');
-INSERT INTO `student` VALUES (9, '1', '1', '1', '1', NULL, NULL, 1, '2026-02-02 23:29:03', '2026-02-02 23:29:05');
-INSERT INTO `student` VALUES (10, '12', '121', '2', '12', NULL, NULL, 1, '2026-02-02 23:36:49', '2026-02-02 23:36:53');
-INSERT INTO `student` VALUES (11, '12', '122222222', '1', '1', NULL, NULL, 1, '2026-02-02 23:38:03', '2026-02-02 23:49:11');
-INSERT INTO `student` VALUES (12, '12', '12', '1', '1', NULL, NULL, 1, '2026-02-02 23:48:04', '2026-02-02 23:49:13');
-INSERT INTO `student` VALUES (13, '12', '12', '12', '1', NULL, NULL, 1, '2026-02-02 23:49:27', '2026-02-02 23:57:20');
-INSERT INTO `student` VALUES (14, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:54:15', '2026-02-02 23:54:18');
-INSERT INTO `student` VALUES (15, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:54:44', '2026-02-02 23:57:21');
-INSERT INTO `student` VALUES (16, '12', '12', '12', '12', NULL, NULL, 1, '2026-02-02 23:58:05', '2026-02-03 08:59:01');
-INSERT INTO `student` VALUES (17, '1', '1', '1', '1', '', NULL, 1, '2026-02-03 08:51:57', '2026-02-03 08:58:59');
-INSERT INTO `student` VALUES (18, '12', '12', '1', '1', '', NULL, 1, '2026-02-03 08:52:12', '2026-02-03 08:58:56');
-INSERT INTO `student` VALUES (19, '12', '12', '12', '12', 'http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg', NULL, 1, '2026-02-03 08:58:54', '2026-02-03 08:59:21');
+INSERT INTO `student` VALUES (4, '12', '12', NULL, NULL, '1', '1', '1', 1, 1, 1, '2026-02-09 12:55:30', '2026-02-09 12:55:33');
+INSERT INTO `student` VALUES (5, '12', '12', NULL, NULL, '1', '1', '1', 1, 1, 1, '2026-03-01 11:16:15', '2026-03-01 11:16:34');
+INSERT INTO `student` VALUES (6, '1', '1', 1, NULL, '11', '1', '1', 1, 1, 1, '2026-03-01 11:26:55', '2026-03-01 11:27:08');
+INSERT INTO `student` VALUES (7, '12', '12', 1, NULL, '1', '1', '/api/files/images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg', 2, 1, 1, '2026-03-01 11:29:32', '2026-03-01 12:06:10');
+INSERT INTO `student` VALUES (8, '11', '1', 1, NULL, '1', '1', '/api/files/images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg', 1, 1, 1, '2026-03-01 12:08:31', '2026-03-01 12:15:54');
+INSERT INTO `student` VALUES (9, '1', '1', 1, '2026-03-03', '1', '1', '/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg', 1, 1, 0, '2026-02-28 12:16:13', '2026-02-28 12:16:13');
+
+-- ----------------------------
+-- Table structure for sys_api_access_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_api_access_log`;
+CREATE TABLE `sys_api_access_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '请求开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '请求结束时间',
+  `api_path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'API路径',
+  `method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'HTTP方法',
+  `status_code` int NULL DEFAULT NULL COMMENT 'HTTP状态码',
+  `success` tinyint NULL DEFAULT 1 COMMENT '是否成功(0否 1是)',
+  `cost_time` bigint NULL DEFAULT NULL COMMENT '耗时(毫秒)',
+  `ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户端IP',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID(未登录为空)',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_start_time`(`start_time` ASC) USING BTREE,
+  INDEX `idx_api_path`(`api_path`(100) ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1835 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'API访问统计日志' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_api_access_log
+-- ----------------------------
+INSERT INTO `sys_api_access_log` VALUES (1, '2026-02-28 22:57:38', '2026-02-28 22:57:38', '/api/crypto/config', 'GET', 200, 1, 96, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (2, '2026-02-28 22:57:38', '2026-02-28 22:57:38', '/api/sys/config-group/public', 'GET', 200, 1, 100, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (3, '2026-02-28 22:57:38', '2026-02-28 22:57:38', '/api/auth/info', 'GET', 200, 1, 123, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (4, '2026-02-28 22:57:39', '2026-02-28 22:57:39', '/api/sys/chat/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (5, '2026-02-28 22:57:38', '2026-02-28 22:57:39', '/api/sys/notice/unread-count', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (6, '2026-02-28 22:58:08', '2026-02-28 22:58:08', '/api/sys/menu/tree', 'GET', 200, 1, 45, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (7, '2026-02-28 22:58:29', '2026-02-28 22:58:29', '/api/sys/menu', 'POST', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (8, '2026-02-28 22:58:29', '2026-02-28 22:58:29', '/api/sys/menu/tree', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (9, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (10, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (11, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/auth/info', 'GET', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (12, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (13, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/sys/notice/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (14, '2026-02-28 22:58:31', '2026-02-28 22:58:31', '/api/sys/menu/tree', 'GET', 200, 1, 25, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (15, '2026-02-28 22:58:32', '2026-02-28 22:58:32', '/api/sys/dept/tree', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (16, '2026-02-28 22:58:32', '2026-02-28 22:58:32', '/api/sys/menu/tree', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (17, '2026-02-28 22:58:32', '2026-02-28 22:58:32', '/api/sys/role/page', 'GET', 200, 1, 95, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (18, '2026-02-28 22:58:33', '2026-02-28 22:58:33', '/api/sys/role/1', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (19, '2026-02-28 22:58:37', '2026-02-28 22:58:37', '/api/sys/role', 'PUT', 200, 1, 178, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (20, '2026-02-28 22:58:37', '2026-02-28 22:58:37', '/api/sys/role/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (21, '2026-02-28 22:58:38', '2026-02-28 22:58:38', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (22, '2026-02-28 22:58:38', '2026-02-28 22:58:38', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (23, '2026-02-28 22:58:38', '2026-02-28 22:58:39', '/api/auth/info', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (24, '2026-02-28 22:58:39', '2026-02-28 22:58:39', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (25, '2026-02-28 22:58:39', '2026-02-28 22:58:39', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (26, '2026-02-28 22:58:39', '2026-02-28 22:58:39', '/api/sys/menu/tree', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (27, '2026-02-28 22:58:39', '2026-02-28 22:58:39', '/api/sys/dept/tree', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (28, '2026-02-28 22:58:39', '2026-02-28 22:58:39', '/api/sys/role/page', 'GET', 200, 1, 31, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (29, '2026-02-28 22:58:41', '2026-02-28 22:58:41', '/api/monitor/api-access/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (30, '2026-02-28 22:58:41', '2026-02-28 22:58:41', '/api/monitor/api-access/statistics', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (31, '2026-02-28 22:58:51', '2026-02-28 22:58:51', '/api/monitor/api-access/statistics', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (32, '2026-02-28 22:58:53', '2026-02-28 22:58:53', '/api/monitor/online/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (33, '2026-02-28 22:58:54', '2026-02-28 22:58:54', '/api/monitor/api-access/statistics', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (34, '2026-02-28 22:58:54', '2026-02-28 22:58:54', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (35, '2026-02-28 22:59:03', '2026-02-28 22:59:03', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (36, '2026-02-28 22:59:03', '2026-02-28 22:59:03', '/api/sys/config-group/list', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (37, '2026-02-28 22:59:03', '2026-02-28 22:59:03', '/api/sys/config-group/system', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (38, '2026-02-28 22:59:04', '2026-02-28 22:59:04', '/api/sys/config-group/register', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (39, '2026-02-28 22:59:04', '2026-02-28 22:59:04', '/api/sys/config-group/login', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (40, '2026-02-28 22:59:04', '2026-02-28 22:59:04', '/api/sys/config-group/password', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (41, '2026-02-28 22:59:05', '2026-02-28 22:59:05', '/api/monitor/api-access/statistics', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (42, '2026-02-28 22:59:05', '2026-02-28 22:59:05', '/api/monitor/api-access/page', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (43, '2026-02-28 22:59:15', '2026-02-28 22:59:15', '/api/monitor/api-access/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (44, '2026-02-28 22:59:25', '2026-02-28 22:59:25', '/api/monitor/api-access/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (45, '2026-02-28 22:59:35', '2026-02-28 22:59:35', '/api/monitor/api-access/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (46, '2026-02-28 22:59:45', '2026-02-28 22:59:45', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (47, '2026-02-28 22:59:45', '2026-02-28 22:59:45', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (48, '2026-02-28 22:59:45', '2026-02-28 22:59:45', '/api/auth/info', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (49, '2026-02-28 22:59:46', '2026-02-28 22:59:46', '/api/sys/chat/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (50, '2026-02-28 22:59:46', '2026-02-28 22:59:46', '/api/sys/notice/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (51, '2026-02-28 22:59:46', '2026-02-28 22:59:46', '/api/monitor/api-access/statistics', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (52, '2026-02-28 22:59:46', '2026-02-28 22:59:46', '/api/monitor/api-access/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (53, '2026-02-28 22:59:52', '2026-02-28 22:59:52', '/api/monitor/api-access/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (54, '2026-02-28 22:59:56', '2026-02-28 22:59:56', '/api/monitor/api-access/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (55, '2026-02-28 22:59:58', '2026-02-28 22:59:58', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (56, '2026-02-28 23:00:00', '2026-02-28 23:00:00', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (57, '2026-02-28 23:00:04', '2026-02-28 23:00:04', '/api/monitor/api-access/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (58, '2026-02-28 23:00:04', '2026-02-28 23:00:04', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (59, '2026-02-28 23:00:05', '2026-02-28 23:00:05', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (60, '2026-02-28 23:00:05', '2026-02-28 23:00:05', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (61, '2026-02-28 23:00:06', '2026-02-28 23:00:06', '/api/monitor/api-access/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (62, '2026-02-28 23:00:12', '2026-02-28 23:00:12', '/api/monitor/api-access/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (63, '2026-02-28 23:00:16', '2026-02-28 23:00:16', '/api/monitor/api-access/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (64, '2026-02-28 23:00:16', '2026-02-28 23:00:16', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (65, '2026-02-28 23:00:19', '2026-02-28 23:00:19', '/api/monitor/api-access/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (66, '2026-02-28 23:00:26', '2026-02-28 23:00:26', '/api/monitor/api-access/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (67, '2026-02-28 23:00:34', '2026-02-28 23:00:34', '/api/monitor/server-manager/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (68, '2026-02-28 23:00:36', '2026-02-28 23:00:36', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (69, '2026-02-28 23:00:36', '2026-02-28 23:00:36', '/api/monitor/cache/stats', 'GET', 200, 1, 52, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (70, '2026-02-28 23:00:36', '2026-02-28 23:00:36', '/api/monitor/job/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (71, '2026-02-28 23:00:36', '2026-02-28 23:00:36', '/api/monitor/job/log/statistics', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (72, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/online/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (73, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (74, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/job/log/statistics', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (75, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (76, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (77, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/server/info', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (78, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (79, '2026-02-28 23:00:37', '2026-02-28 23:00:37', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (80, '2026-02-28 23:00:38', '2026-02-28 23:00:38', '/api/monitor/online/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (81, '2026-02-28 23:00:39', '2026-02-28 23:00:39', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (82, '2026-02-28 23:00:39', '2026-02-28 23:00:39', '/api/monitor/cache/stats', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (83, '2026-02-28 23:00:40', '2026-02-28 23:00:40', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (84, '2026-02-28 23:00:41', '2026-02-28 23:00:41', '/api/monitor/job/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (85, '2026-02-28 23:00:41', '2026-02-28 23:00:41', '/api/monitor/job/log/statistics', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (86, '2026-02-28 23:00:42', '2026-02-28 23:00:42', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (87, '2026-02-28 23:00:42', '2026-02-28 23:00:42', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (88, '2026-02-28 23:00:44', '2026-02-28 23:00:44', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (89, '2026-02-28 23:00:47', '2026-02-28 23:00:47', '/api/monitor/server-manager/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (90, '2026-02-28 23:00:47', '2026-02-28 23:00:47', '/api/monitor/api-access/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (91, '2026-02-28 23:00:47', '2026-02-28 23:00:47', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (92, '2026-02-28 23:00:57', '2026-02-28 23:00:57', '/api/monitor/api-access/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (93, '2026-02-28 23:01:07', '2026-02-28 23:01:07', '/api/monitor/api-access/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (94, '2026-02-28 23:01:17', '2026-02-28 23:01:17', '/api/dashboard/stats', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (95, '2026-02-28 23:01:18', '2026-02-28 23:01:18', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (96, '2026-02-28 23:01:19', '2026-02-28 23:01:19', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (97, '2026-02-28 23:01:19', '2026-02-28 23:01:19', '/api/sys/user/page', 'GET', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (98, '2026-02-28 23:01:19', '2026-02-28 23:01:19', '/api/sys/post/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (99, '2026-02-28 23:01:19', '2026-02-28 23:01:19', '/api/sys/user/page', 'GET', 200, 1, 33, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (100, '2026-02-28 23:01:21', '2026-02-28 23:01:21', '/api/monitor/api-access/statistics', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (101, '2026-02-28 23:01:21', '2026-02-28 23:01:21', '/api/monitor/api-access/page', 'GET', 200, 1, 49, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (102, '2026-02-28 23:01:31', '2026-02-28 23:01:31', '/api/monitor/api-access/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (103, '2026-02-28 23:01:41', '2026-02-28 23:01:41', '/api/monitor/api-access/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (104, '2026-02-28 23:01:51', '2026-02-28 23:01:51', '/api/monitor/api-access/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (105, '2026-02-28 23:02:01', '2026-02-28 23:02:01', '/api/monitor/api-access/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (106, '2026-02-28 23:02:11', '2026-02-28 23:02:11', '/api/monitor/api-access/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (107, '2026-02-28 23:02:18', '2026-02-28 23:02:18', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (108, '2026-02-28 23:02:21', '2026-02-28 23:02:21', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (109, '2026-02-28 23:02:21', '2026-02-28 23:02:21', '/api/sys/user/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (110, '2026-02-28 23:02:23', '2026-02-28 23:02:23', '/api/sys/role/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (111, '2026-02-28 23:02:23', '2026-02-28 23:02:23', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (112, '2026-02-28 23:02:23', '2026-02-28 23:02:23', '/api/sys/post/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (113, '2026-02-28 23:02:23', '2026-02-28 23:02:23', '/api/sys/user/page', 'GET', 200, 1, 68, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (114, '2026-02-28 23:02:26', '2026-02-28 23:02:26', '/api/sys/user/2', 'DELETE', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (115, '2026-02-28 23:02:26', '2026-02-28 23:02:26', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (116, '2026-02-28 23:02:28', '2026-02-28 23:02:28', '/api/monitor/api-access/statistics', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (117, '2026-02-28 23:02:28', '2026-02-28 23:02:28', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (118, '2026-02-28 23:02:33', '2026-02-28 23:02:33', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (119, '2026-02-28 23:02:33', '2026-02-28 23:02:33', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (120, '2026-02-28 23:02:33', '2026-02-28 23:02:33', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (121, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (122, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (123, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (124, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (125, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (126, '2026-02-28 23:02:34', '2026-02-28 23:02:34', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (127, '2026-02-28 23:02:35', '2026-02-28 23:02:35', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (128, '2026-02-28 23:02:35', '2026-02-28 23:02:35', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (129, '2026-02-28 23:02:35', '2026-02-28 23:02:35', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (130, '2026-02-28 23:02:35', '2026-02-28 23:02:35', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (131, '2026-02-28 23:02:35', '2026-02-28 23:02:35', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (132, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (133, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (134, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (135, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (136, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (137, '2026-02-28 23:02:36', '2026-02-28 23:02:36', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (138, '2026-02-28 23:02:37', '2026-02-28 23:02:37', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (139, '2026-02-28 23:02:37', '2026-02-28 23:02:37', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (140, '2026-02-28 23:02:37', '2026-02-28 23:02:37', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (141, '2026-02-28 23:02:37', '2026-02-28 23:02:37', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (142, '2026-02-28 23:02:38', '2026-02-28 23:02:38', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (143, '2026-02-28 23:02:38', '2026-02-28 23:02:38', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (144, '2026-02-28 23:02:38', '2026-02-28 23:02:38', '/api/monitor/api-access/statistics', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (145, '2026-02-28 23:02:38', '2026-02-28 23:02:38', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (146, '2026-02-28 23:02:38', '2026-02-28 23:02:38', '/api/monitor/api-access/page', 'GET', 200, 1, 41, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (147, '2026-02-28 23:02:39', '2026-02-28 23:02:39', '/api/monitor/api-access/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (148, '2026-02-28 23:02:39', '2026-02-28 23:02:39', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (149, '2026-02-28 23:02:39', '2026-02-28 23:02:39', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (150, '2026-02-28 23:02:39', '2026-02-28 23:02:39', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (151, '2026-02-28 23:02:39', '2026-02-28 23:02:39', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (152, '2026-02-28 23:02:40', '2026-02-28 23:02:40', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (153, '2026-02-28 23:02:40', '2026-02-28 23:02:40', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (154, '2026-02-28 23:02:48', '2026-02-28 23:02:48', '/api/monitor/api-access/statistics', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (155, '2026-02-28 23:02:58', '2026-02-28 23:02:58', '/api/monitor/api-access/statistics', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (156, '2026-02-28 23:03:07', '2026-02-28 23:03:07', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (157, '2026-02-28 23:03:07', '2026-02-28 23:03:07', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (158, '2026-02-28 23:03:08', '2026-02-28 23:03:08', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (159, '2026-02-28 23:03:08', '2026-02-28 23:03:08', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (160, '2026-02-28 23:03:08', '2026-02-28 23:03:08', '/api/monitor/api-access/statistics', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (161, '2026-02-28 23:03:08', '2026-02-28 23:03:08', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (162, '2026-02-28 23:03:08', '2026-02-28 23:03:08', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (163, '2026-02-28 23:03:09', '2026-02-28 23:03:09', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (164, '2026-02-28 23:03:09', '2026-02-28 23:03:09', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (165, '2026-02-28 23:03:17', '2026-02-28 23:03:17', '/api/monitor/server-manager/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (166, '2026-02-28 23:03:18', '2026-02-28 23:03:18', '/api/monitor/api-access/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (167, '2026-02-28 23:03:18', '2026-02-28 23:03:18', '/api/monitor/api-access/statistics', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (168, '2026-02-28 23:03:19', '2026-02-28 23:03:19', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (169, '2026-02-28 23:03:19', '2026-02-28 23:03:19', '/api/monitor/api-access/statistics', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (170, '2026-02-28 23:03:25', '2026-02-28 23:03:25', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (171, '2026-02-28 23:03:29', '2026-02-28 23:03:29', '/api/monitor/api-access/statistics', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (172, '2026-02-28 23:03:29', '2026-02-28 23:03:29', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (173, '2026-02-28 23:03:38', '2026-02-28 23:03:38', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (174, '2026-02-28 23:03:39', '2026-02-28 23:03:39', '/api/monitor/api-access/statistics', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (175, '2026-02-28 23:03:41', '2026-02-28 23:03:41', '/api/monitor/server-manager/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (176, '2026-02-28 23:03:41', '2026-02-28 23:03:41', '/api/monitor/cache/keys', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (177, '2026-02-28 23:03:41', '2026-02-28 23:03:41', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (178, '2026-02-28 23:03:42', '2026-02-28 23:03:42', '/api/monitor/job/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (179, '2026-02-28 23:03:42', '2026-02-28 23:03:42', '/api/monitor/job/log/statistics', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (180, '2026-02-28 23:03:42', '2026-02-28 23:03:42', '/api/monitor/online/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (181, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/role/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (182, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/post/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (183, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (184, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/user/page', 'GET', 200, 1, 52, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (185, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (186, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/role/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (187, '2026-02-28 23:03:44', '2026-02-28 23:03:44', '/api/sys/menu/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (188, '2026-02-28 23:03:44', '2026-02-28 23:03:45', '/api/sys/menu/tree', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (189, '2026-02-28 23:03:45', '2026-02-28 23:03:45', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (190, '2026-02-28 23:03:45', '2026-02-28 23:03:45', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (191, '2026-02-28 23:03:45', '2026-02-28 23:03:45', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (192, '2026-02-28 23:03:47', '2026-02-28 23:03:47', '/api/sys/dept/tree', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (193, '2026-02-28 23:03:47', '2026-02-28 23:03:47', '/api/sys/user/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (194, '2026-02-28 23:03:47', '2026-02-28 23:03:47', '/api/sys/post/tree', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (195, '2026-02-28 23:03:47', '2026-02-28 23:03:47', '/api/sys/user/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (196, '2026-02-28 23:03:50', '2026-02-28 23:03:50', '/api/monitor/server-manager/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (197, '2026-02-28 23:03:51', '2026-02-28 23:03:51', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (198, '2026-02-28 23:03:51', '2026-02-28 23:03:51', '/api/monitor/api-access/statistics', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (199, '2026-02-28 23:03:53', '2026-02-28 23:03:53', '/api/monitor/server-manager/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (200, '2026-02-28 23:03:53', '2026-02-28 23:03:53', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (201, '2026-02-28 23:03:53', '2026-02-28 23:03:53', '/api/monitor/cache/keys', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (202, '2026-02-28 23:03:53', '2026-02-28 23:03:53', '/api/monitor/cache/stats', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (203, '2026-02-28 23:03:54', '2026-02-28 23:03:54', '/api/monitor/job/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (204, '2026-02-28 23:03:54', '2026-02-28 23:03:54', '/api/monitor/job/log/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (205, '2026-02-28 23:03:54', '2026-02-28 23:03:54', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (206, '2026-02-28 23:03:55', '2026-02-28 23:03:55', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (207, '2026-02-28 23:03:56', '2026-02-28 23:03:56', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (208, '2026-02-28 23:03:56', '2026-02-28 23:03:56', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (209, '2026-02-28 23:03:56', '2026-02-28 23:03:56', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (210, '2026-02-28 23:03:56', '2026-02-28 23:03:56', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (211, '2026-02-28 23:03:57', '2026-02-28 23:03:57', '/api/monitor/job/log/statistics', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (212, '2026-02-28 23:03:57', '2026-02-28 23:03:57', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (213, '2026-02-28 23:03:57', '2026-02-28 23:03:57', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (214, '2026-02-28 23:03:58', '2026-02-28 23:03:58', '/api/monitor/server-manager/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (215, '2026-02-28 23:03:58', '2026-02-28 23:03:58', '/api/monitor/server/info', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (216, '2026-02-28 23:03:59', '2026-02-28 23:03:59', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (217, '2026-02-28 23:04:03', '2026-02-28 23:04:03', '/api/sys/file-group/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (218, '2026-02-28 23:04:03', '2026-02-28 23:04:03', '/api/sys/file/page-by-group', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (219, '2026-02-28 23:04:08', '2026-02-28 23:04:08', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (220, '2026-02-28 23:04:08', '2026-02-28 23:04:08', '/api/monitor/job/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (221, '2026-02-28 23:04:08', '2026-02-28 23:04:08', '/api/monitor/job/log/statistics', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (222, '2026-02-28 23:04:08', '2026-02-28 23:04:08', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (223, '2026-02-28 23:04:08', '2026-02-28 23:04:08', '/api/monitor/cache/stats', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (224, '2026-02-28 23:04:09', '2026-02-28 23:04:09', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (225, '2026-02-28 23:04:09', '2026-02-28 23:04:09', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (226, '2026-02-28 23:04:09', '2026-02-28 23:04:09', '/api/monitor/api-access/statistics', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (227, '2026-02-28 23:04:19', '2026-02-28 23:04:19', '/api/monitor/api-access/statistics', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (228, '2026-02-28 23:04:29', '2026-02-28 23:04:29', '/api/monitor/api-access/statistics', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (229, '2026-02-28 23:04:39', '2026-02-28 23:04:39', '/api/monitor/api-access/statistics', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (230, '2026-02-28 23:04:46', '2026-02-28 23:04:46', '/api/monitor/api-access/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (231, '2026-02-28 23:04:47', '2026-02-28 23:04:47', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (232, '2026-02-28 23:04:47', '2026-02-28 23:04:47', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (233, '2026-02-28 23:04:49', '2026-02-28 23:04:49', '/api/monitor/api-access/statistics', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (234, '2026-02-28 23:04:51', '2026-02-28 23:04:51', '/api/monitor/server-manager/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (235, '2026-02-28 23:04:52', '2026-02-28 23:04:52', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (236, '2026-02-28 23:04:52', '2026-02-28 23:04:52', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (237, '2026-02-28 23:04:52', '2026-02-28 23:04:52', '/api/monitor/cache/stats', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (238, '2026-02-28 23:04:53', '2026-02-28 23:04:53', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (239, '2026-02-28 23:04:53', '2026-02-28 23:04:53', '/api/monitor/job/log/statistics', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (240, '2026-02-28 23:04:53', '2026-02-28 23:04:53', '/api/monitor/online/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (241, '2026-02-28 23:04:54', '2026-02-28 23:04:54', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (242, '2026-02-28 23:04:54', '2026-02-28 23:04:54', '/api/monitor/job/log/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (243, '2026-02-28 23:04:54', '2026-02-28 23:04:54', '/api/monitor/cache/stats', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (244, '2026-02-28 23:04:54', '2026-02-28 23:04:54', '/api/monitor/cache/keys', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (245, '2026-02-28 23:04:55', '2026-02-28 23:04:55', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (246, '2026-02-28 23:04:55', '2026-02-28 23:04:55', '/api/sys/user/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (247, '2026-02-28 23:04:56', '2026-02-28 23:04:56', '/api/sys/post/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (248, '2026-02-28 23:04:56', '2026-02-28 23:04:56', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (249, '2026-02-28 23:04:56', '2026-02-28 23:04:56', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (250, '2026-02-28 23:04:56', '2026-02-28 23:04:56', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (251, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/role/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (252, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/post/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (253, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (254, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/user/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (255, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (256, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/menu/tree', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (257, '2026-02-28 23:04:57', '2026-02-28 23:04:57', '/api/sys/role/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (258, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/menu/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (259, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/dict/type/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (260, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (261, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (262, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (263, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/dict/type/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (264, '2026-02-28 23:04:58', '2026-02-28 23:04:58', '/api/sys/menu/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (265, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (266, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/menu/tree', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (267, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/role/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (268, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/role/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (269, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/post/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (270, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (271, '2026-02-28 23:04:59', '2026-02-28 23:04:59', '/api/sys/user/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (272, '2026-02-28 23:05:08', '2026-02-28 23:05:08', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (273, '2026-02-28 23:05:08', '2026-02-28 23:05:08', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (274, '2026-02-28 23:05:08', '2026-02-28 23:05:08', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (275, '2026-02-28 23:05:09', '2026-02-28 23:05:09', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (276, '2026-02-28 23:05:09', '2026-02-28 23:05:09', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (277, '2026-02-28 23:05:09', '2026-02-28 23:05:09', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (278, '2026-02-28 23:05:12', '2026-02-28 23:05:12', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (279, '2026-02-28 23:05:15', '2026-02-28 23:05:15', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (280, '2026-02-28 23:05:18', '2026-02-28 23:05:18', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (281, '2026-02-28 23:05:21', '2026-02-28 23:05:21', '/api/monitor/cache/value', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (282, '2026-02-28 23:05:21', '2026-02-28 23:05:21', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (283, '2026-02-28 23:05:24', '2026-02-28 23:05:24', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (284, '2026-02-28 23:05:27', '2026-02-28 23:05:27', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (285, '2026-02-28 23:05:31', '2026-02-28 23:05:31', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (286, '2026-02-28 23:05:34', '2026-02-28 23:05:34', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (287, '2026-02-28 23:05:37', '2026-02-28 23:05:37', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (288, '2026-02-28 23:05:40', '2026-02-28 23:05:40', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (289, '2026-02-28 23:05:43', '2026-02-28 23:05:43', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (290, '2026-02-28 23:05:46', '2026-02-28 23:05:46', '/api/monitor/cache/stats', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (291, '2026-02-28 23:05:48', '2026-02-28 23:05:48', '/api/monitor/cache/stats', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (292, '2026-02-28 23:05:49', '2026-02-28 23:05:49', '/api/monitor/cache/value', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (293, '2026-02-28 23:05:51', '2026-02-28 23:05:51', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (294, '2026-02-28 23:05:53', '2026-02-28 23:05:53', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (295, '2026-02-28 23:05:53', '2026-02-28 23:05:53', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (296, '2026-02-28 23:05:54', '2026-02-28 23:05:54', '/api/monitor/cache/keys', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (297, '2026-02-28 23:05:54', '2026-02-28 23:05:54', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (298, '2026-02-28 23:05:54', '2026-02-28 23:05:54', '/api/monitor/cache/keys', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (299, '2026-02-28 23:05:54', '2026-02-28 23:05:54', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (300, '2026-02-28 23:05:55', '2026-02-28 23:05:55', '/api/monitor/cache/value', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (301, '2026-02-28 23:05:57', '2026-02-28 23:05:57', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (302, '2026-02-28 23:06:00', '2026-02-28 23:06:00', '/api/monitor/api-access/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (303, '2026-02-28 23:06:00', '2026-02-28 23:06:00', '/api/monitor/api-access/statistics', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (304, '2026-02-28 23:06:03', '2026-02-28 23:06:03', '/api/monitor/job/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (305, '2026-02-28 23:06:03', '2026-02-28 23:06:03', '/api/monitor/job/log/statistics', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (306, '2026-02-28 23:06:04', '2026-02-28 23:06:04', '/api/monitor/online/list', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (307, '2026-02-28 23:06:05', '2026-02-28 23:06:05', '/api/monitor/operlog/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (308, '2026-02-28 23:06:05', '2026-02-28 23:06:05', '/api/monitor/loginlog/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (309, '2026-02-28 23:06:06', '2026-02-28 23:06:06', '/api/monitor/operlog/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (310, '2026-02-28 23:06:08', '2026-02-28 23:06:08', '/api/monitor/online/list', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (311, '2026-02-28 23:06:08', '2026-02-28 23:06:08', '/api/monitor/job/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (312, '2026-02-28 23:06:08', '2026-02-28 23:06:08', '/api/monitor/job/log/statistics', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (313, '2026-02-28 23:06:08', '2026-02-28 23:06:08', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (314, '2026-02-28 23:06:08', '2026-02-28 23:06:08', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (315, '2026-02-28 23:06:09', '2026-02-28 23:06:09', '/api/monitor/server-manager/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (316, '2026-02-28 23:06:09', '2026-02-28 23:06:09', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (317, '2026-02-28 23:06:09', '2026-02-28 23:06:09', '/api/monitor/api-access/statistics', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (318, '2026-02-28 23:06:12', '2026-02-28 23:06:12', '/api/monitor/operlog/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (319, '2026-02-28 23:06:13', '2026-02-28 23:06:13', '/api/monitor/loginlog/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (320, '2026-02-28 23:06:14', '2026-02-28 23:06:14', '/api/monitor/operlog/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (321, '2026-02-28 23:06:14', '2026-02-28 23:06:14', '/api/monitor/loginlog/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (322, '2026-02-28 23:06:15', '2026-02-28 23:06:15', '/api/monitor/operlog/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (323, '2026-02-28 23:06:37', '2026-02-28 23:06:37', '/api/monitor/online/list', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (324, '2026-02-28 23:06:38', '2026-02-28 23:06:38', '/api/monitor/job/log/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (325, '2026-02-28 23:06:38', '2026-02-28 23:06:38', '/api/monitor/job/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (326, '2026-02-28 23:06:38', '2026-02-28 23:06:38', '/api/monitor/cache/keys', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (327, '2026-02-28 23:06:38', '2026-02-28 23:06:38', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (328, '2026-02-28 23:06:39', '2026-02-28 23:06:39', '/api/monitor/server-manager/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (329, '2026-02-28 23:06:39', '2026-02-28 23:06:39', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (330, '2026-02-28 23:06:39', '2026-02-28 23:06:39', '/api/monitor/api-access/statistics', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (331, '2026-02-28 23:06:39', '2026-02-28 23:06:39', '/api/monitor/server-manager/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (332, '2026-02-28 23:06:40', '2026-02-28 23:06:40', '/api/monitor/job/log/statistics', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (333, '2026-02-28 23:06:40', '2026-02-28 23:06:40', '/api/monitor/job/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (334, '2026-02-28 23:06:41', '2026-02-28 23:06:41', '/api/monitor/server-manager/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (335, '2026-02-28 23:06:41', '2026-02-28 23:06:41', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (336, '2026-02-28 23:06:41', '2026-02-28 23:06:41', '/api/monitor/api-access/statistics', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (337, '2026-02-28 23:06:48', '2026-02-28 23:06:48', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (338, '2026-02-28 23:06:48', '2026-02-28 23:06:48', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (339, '2026-02-28 23:06:48', '2026-02-28 23:06:48', '/api/monitor/api-access/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (340, '2026-02-28 23:06:51', '2026-02-28 23:06:51', '/api/monitor/api-access/statistics', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (341, '2026-02-28 23:06:59', '2026-02-28 23:06:59', '/api/monitor/api-access/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (342, '2026-02-28 23:07:00', '2026-02-28 23:07:00', '/api/monitor/api-access/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (343, '2026-02-28 23:07:01', '2026-02-28 23:07:01', '/api/monitor/api-access/statistics', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (344, '2026-02-28 23:07:02', '2026-02-28 23:07:02', '/api/monitor/api-access/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (345, '2026-02-28 23:07:03', '2026-02-28 23:07:03', '/api/monitor/api-access/page', 'GET', 200, 1, 71, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (346, '2026-02-28 23:07:04', '2026-02-28 23:07:04', '/api/monitor/loginlog/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (347, '2026-02-28 23:07:04', '2026-02-28 23:07:04', '/api/monitor/operlog/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (348, '2026-02-28 23:07:06', '2026-02-28 23:07:06', '/api/monitor/online/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (349, '2026-02-28 23:07:06', '2026-02-28 23:07:06', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (350, '2026-02-28 23:07:06', '2026-02-28 23:07:06', '/api/monitor/job/log/statistics', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (351, '2026-02-28 23:07:06', '2026-02-28 23:07:06', '/api/monitor/server/info', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (352, '2026-02-28 23:07:11', '2026-02-28 23:07:11', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (353, '2026-02-28 23:07:16', '2026-02-28 23:07:16', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (354, '2026-02-28 23:07:21', '2026-02-28 23:07:21', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (355, '2026-02-28 23:07:26', '2026-02-28 23:07:26', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (356, '2026-02-28 23:07:31', '2026-02-28 23:07:31', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (357, '2026-02-28 23:07:36', '2026-02-28 23:07:36', '/api/monitor/server/info', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (358, '2026-02-28 23:07:41', '2026-02-28 23:07:41', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (359, '2026-02-28 23:07:46', '2026-02-28 23:07:46', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (360, '2026-02-28 23:07:51', '2026-02-28 23:07:51', '/api/monitor/server/info', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (361, '2026-02-28 23:07:56', '2026-02-28 23:07:56', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (362, '2026-02-28 23:08:01', '2026-02-28 23:08:01', '/api/monitor/server/info', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (363, '2026-02-28 23:08:06', '2026-02-28 23:08:06', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (364, '2026-02-28 23:08:08', '2026-02-28 23:08:08', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (365, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (366, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (367, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/sys/notice/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (368, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (369, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (370, '2026-02-28 23:17:16', '2026-02-28 23:17:16', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (371, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/sys/notice/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (372, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/sys/chat/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (373, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (374, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (375, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (376, '2026-02-28 23:17:18', '2026-02-28 23:17:18', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (377, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/sys/chat/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (378, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/sys/notice/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (379, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (380, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (381, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (382, '2026-02-28 23:18:07', '2026-02-28 23:18:07', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (383, '2026-02-28 23:18:49', '2026-02-28 23:18:49', '/api/sys/notice/page', 'GET', 200, 1, 606, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (384, '2026-02-28 23:18:50', '2026-02-28 23:18:50', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (385, '2026-02-28 23:20:02', '2026-02-28 23:20:02', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (386, '2026-02-28 23:20:02', '2026-02-28 23:20:02', '/api/sys/notice/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (387, '2026-02-28 23:20:02', '2026-02-28 23:20:02', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (388, '2026-02-28 23:20:33', '2026-02-28 23:20:33', '/api/sys/notice/channels', 'GET', 200, 1, 70, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (389, '2026-02-28 23:20:33', '2026-02-28 23:20:33', '/api/sys/user/page', 'GET', 200, 1, 350, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (390, '2026-02-28 23:20:53', '2026-02-28 23:20:53', '/api/crypto/config', 'GET', 200, 1, 6, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (391, '2026-02-28 23:20:53', '2026-02-28 23:20:53', '/api/sys/config-group/public', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (392, '2026-02-28 23:20:53', '2026-02-28 23:20:54', '/api/auth/info', 'GET', 200, 1, 78, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (393, '2026-02-28 23:20:54', '2026-02-28 23:20:54', '/api/sys/notice/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (394, '2026-02-28 23:20:54', '2026-02-28 23:20:54', '/api/sys/chat/unread-count', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (395, '2026-02-28 23:20:54', '2026-02-28 23:20:54', '/api/sys/notice/channels', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (396, '2026-02-28 23:20:54', '2026-02-28 23:20:54', '/api/sys/notice/page', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (397, '2026-02-28 23:20:55', '2026-02-28 23:20:55', '/api/sys/notice/channels', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (398, '2026-02-28 23:20:55', '2026-02-28 23:20:55', '/api/sys/user/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (399, '2026-02-28 23:20:58', '2026-02-28 23:20:58', '/api/sys/chat/users', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (400, '2026-02-28 23:20:58', '2026-02-28 23:20:58', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (401, '2026-02-28 23:20:58', '2026-02-28 23:20:58', '/api/sys/chat/online/10', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (402, '2026-02-28 23:20:58', '2026-02-28 23:20:58', '/api/sys/chat/online/4', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (403, '2026-02-28 23:20:58', '2026-02-28 23:20:58', '/api/chat/group/list', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (404, '2026-02-28 23:20:59', '2026-02-28 23:20:59', '/api/sys/notice/channels', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (405, '2026-02-28 23:20:59', '2026-02-28 23:20:59', '/api/sys/notice/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (406, '2026-02-28 23:21:03', '2026-02-28 23:21:03', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (407, '2026-02-28 23:21:03', '2026-02-28 23:21:03', '/api/sys/user/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (408, '2026-02-28 23:21:46', '2026-02-28 23:21:46', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (409, '2026-02-28 23:21:46', '2026-02-28 23:21:46', '/api/sys/user/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (410, '2026-02-28 23:22:18', '2026-02-28 23:22:18', '/api/sys/role/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (411, '2026-02-28 23:22:18', '2026-02-28 23:22:18', '/api/sys/dept/tree', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (412, '2026-02-28 23:22:18', '2026-02-28 23:22:18', '/api/sys/post/list', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (413, '2026-02-28 23:22:18', '2026-02-28 23:22:18', '/api/sys/user/page', 'GET', 200, 1, 47, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (414, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/role/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (415, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/menu/tree', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (416, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/dept/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (417, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/role/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (418, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (419, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/post/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (420, '2026-02-28 23:22:19', '2026-02-28 23:22:19', '/api/sys/user/page', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (421, '2026-02-28 23:22:25', '2026-02-28 23:22:25', '/api/sys/user/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (422, '2026-02-28 23:22:35', '2026-02-28 23:22:35', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (423, '2026-02-28 23:22:35', '2026-02-28 23:22:35', '/api/sys/notice/page', 'GET', 200, 1, 33, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (424, '2026-02-28 23:22:36', '2026-02-28 23:22:36', '/api/sys/notice/channels', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (425, '2026-02-28 23:22:36', '2026-02-28 23:22:36', '/api/sys/user/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (426, '2026-02-28 23:23:37', '2026-02-28 23:23:37', '/api/sys/notice/channels', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (427, '2026-02-28 23:23:37', '2026-02-28 23:23:37', '/api/sys/notice/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (428, '2026-02-28 23:23:37', '2026-02-28 23:23:37', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (429, '2026-02-28 23:23:37', '2026-02-28 23:23:37', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (430, '2026-02-28 23:23:39', '2026-02-28 23:23:39', '/api/sys/notice/channels', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (431, '2026-02-28 23:23:39', '2026-02-28 23:23:39', '/api/sys/user/page', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (432, '2026-02-28 23:23:39', '2026-02-28 23:23:39', '/api/sys/dept/tree', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (433, '2026-02-28 23:23:54', '2026-02-28 23:23:54', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (434, '2026-02-28 23:23:54', '2026-02-28 23:23:54', '/api/sys/config-group/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (435, '2026-02-28 23:23:54', '2026-02-28 23:23:54', '/api/sys/config-group/system', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (436, '2026-02-28 23:23:56', '2026-02-28 23:23:56', '/api/sys/config-group/push', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (437, '2026-02-28 23:25:06', '2026-02-28 23:25:06', '/api/sys/notice/channels', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (438, '2026-02-28 23:25:06', '2026-02-28 23:25:06', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (439, '2026-02-28 23:25:08', '2026-02-28 23:25:08', '/api/sys/notice/channels', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (440, '2026-02-28 23:25:08', '2026-02-28 23:25:08', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (441, '2026-02-28 23:25:08', '2026-02-28 23:25:08', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (442, '2026-02-28 23:25:27', '2026-02-28 23:25:27', '/api/sys/notice', 'POST', 200, 1, 62, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (443, '2026-02-28 23:25:27', '2026-02-28 23:25:28', '/api/sys/notice/page', 'GET', 200, 1, 32, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (444, '2026-02-28 23:25:35', '2026-02-28 23:25:35', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (445, '2026-02-28 23:25:35', '2026-02-28 23:25:35', '/api/sys/notice/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (446, '2026-02-28 23:25:35', '2026-02-28 23:25:35', '/api/sys/notice/my', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (447, '2026-02-28 23:25:52', '2026-02-28 23:25:52', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (448, '2026-02-28 23:25:52', '2026-02-28 23:25:52', '/api/sys/config-group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (449, '2026-02-28 23:25:52', '2026-02-28 23:25:52', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (450, '2026-02-28 23:25:53', '2026-02-28 23:25:53', '/api/sys/config-group/push', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (451, '2026-02-28 23:26:14', '2026-02-28 23:26:14', '/api/sys/config-group/push', 'POST', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (452, '2026-02-28 23:26:15', '2026-02-28 23:26:15', '/api/sys/config-group/refresh', 'POST', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (453, '2026-02-28 23:26:15', '2026-02-28 23:26:15', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (454, '2026-02-28 23:26:15', '2026-02-28 23:26:15', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (455, '2026-02-28 23:26:16', '2026-02-28 23:26:16', '/api/sys/chat/users', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (456, '2026-02-28 23:26:16', '2026-02-28 23:26:16', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (457, '2026-02-28 23:26:16', '2026-02-28 23:26:16', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (458, '2026-02-28 23:26:16', '2026-02-28 23:26:16', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (459, '2026-02-28 23:26:16', '2026-02-28 23:26:16', '/api/chat/group/list', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (460, '2026-02-28 23:26:18', '2026-02-28 23:26:18', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (461, '2026-02-28 23:26:18', '2026-02-28 23:26:18', '/api/sys/notice/page', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (462, '2026-02-28 23:26:18', '2026-02-28 23:26:18', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (463, '2026-02-28 23:26:18', '2026-02-28 23:26:18', '/api/sys/user/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (464, '2026-02-28 23:26:18', '2026-02-28 23:26:18', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (465, '2026-02-28 23:26:38', '2026-02-28 23:26:38', '/api/sys/notice', 'POST', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (466, '2026-02-28 23:26:38', '2026-02-28 23:26:38', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (467, '2026-02-28 23:26:57', '2026-02-28 23:26:57', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (468, '2026-02-28 23:26:57', '2026-02-28 23:26:57', '/api/sys/user/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (469, '2026-02-28 23:26:57', '2026-02-28 23:26:57', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (470, '2026-02-28 23:26:57', '2026-02-28 23:26:57', '/api/sys/notice/5', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (471, '2026-02-28 23:27:29', '2026-02-28 23:27:29', '/api/sys/notice/5', 'DELETE', 200, 1, 124, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (472, '2026-02-28 23:27:29', '2026-02-28 23:27:29', '/api/sys/notice/page', 'GET', 200, 1, 97, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (473, '2026-02-28 23:27:32', '2026-02-28 23:27:32', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (474, '2026-02-28 23:27:32', '2026-02-28 23:27:32', '/api/sys/config-group/public', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (475, '2026-02-28 23:27:32', '2026-02-28 23:27:33', '/api/auth/info', 'GET', 200, 1, 92, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (476, '2026-02-28 23:27:33', '2026-02-28 23:27:33', '/api/sys/notice/channels', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (477, '2026-02-28 23:27:33', '2026-02-28 23:27:33', '/api/sys/notice/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (478, '2026-02-28 23:27:33', '2026-02-28 23:27:33', '/api/sys/chat/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (479, '2026-02-28 23:27:33', '2026-02-28 23:27:33', '/api/sys/notice/page', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (480, '2026-02-28 23:27:34', '2026-02-28 23:27:34', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (481, '2026-02-28 23:27:34', '2026-02-28 23:27:34', '/api/sys/user/page', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (482, '2026-02-28 23:27:34', '2026-02-28 23:27:34', '/api/sys/dept/tree', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (483, '2026-02-28 23:27:42', '2026-02-28 23:27:42', '/api/sys/notice', 'POST', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (484, '2026-02-28 23:27:42', '2026-02-28 23:27:42', '/api/sys/notice/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (485, '2026-02-28 23:28:13', '2026-02-28 23:28:13', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (486, '2026-02-28 23:28:13', '2026-02-28 23:28:13', '/api/sys/user/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (487, '2026-02-28 23:28:13', '2026-02-28 23:28:13', '/api/sys/dept/tree', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (488, '2026-02-28 23:28:13', '2026-02-28 23:28:13', '/api/sys/notice/6', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (489, '2026-02-28 23:28:15', '2026-02-28 23:28:15', '/api/sys/notice', 'PUT', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (490, '2026-02-28 23:28:15', '2026-02-28 23:28:15', '/api/sys/notice/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (491, '2026-02-28 23:28:34', '2026-02-28 23:28:34', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (492, '2026-02-28 23:28:34', '2026-02-28 23:28:34', '/api/sys/user/page', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (493, '2026-02-28 23:28:34', '2026-02-28 23:28:34', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (494, '2026-02-28 23:28:40', '2026-02-28 23:28:40', '/api/sys/notice', 'POST', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (495, '2026-02-28 23:28:40', '2026-02-28 23:28:40', '/api/sys/notice/page', 'GET', 200, 1, 41, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (496, '2026-02-28 23:31:45', '2026-02-28 23:31:45', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (497, '2026-02-28 23:31:45', '2026-02-28 23:31:45', '/api/sys/config-group/list', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (498, '2026-02-28 23:31:45', '2026-02-28 23:31:45', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (499, '2026-02-28 23:31:45', '2026-02-28 23:31:45', '/api/sys/dict/type/page', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (500, '2026-02-28 23:28:52', '2026-02-28 23:31:46', '/api/sys/notice/7/publish', 'POST', 200, 1, 173829, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (501, '2026-02-28 23:31:47', '2026-02-28 23:31:47', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (502, '2026-02-28 23:31:47', '2026-02-28 23:31:47', '/api/sys/config-group/list', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (503, '2026-02-28 23:31:47', '2026-02-28 23:31:47', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (504, '2026-02-28 23:31:54', '2026-02-28 23:31:54', '/api/sys/dict/type/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (505, '2026-02-28 23:31:55', '2026-02-28 23:31:55', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (506, '2026-02-28 23:31:55', '2026-02-28 23:31:55', '/api/sys/config-group/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (507, '2026-02-28 23:31:55', '2026-02-28 23:31:55', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (508, '2026-02-28 23:31:57', '2026-02-28 23:31:57', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (509, '2026-02-28 23:31:57', '2026-02-28 23:31:57', '/api/sys/notice/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (510, '2026-02-28 23:32:00', '2026-02-28 23:32:00', '/api/sys/notice/7', 'DELETE', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (511, '2026-02-28 23:32:00', '2026-02-28 23:32:00', '/api/sys/notice/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (512, '2026-02-28 23:32:02', '2026-02-28 23:32:02', '/api/sys/notice/6', 'DELETE', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (513, '2026-02-28 23:32:02', '2026-02-28 23:32:02', '/api/sys/notice/page', 'GET', 200, 1, 47, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (514, '2026-02-28 23:32:03', '2026-02-28 23:32:03', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (515, '2026-02-28 23:32:03', '2026-02-28 23:32:03', '/api/sys/user/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (516, '2026-02-28 23:32:03', '2026-02-28 23:32:03', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (517, '2026-02-28 23:32:12', '2026-02-28 23:32:12', '/api/sys/notice', 'POST', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (518, '2026-02-28 23:32:12', '2026-02-28 23:32:12', '/api/sys/notice/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (519, '2026-02-28 23:32:14', '2026-02-28 23:32:20', '/api/sys/notice/8/publish', 'POST', 200, 1, 5145, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (520, '2026-02-28 23:32:20', '2026-02-28 23:32:20', '/api/sys/notice/page', 'GET', 200, 1, 91, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (521, '2026-02-28 23:32:28', '2026-02-28 23:32:28', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (522, '2026-02-28 23:32:28', '2026-02-28 23:32:28', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (523, '2026-02-28 23:32:28', '2026-02-28 23:32:28', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (524, '2026-02-28 23:32:28', '2026-02-28 23:32:28', '/api/sys/notice/8', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (525, '2026-02-28 23:32:38', '2026-02-28 23:32:38', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (526, '2026-02-28 23:32:38', '2026-02-28 23:32:38', '/api/sys/user/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (527, '2026-02-28 23:32:38', '2026-02-28 23:32:38', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (528, '2026-02-28 23:32:44', '2026-02-28 23:32:44', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (529, '2026-02-28 23:32:44', '2026-02-28 23:32:44', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (530, '2026-02-28 23:32:44', '2026-02-28 23:32:44', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (531, '2026-02-28 23:32:47', '2026-02-28 23:32:47', '/api/sys/dict/type/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (532, '2026-02-28 23:32:47', '2026-02-28 23:32:47', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (533, '2026-02-28 23:32:47', '2026-02-28 23:32:47', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (534, '2026-02-28 23:32:47', '2026-02-28 23:32:47', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (535, '2026-02-28 23:32:48', '2026-02-28 23:32:48', '/api/sys/dict/type/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (536, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (537, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (538, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (539, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/dict/type/page', 'GET', 200, 1, 37, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (540, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (541, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (542, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/config-group/system', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (543, '2026-02-28 23:32:49', '2026-02-28 23:32:49', '/api/sys/dict/type/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (544, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (545, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (546, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (547, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/dict/type/page', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (548, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (549, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (550, '2026-02-28 23:32:50', '2026-02-28 23:32:50', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (551, '2026-02-28 23:32:51', '2026-02-28 23:32:51', '/api/sys/dict/type/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (552, '2026-02-28 23:32:53', '2026-02-28 23:32:53', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (553, '2026-02-28 23:32:53', '2026-02-28 23:32:53', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (554, '2026-02-28 23:32:53', '2026-02-28 23:32:53', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (555, '2026-02-28 23:32:53', '2026-02-28 23:32:53', '/api/sys/dict/type/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (556, '2026-02-28 23:32:54', '2026-02-28 23:32:54', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (557, '2026-02-28 23:32:54', '2026-02-28 23:32:54', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (558, '2026-02-28 23:32:54', '2026-02-28 23:32:54', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (559, '2026-02-28 23:32:54', '2026-02-28 23:32:54', '/api/sys/dict/type/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (560, '2026-02-28 23:32:55', '2026-02-28 23:32:55', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (561, '2026-02-28 23:32:55', '2026-02-28 23:32:55', '/api/sys/config-group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (562, '2026-02-28 23:32:55', '2026-02-28 23:32:55', '/api/sys/config-group/system', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (563, '2026-02-28 23:32:57', '2026-02-28 23:32:57', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (564, '2026-02-28 23:32:57', '2026-02-28 23:32:57', '/api/sys/notice/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (565, '2026-02-28 23:32:59', '2026-02-28 23:32:59', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (566, '2026-02-28 23:32:59', '2026-02-28 23:32:59', '/api/sys/user/page', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (567, '2026-02-28 23:32:59', '2026-02-28 23:32:59', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (568, '2026-02-28 23:32:59', '2026-02-28 23:32:59', '/api/sys/notice/8', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (569, '2026-02-28 23:34:40', '2026-02-28 23:34:40', '/api/sys/notice/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (570, '2026-02-28 23:34:40', '2026-02-28 23:34:40', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (571, '2026-02-28 23:34:40', '2026-02-28 23:34:40', '/api/sys/notice/my', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (572, '2026-02-28 23:34:41', '2026-02-28 23:34:41', '/api/sys/chat/contacts', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (573, '2026-02-28 23:34:42', '2026-02-28 23:34:42', '/api/sys/notice/my', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (574, '2026-02-28 23:34:44', '2026-02-28 23:34:44', '/api/sys/notice/read-all', 'POST', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (575, '2026-02-28 23:34:44', '2026-02-28 23:34:44', '/api/sys/notice/my', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (576, '2026-02-28 23:34:47', '2026-02-28 23:34:47', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (577, '2026-02-28 23:34:47', '2026-02-28 23:34:47', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (578, '2026-02-28 23:34:47', '2026-02-28 23:34:47', '/api/sys/notice/my', 'GET', 200, 1, 32, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (579, '2026-02-28 23:34:48', '2026-02-28 23:34:48', '/api/sys/chat/contacts', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (580, '2026-02-28 23:34:49', '2026-02-28 23:34:49', '/api/sys/notice/my', 'GET', 200, 1, 25, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (581, '2026-02-28 23:34:49', '2026-02-28 23:34:49', '/api/sys/chat/contacts', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (582, '2026-02-28 23:34:50', '2026-02-28 23:34:50', '/api/sys/notice/my', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (583, '2026-02-28 23:35:11', '2026-02-28 23:35:11', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (584, '2026-02-28 23:35:11', '2026-02-28 23:35:11', '/api/sys/user/page', 'GET', 200, 1, 40, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (585, '2026-02-28 23:35:11', '2026-02-28 23:35:11', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (586, '2026-02-28 23:35:17', '2026-02-28 23:35:17', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (587, '2026-02-28 23:35:17', '2026-02-28 23:35:17', '/api/sys/menu/tree', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (588, '2026-02-28 23:35:17', '2026-02-28 23:35:17', '/api/sys/role/page', 'GET', 200, 1, 67, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (589, '2026-02-28 23:35:18', '2026-02-28 23:35:18', '/api/sys/dict/type/page', 'GET', 200, 1, 55, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (590, '2026-02-28 23:35:18', '2026-02-28 23:35:18', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (591, '2026-02-28 23:35:18', '2026-02-28 23:35:18', '/api/sys/config-group/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (592, '2026-02-28 23:35:18', '2026-02-28 23:35:18', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (593, '2026-02-28 23:35:19', '2026-02-28 23:35:19', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (594, '2026-02-28 23:35:29', '2026-02-28 23:35:29', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (595, '2026-02-28 23:35:31', '2026-02-28 23:35:31', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (596, '2026-02-28 23:35:32', '2026-02-28 23:35:32', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (597, '2026-02-28 23:35:33', '2026-02-28 23:35:33', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (598, '2026-02-28 23:35:33', '2026-02-28 23:35:33', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (599, '2026-02-28 23:35:34', '2026-02-28 23:35:34', '/api/sys/config-group/push', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (600, '2026-02-28 23:35:34', '2026-02-28 23:35:34', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (601, '2026-02-28 23:35:34', '2026-02-28 23:35:34', '/api/sys/config-group/payment', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (602, '2026-02-28 23:35:35', '2026-02-28 23:35:35', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (603, '2026-02-28 23:35:36', '2026-02-28 23:35:36', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (604, '2026-02-28 23:35:37', '2026-02-28 23:35:37', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (605, '2026-02-28 23:35:37', '2026-02-28 23:35:37', '/api/sys/config-group/sms', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (606, '2026-02-28 23:35:38', '2026-02-28 23:35:38', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (607, '2026-02-28 23:35:38', '2026-02-28 23:35:38', '/api/sys/config-group/email', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (608, '2026-02-28 23:35:39', '2026-02-28 23:35:39', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (609, '2026-02-28 23:35:39', '2026-02-28 23:35:39', '/api/sys/config-group/sms', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (610, '2026-02-28 23:35:41', '2026-02-28 23:35:41', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (611, '2026-02-28 23:35:42', '2026-02-28 23:35:42', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (612, '2026-02-28 23:35:42', '2026-02-28 23:35:42', '/api/sys/config-group/email', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (613, '2026-02-28 23:35:58', '2026-02-28 23:35:59', '/api/sys/config-group/test-email', 'POST', 200, 1, 1241, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (614, '2026-02-28 23:37:16', '2026-02-28 23:37:16', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (615, '2026-02-28 23:37:16', '2026-02-28 23:37:17', '/api/auth/captcha', 'GET', 200, 1, 226, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (616, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/auth/login', 'POST', 200, 1, 309, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (617, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/auth/info', 'GET', 200, 1, 68, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (618, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/auth/info', 'GET', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (619, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (620, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (621, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (622, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/dashboard/stats', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (623, '2026-02-28 23:37:44', '2026-02-28 23:37:44', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (624, '2026-02-28 23:37:48', '2026-02-28 23:37:48', '/api/sys/notice/channels', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (625, '2026-02-28 23:37:48', '2026-02-28 23:37:48', '/api/sys/notice/page', 'GET', 200, 1, 82, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (626, '2026-02-28 23:37:49', '2026-02-28 23:37:49', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (627, '2026-02-28 23:37:49', '2026-02-28 23:37:49', '/api/sys/user/page', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (628, '2026-02-28 23:37:49', '2026-02-28 23:37:49', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (629, '2026-02-28 23:38:00', '2026-02-28 23:38:00', '/api/sys/notice', 'POST', 200, 1, 50, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (630, '2026-02-28 23:38:00', '2026-02-28 23:38:00', '/api/sys/notice/page', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (631, '2026-02-28 23:38:02', '2026-02-28 23:38:03', '/api/sys/notice/9/publish', 'POST', 200, 1, 521, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (632, '2026-02-28 23:38:03', '2026-02-28 23:38:03', '/api/sys/notice/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (633, '2026-02-28 23:43:17', '2026-02-28 23:43:17', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (634, '2026-02-28 23:43:17', '2026-02-28 23:43:17', '/api/sys/config-group/list', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (635, '2026-02-28 23:43:18', '2026-02-28 23:43:18', '/api/sys/config-group/system', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (636, '2026-02-28 23:43:19', '2026-02-28 23:43:19', '/api/sys/config-group/push', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (637, '2026-02-28 23:44:06', '2026-02-28 23:44:06', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (638, '2026-02-28 23:44:06', '2026-02-28 23:44:06', '/api/sys/notice/page', 'GET', 200, 1, 42, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (639, '2026-02-28 23:44:07', '2026-02-28 23:44:07', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (640, '2026-02-28 23:44:07', '2026-02-28 23:44:07', '/api/sys/user/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (641, '2026-02-28 23:44:07', '2026-02-28 23:44:07', '/api/sys/dept/tree', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (642, '2026-02-28 23:44:10', '2026-02-28 23:44:10', '/api/sys/notice/9', 'DELETE', 200, 1, 58, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (643, '2026-02-28 23:44:10', '2026-02-28 23:44:10', '/api/sys/notice/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (644, '2026-02-28 23:44:12', '2026-02-28 23:44:12', '/api/sys/notice/8', 'DELETE', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (645, '2026-02-28 23:44:12', '2026-02-28 23:44:12', '/api/sys/notice/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (646, '2026-02-28 23:44:14', '2026-02-28 23:44:14', '/api/sys/notice/4', 'DELETE', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (647, '2026-02-28 23:44:14', '2026-02-28 23:44:14', '/api/sys/notice/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (648, '2026-02-28 23:44:14', '2026-02-28 23:44:14', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (649, '2026-02-28 23:44:14', '2026-02-28 23:44:14', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (650, '2026-02-28 23:44:14', '2026-02-28 23:44:14', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (651, '2026-02-28 23:44:22', '2026-02-28 23:44:22', '/api/auth/profile', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (652, '2026-02-28 23:44:31', '2026-02-28 23:44:31', '/api/auth/profile', 'PUT', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (653, '2026-02-28 23:44:31', '2026-02-28 23:44:31', '/api/auth/info', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (654, '2026-02-28 23:44:33', '2026-02-28 23:44:33', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (655, '2026-02-28 23:44:33', '2026-02-28 23:44:33', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (656, '2026-02-28 23:46:05', '2026-02-28 23:46:05', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (657, '2026-02-28 23:46:05', '2026-02-28 23:46:05', '/api/sys/config-group/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (658, '2026-02-28 23:46:05', '2026-02-28 23:46:05', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (659, '2026-02-28 23:46:08', '2026-02-28 23:46:08', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (660, '2026-02-28 23:46:27', '2026-02-28 23:46:27', '/api/sys/config-group/push', 'POST', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (661, '2026-02-28 23:46:27', '2026-02-28 23:46:27', '/api/sys/config-group/refresh', 'POST', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (662, '2026-02-28 23:46:27', '2026-02-28 23:46:27', '/api/sys/config-group/public', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (663, '2026-02-28 23:46:27', '2026-02-28 23:46:27', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (664, '2026-02-28 23:46:28', '2026-02-28 23:46:29', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (665, '2026-02-28 23:46:28', '2026-02-28 23:46:29', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (666, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/sys/chat/users', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (667, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (668, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (669, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (670, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (671, '2026-02-28 23:46:29', '2026-02-28 23:46:29', '/api/chat/group/list', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (672, '2026-02-28 23:46:30', '2026-02-28 23:46:30', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (673, '2026-02-28 23:46:30', '2026-02-28 23:46:30', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (674, '2026-02-28 23:46:31', '2026-02-28 23:46:31', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (675, '2026-02-28 23:46:31', '2026-02-28 23:46:31', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (676, '2026-02-28 23:46:31', '2026-02-28 23:46:31', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (677, '2026-02-28 23:46:38', '2026-02-28 23:46:38', '/api/sys/notice', 'POST', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (678, '2026-02-28 23:46:38', '2026-02-28 23:46:38', '/api/sys/notice/page', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (679, '2026-02-28 23:46:43', '2026-02-28 23:46:43', '/api/sys/notice/10/publish', 'POST', 200, 1, 241, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (680, '2026-02-28 23:46:43', '2026-02-28 23:46:43', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (681, '2026-02-28 23:47:28', '2026-02-28 23:47:28', '/api/sys/notice/channels', 'GET', 200, 1, 40, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (682, '2026-02-28 23:47:28', '2026-02-28 23:47:29', '/api/sys/user/page', 'GET', 200, 1, 131, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (683, '2026-02-28 23:47:29', '2026-02-28 23:47:29', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (684, '2026-02-28 23:47:29', '2026-02-28 23:47:29', '/api/sys/dept/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (685, '2026-02-28 23:47:30', '2026-02-28 23:47:30', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (686, '2026-02-28 23:47:30', '2026-02-28 23:47:30', '/api/sys/user/page', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (687, '2026-02-28 23:47:30', '2026-02-28 23:47:30', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (688, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (689, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/sys/config-group/public', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (690, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/auth/info', 'GET', 200, 1, 56, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (691, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (692, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/sys/notice/channels', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (693, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/sys/notice/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (694, '2026-02-28 23:47:32', '2026-02-28 23:47:32', '/api/sys/notice/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (695, '2026-02-28 23:47:33', '2026-02-28 23:47:33', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (696, '2026-02-28 23:47:33', '2026-02-28 23:47:33', '/api/sys/user/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (697, '2026-02-28 23:47:33', '2026-02-28 23:47:33', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (698, '2026-02-28 23:47:41', '2026-02-28 23:47:41', '/api/sys/notice', 'POST', 200, 1, 161, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (699, '2026-02-28 23:47:41', '2026-02-28 23:47:41', '/api/sys/notice/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (700, '2026-02-28 23:47:44', '2026-02-28 23:47:44', '/api/sys/notice/11/publish', 'POST', 200, 1, 341, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (701, '2026-02-28 23:47:44', '2026-02-28 23:47:44', '/api/sys/notice/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (702, '2026-02-28 23:52:45', '2026-02-28 23:52:45', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (703, '2026-02-28 23:52:45', '2026-02-28 23:52:45', '/api/sys/user/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (704, '2026-02-28 23:52:45', '2026-02-28 23:52:45', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (705, '2026-02-28 23:57:07', '2026-02-28 23:57:07', '/api/sys/notice', 'POST', 200, 1, 242, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (706, '2026-02-28 23:57:08', '2026-02-28 23:57:08', '/api/sys/notice/page', 'GET', 200, 1, 121, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (707, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/crypto/config', 'GET', 200, 1, 5, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (708, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/sys/config-group/public', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (709, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/auth/info', 'GET', 200, 1, 80, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (710, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/sys/chat/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (711, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/sys/notice/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (712, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/sys/notice/channels', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (713, '2026-02-28 23:57:13', '2026-02-28 23:57:13', '/api/sys/notice/page', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (714, '2026-02-28 23:57:16', '2026-02-28 23:57:17', '/api/sys/notice/12/publish', 'POST', 200, 1, 715, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (715, '2026-02-28 23:57:17', '2026-02-28 23:57:17', '/api/sys/notice/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (716, '2026-02-28 23:57:26', '2026-02-28 23:57:26', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (717, '2026-02-28 23:57:26', '2026-02-28 23:57:26', '/api/sys/user/page', 'GET', 200, 1, 34, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (718, '2026-02-28 23:57:26', '2026-02-28 23:57:26', '/api/sys/dept/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (719, '2026-02-28 23:57:35', '2026-02-28 23:57:35', '/api/sys/notice', 'POST', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (720, '2026-02-28 23:57:35', '2026-02-28 23:57:35', '/api/sys/notice/page', 'GET', 200, 1, 56, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (721, '2026-02-28 23:57:38', '2026-02-28 23:57:41', '/api/sys/notice/13/publish', 'POST', 200, 1, 3214, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (722, '2026-02-28 23:57:41', '2026-02-28 23:57:41', '/api/sys/notice/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (723, '2026-02-28 23:57:41', '2026-02-28 23:57:44', '/api/sys/notice/13/publish', 'POST', 200, 1, 3067, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (724, '2026-02-28 23:57:44', '2026-02-28 23:57:44', '/api/sys/notice/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (725, '2026-02-28 23:58:10', '2026-02-28 23:58:10', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (726, '2026-02-28 23:58:10', '2026-02-28 23:58:10', '/api/sys/user/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (727, '2026-02-28 23:58:10', '2026-02-28 23:58:10', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (728, '2026-02-28 23:58:10', '2026-02-28 23:58:10', '/api/sys/notice/13', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (729, '2026-02-28 23:58:23', '2026-02-28 23:58:23', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (730, '2026-02-28 23:58:23', '2026-02-28 23:58:23', '/api/sys/user/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (731, '2026-02-28 23:58:23', '2026-02-28 23:58:23', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (732, '2026-02-28 23:58:23', '2026-02-28 23:58:23', '/api/sys/notice/13', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (733, '2026-02-28 23:58:34', '2026-02-28 23:58:34', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (734, '2026-02-28 23:58:34', '2026-02-28 23:58:34', '/api/sys/user/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (735, '2026-02-28 23:58:34', '2026-02-28 23:58:34', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (736, '2026-02-28 23:58:34', '2026-02-28 23:58:34', '/api/sys/notice/13', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (737, '2026-03-01 00:01:11', '2026-03-01 00:01:11', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (738, '2026-03-01 00:01:18', '2026-03-01 00:01:18', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (739, '2026-03-01 00:01:18', '2026-03-01 00:01:18', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (740, '2026-03-01 00:01:18', '2026-03-01 00:01:18', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (741, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (742, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (743, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/page', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (744, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/chat/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (745, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (746, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (747, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (748, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (749, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/sys/notice/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (750, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (751, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (752, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (753, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (754, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (755, '2026-03-01 00:02:36', '2026-03-01 00:02:36', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (756, '2026-03-01 00:03:36', '2026-03-01 00:03:36', '/api/sys/notice/channels', 'GET', 200, 1, 74, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (757, '2026-03-01 00:03:36', '2026-03-01 00:03:36', '/api/sys/notice/page', 'GET', 200, 1, 814, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (758, '2026-03-01 00:03:37', '2026-03-01 00:03:37', '/api/crypto/config', 'GET', 200, 1, 7, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (759, '2026-03-01 00:03:37', '2026-03-01 00:03:37', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (760, '2026-03-01 00:03:42', '2026-03-01 00:03:42', '/api/sys/notice/13/send-logs', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (761, '2026-03-01 00:04:31', '2026-03-01 00:04:31', '/api/sys/notice/channels', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (762, '2026-03-01 00:04:31', '2026-03-01 00:04:31', '/api/sys/notice/page', 'GET', 200, 1, 117, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (763, '2026-03-01 00:04:31', '2026-03-01 00:04:31', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (764, '2026-03-01 00:04:31', '2026-03-01 00:04:31', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (765, '2026-03-01 00:04:33', '2026-03-01 00:04:33', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (766, '2026-03-01 00:04:33', '2026-03-01 00:04:33', '/api/sys/user/page', 'GET', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (767, '2026-03-01 00:04:33', '2026-03-01 00:04:34', '/api/sys/dept/tree', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (768, '2026-03-01 00:04:37', '2026-03-01 00:04:37', '/api/sys/notice/13', 'DELETE', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (769, '2026-03-01 00:04:37', '2026-03-01 00:04:37', '/api/sys/notice/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (770, '2026-03-01 00:04:39', '2026-03-01 00:04:39', '/api/sys/notice/12', 'DELETE', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (771, '2026-03-01 00:04:39', '2026-03-01 00:04:39', '/api/sys/notice/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (772, '2026-03-01 00:04:41', '2026-03-01 00:04:41', '/api/sys/notice/11', 'DELETE', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (773, '2026-03-01 00:04:41', '2026-03-01 00:04:41', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (774, '2026-03-01 00:04:52', '2026-03-01 00:04:52', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (775, '2026-03-01 00:04:52', '2026-03-01 00:04:52', '/api/sys/notice/page', 'GET', 200, 1, 59, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (776, '2026-03-01 00:04:52', '2026-03-01 00:04:52', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (777, '2026-03-01 00:04:52', '2026-03-01 00:04:52', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (778, '2026-03-01 00:04:54', '2026-03-01 00:04:54', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (779, '2026-03-01 00:04:54', '2026-03-01 00:04:54', '/api/sys/user/page', 'GET', 200, 1, 25, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (780, '2026-03-01 00:04:54', '2026-03-01 00:04:54', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (781, '2026-03-01 00:05:00', '2026-03-01 00:05:00', '/api/sys/notice', 'POST', 200, 1, 42, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (782, '2026-03-01 00:05:00', '2026-03-01 00:05:00', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (783, '2026-03-01 00:05:03', '2026-03-01 00:05:06', '/api/sys/notice/14/publish', 'POST', 200, 1, 2964, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (784, '2026-03-01 00:05:06', '2026-03-01 00:05:06', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (785, '2026-03-01 00:05:19', '2026-03-01 00:05:19', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (786, '2026-03-01 00:05:42', '2026-03-01 00:05:42', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (787, '2026-03-01 00:05:45', '2026-03-01 00:05:45', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (788, '2026-03-01 00:06:15', '2026-03-01 00:06:15', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (789, '2026-03-01 00:06:25', '2026-03-01 00:06:25', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (790, '2026-03-01 00:06:25', '2026-03-01 00:06:25', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (791, '2026-03-01 00:06:25', '2026-03-01 00:06:25', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (792, '2026-03-01 00:06:25', '2026-03-01 00:06:25', '/api/sys/notice/14', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (793, '2026-03-01 00:06:28', '2026-03-01 00:06:28', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (794, '2026-03-01 00:06:28', '2026-03-01 00:06:28', '/api/sys/user/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (795, '2026-03-01 00:06:28', '2026-03-01 00:06:28', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (796, '2026-03-01 00:06:28', '2026-03-01 00:06:28', '/api/sys/notice/14', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (797, '2026-03-01 00:06:30', '2026-03-01 00:06:30', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (798, '2026-03-01 00:06:35', '2026-03-01 00:06:35', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (799, '2026-03-01 00:06:35', '2026-03-01 00:06:35', '/api/sys/user/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (800, '2026-03-01 00:06:35', '2026-03-01 00:06:35', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (801, '2026-03-01 00:06:35', '2026-03-01 00:06:35', '/api/sys/notice/14', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (802, '2026-03-01 00:06:39', '2026-03-01 00:06:39', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (803, '2026-03-01 00:06:39', '2026-03-01 00:06:39', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (804, '2026-03-01 00:06:39', '2026-03-01 00:06:39', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (805, '2026-03-01 00:06:39', '2026-03-01 00:06:39', '/api/sys/notice/14', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (806, '2026-03-01 00:06:42', '2026-03-01 00:06:42', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (807, '2026-03-01 00:06:51', '2026-03-01 00:06:51', '/api/sys/chat/users', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (808, '2026-03-01 00:06:51', '2026-03-01 00:06:51', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (809, '2026-03-01 00:06:51', '2026-03-01 00:06:51', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (810, '2026-03-01 00:06:51', '2026-03-01 00:06:51', '/api/sys/chat/online/10', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (811, '2026-03-01 00:06:51', '2026-03-01 00:06:51', '/api/chat/group/list', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (812, '2026-03-01 00:06:52', '2026-03-01 00:06:52', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (813, '2026-03-01 00:06:52', '2026-03-01 00:06:52', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (814, '2026-03-01 00:06:53', '2026-03-01 00:06:53', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (815, '2026-03-01 00:06:53', '2026-03-01 00:06:53', '/api/sys/user/page', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (816, '2026-03-01 00:06:53', '2026-03-01 00:06:53', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (817, '2026-03-01 00:06:55', '2026-03-01 00:06:55', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (818, '2026-03-01 00:06:55', '2026-03-01 00:06:55', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (819, '2026-03-01 00:06:55', '2026-03-01 00:06:55', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (820, '2026-03-01 00:07:06', '2026-03-01 00:07:06', '/api/sys/post/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (821, '2026-03-01 00:07:06', '2026-03-01 00:07:06', '/api/sys/role/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (822, '2026-03-01 00:07:06', '2026-03-01 00:07:06', '/api/sys/dept/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (823, '2026-03-01 00:07:06', '2026-03-01 00:07:06', '/api/sys/user/page', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (824, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (825, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/menu/tree', 'GET', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (826, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/role/page', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (827, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (828, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/config-group/list', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (829, '2026-03-01 00:07:07', '2026-03-01 00:07:07', '/api/sys/config-group/system', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (830, '2026-03-01 00:07:08', '2026-03-01 00:07:08', '/api/sys/config-group/email', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (831, '2026-03-01 00:07:08', '2026-03-01 00:07:08', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (832, '2026-03-01 00:07:09', '2026-03-01 00:07:09', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (833, '2026-03-01 00:07:09', '2026-03-01 00:07:09', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (834, '2026-03-01 00:07:09', '2026-03-01 00:07:09', '/api/sys/config-group/push', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (835, '2026-03-01 00:07:09', '2026-03-01 00:07:09', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (836, '2026-03-01 00:07:10', '2026-03-01 00:07:10', '/api/sys/config-group/sms', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (837, '2026-03-01 00:07:10', '2026-03-01 00:07:10', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (838, '2026-03-01 00:07:11', '2026-03-01 00:07:11', '/api/sys/config-group/password', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (839, '2026-03-01 00:07:11', '2026-03-01 00:07:11', '/api/sys/config-group/login', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (840, '2026-03-01 00:07:12', '2026-03-01 00:07:12', '/api/sys/config-group/system', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (841, '2026-03-01 00:07:12', '2026-03-01 00:07:12', '/api/sys/config-group/register', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (842, '2026-03-01 00:07:13', '2026-03-01 00:07:13', '/api/sys/config-group/sms', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (843, '2026-03-01 00:07:14', '2026-03-01 00:07:14', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (844, '2026-03-01 00:07:14', '2026-03-01 00:07:14', '/api/sys/config-group/push', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (845, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/role/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (846, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/post/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (847, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/dept/tree', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (848, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/user/page', 'GET', 200, 1, 49, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (849, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (850, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/menu/tree', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (851, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/role/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (852, '2026-03-01 00:07:19', '2026-03-01 00:07:19', '/api/sys/dict/type/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (853, '2026-03-01 00:07:20', '2026-03-01 00:07:20', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (854, '2026-03-01 00:07:20', '2026-03-01 00:07:20', '/api/sys/config-group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (855, '2026-03-01 00:07:20', '2026-03-01 00:07:20', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (856, '2026-03-01 00:07:22', '2026-03-01 00:07:22', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (857, '2026-03-01 00:07:22', '2026-03-01 00:07:22', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (858, '2026-03-01 00:07:31', '2026-03-01 00:07:31', '/api/sys/chat/users', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (859, '2026-03-01 00:07:31', '2026-03-01 00:07:31', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (860, '2026-03-01 00:07:31', '2026-03-01 00:07:31', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (861, '2026-03-01 00:07:31', '2026-03-01 00:07:31', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (862, '2026-03-01 00:07:31', '2026-03-01 00:07:31', '/api/chat/group/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (863, '2026-03-01 00:07:32', '2026-03-01 00:07:32', '/api/sys/notice/page', 'GET', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (864, '2026-03-01 00:07:32', '2026-03-01 00:07:32', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (865, '2026-03-01 00:07:34', '2026-03-01 00:07:34', '/api/sys/file-group/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (866, '2026-03-01 00:07:34', '2026-03-01 00:07:34', '/api/sys/file/page-by-group', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (867, '2026-03-01 00:07:36', '2026-03-01 00:07:36', '/api/monitor/online/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (868, '2026-03-01 00:07:36', '2026-03-01 00:07:36', '/api/monitor/job/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (869, '2026-03-01 00:07:36', '2026-03-01 00:07:36', '/api/monitor/job/log/statistics', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (870, '2026-03-01 00:07:37', '2026-03-01 00:07:37', '/api/monitor/server/info', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (871, '2026-03-01 00:07:38', '2026-03-01 00:07:38', '/api/monitor/server-manager/list', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (872, '2026-03-01 00:07:38', '2026-03-01 00:07:38', '/api/monitor/api-access/page', 'GET', 200, 1, 45, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (873, '2026-03-01 00:07:38', '2026-03-01 00:07:38', '/api/monitor/api-access/statistics', 'GET', 200, 1, 80, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (874, '2026-03-01 00:07:39', '2026-03-01 00:07:39', '/api/monitor/server-manager/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (875, '2026-03-01 00:07:40', '2026-03-01 00:07:40', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (876, '2026-03-01 00:07:40', '2026-03-01 00:07:40', '/api/monitor/cache/keys', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (877, '2026-03-01 00:07:40', '2026-03-01 00:07:40', '/api/monitor/cache/stats', 'GET', 200, 1, 55, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (878, '2026-03-01 00:07:43', '2026-03-01 00:07:43', '/api/monitor/cache/stats', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (879, '2026-03-01 00:07:45', '2026-03-01 00:07:45', '/api/monitor/api-access/page', 'GET', 200, 1, 40, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (880, '2026-03-01 00:07:45', '2026-03-01 00:07:45', '/api/monitor/api-access/statistics', 'GET', 200, 1, 84, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (881, '2026-03-01 00:07:47', '2026-03-01 00:07:47', '/api/monitor/server-manager/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (882, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/server/info', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (883, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/cache/stats', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (884, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/cache/keys', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (885, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/job/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (886, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/job/log/statistics', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (887, '2026-03-01 00:07:48', '2026-03-01 00:07:48', '/api/monitor/online/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (888, '2026-03-01 00:07:51', '2026-03-01 00:07:51', '/api/sys/notice/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (889, '2026-03-01 00:07:51', '2026-03-01 00:07:51', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (890, '2026-03-01 00:07:54', '2026-03-01 00:07:54', '/api/sys/chat/users', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (891, '2026-03-01 00:07:54', '2026-03-01 00:07:54', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (892, '2026-03-01 00:07:54', '2026-03-01 00:07:54', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (893, '2026-03-01 00:07:54', '2026-03-01 00:07:54', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (894, '2026-03-01 00:07:54', '2026-03-01 00:07:54', '/api/chat/group/list', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (895, '2026-03-01 00:07:55', '2026-03-01 00:07:55', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (896, '2026-03-01 00:07:55', '2026-03-01 00:07:55', '/api/sys/notice/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (897, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (898, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (899, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/sys/notice/unread-count', 'GET', 200, 1, 66, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (900, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/sys/notice/page', 'GET', 200, 1, 83, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (901, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (902, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (903, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (904, '2026-03-01 00:08:04', '2026-03-01 00:08:04', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (905, '2026-03-01 00:08:05', '2026-03-01 00:08:05', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (906, '2026-03-01 00:08:05', '2026-03-01 00:08:05', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (907, '2026-03-01 00:08:05', '2026-03-01 00:08:05', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (908, '2026-03-01 00:08:05', '2026-03-01 00:08:05', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (909, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (910, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/notice/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (911, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (912, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (913, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/chat/users', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (914, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/chat/online/10', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (915, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/chat/online/4', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (916, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/sys/chat/online/3', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (917, '2026-03-01 00:08:11', '2026-03-01 00:08:11', '/api/chat/group/list', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (918, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/notice/channels', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (919, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/notice/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (920, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/chat/users', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (921, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/chat/online/3', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (922, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/chat/group/list', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (923, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (924, '2026-03-01 00:08:12', '2026-03-01 00:08:12', '/api/sys/chat/online/10', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (925, '2026-03-01 00:08:13', '2026-03-01 00:08:13', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (926, '2026-03-01 00:08:13', '2026-03-01 00:08:13', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (927, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/users', 'GET', 200, 1, 55, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (928, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/notice/channels', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (929, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/notice/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (930, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (931, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/users', 'GET', 200, 1, 34, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (932, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/4', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (933, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (934, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/chat/group/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (935, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (936, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (937, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (938, '2026-03-01 00:08:15', '2026-03-01 00:08:15', '/api/chat/group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (939, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/users', 'GET', 200, 1, 44, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (940, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (941, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/3', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (942, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (943, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (944, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/chat/group/list', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (945, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/notice/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (946, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/users', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (947, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (948, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/chat/group/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (949, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (950, '2026-03-01 00:08:16', '2026-03-01 00:08:16', '/api/sys/chat/online/4', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (951, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (952, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (953, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/chat/users', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (954, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/chat/online/10', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (955, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (956, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (957, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/chat/group/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (958, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (959, '2026-03-01 00:08:17', '2026-03-01 00:08:17', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (960, '2026-03-01 00:08:18', '2026-03-01 00:08:18', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (961, '2026-03-01 00:08:18', '2026-03-01 00:08:18', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (962, '2026-03-01 00:08:18', '2026-03-01 00:08:18', '/api/sys/dept/tree', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (963, '2026-03-01 00:08:20', '2026-03-01 00:08:20', '/api/sys/notice/channels', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (964, '2026-03-01 00:08:20', '2026-03-01 00:08:20', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (965, '2026-03-01 00:08:20', '2026-03-01 00:08:20', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (966, '2026-03-01 00:08:20', '2026-03-01 00:08:20', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (967, '2026-03-01 00:08:21', '2026-03-01 00:08:21', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (968, '2026-03-01 00:08:21', '2026-03-01 00:08:21', '/api/sys/user/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (969, '2026-03-01 00:08:21', '2026-03-01 00:08:21', '/api/sys/dept/tree', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (970, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/sys/config-group/public', 'GET', 200, 1, 99, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (971, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/crypto/config', 'GET', 200, 1, 94, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (972, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/auth/info', 'GET', 200, 1, 103, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (973, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/sys/notice/unread-count', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (974, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/sys/chat/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (975, '2026-03-01 00:09:09', '2026-03-01 00:09:09', '/api/sys/notice/channels', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (976, '2026-03-01 00:09:09', '2026-03-01 00:09:10', '/api/sys/notice/page', 'GET', 200, 1, 113, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (977, '2026-03-01 00:09:11', '2026-03-01 00:09:11', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (978, '2026-03-01 00:09:14', '2026-03-01 00:09:16', '/api/sys/notice/14/retry', 'POST', 200, 1, 2355, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (979, '2026-03-01 00:09:16', '2026-03-01 00:09:16', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (980, '2026-03-01 00:10:07', '2026-03-01 00:10:07', '/api/sys/role/list', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (981, '2026-03-01 00:10:07', '2026-03-01 00:10:07', '/api/sys/post/list', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (982, '2026-03-01 00:10:07', '2026-03-01 00:10:07', '/api/sys/dept/tree', 'GET', 200, 1, 32, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (983, '2026-03-01 00:10:07', '2026-03-01 00:10:07', '/api/sys/user/page', 'GET', 200, 1, 54, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (984, '2026-03-01 00:10:14', '2026-03-01 00:10:14', '/api/sys/user/10', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (985, '2026-03-01 00:10:17', '2026-03-01 00:10:17', '/api/sys/user/4', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (986, '2026-03-01 00:10:19', '2026-03-01 00:10:19', '/api/sys/user/3', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (987, '2026-03-01 00:10:28', '2026-03-01 00:10:28', '/api/sys/user', 'PUT', 200, 1, 54, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (988, '2026-03-01 00:10:28', '2026-03-01 00:10:28', '/api/sys/user/page', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (989, '2026-03-01 00:10:30', '2026-03-01 00:10:30', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (990, '2026-03-01 00:10:30', '2026-03-01 00:10:30', '/api/sys/notice/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (991, '2026-03-01 00:10:33', '2026-03-01 00:10:33', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (992, '2026-03-01 00:10:34', '2026-03-01 00:10:36', '/api/sys/notice/14/retry', 'POST', 200, 1, 2091, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (993, '2026-03-01 00:10:36', '2026-03-01 00:10:36', '/api/sys/notice/14/send-logs', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (994, '2026-03-01 00:10:42', '2026-03-01 00:10:42', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (995, '2026-03-01 00:10:42', '2026-03-01 00:10:42', '/api/sys/user/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (996, '2026-03-01 00:10:42', '2026-03-01 00:10:42', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (997, '2026-03-01 00:10:48', '2026-03-01 00:10:48', '/api/sys/notice', 'POST', 200, 1, 25, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (998, '2026-03-01 00:10:48', '2026-03-01 00:10:48', '/api/sys/notice/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (999, '2026-03-01 00:10:50', '2026-03-01 00:10:53', '/api/sys/notice/15/publish', 'POST', 200, 1, 2796, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1000, '2026-03-01 00:10:53', '2026-03-01 00:10:53', '/api/sys/notice/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1001, '2026-03-01 00:11:11', '2026-03-01 00:11:11', '/api/sys/notice/channels', 'GET', 200, 1, 98, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1002, '2026-03-01 00:11:11', '2026-03-01 00:11:11', '/api/sys/notice/page', 'GET', 200, 1, 599, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1003, '2026-03-01 00:11:11', '2026-03-01 00:11:11', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1004, '2026-03-01 00:11:11', '2026-03-01 00:11:11', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1005, '2026-03-01 00:11:14', '2026-03-01 00:11:14', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1006, '2026-03-01 00:11:14', '2026-03-01 00:11:14', '/api/sys/user/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1007, '2026-03-01 00:11:14', '2026-03-01 00:11:14', '/api/sys/dept/tree', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1008, '2026-03-01 00:11:28', '2026-03-01 00:11:28', '/api/sys/notice', 'POST', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1009, '2026-03-01 00:11:28', '2026-03-01 00:11:28', '/api/sys/notice/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1010, '2026-03-01 00:11:32', '2026-03-01 00:11:34', '/api/sys/notice/16/publish', 'POST', 200, 1, 1708, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1011, '2026-03-01 00:11:34', '2026-03-01 00:11:34', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1012, '2026-03-01 00:11:46', '2026-03-01 00:11:46', '/api/sys/notice/16', 'DELETE', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1013, '2026-03-01 00:11:46', '2026-03-01 00:11:46', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1014, '2026-03-01 00:11:49', '2026-03-01 00:11:49', '/api/sys/notice/15/send-logs', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1015, '2026-03-01 00:12:01', '2026-03-01 00:12:01', '/api/sys/notice/15', 'DELETE', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1016, '2026-03-01 00:12:01', '2026-03-01 00:12:01', '/api/sys/notice/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1017, '2026-03-01 00:12:03', '2026-03-01 00:12:03', '/api/sys/notice/14', 'DELETE', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1018, '2026-03-01 00:12:03', '2026-03-01 00:12:03', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1019, '2026-03-01 00:12:05', '2026-03-01 00:12:05', '/api/sys/notice/10', 'DELETE', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1020, '2026-03-01 00:12:05', '2026-03-01 00:12:05', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1021, '2026-03-01 00:12:05', '2026-03-01 00:12:05', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1022, '2026-03-01 00:12:05', '2026-03-01 00:12:05', '/api/sys/user/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1023, '2026-03-01 00:12:05', '2026-03-01 00:12:05', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1024, '2026-03-01 00:12:13', '2026-03-01 00:12:13', '/api/sys/notice', 'POST', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1025, '2026-03-01 00:12:13', '2026-03-01 00:12:13', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1026, '2026-03-01 00:12:15', '2026-03-01 00:12:17', '/api/sys/notice/17/publish', 'POST', 200, 1, 1627, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1027, '2026-03-01 00:12:17', '2026-03-01 00:12:17', '/api/sys/notice/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1028, '2026-03-01 00:12:18', '2026-03-01 00:12:18', '/api/sys/notice/17/send-logs', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1029, '2026-03-01 00:12:30', '2026-03-01 00:12:30', '/api/sys/role/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1030, '2026-03-01 00:12:30', '2026-03-01 00:12:30', '/api/sys/dept/tree', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1031, '2026-03-01 00:12:30', '2026-03-01 00:12:30', '/api/sys/post/list', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1032, '2026-03-01 00:12:30', '2026-03-01 00:12:30', '/api/sys/user/page', 'GET', 200, 1, 25, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1033, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1034, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/role/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1035, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/menu/tree', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1036, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/dict/type/page', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1037, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1038, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/config-group/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1039, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1040, '2026-03-01 00:12:31', '2026-03-01 00:12:31', '/api/sys/dict/type/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1041, '2026-03-01 00:12:32', '2026-03-01 00:12:32', '/api/sys/role/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1042, '2026-03-01 00:12:32', '2026-03-01 00:12:32', '/api/sys/post/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1043, '2026-03-01 00:12:32', '2026-03-01 00:12:32', '/api/sys/dept/tree', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1044, '2026-03-01 00:12:32', '2026-03-01 00:12:32', '/api/sys/user/page', 'GET', 200, 1, 47, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1045, '2026-03-01 00:12:32', '2026-03-01 00:12:32', '/api/dashboard/stats', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1046, '2026-03-01 00:13:38', '2026-03-01 00:13:38', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1047, '2026-03-01 00:13:38', '2026-03-01 00:13:38', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1048, '2026-03-01 00:13:38', '2026-03-01 00:13:38', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1049, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1050, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/role/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1051, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/menu/tree', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1052, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/post/list', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1053, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/role/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1054, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/dept/tree', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1055, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/user/page', 'GET', 200, 1, 52, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1056, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/menu/tree', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1057, '2026-03-01 00:13:39', '2026-03-01 00:13:39', '/api/sys/dict/type/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1058, '2026-03-01 00:13:40', '2026-03-01 00:13:40', '/api/sys/menu/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1059, '2026-03-01 00:13:40', '2026-03-01 00:13:40', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1060, '2026-03-01 00:13:40', '2026-03-01 00:13:40', '/api/sys/role/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1061, '2026-03-01 00:13:40', '2026-03-01 00:13:40', '/api/sys/menu/tree', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1062, '2026-03-01 00:13:41', '2026-03-01 00:13:41', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1063, '2026-03-01 00:13:41', '2026-03-01 00:13:41', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1064, '2026-03-01 00:13:42', '2026-03-01 00:13:42', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1065, '2026-03-01 00:13:42', '2026-03-01 00:13:42', '/api/sys/user/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1066, '2026-03-01 00:13:42', '2026-03-01 00:13:42', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1067, '2026-03-01 00:13:46', '2026-03-01 00:13:46', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1068, '2026-03-01 00:13:46', '2026-03-01 00:13:46', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1069, '2026-03-01 00:13:46', '2026-03-01 00:13:46', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1070, '2026-03-01 00:13:47', '2026-03-01 00:13:47', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1071, '2026-03-01 00:13:47', '2026-03-01 00:13:47', '/api/sys/config-group/storage', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1072, '2026-03-01 00:13:48', '2026-03-01 00:13:48', '/api/sys/config-group/push', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1073, '2026-03-01 00:13:52', '2026-03-01 00:13:52', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1074, '2026-03-01 00:13:52', '2026-03-01 00:13:52', '/api/sys/notice/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1075, '2026-03-01 00:13:54', '2026-03-01 00:13:54', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1076, '2026-03-01 00:13:54', '2026-03-01 00:13:54', '/api/sys/user/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1077, '2026-03-01 00:13:54', '2026-03-01 00:13:54', '/api/sys/dept/tree', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1078, '2026-03-01 00:14:03', '2026-03-01 00:14:03', '/api/sys/post/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1079, '2026-03-01 00:14:03', '2026-03-01 00:14:03', '/api/sys/role/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1080, '2026-03-01 00:14:03', '2026-03-01 00:14:03', '/api/sys/dept/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1081, '2026-03-01 00:14:03', '2026-03-01 00:14:03', '/api/sys/user/page', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1082, '2026-03-01 00:14:03', '2026-03-01 00:14:03', '/api/sys/menu/tree', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1083, '2026-03-01 00:15:22', '2026-03-01 00:15:22', '/api/dashboard/stats', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1084, '2026-03-01 00:15:22', '2026-03-01 00:15:22', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1085, '2026-03-01 00:15:56', '2026-03-01 00:15:56', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1086, '2026-03-01 00:15:56', '2026-03-01 00:15:56', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1087, '2026-03-01 00:15:58', '2026-03-01 00:15:58', '/api/sys/notice/17/send-logs', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1088, '2026-03-01 00:16:01', '2026-03-01 00:16:01', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1089, '2026-03-01 00:16:01', '2026-03-01 00:16:01', '/api/sys/user/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1090, '2026-03-01 00:16:01', '2026-03-01 00:16:01', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1091, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/chat/users', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1092, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/chat/online/4', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1093, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1094, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1095, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/chat/group/list', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1096, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1097, '2026-03-01 00:16:04', '2026-03-01 00:16:04', '/api/sys/notice/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1098, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/chat/users', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1099, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/chat/online/3', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1100, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/chat/online/4', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1101, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1102, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/chat/group/list', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1103, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/notice/channels', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1104, '2026-03-01 00:16:08', '2026-03-01 00:16:08', '/api/sys/notice/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1105, '2026-03-01 00:16:09', '2026-03-01 00:16:09', '/api/sys/menu/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1106, '2026-03-01 00:16:10', '2026-03-01 00:16:10', '/api/sys/dict/type/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1107, '2026-03-01 00:16:10', '2026-03-01 00:16:10', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1108, '2026-03-01 00:16:10', '2026-03-01 00:16:10', '/api/sys/config-group/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1109, '2026-03-01 00:16:10', '2026-03-01 00:16:10', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1110, '2026-03-01 00:16:11', '2026-03-01 00:16:11', '/api/sys/dict/type/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1111, '2026-03-01 00:16:11', '2026-03-01 00:16:11', '/api/sys/menu/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1112, '2026-03-01 00:16:12', '2026-03-01 00:16:12', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1113, '2026-03-01 00:16:12', '2026-03-01 00:16:12', '/api/sys/role/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1114, '2026-03-01 00:16:12', '2026-03-01 00:16:12', '/api/sys/menu/tree', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1115, '2026-03-01 00:16:12', '2026-03-01 00:16:12', '/api/sys/menu/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1116, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/dept/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1117, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/role/page', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1118, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/menu/tree', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1119, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/role/list', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1120, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/dept/tree', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1121, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/post/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1122, '2026-03-01 00:16:13', '2026-03-01 00:16:13', '/api/sys/user/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1123, '2026-03-01 00:16:15', '2026-03-01 00:16:15', '/api/dashboard/stats', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1124, '2026-03-01 10:44:09', '2026-03-01 10:44:09', '/api/sys/config-group/public', 'GET', 200, 1, 4, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1125, '2026-03-01 10:44:09', '2026-03-01 10:44:09', '/api/auth/captcha', 'GET', 200, 1, 295, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1126, '2026-03-01 10:44:16', '2026-03-01 10:44:16', '/api/auth/login', 'POST', 200, 1, 157, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1127, '2026-03-01 10:44:16', '2026-03-01 10:44:16', '/api/auth/info', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1128, '2026-03-01 10:44:17', '2026-03-01 10:44:17', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1129, '2026-03-01 10:44:17', '2026-03-01 10:44:17', '/api/dashboard/stats', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1130, '2026-03-01 10:44:17', '2026-03-01 10:44:17', '/api/sys/notice/unread-count', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1131, '2026-03-01 10:44:20', '2026-03-01 10:44:20', '/api/monitor/online/list', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1132, '2026-03-01 10:44:21', '2026-03-01 10:44:21', '/api/monitor/job/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1133, '2026-03-01 10:44:21', '2026-03-01 10:44:21', '/api/monitor/job/log/statistics', 'GET', 200, 1, 50, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1134, '2026-03-01 10:44:21', '2026-03-01 10:44:21', '/api/monitor/server/info', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1135, '2026-03-01 10:44:21', '2026-03-01 10:44:21', '/api/monitor/server-manager/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1136, '2026-03-01 10:44:21', '2026-03-01 10:44:21', '/api/monitor/api-access/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1137, '2026-03-01 10:44:21', '2026-03-01 10:44:22', '/api/monitor/api-access/statistics', 'GET', 200, 1, 70, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1138, '2026-03-01 10:44:31', '2026-03-01 10:44:32', '/api/monitor/api-access/statistics', 'GET', 200, 1, 58, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1139, '2026-03-01 10:44:39', '2026-03-01 10:44:39', '/api/monitor/server/info', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1140, '2026-03-01 10:44:41', '2026-03-01 10:44:41', '/api/monitor/cache/keys', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1141, '2026-03-01 10:44:41', '2026-03-01 10:44:41', '/api/monitor/cache/stats', 'GET', 200, 1, 50, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1142, '2026-03-01 10:44:42', '2026-03-01 10:44:42', '/api/monitor/job/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1143, '2026-03-01 10:44:42', '2026-03-01 10:44:42', '/api/monitor/job/log/statistics', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1144, '2026-03-01 10:44:46', '2026-03-01 10:44:46', '/api/monitor/online/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1145, '2026-03-01 10:44:47', '2026-03-01 10:44:47', '/api/monitor/operlog/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1146, '2026-03-01 10:44:47', '2026-03-01 10:44:47', '/api/monitor/loginlog/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1147, '2026-03-01 10:44:48', '2026-03-01 10:44:48', '/api/monitor/operlog/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1148, '2026-03-01 10:44:49', '2026-03-01 10:44:49', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1149, '2026-03-01 10:44:49', '2026-03-01 10:44:49', '/api/sys/user/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1150, '2026-03-01 10:44:49', '2026-03-01 10:44:49', '/api/sys/post/tree', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1151, '2026-03-01 10:44:49', '2026-03-01 10:44:49', '/api/sys/user/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1152, '2026-03-01 10:44:50', '2026-03-01 10:44:50', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1153, '2026-03-01 10:44:50', '2026-03-01 10:44:50', '/api/sys/user/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1154, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/role/list', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1155, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/post/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1156, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1157, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/user/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1158, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/dept/tree', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1159, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/role/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1160, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/menu/tree', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1161, '2026-03-01 10:44:51', '2026-03-01 10:44:51', '/api/sys/menu/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1162, '2026-03-01 10:44:52', '2026-03-01 10:44:52', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1163, '2026-03-01 10:44:52', '2026-03-01 10:44:52', '/api/sys/config-group/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1164, '2026-03-01 10:44:52', '2026-03-01 10:44:52', '/api/sys/config-group/system', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1165, '2026-03-01 10:44:53', '2026-03-01 10:44:53', '/api/sys/dict/type/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1166, '2026-03-01 10:44:53', '2026-03-01 10:44:53', '/api/sys/config-group/sms-logs/recent', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1167, '2026-03-01 10:44:53', '2026-03-01 10:44:53', '/api/sys/config-group/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1168, '2026-03-01 10:44:53', '2026-03-01 10:44:53', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1169, '2026-03-01 10:44:55', '2026-03-01 10:44:55', '/api/sys/config-group/password', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1170, '2026-03-01 10:44:56', '2026-03-01 10:44:56', '/api/sys/config-group/email', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1171, '2026-03-01 10:44:56', '2026-03-01 10:44:56', '/api/sys/config-group/emailTemplate', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1172, '2026-03-01 10:44:57', '2026-03-01 10:44:57', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1173, '2026-03-01 10:44:57', '2026-03-01 10:44:57', '/api/sys/config-group/payment', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1174, '2026-03-01 10:44:58', '2026-03-01 10:44:58', '/api/sys/config-group/security', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1175, '2026-03-01 10:44:59', '2026-03-01 10:44:59', '/api/sys/config-group/payment', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1176, '2026-03-01 10:44:59', '2026-03-01 10:44:59', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1177, '2026-03-01 10:44:59', '2026-03-01 10:44:59', '/api/sys/config-group/payment', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1178, '2026-03-01 10:45:00', '2026-03-01 10:45:00', '/api/sys/config-group/security', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1179, '2026-03-01 10:45:01', '2026-03-01 10:45:01', '/api/sys/config-group/wechatMiniProgram', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1180, '2026-03-01 10:45:01', '2026-03-01 10:45:01', '/api/sys/config-group/wechatMp', 'GET', 200, 1, 0, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1181, '2026-03-01 10:45:01', '2026-03-01 10:45:01', '/api/api/wechat/mp/menu', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1182, '2026-03-01 10:45:07', '2026-03-01 10:45:07', '/api/sys/config-group/thirdParty', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1183, '2026-03-01 10:45:07', '2026-03-01 10:45:07', '/api/sys/config-group/push', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1184, '2026-03-01 10:45:08', '2026-03-01 10:45:08', '/api/sys/config-group/sms', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1185, '2026-03-01 10:45:08', '2026-03-01 10:45:08', '/api/sys/config-group/email', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1186, '2026-03-01 10:45:08', '2026-03-01 10:45:08', '/api/sys/config-group/password', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1187, '2026-03-01 10:45:09', '2026-03-01 10:45:09', '/api/sys/config-group/login', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1188, '2026-03-01 10:45:09', '2026-03-01 10:45:09', '/api/sys/config-group/register', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1189, '2026-03-01 10:45:11', '2026-03-01 10:45:11', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1190, '2026-03-01 10:45:11', '2026-03-01 10:45:11', '/api/sys/config-group/register', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1191, '2026-03-01 10:45:12', '2026-03-01 10:45:12', '/api/sys/config-group/login', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1192, '2026-03-01 10:45:12', '2026-03-01 10:45:12', '/api/sys/config-group/system', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1193, '2026-03-01 10:45:13', '2026-03-01 10:45:13', '/api/sys/config-group/register', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1194, '2026-03-01 10:45:13', '2026-03-01 10:45:13', '/api/sys/config-group/login', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1195, '2026-03-01 10:45:13', '2026-03-01 10:45:13', '/api/sys/config-group/register', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1196, '2026-03-01 10:45:17', '2026-03-01 10:45:17', '/api/sys/notice/channels', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1197, '2026-03-01 10:45:17', '2026-03-01 10:45:17', '/api/sys/notice/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1198, '2026-03-01 10:45:18', '2026-03-01 10:45:18', '/api/sys/file-group/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1199, '2026-03-01 10:45:18', '2026-03-01 10:45:18', '/api/sys/file/page-by-group', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1200, '2026-03-01 11:13:41', '2026-03-01 11:13:41', '/api/crypto/config', 'GET', 200, 1, 127, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1201, '2026-03-01 11:13:41', '2026-03-01 11:13:41', '/api/sys/config-group/public', 'GET', 200, 1, 130, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1202, '2026-03-01 11:13:41', '2026-03-01 11:13:41', '/api/auth/info', 'GET', 200, 1, 138, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1203, '2026-03-01 11:13:41', '2026-03-01 11:13:41', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1204, '2026-03-01 11:13:41', '2026-03-01 11:13:41', '/api/sys/chat/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1205, '2026-03-01 11:13:42', '2026-03-01 11:13:42', '/api/sys/file-group/list', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1206, '2026-03-01 11:13:42', '2026-03-01 11:13:42', '/api/sys/file/page-by-group', 'GET', 200, 1, 129, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1207, '2026-03-01 11:13:46', '2026-03-01 11:13:46', '/api/tool/gen/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1208, '2026-03-01 11:13:53', '2026-03-01 11:13:53', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1209, '2026-03-01 11:14:05', '2026-03-01 11:14:06', '/api/tool/gen/generate/4', 'POST', 200, 1, 233, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1210, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1211, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1212, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/auth/info', 'GET', 200, 1, 45, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1213, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1214, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/sys/notice/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1215, '2026-03-01 11:14:06', '2026-03-01 11:14:06', '/api/tool/gen/page', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1216, '2026-03-01 11:15:15', '2026-03-01 11:15:15', '/api/sys/dept/tree', 'GET', 200, 1, 110, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1217, '2026-03-01 11:15:15', '2026-03-01 11:15:15', '/api/sys/menu/tree', 'GET', 200, 1, 126, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1218, '2026-03-01 11:15:15', '2026-03-01 11:15:15', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1219, '2026-03-01 11:15:15', '2026-03-01 11:15:15', '/api/sys/role/page', 'GET', 200, 1, 175, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1220, '2026-03-01 11:15:17', '2026-03-01 11:15:17', '/api/sys/role/1', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1221, '2026-03-01 11:15:29', '2026-03-01 11:15:29', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1222, '2026-03-01 11:15:29', '2026-03-01 11:15:29', '/api/sys/config-group/public', 'GET', 200, 1, 37, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1223, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1224, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1225, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/auth/info', 'GET', 200, 1, 63, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1226, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1227, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/sys/chat/unread-count', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1228, '2026-03-01 11:15:33', '2026-03-01 11:15:33', '/api/dashboard/stats', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1229, '2026-03-01 11:15:36', '2026-03-01 11:15:36', '/api/sys/dept/tree', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1230, '2026-03-01 11:15:36', '2026-03-01 11:15:36', '/api/sys/role/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1231, '2026-03-01 11:15:36', '2026-03-01 11:15:36', '/api/sys/menu/tree', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1232, '2026-03-01 11:15:38', '2026-03-01 11:15:38', '/api/sys/role/1', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1233, '2026-03-01 11:15:47', '2026-03-01 11:15:47', '/api/sys/role', 'PUT', 200, 1, 177, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1234, '2026-03-01 11:15:47', '2026-03-01 11:15:47', '/api/sys/role/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1235, '2026-03-01 11:15:50', '2026-03-01 11:15:50', '/api/sys/role/1', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1236, '2026-03-01 11:15:54', '2026-03-01 11:15:54', '/api/sys/role', 'PUT', 200, 1, 123, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1237, '2026-03-01 11:15:54', '2026-03-01 11:15:54', '/api/sys/role/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1238, '2026-03-01 11:15:55', '2026-03-01 11:15:55', '/api/sys/role/1', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1239, '2026-03-01 11:15:59', '2026-03-01 11:15:59', '/api/sys/role', 'PUT', 200, 1, 136, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1240, '2026-03-01 11:15:59', '2026-03-01 11:15:59', '/api/sys/role/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1241, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1242, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1243, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/auth/info', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1244, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/dept/tree', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1245, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/menu/tree', 'GET', 200, 1, 51, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1246, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/role/page', 'GET', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1247, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/notice/unread-count', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1248, '2026-03-01 11:16:01', '2026-03-01 11:16:01', '/api/sys/chat/unread-count', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1249, '2026-03-01 11:16:04', '2026-03-01 11:16:04', '/api/system/student/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1250, '2026-03-01 11:16:14', '2026-03-01 11:16:14', '/api/system/student', 'POST', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1251, '2026-03-01 11:16:14', '2026-03-01 11:16:14', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1252, '2026-03-01 11:16:34', '2026-03-01 11:16:34', '/api/system/student/5', 'DELETE', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1253, '2026-03-01 11:16:34', '2026-03-01 11:16:34', '/api/system/student/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1254, '2026-03-01 11:16:38', '2026-03-01 11:16:38', '/api/tool/gen/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1255, '2026-03-01 11:16:41', '2026-03-01 11:16:42', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1256, '2026-03-01 11:16:47', '2026-03-01 11:16:47', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1257, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1258, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1259, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/auth/info', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1260, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/sys/notice/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1261, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1262, '2026-03-01 11:16:48', '2026-03-01 11:16:48', '/api/tool/gen/page', 'GET', 200, 1, 45, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1263, '2026-03-01 11:16:54', '2026-03-01 11:16:54', '/api/tool/gen/4', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1264, '2026-03-01 11:17:45', '2026-03-01 11:17:45', '/api/sys/dict/type/page', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1265, '2026-03-01 11:18:09', '2026-03-01 11:18:09', '/api/sys/dict/type/1', 'DELETE', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1266, '2026-03-01 11:18:09', '2026-03-01 11:18:09', '/api/sys/dict/type/page', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1267, '2026-03-01 11:18:21', '2026-03-01 11:18:21', '/api/sys/dict/type', 'POST', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1268, '2026-03-01 11:18:21', '2026-03-01 11:18:21', '/api/sys/dict/type/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1269, '2026-03-01 11:18:23', '2026-03-01 11:18:23', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1270, '2026-03-01 11:18:32', '2026-03-01 11:18:32', '/api/sys/dict/data', 'POST', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1271, '2026-03-01 11:18:32', '2026-03-01 11:18:32', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1272, '2026-03-01 11:18:38', '2026-03-01 11:18:38', '/api/sys/dict/data', 'POST', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1273, '2026-03-01 11:18:38', '2026-03-01 11:18:38', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1274, '2026-03-01 11:18:41', '2026-03-01 11:18:41', '/api/tool/gen/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1275, '2026-03-01 11:18:43', '2026-03-01 11:18:43', '/api/tool/gen/4', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1276, '2026-03-01 11:21:01', '2026-03-01 11:21:01', '/api/tool/gen/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1277, '2026-03-01 11:21:01', '2026-03-01 11:21:01', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1278, '2026-03-01 11:21:05', '2026-03-01 11:21:05', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1279, '2026-03-01 11:21:05', '2026-03-01 11:21:05', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1280, '2026-03-01 11:21:14', '2026-03-01 11:21:14', '/api/tool/gen/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1281, '2026-03-01 11:21:14', '2026-03-01 11:21:14', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1282, '2026-03-01 11:21:19', '2026-03-01 11:21:19', '/api/tool/gen/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1283, '2026-03-01 11:21:19', '2026-03-01 11:21:19', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1284, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/crypto/config', 'GET', 200, 1, 87, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1285, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/sys/config-group/public', 'GET', 200, 1, 83, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1286, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/auth/info', 'GET', 200, 1, 98, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1287, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1288, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/sys/notice/unread-count', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1289, '2026-03-01 11:23:41', '2026-03-01 11:23:41', '/api/tool/gen/page', 'GET', 200, 1, 118, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1290, '2026-03-01 11:23:43', '2026-03-01 11:23:43', '/api/sys/dict/type/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1291, '2026-03-01 11:23:43', '2026-03-01 11:23:43', '/api/tool/gen/4', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1292, '2026-03-01 11:24:18', '2026-03-01 11:24:18', '/api/tool/gen', 'PUT', 200, 1, 91, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1293, '2026-03-01 11:24:18', '2026-03-01 11:24:18', '/api/tool/gen/page', 'GET', 200, 1, 42, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1294, '2026-03-01 11:24:22', '2026-03-01 11:24:22', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1295, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/tool/gen/generate/4', 'POST', 200, 1, 204, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1296, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1297, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1298, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/auth/info', 'GET', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1299, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1300, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/sys/chat/unread-count', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1301, '2026-03-01 11:24:24', '2026-03-01 11:24:24', '/api/tool/gen/page', 'GET', 200, 1, 75, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1302, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/sys/config-group/public', 'GET', 200, 1, 110, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1303, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/crypto/config', 'GET', 200, 1, 106, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1304, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/auth/info', 'GET', 200, 1, 115, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1305, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/sys/notice/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1306, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/sys/chat/unread-count', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1307, '2026-03-01 11:24:48', '2026-03-01 11:24:48', '/api/tool/gen/page', 'GET', 200, 1, 94, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1308, '2026-03-01 11:25:05', '2026-03-01 11:25:05', '/api/sys/notice/channels', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1309, '2026-03-01 11:25:05', '2026-03-01 11:25:05', '/api/sys/notice/page', 'GET', 200, 1, 97, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1310, '2026-03-01 11:25:06', '2026-03-01 11:25:06', '/api/sys/chat/users', 'GET', 200, 1, 37, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1311, '2026-03-01 11:25:06', '2026-03-01 11:25:06', '/api/sys/chat/online/4', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1312, '2026-03-01 11:25:06', '2026-03-01 11:25:06', '/api/sys/chat/online/10', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1313, '2026-03-01 11:25:06', '2026-03-01 11:25:06', '/api/sys/chat/online/3', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1314, '2026-03-01 11:25:06', '2026-03-01 11:25:06', '/api/chat/group/list', 'GET', 200, 1, 31, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1315, '2026-03-01 11:25:08', '2026-03-01 11:25:08', '/api/tool/gen/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1316, '2026-03-01 11:25:11', '2026-03-01 11:25:11', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1317, '2026-03-01 11:25:11', '2026-03-01 11:25:11', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1318, '2026-03-01 11:25:11', '2026-03-01 11:25:11', '/api/auth/info', 'GET', 200, 1, 42, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1319, '2026-03-01 11:25:12', '2026-03-01 11:25:12', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1320, '2026-03-01 11:25:12', '2026-03-01 11:25:12', '/api/sys/notice/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1321, '2026-03-01 11:25:12', '2026-03-01 11:25:12', '/api/tool/gen/page', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1322, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1323, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/sys/config-group/public', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1324, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/auth/info', 'GET', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1325, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1326, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1327, '2026-03-01 11:25:37', '2026-03-01 11:25:37', '/api/tool/gen/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1328, '2026-03-01 11:25:44', '2026-03-01 11:25:44', '/api/system/student/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1329, '2026-03-01 11:25:44', '2026-03-01 11:25:44', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1330, '2026-03-01 11:25:44', '2026-03-01 11:25:44', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1331, '2026-03-01 11:25:58', '2026-03-01 11:25:58', '/api/system/student', 'POST', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1332, '2026-03-01 11:26:49', '2026-03-01 11:26:49', '/api/system/student', 'POST', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1333, '2026-03-01 11:26:55', '2026-03-01 11:26:55', '/api/system/student', 'POST', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1334, '2026-03-01 11:26:55', '2026-03-01 11:26:55', '/api/system/student/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1335, '2026-03-01 11:27:08', '2026-03-01 11:27:08', '/api/system/student/6', 'DELETE', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1336, '2026-03-01 11:27:08', '2026-03-01 11:27:08', '/api/system/student/page', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1337, '2026-03-01 11:27:18', '2026-03-01 11:27:18', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1338, '2026-03-01 11:27:19', '2026-03-01 11:27:19', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1339, '2026-03-01 11:27:19', '2026-03-01 11:27:19', '/api/system/student/page', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1340, '2026-03-01 11:27:19', '2026-03-01 11:27:19', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1341, '2026-03-01 11:27:19', '2026-03-01 11:27:19', '/api/tool/gen/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1342, '2026-03-01 11:27:20', '2026-03-01 11:27:20', '/api/sys/dict/type/list', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1343, '2026-03-01 11:27:20', '2026-03-01 11:27:20', '/api/tool/gen/4', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1344, '2026-03-01 11:27:44', '2026-03-01 11:27:44', '/api/tool/gen', 'PUT', 200, 1, 47, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1345, '2026-03-01 11:27:44', '2026-03-01 11:27:44', '/api/tool/gen/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1346, '2026-03-01 11:27:47', '2026-03-01 11:27:47', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1347, '2026-03-01 11:27:48', '2026-03-01 11:27:48', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1348, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1349, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/sys/config-group/public', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1350, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/auth/info', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1351, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1352, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1353, '2026-03-01 11:27:49', '2026-03-01 11:27:49', '/api/tool/gen/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1354, '2026-03-01 11:27:55', '2026-03-01 11:27:55', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1355, '2026-03-01 11:27:56', '2026-03-01 11:27:56', '/api/tool/gen/generate/4', 'POST', 200, 1, 146, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1356, '2026-03-01 11:27:56', '2026-03-01 11:27:56', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1357, '2026-03-01 11:27:56', '2026-03-01 11:27:56', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1358, '2026-03-01 11:27:56', '2026-03-01 11:27:56', '/api/auth/info', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1359, '2026-03-01 11:27:57', '2026-03-01 11:27:57', '/api/sys/chat/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1360, '2026-03-01 11:27:57', '2026-03-01 11:27:57', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1361, '2026-03-01 11:27:57', '2026-03-01 11:27:57', '/api/tool/gen/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1362, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/crypto/config', 'GET', 200, 1, 89, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1363, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/sys/config-group/public', 'GET', 200, 1, 100, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1364, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/auth/info', 'GET', 200, 1, 134, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1365, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/sys/notice/unread-count', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1366, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/sys/chat/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1367, '2026-03-01 11:28:20', '2026-03-01 11:28:20', '/api/tool/gen/page', 'GET', 200, 1, 89, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1368, '2026-03-01 11:28:57', '2026-03-01 11:28:57', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1369, '2026-03-01 11:28:57', '2026-03-01 11:28:57', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1370, '2026-03-01 11:28:57', '2026-03-01 11:28:58', '/api/auth/info', 'GET', 200, 1, 58, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1371, '2026-03-01 11:28:58', '2026-03-01 11:28:58', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1372, '2026-03-01 11:28:58', '2026-03-01 11:28:58', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1373, '2026-03-01 11:28:58', '2026-03-01 11:28:58', '/api/tool/gen/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1374, '2026-03-01 11:29:17', '2026-03-01 11:29:17', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1375, '2026-03-01 11:29:17', '2026-03-01 11:29:17', '/api/system/student/page', 'GET', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1376, '2026-03-01 11:29:17', '2026-03-01 11:29:17', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1377, '2026-03-01 11:29:17', '2026-03-01 11:29:17', '/api/crypto/config', 'GET', 200, 1, 4, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1378, '2026-03-01 11:29:17', '2026-03-01 11:29:17', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1379, '2026-03-01 11:29:28', '2026-03-01 11:29:28', '/api/sys/file/upload/image', 'POST', 200, 1, 46, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1380, '2026-03-01 11:29:31', '2026-03-01 11:29:31', '/api/system/student', 'POST', 200, 1, 46, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1381, '2026-03-01 11:29:32', '2026-03-01 11:29:32', '/api/system/student/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1382, '2026-03-01 11:31:03', '2026-03-01 11:31:03', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1383, '2026-03-01 11:31:03', '2026-03-01 11:31:03', '/api/system/student/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1384, '2026-03-01 11:31:03', '2026-03-01 11:31:03', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1385, '2026-03-01 11:31:03', '2026-03-01 11:31:03', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1386, '2026-03-01 11:31:03', '2026-03-01 11:31:03', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1387, '2026-03-01 11:31:07', '2026-03-01 11:31:07', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1388, '2026-03-01 11:31:07', '2026-03-01 11:31:07', '/api/system/student/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1389, '2026-03-01 11:31:07', '2026-03-01 11:31:07', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1390, '2026-03-01 11:31:07', '2026-03-01 11:31:07', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1391, '2026-03-01 11:31:07', '2026-03-01 11:31:07', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1392, '2026-03-01 11:32:58', '2026-03-01 11:32:58', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1393, '2026-03-01 11:32:58', '2026-03-01 11:32:58', '/api/system/student/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1394, '2026-03-01 11:32:58', '2026-03-01 11:32:58', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1395, '2026-03-01 11:32:59', '2026-03-01 11:32:59', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1396, '2026-03-01 11:32:59', '2026-03-01 11:32:59', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1397, '2026-03-01 11:35:23', '2026-03-01 11:35:23', '/api/system/student/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1398, '2026-03-01 11:35:23', '2026-03-01 11:35:23', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1399, '2026-03-01 11:35:23', '2026-03-01 11:35:23', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1400, '2026-03-01 11:35:23', '2026-03-01 11:35:23', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1401, '2026-03-01 11:35:23', '2026-03-01 11:35:23', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1402, '2026-03-01 11:35:27', '2026-03-01 11:35:27', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1403, '2026-03-01 11:35:27', '2026-03-01 11:35:27', '/api/system/student/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1404, '2026-03-01 11:35:27', '2026-03-01 11:35:27', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1405, '2026-03-01 11:35:27', '2026-03-01 11:35:27', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1406, '2026-03-01 11:35:27', '2026-03-01 11:35:27', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1407, '2026-03-01 11:35:30', '2026-03-01 11:35:30', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1408, '2026-03-01 11:35:30', '2026-03-01 11:35:30', '/api/system/student/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1409, '2026-03-01 11:35:30', '2026-03-01 11:35:30', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1410, '2026-03-01 11:35:30', '2026-03-01 11:35:30', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1411, '2026-03-01 11:35:30', '2026-03-01 11:35:30', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1412, '2026-03-01 11:35:34', '2026-03-01 11:35:34', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1413, '2026-03-01 11:35:34', '2026-03-01 11:35:34', '/api/system/student/page', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1414, '2026-03-01 11:35:34', '2026-03-01 11:35:34', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1415, '2026-03-01 11:35:34', '2026-03-01 11:35:34', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1416, '2026-03-01 11:35:34', '2026-03-01 11:35:34', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1417, '2026-03-01 11:35:41', '2026-03-01 11:35:41', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1418, '2026-03-01 11:35:41', '2026-03-01 11:35:41', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1419, '2026-03-01 11:35:41', '2026-03-01 11:35:41', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1420, '2026-03-01 11:35:41', '2026-03-01 11:35:41', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1421, '2026-03-01 11:35:41', '2026-03-01 11:35:41', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1422, '2026-03-01 11:35:46', '2026-03-01 11:35:46', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1423, '2026-03-01 11:35:46', '2026-03-01 11:35:46', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1424, '2026-03-01 11:35:46', '2026-03-01 11:35:46', '/api/system/student/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1425, '2026-03-01 11:35:46', '2026-03-01 11:35:46', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1426, '2026-03-01 11:35:54', '2026-03-01 11:35:54', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1427, '2026-03-01 11:35:54', '2026-03-01 11:35:54', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1428, '2026-03-01 11:35:54', '2026-03-01 11:35:54', '/api/system/student/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1429, '2026-03-01 11:35:54', '2026-03-01 11:35:54', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1430, '2026-03-01 11:43:18', '2026-03-01 11:43:18', '/api/crypto/config', 'GET', 200, 1, 86, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1431, '2026-03-01 11:43:18', '2026-03-01 11:43:18', '/api/sys/config-group/public', 'GET', 200, 1, 77, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1432, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1433, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1434, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/auth/info', 'GET', 200, 1, 79, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1435, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/sys/chat/unread-count', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1436, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/dashboard/stats', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1437, '2026-03-01 11:43:22', '2026-03-01 11:43:22', '/api/sys/notice/unread-count', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1438, '2026-03-01 11:43:23', '2026-03-01 11:43:23', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1439, '2026-03-01 11:43:23', '2026-03-01 11:43:23', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1440, '2026-03-01 11:43:23', '2026-03-01 11:43:23', '/api/auth/info', 'GET', 200, 1, 46, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1441, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/sys/chat/unread-count', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1442, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/sys/notice/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1443, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/dashboard/stats', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1444, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/crypto/config', 'GET', 200, 1, 3, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1445, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1446, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/auth/info', 'GET', 200, 1, 35, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1447, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/sys/chat/unread-count', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1448, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/sys/notice/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1449, '2026-03-01 11:43:24', '2026-03-01 11:43:24', '/api/dashboard/stats', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1450, '2026-03-01 11:43:26', '2026-03-01 11:43:26', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1451, '2026-03-01 11:43:26', '2026-03-01 11:43:26', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1452, '2026-03-01 11:43:26', '2026-03-01 11:43:26', '/api/system/student/page', 'GET', 200, 1, 85, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1453, '2026-03-01 11:43:28', '2026-03-01 11:43:28', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1454, '2026-03-01 11:43:28', '2026-03-01 11:43:28', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1455, '2026-03-01 11:43:29', '2026-03-01 11:43:29', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1456, '2026-03-01 11:43:29', '2026-03-01 11:43:29', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1457, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1458, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1459, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1460, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1461, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1462, '2026-03-01 11:43:30', '2026-03-01 11:43:30', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1463, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1464, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1465, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1466, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1467, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1468, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1469, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1470, '2026-03-01 11:43:31', '2026-03-01 11:43:31', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1471, '2026-03-01 11:43:32', '2026-03-01 11:43:32', '/api/auth/info', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1472, '2026-03-01 11:43:32', '2026-03-01 11:43:32', '/api/sys/notice/unread-count', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1473, '2026-03-01 11:43:32', '2026-03-01 11:43:32', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1474, '2026-03-01 11:43:32', '2026-03-01 11:43:32', '/api/dashboard/stats', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1475, '2026-03-01 11:43:35', '2026-03-01 11:43:35', '/api/tool/gen/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1476, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1477, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1478, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/auth/info', 'GET', 200, 1, 34, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1479, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1480, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1481, '2026-03-01 11:43:36', '2026-03-01 11:43:36', '/api/tool/gen/page', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1482, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1483, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1484, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/auth/info', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1485, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1486, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/sys/chat/unread-count', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1487, '2026-03-01 11:43:37', '2026-03-01 11:43:37', '/api/tool/gen/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1488, '2026-03-01 11:43:38', '2026-03-01 11:43:38', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1489, '2026-03-01 11:43:38', '2026-03-01 11:43:38', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1490, '2026-03-01 11:43:38', '2026-03-01 11:43:38', '/api/auth/info', 'GET', 200, 1, 62, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1491, '2026-03-01 11:43:39', '2026-03-01 11:43:39', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1492, '2026-03-01 11:43:39', '2026-03-01 11:43:39', '/api/sys/notice/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1493, '2026-03-01 11:43:39', '2026-03-01 11:43:39', '/api/tool/gen/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1494, '2026-03-01 11:43:41', '2026-03-01 11:43:41', '/api/sys/file-group/list', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1495, '2026-03-01 11:43:41', '2026-03-01 11:43:41', '/api/sys/file/page-by-group', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1496, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1497, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1498, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/auth/info', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1499, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/sys/notice/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1500, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1501, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/sys/file-group/list', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1502, '2026-03-01 11:43:43', '2026-03-01 11:43:43', '/api/sys/file/page-by-group', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1503, '2026-03-01 11:43:45', '2026-03-01 11:43:45', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1504, '2026-03-01 11:43:45', '2026-03-01 11:43:45', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1505, '2026-03-01 11:43:45', '2026-03-01 11:43:45', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1506, '2026-03-01 11:43:49', '2026-03-01 11:43:49', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1507, '2026-03-01 11:43:49', '2026-03-01 11:43:49', '/api/system/student/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1508, '2026-03-01 11:43:49', '2026-03-01 11:43:49', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1509, '2026-03-01 11:43:50', '2026-03-01 11:43:50', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1510, '2026-03-01 11:43:50', '2026-03-01 11:43:50', '/api/system/student/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1511, '2026-03-01 11:43:51', '2026-03-01 11:43:51', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1512, '2026-03-01 11:44:39', '2026-03-01 11:44:39', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1513, '2026-03-01 11:44:39', '2026-03-01 11:44:40', '/api/auth/captcha', 'GET', 200, 1, 272, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1514, '2026-03-01 11:44:48', '2026-03-01 11:44:48', '/api/auth/login', 'POST', 200, 1, 39, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1515, '2026-03-01 11:44:48', '2026-03-01 11:44:48', '/api/auth/captcha', 'GET', 200, 1, 6, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1516, '2026-03-01 11:44:53', '2026-03-01 11:44:53', '/api/auth/login', 'POST', 200, 1, 17, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1517, '2026-03-01 11:44:53', '2026-03-01 11:44:53', '/api/auth/captcha', 'GET', 200, 1, 8, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1518, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/auth/login', 'POST', 200, 1, 173, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1519, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/auth/info', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1520, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1521, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/dashboard/stats', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1522, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/sys/notice/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1523, '2026-03-01 11:44:57', '2026-03-01 11:44:57', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1524, '2026-03-01 11:45:01', '2026-03-01 11:45:01', '/api/tool/gen/page', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1525, '2026-03-01 11:45:05', '2026-03-01 11:45:05', '/api/tool/gen/preview/4', 'GET', 200, 1, 148, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1526, '2026-03-01 11:45:42', '2026-03-01 11:45:42', '/api/sys/dict/type/list', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1527, '2026-03-01 11:45:42', '2026-03-01 11:45:42', '/api/tool/gen/4', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1528, '2026-03-01 11:45:57', '2026-03-01 11:45:57', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1529, '2026-03-01 11:45:57', '2026-03-01 11:45:57', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1530, '2026-03-01 11:45:57', '2026-03-01 11:45:57', '/api/tool/gen/page', 'GET', 200, 1, 139, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1531, '2026-03-01 11:46:02', '2026-03-01 11:46:02', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1532, '2026-03-01 11:46:03', '2026-03-01 11:46:03', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 53, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1533, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1534, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1535, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/auth/info', 'GET', 200, 1, 37, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1536, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/sys/notice/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1537, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/sys/chat/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1538, '2026-03-01 11:46:04', '2026-03-01 11:46:04', '/api/tool/gen/page', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1539, '2026-03-01 11:47:12', '2026-03-01 11:47:12', '/api/tool/gen/page', 'GET', 200, 1, 149, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1540, '2026-03-01 11:47:12', '2026-03-01 11:47:12', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1541, '2026-03-01 11:47:20', '2026-03-01 11:47:20', '/api/tool/gen/preview/4', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1542, '2026-03-01 11:48:07', '2026-03-01 11:48:07', '/api/crypto/config', 'GET', 200, 1, 125, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1543, '2026-03-01 11:48:07', '2026-03-01 11:48:07', '/api/sys/config-group/public', 'GET', 200, 1, 137, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1544, '2026-03-01 11:48:07', '2026-03-01 11:48:07', '/api/auth/info', 'GET', 200, 1, 129, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1545, '2026-03-01 11:48:07', '2026-03-01 11:48:07', '/api/sys/notice/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1546, '2026-03-01 11:48:07', '2026-03-01 11:48:07', '/api/sys/chat/unread-count', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1547, '2026-03-01 11:48:08', '2026-03-01 11:48:08', '/api/tool/gen/page', 'GET', 200, 1, 106, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1548, '2026-03-01 11:48:10', '2026-03-01 11:48:10', '/api/tool/gen/preview/4', 'GET', 200, 1, 120, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1549, '2026-03-01 11:48:47', '2026-03-01 11:48:47', '/api/tool/gen/preview/4', 'GET', 200, 1, 41, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1550, '2026-03-01 11:49:37', '2026-03-01 11:49:37', '/api/sys/dict/type/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1551, '2026-03-01 11:49:37', '2026-03-01 11:49:37', '/api/tool/gen/4', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1552, '2026-03-01 11:50:40', '2026-03-01 11:50:40', '/api/tool/gen/page', 'GET', 200, 1, 33, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1553, '2026-03-01 11:50:40', '2026-03-01 11:50:40', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1554, '2026-03-01 11:50:52', '2026-03-01 11:50:52', '/api/tool/gen/page', 'GET', 200, 1, 227, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1555, '2026-03-01 11:50:52', '2026-03-01 11:50:52', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1556, '2026-03-01 11:50:53', '2026-03-01 11:50:53', '/api/tool/gen/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1557, '2026-03-01 11:50:53', '2026-03-01 11:50:53', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1558, '2026-03-01 11:51:20', '2026-03-01 11:51:20', '/api/tool/gen/preview/4', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1559, '2026-03-01 11:51:24', '2026-03-01 11:51:24', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1560, '2026-03-01 11:51:24', '2026-03-01 11:51:24', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1561, '2026-03-01 11:51:29', '2026-03-01 11:51:29', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1562, '2026-03-01 11:51:29', '2026-03-01 11:51:29', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1563, '2026-03-01 11:51:31', '2026-03-01 11:51:31', '/api/tool/gen/page', 'GET', 200, 1, 55, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1564, '2026-03-01 11:51:31', '2026-03-01 11:51:31', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1565, '2026-03-01 11:51:33', '2026-03-01 11:51:33', '/api/tool/gen/preview/4', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1566, '2026-03-01 11:53:23', '2026-03-01 11:53:23', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1567, '2026-03-01 11:53:23', '2026-03-01 11:53:23', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1568, '2026-03-01 11:53:25', '2026-03-01 11:53:25', '/api/tool/gen/page', 'GET', 200, 1, 117, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1569, '2026-03-01 11:53:25', '2026-03-01 11:53:25', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1570, '2026-03-01 11:53:54', '2026-03-01 11:53:54', '/api/tool/gen/preview/4', 'GET', 200, 1, 74, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1571, '2026-03-01 11:54:03', '2026-03-01 11:54:03', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1572, '2026-03-01 11:54:03', '2026-03-01 11:54:03', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1573, '2026-03-01 11:54:06', '2026-03-01 11:54:06', '/api/auth/info', 'GET', 200, 1, 32, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1574, '2026-03-01 11:54:06', '2026-03-01 11:54:06', '/api/sys/notice/unread-count', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1575, '2026-03-01 11:54:06', '2026-03-01 11:54:06', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1576, '2026-03-01 11:54:06', '2026-03-01 11:54:06', '/api/dashboard/stats', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1577, '2026-03-01 11:54:13', '2026-03-01 11:54:13', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1578, '2026-03-01 11:54:13', '2026-03-01 11:54:13', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1579, '2026-03-01 11:54:37', '2026-03-01 11:54:37', '/api/sys/dict/type/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1580, '2026-03-01 11:54:37', '2026-03-01 11:54:37', '/api/tool/gen/4', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1581, '2026-03-01 11:54:51', '2026-03-01 11:54:51', '/api/tool/gen/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1582, '2026-03-01 11:54:51', '2026-03-01 11:54:51', '/api/tool/gen/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1583, '2026-03-01 11:54:52', '2026-03-01 11:54:52', '/api/tool/gen/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1584, '2026-03-01 11:54:52', '2026-03-01 11:54:52', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1585, '2026-03-01 11:54:52', '2026-03-01 11:54:52', '/api/tool/gen/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1586, '2026-03-01 11:54:53', '2026-03-01 11:54:53', '/api/tool/gen/preview/4', 'GET', 200, 1, 39, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1587, '2026-03-01 11:56:27', '2026-03-01 11:56:27', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1588, '2026-03-01 11:56:27', '2026-03-01 11:56:27', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1589, '2026-03-01 11:56:27', '2026-03-01 11:56:28', '/api/auth/info', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1590, '2026-03-01 11:56:28', '2026-03-01 11:56:28', '/api/sys/notice/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1591, '2026-03-01 11:56:28', '2026-03-01 11:56:28', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1592, '2026-03-01 11:56:28', '2026-03-01 11:56:28', '/api/tool/gen/page', 'GET', 200, 1, 35, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1593, '2026-03-01 11:56:47', '2026-03-01 11:56:47', '/api/tool/gen/preview/4', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1594, '2026-03-01 11:56:52', '2026-03-01 11:56:52', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1595, '2026-03-01 11:56:52', '2026-03-01 11:56:52', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1596, '2026-03-01 11:56:53', '2026-03-01 11:56:53', '/api/auth/info', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1597, '2026-03-01 11:56:53', '2026-03-01 11:56:53', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1598, '2026-03-01 11:56:53', '2026-03-01 11:56:53', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1599, '2026-03-01 11:56:53', '2026-03-01 11:56:53', '/api/dashboard/stats', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1600, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/crypto/config', 'GET', 200, 1, 0, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1601, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1602, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/auth/info', 'GET', 200, 1, 29, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1603, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1604, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/sys/notice/unread-count', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1605, '2026-03-01 11:56:59', '2026-03-01 11:56:59', '/api/tool/gen/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1606, '2026-03-01 11:57:02', '2026-03-01 11:57:02', '/api/tool/gen/preview/4', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1607, '2026-03-01 11:57:17', '2026-03-01 11:57:17', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1608, '2026-03-01 11:57:17', '2026-03-01 11:57:17', '/api/sys/config-group/public', 'GET', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1609, '2026-03-01 11:57:29', '2026-03-01 11:57:29', '/api/tool/gen/preview/4', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1610, '2026-03-01 11:58:03', '2026-03-01 11:58:03', '/api/tool/gen/preview/4', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1611, '2026-03-01 11:58:36', '2026-03-01 11:58:36', '/api/sys/dict/type/list', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1612, '2026-03-01 11:58:36', '2026-03-01 11:58:36', '/api/tool/gen/4', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1613, '2026-03-01 12:02:06', '2026-03-01 12:02:06', '/api/tool/gen/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1614, '2026-03-01 12:02:06', '2026-03-01 12:02:06', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1615, '2026-03-01 12:02:10', '2026-03-01 12:02:10', '/api/tool/gen/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1616, '2026-03-01 12:02:10', '2026-03-01 12:02:10', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1617, '2026-03-01 12:04:08', '2026-03-01 12:04:09', '/api/tool/gen/preview/4', 'GET', 200, 1, 203, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1618, '2026-03-01 12:04:19', '2026-03-01 12:04:19', '/api/crypto/config', 'GET', 200, 1, 5, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1619, '2026-03-01 12:04:19', '2026-03-01 12:04:19', '/api/sys/config-group/public', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1620, '2026-03-01 12:04:19', '2026-03-01 12:04:19', '/api/auth/info', 'GET', 200, 1, 92, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1621, '2026-03-01 12:04:20', '2026-03-01 12:04:20', '/api/sys/notice/unread-count', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1622, '2026-03-01 12:04:20', '2026-03-01 12:04:20', '/api/sys/chat/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1623, '2026-03-01 12:04:20', '2026-03-01 12:04:20', '/api/tool/gen/page', 'GET', 200, 1, 112, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1624, '2026-03-01 12:04:24', '2026-03-01 12:04:24', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1625, '2026-03-01 12:04:24', '2026-03-01 12:04:24', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1626, '2026-03-01 12:04:24', '2026-03-01 12:04:24', '/api/auth/info', 'GET', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1627, '2026-03-01 12:04:25', '2026-03-01 12:04:25', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1628, '2026-03-01 12:04:25', '2026-03-01 12:04:25', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1629, '2026-03-01 12:04:25', '2026-03-01 12:04:25', '/api/tool/gen/page', 'GET', 200, 1, 22, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1630, '2026-03-01 12:04:26', '2026-03-01 12:04:26', '/api/tool/gen/preview/4', 'GET', 200, 1, 34, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1631, '2026-03-01 12:04:29', '2026-03-01 12:04:29', '/api/sys/dict/type/list', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1632, '2026-03-01 12:04:29', '2026-03-01 12:04:29', '/api/tool/gen/4', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1633, '2026-03-01 12:04:40', '2026-03-01 12:04:40', '/api/tool/gen', 'PUT', 200, 1, 91, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1634, '2026-03-01 12:04:40', '2026-03-01 12:04:40', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1635, '2026-03-01 12:04:46', '2026-03-01 12:04:46', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1636, '2026-03-01 12:04:47', '2026-03-01 12:04:47', '/api/tool/gen/generate/4', 'POST', 200, 1, 160, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1637, '2026-03-01 12:04:47', '2026-03-01 12:04:47', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1638, '2026-03-01 12:04:47', '2026-03-01 12:04:47', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1639, '2026-03-01 12:04:47', '2026-03-01 12:04:47', '/api/auth/info', 'GET', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1640, '2026-03-01 12:04:48', '2026-03-01 12:04:48', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1641, '2026-03-01 12:04:48', '2026-03-01 12:04:48', '/api/sys/chat/unread-count', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1642, '2026-03-01 12:04:48', '2026-03-01 12:04:48', '/api/tool/gen/page', 'GET', 200, 1, 136, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1643, '2026-03-01 12:05:30', '2026-03-01 12:05:30', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 91, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1644, '2026-03-01 12:05:30', '2026-03-01 12:05:30', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1645, '2026-03-01 12:05:30', '2026-03-01 12:05:30', '/api/crypto/config', 'GET', 200, 1, 6, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1646, '2026-03-01 12:05:30', '2026-03-01 12:05:30', '/api/system/student/page', 'GET', 200, 1, 132, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1647, '2026-03-01 12:05:58', '2026-03-01 12:05:59', '/api/system/student/template', 'GET', 200, 1, 826, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1648, '2026-03-01 12:06:10', '2026-03-01 12:06:10', '/api/system/student/7', 'DELETE', 200, 1, 43, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1649, '2026-03-01 12:06:10', '2026-03-01 12:06:10', '/api/system/student/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1650, '2026-03-01 12:06:16', '2026-03-01 12:06:16', '/api/tool/gen/page', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1651, '2026-03-01 12:06:18', '2026-03-01 12:06:18', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1652, '2026-03-01 12:06:19', '2026-03-01 12:06:19', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 37, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1653, '2026-03-01 12:06:19', '2026-03-01 12:06:19', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1654, '2026-03-01 12:06:19', '2026-03-01 12:06:19', '/api/sys/config-group/public', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1655, '2026-03-01 12:06:19', '2026-03-01 12:06:19', '/api/auth/info', 'GET', 200, 1, 57, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1656, '2026-03-01 12:06:20', '2026-03-01 12:06:20', '/api/sys/notice/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1657, '2026-03-01 12:06:20', '2026-03-01 12:06:20', '/api/sys/chat/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1658, '2026-03-01 12:06:20', '2026-03-01 12:06:20', '/api/tool/gen/page', 'GET', 200, 1, 28, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1659, '2026-03-01 12:06:25', '2026-03-01 12:06:25', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1660, '2026-03-01 12:06:35', '2026-03-01 12:06:35', '/api/sys/dict/type/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1661, '2026-03-01 12:06:35', '2026-03-01 12:06:35', '/api/tool/gen/4', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1662, '2026-03-01 12:06:53', '2026-03-01 12:06:53', '/api/tool/gen', 'PUT', 200, 1, 60, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1663, '2026-03-01 12:06:53', '2026-03-01 12:06:53', '/api/tool/gen/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1664, '2026-03-01 12:06:58', '2026-03-01 12:06:58', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1665, '2026-03-01 12:07:01', '2026-03-01 12:07:02', '/api/tool/gen/generate/4', 'POST', 200, 1, 210, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1666, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1667, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1668, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/auth/info', 'GET', 200, 1, 36, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1669, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/sys/notice/unread-count', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1670, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/sys/chat/unread-count', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1671, '2026-03-01 12:07:02', '2026-03-01 12:07:02', '/api/tool/gen/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1672, '2026-03-01 12:07:32', '2026-03-01 12:07:32', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 99, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1673, '2026-03-01 12:07:32', '2026-03-01 12:07:32', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1674, '2026-03-01 12:07:32', '2026-03-01 12:07:32', '/api/crypto/config', 'GET', 200, 1, 24, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1675, '2026-03-01 12:07:32', '2026-03-01 12:07:32', '/api/system/student/page', 'GET', 200, 1, 162, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1676, '2026-03-01 12:08:04', '2026-03-01 12:08:04', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1677, '2026-03-01 12:08:04', '2026-03-01 12:08:04', '/api/system/student/page', 'GET', 200, 1, 31, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1678, '2026-03-01 12:08:04', '2026-03-01 12:08:04', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1679, '2026-03-01 12:08:27', '2026-03-01 12:08:27', '/api/sys/file/upload/image', 'POST', 200, 1, 51, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1680, '2026-03-01 12:08:31', '2026-03-01 12:08:31', '/api/system/student', 'POST', 200, 1, 38, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1681, '2026-03-01 12:08:31', '2026-03-01 12:08:31', '/api/system/student/page', 'GET', 200, 1, 31, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1682, '2026-03-01 12:08:47', '2026-03-01 12:08:47', '/api/system/student', 'PUT', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1683, '2026-03-01 12:08:56', '2026-03-01 12:08:56', '/api/tool/gen/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1684, '2026-03-01 12:08:57', '2026-03-01 12:08:57', '/api/sys/dict/type/list', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1685, '2026-03-01 12:08:57', '2026-03-01 12:08:57', '/api/tool/gen/4', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1686, '2026-03-01 12:09:27', '2026-03-01 12:09:27', '/api/tool/gen', 'PUT', 200, 1, 48, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1687, '2026-03-01 12:09:27', '2026-03-01 12:09:27', '/api/tool/gen/page', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1688, '2026-03-01 12:09:30', '2026-03-01 12:09:30', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1689, '2026-03-01 12:09:32', '2026-03-01 12:09:32', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1690, '2026-03-01 12:09:32', '2026-03-01 12:09:32', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1691, '2026-03-01 12:09:32', '2026-03-01 12:09:32', '/api/sys/config-group/public', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1692, '2026-03-01 12:09:32', '2026-03-01 12:09:32', '/api/auth/info', 'GET', 200, 1, 60, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1693, '2026-03-01 12:09:33', '2026-03-01 12:09:33', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1694, '2026-03-01 12:09:33', '2026-03-01 12:09:33', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1695, '2026-03-01 12:09:33', '2026-03-01 12:09:33', '/api/tool/gen/page', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1696, '2026-03-01 12:09:42', '2026-03-01 12:09:42', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1697, '2026-03-01 12:09:44', '2026-03-01 12:09:44', '/api/tool/gen/generate/4', 'POST', 200, 1, 209, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1698, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1699, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/sys/config-group/public', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1700, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/auth/info', 'GET', 200, 1, 41, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1701, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/sys/chat/unread-count', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1702, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/sys/notice/unread-count', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1703, '2026-03-01 12:09:45', '2026-03-01 12:09:45', '/api/tool/gen/page', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1704, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/crypto/config', 'GET', 200, 1, 66, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1705, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/sys/config-group/public', 'GET', 200, 1, 67, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1706, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/auth/info', 'GET', 200, 1, 104, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1707, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/sys/notice/unread-count', 'GET', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1708, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/sys/chat/unread-count', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1709, '2026-03-01 12:10:19', '2026-03-01 12:10:19', '/api/tool/gen/page', 'GET', 200, 1, 204, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1710, '2026-03-01 12:10:21', '2026-03-01 12:10:21', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1711, '2026-03-01 12:10:21', '2026-03-01 12:10:21', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1712, '2026-03-01 12:10:21', '2026-03-01 12:10:21', '/api/system/student/page', 'GET', 200, 1, 31, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1713, '2026-03-01 12:10:33', '2026-03-01 12:10:34', '/api/tool/gen/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1714, '2026-03-01 12:10:41', '2026-03-01 12:10:41', '/api/sys/dict/type/list', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1715, '2026-03-01 12:10:41', '2026-03-01 12:10:41', '/api/tool/gen/4', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1716, '2026-03-01 12:10:49', '2026-03-01 12:10:49', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1717, '2026-03-01 12:10:49', '2026-03-01 12:10:49', '/api/system/student/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1718, '2026-03-01 12:10:49', '2026-03-01 12:10:49', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1719, '2026-03-01 12:10:54', '2026-03-01 12:10:54', '/api/system/student', 'PUT', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1720, '2026-03-01 12:10:56', '2026-03-01 12:10:56', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1721, '2026-03-01 12:10:56', '2026-03-01 12:10:56', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1722, '2026-03-01 12:10:59', '2026-03-01 12:10:59', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1723, '2026-03-01 12:11:15', '2026-03-01 12:11:15', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1724, '2026-03-01 12:11:48', '2026-03-01 12:11:48', '/api/system/student', 'PUT', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1725, '2026-03-01 12:12:30', '2026-03-01 12:12:30', '/api/tool/gen/page', 'GET', 200, 1, 7, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1726, '2026-03-01 12:12:39', '2026-03-01 12:12:39', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1727, '2026-03-01 12:12:39', '2026-03-01 12:12:39', '/api/system/student/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1728, '2026-03-01 12:12:39', '2026-03-01 12:12:39', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1729, '2026-03-01 12:12:40', '2026-03-01 12:12:40', '/api/tool/gen/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1730, '2026-03-01 12:13:36', '2026-03-01 12:13:36', '/api/tool/gen/page', 'GET', 200, 1, 155, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1731, '2026-03-01 12:13:36', '2026-03-01 12:13:36', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1732, '2026-03-01 12:14:02', '2026-03-01 12:14:02', '/api/tool/gen/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1733, '2026-03-01 12:14:02', '2026-03-01 12:14:02', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1734, '2026-03-01 12:14:29', '2026-03-01 12:14:29', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1735, '2026-03-01 12:14:37', '2026-03-01 12:14:37', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 51, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1736, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1737, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1738, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/auth/info', 'GET', 200, 1, 40, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1739, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/sys/chat/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1740, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1741, '2026-03-01 12:14:38', '2026-03-01 12:14:38', '/api/tool/gen/page', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1742, '2026-03-01 12:15:09', '2026-03-01 12:15:09', '/api/crypto/config', 'GET', 200, 1, 122, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1743, '2026-03-01 12:15:09', '2026-03-01 12:15:09', '/api/sys/config-group/public', 'GET', 200, 1, 104, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1744, '2026-03-01 12:15:09', '2026-03-01 12:15:09', '/api/auth/info', 'GET', 200, 1, 113, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1745, '2026-03-01 12:15:10', '2026-03-01 12:15:10', '/api/sys/notice/unread-count', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1746, '2026-03-01 12:15:10', '2026-03-01 12:15:10', '/api/sys/chat/unread-count', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1747, '2026-03-01 12:15:10', '2026-03-01 12:15:10', '/api/tool/gen/page', 'GET', 200, 1, 100, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1748, '2026-03-01 12:15:13', '2026-03-01 12:15:13', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1749, '2026-03-01 12:15:14', '2026-03-01 12:15:14', '/api/tool/gen/generate/4', 'POST', 200, 1, 274, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1750, '2026-03-01 12:15:14', '2026-03-01 12:15:14', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1751, '2026-03-01 12:15:14', '2026-03-01 12:15:14', '/api/sys/config-group/public', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1752, '2026-03-01 12:15:15', '2026-03-01 12:15:15', '/api/auth/info', 'GET', 200, 1, 58, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1753, '2026-03-01 12:15:15', '2026-03-01 12:15:15', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1754, '2026-03-01 12:15:15', '2026-03-01 12:15:15', '/api/sys/chat/unread-count', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1755, '2026-03-01 12:15:15', '2026-03-01 12:15:15', '/api/tool/gen/page', 'GET', 200, 1, 17, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1756, '2026-03-01 12:15:17', '2026-03-01 12:15:17', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1757, '2026-03-01 12:15:17', '2026-03-01 12:15:17', '/api/system/student/page', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1758, '2026-03-01 12:15:17', '2026-03-01 12:15:17', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1759, '2026-03-01 12:15:41', '2026-03-01 12:15:41', '/api/crypto/config', 'GET', 200, 1, 92, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1760, '2026-03-01 12:15:41', '2026-03-01 12:15:41', '/api/sys/config-group/public', 'GET', 200, 1, 96, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1761, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1762, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1763, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/auth/info', 'GET', 200, 1, 104, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1764, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/sys/notice/unread-count', 'GET', 200, 1, 27, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1765, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/dashboard/stats', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1766, '2026-03-01 12:15:44', '2026-03-01 12:15:44', '/api/sys/chat/unread-count', 'GET', 200, 1, 19, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1767, '2026-03-01 12:15:50', '2026-03-01 12:15:50', '/api/tool/gen/page', 'GET', 200, 1, 95, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1768, '2026-03-01 12:15:50', '2026-03-01 12:15:50', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1769, '2026-03-01 12:15:50', '2026-03-01 12:15:50', '/api/system/student/page', 'GET', 200, 1, 20, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1770, '2026-03-01 12:15:50', '2026-03-01 12:15:50', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1771, '2026-03-01 12:15:54', '2026-03-01 12:15:54', '/api/system/student/8', 'DELETE', 200, 1, 67, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1772, '2026-03-01 12:15:54', '2026-03-01 12:15:54', '/api/system/student/page', 'GET', 200, 1, 14, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1773, '2026-03-01 12:16:10', '2026-03-01 12:16:10', '/api/sys/file/upload/image', 'POST', 200, 1, 24, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1774, '2026-03-01 12:16:12', '2026-03-01 12:16:12', '/api/system/student', 'POST', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1775, '2026-03-01 12:16:13', '2026-03-01 12:16:13', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1776, '2026-03-01 12:16:24', '2026-03-01 12:16:24', '/api/system/student', 'PUT', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1777, '2026-03-01 12:16:27', '2026-03-01 12:16:27', '/api/system/student', 'PUT', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1778, '2026-03-01 12:16:28', '2026-03-01 12:16:28', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1779, '2026-03-01 12:16:34', '2026-03-01 12:16:34', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1780, '2026-03-01 12:16:53', '2026-03-01 12:16:53', '/api/system/student', 'PUT', 200, 1, 1, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1781, '2026-03-01 12:17:14', '2026-03-01 12:17:14', '/api/tool/gen/page', 'GET', 200, 1, 38, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1782, '2026-03-01 12:17:17', '2026-03-01 12:17:17', '/api/sys/dict/type/list', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1783, '2026-03-01 12:17:17', '2026-03-01 12:17:17', '/api/tool/gen/4', 'GET', 200, 1, 16, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1784, '2026-03-01 12:17:59', '2026-03-01 12:17:59', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1785, '2026-03-01 12:17:59', '2026-03-01 12:17:59', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1786, '2026-03-01 12:17:59', '2026-03-01 12:17:59', '/api/system/student/page', 'GET', 200, 1, 93, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1787, '2026-03-01 12:17:59', '2026-03-01 12:17:59', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1788, '2026-03-01 12:17:59', '2026-03-01 12:17:59', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 15, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1789, '2026-03-01 12:20:00', '2026-03-01 12:20:00', '/api/crypto/config', 'GET', 200, 1, 130, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1790, '2026-03-01 12:20:00', '2026-03-01 12:20:00', '/api/sys/config-group/public', 'GET', 200, 1, 126, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1791, '2026-03-01 12:20:03', '2026-03-01 12:20:03', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1792, '2026-03-01 12:20:03', '2026-03-01 12:20:03', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1793, '2026-03-01 12:20:03', '2026-03-01 12:20:04', '/api/auth/info', 'GET', 200, 1, 98, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1794, '2026-03-01 12:20:04', '2026-03-01 12:20:04', '/api/sys/notice/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1795, '2026-03-01 12:20:04', '2026-03-01 12:20:04', '/api/sys/chat/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1796, '2026-03-01 12:20:04', '2026-03-01 12:20:04', '/api/dashboard/stats', 'GET', 200, 1, 26, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1797, '2026-03-01 12:20:07', '2026-03-01 12:20:07', '/api/tool/gen/page', 'GET', 200, 1, 93, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1798, '2026-03-01 12:20:09', '2026-03-01 12:20:09', '/api/tool/gen/preview-remove/4', 'GET', 200, 1, 18, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1799, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/tool/gen/remove-code/4', 'DELETE', 200, 1, 53, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1800, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/crypto/config', 'GET', 200, 1, 2, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1801, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/sys/config-group/public', 'GET', 200, 1, 2, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1802, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/auth/info', 'GET', 200, 1, 47, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1803, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/sys/chat/unread-count', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1804, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/sys/notice/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1805, '2026-03-01 12:20:10', '2026-03-01 12:20:10', '/api/tool/gen/page', 'GET', 200, 1, 63, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1806, '2026-03-01 12:20:16', '2026-03-01 12:20:16', '/api/tool/gen/preview-generate/4', 'GET', 200, 1, 10, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1807, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/tool/gen/generate/4', 'POST', 200, 1, 230, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1808, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1809, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/sys/config-group/public', 'GET', 200, 1, 4, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1810, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/auth/info', 'GET', 200, 1, 35, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1811, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/sys/notice/unread-count', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1812, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/sys/chat/unread-count', 'GET', 200, 1, 11, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1813, '2026-03-01 12:20:17', '2026-03-01 12:20:17', '/api/tool/gen/page', 'GET', 200, 1, 23, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1814, '2026-03-01 12:20:20', '2026-03-01 12:20:20', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 55, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1815, '2026-03-01 12:20:20', '2026-03-01 12:20:20', '/api/system/student/page', 'GET', 200, 1, 49, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1816, '2026-03-01 12:20:20', '2026-03-01 12:20:20', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 6, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1817, '2026-03-01 12:21:27', '2026-03-01 12:21:27', '/api/crypto/config', 'GET', 200, 1, 58, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1818, '2026-03-01 12:21:27', '2026-03-01 12:21:27', '/api/sys/config-group/public', 'GET', 200, 1, 57, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1819, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/crypto/config', 'GET', 200, 1, 1, '127.0.0.1', NULL);
+INSERT INTO `sys_api_access_log` VALUES (1820, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/sys/config-group/public', 'GET', 200, 1, 3, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1821, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/auth/info', 'GET', 200, 1, 83, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1822, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/sys/notice/unread-count', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1823, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/sys/chat/unread-count', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1824, '2026-03-01 12:21:31', '2026-03-01 12:21:31', '/api/dashboard/stats', 'GET', 200, 1, 30, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1825, '2026-03-01 12:21:33', '2026-03-01 12:21:33', '/api/tool/gen/page', 'GET', 200, 1, 85, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1826, '2026-03-01 12:21:34', '2026-03-01 12:21:34', '/api/sys/dict/data/type/gender', 'GET', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1827, '2026-03-01 12:21:34', '2026-03-01 12:21:34', '/api/system/student/page', 'GET', 200, 1, 21, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1828, '2026-03-01 12:21:34', '2026-03-01 12:21:34', '/api/sys/dict/data/type/sys_status', 'GET', 200, 1, 5, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1829, '2026-03-01 12:21:38', '2026-03-01 12:21:38', '/api/system/student', 'PUT', 200, 1, 41, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1830, '2026-03-01 12:21:38', '2026-03-01 12:21:38', '/api/system/student/page', 'GET', 200, 1, 8, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1831, '2026-03-01 12:21:44', '2026-03-01 12:21:44', '/api/system/student', 'PUT', 200, 1, 12, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1832, '2026-03-01 12:21:44', '2026-03-01 12:21:44', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1833, '2026-03-01 12:21:51', '2026-03-01 12:21:51', '/api/system/student', 'PUT', 200, 1, 13, '127.0.0.1', 1);
+INSERT INTO `sys_api_access_log` VALUES (1834, '2026-03-01 12:21:51', '2026-03-01 12:21:51', '/api/system/student/page', 'GET', 200, 1, 9, '127.0.0.1', 1);
 
 -- ----------------------------
 -- Table structure for sys_chat_group
@@ -941,7 +2427,7 @@ CREATE TABLE `sys_chat_message`  (
   INDEX `idx_sender_id`(`sender_id` ASC) USING BTREE,
   INDEX `idx_receiver_id`(`receiver_id` ASC) USING BTREE,
   INDEX `idx_send_time`(`send_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 367 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 504 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '聊天消息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_chat_message
@@ -1078,10 +2564,10 @@ INSERT INTO `sys_chat_message` VALUES (343, 1, '超级管理员', NULL, 4, '11',
 INSERT INTO `sys_chat_message` VALUES (344, 4, 'lisi', NULL, 1, 'nihao', 1, 1, '2026-01-31 21:37:46');
 INSERT INTO `sys_chat_message` VALUES (345, 5, 'mars666', NULL, 2, '1212', 1, 0, '2026-01-31 22:31:32');
 INSERT INTO `sys_chat_message` VALUES (346, 5, 'mars666', NULL, 1, '11', 1, 1, '2026-01-31 22:32:42');
-INSERT INTO `sys_chat_message` VALUES (347, 1, '超级管理员', NULL, 4, '111', 1, 0, '2026-01-31 22:54:12');
-INSERT INTO `sys_chat_message` VALUES (348, 1, '超级管理员', NULL, 4, '111', 1, 0, '2026-01-31 23:19:38');
-INSERT INTO `sys_chat_message` VALUES (349, 1, '超级管理员', NULL, 4, '稍等，我确认一下', 1, 0, '2026-01-31 23:19:48');
-INSERT INTO `sys_chat_message` VALUES (350, 1, '超级管理员', NULL, 4, '感谢你的反馈', 1, 0, '2026-01-31 23:19:52');
+INSERT INTO `sys_chat_message` VALUES (347, 1, '超级管理员', NULL, 4, '111', 1, 1, '2026-01-31 22:54:12');
+INSERT INTO `sys_chat_message` VALUES (348, 1, '超级管理员', NULL, 4, '111', 1, 1, '2026-01-31 23:19:38');
+INSERT INTO `sys_chat_message` VALUES (349, 1, '超级管理员', NULL, 4, '稍等，我确认一下', 1, 1, '2026-01-31 23:19:48');
+INSERT INTO `sys_chat_message` VALUES (350, 1, '超级管理员', NULL, 4, '感谢你的反馈', 1, 1, '2026-01-31 23:19:52');
 INSERT INTO `sys_chat_message` VALUES (351, 1, '超级管理员', NULL, 2, 'hahah', 1, 0, '2026-02-03 09:03:27');
 INSERT INTO `sys_chat_message` VALUES (352, 1, '超级管理员', NULL, 2, '你好', 1, 0, '2026-02-03 09:03:29');
 INSERT INTO `sys_chat_message` VALUES (353, 1, '超级管理员', NULL, 2, '你好', 1, 0, '2026-02-07 09:53:11');
@@ -1098,6 +2584,143 @@ INSERT INTO `sys_chat_message` VALUES (363, 3, 'mars', NULL, 1, '1', 1, 1, '2026
 INSERT INTO `sys_chat_message` VALUES (364, 3, 'mars', NULL, 1, '2', 1, 1, '2026-02-07 09:53:52');
 INSERT INTO `sys_chat_message` VALUES (365, 3, 'mars', NULL, 1, '1', 1, 1, '2026-02-07 09:53:52');
 INSERT INTO `sys_chat_message` VALUES (366, 1, '超级管理员', NULL, 3, '222', 1, 1, '2026-02-07 09:53:56');
+INSERT INTO `sys_chat_message` VALUES (367, 1, '超级管理员', NULL, 3, '22', 1, 1, '2026-02-07 22:16:53');
+INSERT INTO `sys_chat_message` VALUES (368, 1, '超级管理员', NULL, 3, '12', 1, 1, '2026-02-07 22:16:53');
+INSERT INTO `sys_chat_message` VALUES (369, 3, 'mars', NULL, 1, 'hahha', 1, 1, '2026-02-07 22:17:46');
+INSERT INTO `sys_chat_message` VALUES (370, 1, '超级管理员', NULL, 3, '1', 1, 1, '2026-02-07 22:17:54');
+INSERT INTO `sys_chat_message` VALUES (371, 1, '超级管理员', NULL, 3, '11', 1, 1, '2026-02-07 22:17:55');
+INSERT INTO `sys_chat_message` VALUES (372, 3, 'mars', NULL, 1, '有点东西啊', 1, 1, '2026-02-07 22:18:07');
+INSERT INTO `sys_chat_message` VALUES (373, 1, '超级管理员', NULL, 7, '111', 1, 0, '2026-02-08 14:46:57');
+INSERT INTO `sys_chat_message` VALUES (374, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:47:09');
+INSERT INTO `sys_chat_message` VALUES (375, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:49:30');
+INSERT INTO `sys_chat_message` VALUES (376, 1, '超级管理员', NULL, 7, '222', 1, 0, '2026-02-08 14:55:04');
+INSERT INTO `sys_chat_message` VALUES (377, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:24:04');
+INSERT INTO `sys_chat_message` VALUES (378, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:24:16');
+INSERT INTO `sys_chat_message` VALUES (379, 1, '超级管理员', NULL, 10, 'hahah', 1, 1, '2026-02-08 17:24:20');
+INSERT INTO `sys_chat_message` VALUES (380, 1, '超级管理员', NULL, 10, '牛逼啊', 1, 1, '2026-02-08 17:24:25');
+INSERT INTO `sys_chat_message` VALUES (381, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '你好', 1, 1, '2026-02-08 17:24:31');
+INSERT INTO `sys_chat_message` VALUES (382, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '有点东西啊', 1, 1, '2026-02-08 17:24:39');
+INSERT INTO `sys_chat_message` VALUES (383, 1, '超级管理员', NULL, 10, '11', 1, 1, '2026-02-08 17:24:44');
+INSERT INTO `sys_chat_message` VALUES (384, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:24:46');
+INSERT INTO `sys_chat_message` VALUES (385, 1, '超级管理员', NULL, 10, '没我内天的', 1, 1, '2026-02-08 17:24:47');
+INSERT INTO `sys_chat_message` VALUES (386, 1, '超级管理员', NULL, 10, '没问题啊', 1, 1, '2026-02-08 17:24:50');
+INSERT INTO `sys_chat_message` VALUES (387, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:25:19');
+INSERT INTO `sys_chat_message` VALUES (388, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:25:22');
+INSERT INTO `sys_chat_message` VALUES (389, 1, '超级管理员', NULL, 10, 'u屁懂啊吗动漫行', 1, 1, '2026-02-08 17:25:25');
+INSERT INTO `sys_chat_message` VALUES (390, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (391, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (392, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (393, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:25:27');
+INSERT INTO `sys_chat_message` VALUES (394, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 17:25:29');
+INSERT INTO `sys_chat_message` VALUES (395, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:30');
+INSERT INTO `sys_chat_message` VALUES (396, 1, '超级管理员', NULL, 10, '131', 1, 1, '2026-02-08 17:25:30');
+INSERT INTO `sys_chat_message` VALUES (397, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:25:31');
+INSERT INTO `sys_chat_message` VALUES (398, 1, '超级管理员', NULL, 10, '123123', 1, 1, '2026-02-08 17:25:32');
+INSERT INTO `sys_chat_message` VALUES (399, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:25:32');
+INSERT INTO `sys_chat_message` VALUES (400, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '哈哈哈', 1, 1, '2026-02-08 17:25:38');
+INSERT INTO `sys_chat_message` VALUES (401, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '12', 1, 1, '2026-02-08 17:25:41');
+INSERT INTO `sys_chat_message` VALUES (402, 10, 'Mars', 'Zev+JAmwlem/Y8N5.X6N4DTKdz36zGco2W8Manbj77m9ul7TSvZyidbZVTm0VaX3cRc1bYlVtd4aF6xAgp7NLzMa5gUZtSbq3WbfQF64DbryX2gCjdQ5jctIsee8QluGv', 1, '11', 1, 1, '2026-02-08 17:25:44');
+INSERT INTO `sys_chat_message` VALUES (403, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:27:22');
+INSERT INTO `sys_chat_message` VALUES (404, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:27:25');
+INSERT INTO `sys_chat_message` VALUES (405, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 17:27:26');
+INSERT INTO `sys_chat_message` VALUES (406, 1, '超级管理员', NULL, 10, '112', 1, 1, '2026-02-08 17:27:35');
+INSERT INTO `sys_chat_message` VALUES (407, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:23');
+INSERT INTO `sys_chat_message` VALUES (408, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:25');
+INSERT INTO `sys_chat_message` VALUES (409, 1, '超级管理员', NULL, 10, '3', 1, 1, '2026-02-08 17:30:25');
+INSERT INTO `sys_chat_message` VALUES (410, 1, '超级管理员', NULL, 10, '21', 1, 1, '2026-02-08 17:30:26');
+INSERT INTO `sys_chat_message` VALUES (411, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (412, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (413, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:30:27');
+INSERT INTO `sys_chat_message` VALUES (414, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (415, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (416, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (417, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (418, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:28');
+INSERT INTO `sys_chat_message` VALUES (419, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (420, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (421, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (422, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (423, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:29');
+INSERT INTO `sys_chat_message` VALUES (424, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:30:30');
+INSERT INTO `sys_chat_message` VALUES (425, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:30:31');
+INSERT INTO `sys_chat_message` VALUES (426, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:22');
+INSERT INTO `sys_chat_message` VALUES (427, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:24');
+INSERT INTO `sys_chat_message` VALUES (428, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:31:25');
+INSERT INTO `sys_chat_message` VALUES (429, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '哈哈哈', 1, 1, '2026-02-08 17:34:12');
+INSERT INTO `sys_chat_message` VALUES (430, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '有点东西', 1, 1, '2026-02-08 17:34:14');
+INSERT INTO `sys_chat_message` VALUES (431, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:38:17');
+INSERT INTO `sys_chat_message` VALUES (432, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '111', 1, 1, '2026-02-08 17:46:43');
+INSERT INTO `sys_chat_message` VALUES (433, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '22', 1, 1, '2026-02-08 17:46:52');
+INSERT INTO `sys_chat_message` VALUES (434, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:49:30');
+INSERT INTO `sys_chat_message` VALUES (435, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:52:00');
+INSERT INTO `sys_chat_message` VALUES (436, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:52:01');
+INSERT INTO `sys_chat_message` VALUES (437, 1, '超级管理员', NULL, 10, '13', 1, 1, '2026-02-08 17:52:02');
+INSERT INTO `sys_chat_message` VALUES (438, 1, '超级管理员', NULL, 10, '22', 1, 1, '2026-02-08 17:54:26');
+INSERT INTO `sys_chat_message` VALUES (439, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:54:29');
+INSERT INTO `sys_chat_message` VALUES (440, 1, '超级管理员', NULL, 10, '有点东西', 1, 1, '2026-02-08 17:54:31');
+INSERT INTO `sys_chat_message` VALUES (441, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '牛逼的', 1, 1, '2026-02-08 17:54:39');
+INSERT INTO `sys_chat_message` VALUES (442, 1, '超级管理员', NULL, 10, '哈哈哈', 1, 1, '2026-02-08 17:54:43');
+INSERT INTO `sys_chat_message` VALUES (443, 1, '超级管理员', NULL, 10, '你好', 1, 1, '2026-02-08 17:54:47');
+INSERT INTO `sys_chat_message` VALUES (444, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 17:55:01');
+INSERT INTO `sys_chat_message` VALUES (445, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 17:55:03');
+INSERT INTO `sys_chat_message` VALUES (446, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (447, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (448, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (449, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:04');
+INSERT INTO `sys_chat_message` VALUES (450, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 17:55:08');
+INSERT INTO `sys_chat_message` VALUES (451, 1, '超级管理员', NULL, 10, '11', 1, 1, '2026-02-08 17:55:15');
+INSERT INTO `sys_chat_message` VALUES (452, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '111', 1, 1, '2026-02-08 17:55:21');
+INSERT INTO `sys_chat_message` VALUES (453, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:55:25');
+INSERT INTO `sys_chat_message` VALUES (454, 1, '超级管理员', NULL, 10, '33', 1, 1, '2026-02-08 17:55:26');
+INSERT INTO `sys_chat_message` VALUES (455, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 17:55:27');
+INSERT INTO `sys_chat_message` VALUES (456, 10, 'Mars', 'http://localhost:8080/api/files/images/2026/02/08/fdc1626199204477ae2093aeedc7aec8.jpeg', 1, '11', 1, 1, '2026-02-08 17:55:31');
+INSERT INTO `sys_chat_message` VALUES (457, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 17:55:35');
+INSERT INTO `sys_chat_message` VALUES (458, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 18:03:07');
+INSERT INTO `sys_chat_message` VALUES (459, 1, '超级管理员', NULL, 10, '111', 1, 1, '2026-02-08 18:03:15');
+INSERT INTO `sys_chat_message` VALUES (460, 1, '超级管理员', NULL, 10, '222', 1, 1, '2026-02-08 18:05:16');
+INSERT INTO `sys_chat_message` VALUES (461, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:05:19');
+INSERT INTO `sys_chat_message` VALUES (462, 1, '超级管理员', NULL, 10, '121', 1, 1, '2026-02-08 18:05:20');
+INSERT INTO `sys_chat_message` VALUES (463, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '哈哈哈', 1, 1, '2026-02-08 18:05:26');
+INSERT INTO `sys_chat_message` VALUES (464, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '牛逼', 1, 1, '2026-02-08 18:05:36');
+INSERT INTO `sys_chat_message` VALUES (465, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '🤗🤗🤔🤔🤔', 1, 1, '2026-02-08 18:05:39');
+INSERT INTO `sys_chat_message` VALUES (466, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '李敏', 1, 1, '2026-02-08 18:05:44');
+INSERT INTO `sys_chat_message` VALUES (467, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '啊哈哈哈', 1, 1, '2026-02-08 18:05:50');
+INSERT INTO `sys_chat_message` VALUES (468, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '有点东西', 1, 1, '2026-02-08 18:05:58');
+INSERT INTO `sys_chat_message` VALUES (469, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '牛逼', 1, 1, '2026-02-08 18:06:12');
+INSERT INTO `sys_chat_message` VALUES (470, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '啊哈哈', 1, 1, '2026-02-08 18:06:25');
+INSERT INTO `sys_chat_message` VALUES (471, 1, '超级管理员', NULL, 10, '212', 1, 1, '2026-02-08 18:06:29');
+INSERT INTO `sys_chat_message` VALUES (472, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (473, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (474, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (475, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:31');
+INSERT INTO `sys_chat_message` VALUES (476, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (477, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (478, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (479, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (480, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (481, 1, '超级管理员', NULL, 10, '1', 1, 1, '2026-02-08 18:06:32');
+INSERT INTO `sys_chat_message` VALUES (482, 1, '超级管理员', NULL, 10, '2', 1, 1, '2026-02-08 18:06:33');
+INSERT INTO `sys_chat_message` VALUES (483, 1, '超级管理员', NULL, 10, '12', 1, 1, '2026-02-08 18:06:33');
+INSERT INTO `sys_chat_message` VALUES (484, 10, 'Mars', 'http://m8e8f9e2.natappfree.ccUwFJO7qRoTLVK2Dd.d4QaPhYpq2qtueEW3UevAMTiKfwtL/i8tzAcwK04/RUiPB1q5AS3pUmjxEcMIGGO6yLhVb8hZESA0pDM1ipQ0YIQS3+HAy8D333uNbXXb3rYz0Y=', 1, '哈哈哈', 1, 1, '2026-02-08 18:06:37');
+INSERT INTO `sys_chat_message` VALUES (485, 4, 'lisi', NULL, 1, '111', 1, 1, '2026-02-09 12:57:56');
+INSERT INTO `sys_chat_message` VALUES (486, 4, 'lisi', NULL, 1, '111', 1, 1, '2026-02-09 12:58:07');
+INSERT INTO `sys_chat_message` VALUES (487, 11, 'mars02', NULL, 1, '111', 1, 1, '2026-02-10 20:52:21');
+INSERT INTO `sys_chat_message` VALUES (488, 1, '超级管理员', NULL, 11, '22', 1, 1, '2026-02-10 20:52:30');
+INSERT INTO `sys_chat_message` VALUES (489, 11, 'mars02', NULL, 1, '111', 1, 1, '2026-02-10 20:52:34');
+INSERT INTO `sys_chat_message` VALUES (490, 11, 'mars02', NULL, 1, '😊😍🥰🤨', 1, 1, '2026-02-10 20:52:38');
+INSERT INTO `sys_chat_message` VALUES (491, 11, 'mars02', NULL, 1, '稍等，我确认一下', 1, 1, '2026-02-10 20:52:40');
+INSERT INTO `sys_chat_message` VALUES (492, 1, '超级管理员', NULL, 11, '111', 1, 1, '2026-02-10 20:52:49');
+INSERT INTO `sys_chat_message` VALUES (493, 1, '超级管理员', NULL, 2, '1', 1, 0, '2026-02-24 14:32:58');
+INSERT INTO `sys_chat_message` VALUES (494, 1, '超级管理员', NULL, 2, '12', 1, 0, '2026-02-24 14:32:59');
+INSERT INTO `sys_chat_message` VALUES (495, 1, '超级管理员', NULL, 2, '12', 1, 0, '2026-02-24 14:32:59');
+INSERT INTO `sys_chat_message` VALUES (496, 1, '超级管理员', NULL, 2, '1', 1, 0, '2026-02-24 14:32:59');
+INSERT INTO `sys_chat_message` VALUES (497, 1, '超级管理员', NULL, 2, '2', 1, 0, '2026-02-24 14:32:59');
+INSERT INTO `sys_chat_message` VALUES (498, 1, '超级管理员', NULL, 2, '1', 1, 0, '2026-02-24 14:32:59');
+INSERT INTO `sys_chat_message` VALUES (499, 1, '超级管理员', NULL, 2, '哈哈哈', 1, 0, '2026-02-24 14:33:02');
+INSERT INTO `sys_chat_message` VALUES (500, 1, '超级管理员', NULL, 2, '牛逼的', 1, 0, '2026-02-24 14:33:05');
+INSERT INTO `sys_chat_message` VALUES (501, 1, '超级管理员', NULL, 5, '111', 1, 0, '2026-02-25 12:19:32');
+INSERT INTO `sys_chat_message` VALUES (502, 1, '超级管理员', NULL, 5, 'hahah', 1, 0, '2026-02-25 12:19:34');
+INSERT INTO `sys_chat_message` VALUES (503, 1, '超级管理员', NULL, 5, '牛逼啊', 1, 0, '2026-02-25 12:19:37');
 
 -- ----------------------------
 -- Table structure for sys_config_group
@@ -1121,18 +2744,18 @@ CREATE TABLE `sys_config_group`  (
 -- ----------------------------
 -- Records of sys_config_group
 -- ----------------------------
-INSERT INTO `sys_config_group` VALUES (1, 'system', '系统配置', NULL, '{\"siteName\":\"Mars Admin\",\"siteDescription\":\"现代化企业级管理系统\",\"siteLogo\":\"\",\"copyright\":\"版权所有 © 成都火星网络科技有限公司 2025-2030\",\"icp\":\"\",\"watermarkEnabled\":true,\"watermarkType\":\"sitename\",\"watermarkOpacity\":0.06}', 1, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
+INSERT INTO `sys_config_group` VALUES (1, 'system', '系统配置', NULL, '{\"siteName\":\"Mars-Admin\",\"siteDescription\":\"现代化企业级管理系统\",\"siteLogo\":\"\",\"copyright\":\"版权所有 © 成都火星网络科技有限公司 2025-2030\",\"icp\":\"\",\"watermarkEnabled\":true,\"watermarkType\":\"username\",\"watermarkCustomText\":\"\",\"watermarkOpacity\":0.05}', 1, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (2, 'register', '注册配置', NULL, '{\"enabled\":true,\"verifyEmail\":false,\"verifyPhone\":false,\"defaultRole\":\"user\",\"needAudit\":true}', 2, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (3, 'login', '登录配置', NULL, '{\"captchaEnabled\":true,\"captchaType\":\"image\",\"maxRetryCount\":5,\"lockTime\":30,\"rememberMe\":true,\"singleLogin\":false}', 3, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 15:38:39');
-INSERT INTO `sys_config_group` VALUES (4, 'password', '密码配置', NULL, '{\"minLength\":6,\"maxLength\":20,\"requireUppercase\":true,\"requireLowercase\":true,\"requireNumber\":true,\"requireSpecial\":true,\"expireDays\":0}', 4, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
+INSERT INTO `sys_config_group` VALUES (4, 'password', '密码配置', NULL, '{\"minLength\":6,\"maxLength\":20,\"requireUppercase\":false,\"requireLowercase\":false,\"requireNumber\":false,\"requireSpecial\":false,\"expireDays\":0}', 4, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (5, 'email', '邮件配置', NULL, '{\"host\":\"smtp.qq.com\",\"port\":465,\"username\":\"850994281@qq.com\",\"password\":\"pbfbulghhkqmbedj\",\"fromName\":\"Mars管理系统\",\"ssl\":true,\"enabled\":true}', 5, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 22:13:14');
 INSERT INTO `sys_config_group` VALUES (6, 'emailTemplate', '邮件模板', NULL, '{\"verifyCode\":\"您的验证码是：{code}，有效期{expire}分钟。\",\"resetPassword\":\"您正在重置密码，验证码：{code}，有效期{expire}分钟。\",\"welcome\":\"欢迎注册{siteName}，您的账号已创建成功。\"}', 6, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
-INSERT INTO `sys_config_group` VALUES (7, 'sms', '短信配置', NULL, '{\"provider\":\"aliyun\",\"accessKeyId\":\"\",\"accessKeySecret\":\"\",\"signName\":\"\",\"enabled\":false}', 7, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
-INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"provider\":\"local\",\"domain\":\"http://localhost:8080\",\"localPath\":\"./uploads\",\"maxSize\":10,\"allowTypes\":\"jpg,jpeg,png,gif,webp,bmp,ico,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,xml,json,yaml,yml,html,htm,css,js,ts,vue,java,py,go,sql,sh,bat,mp4,avi,mov,wmv,flv,mkv,webm,mp3,wav,ogg,flac,aac,zip,rar,7z,tar,gz,apk,exe,dmg\",\"minioEndpoint\":\"\",\"minioAccessKey\":\"\",\"minioSecretKey\":\"\",\"minioBucket\":\"\",\"aliyunEndpoint\":\"https://oss-cn-beijing.aliyuncs.com\",\"aliyunAccessKey\":\"LTAI5tEPLV6eFkXgFiRcNAj1\",\"aliyunSecretKey\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"aliyunBucket\":\"mars-coder\",\"tencentSecretId\":\"\",\"tencentSecretKey\":\"\",\"tencentBucket\":\"\",\"tencentRegion\":\"\"}', 9, 1, NULL, '2026-01-31 14:38:29', '2026-02-02 17:02:01');
-INSERT INTO `sys_config_group` VALUES (10, 'push', '推送配置', NULL, '{\r\n  \"enabled\": false,\r\n  \"provider\": \"console\",\r\n  \"appKey\": \"\",\r\n  \"masterSecret\": \"\"\r\n}', 10, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:26:34');
+INSERT INTO `sys_config_group` VALUES (7, 'sms', '短信配置', NULL, '{\"provider\":\"aliyun\",\"accessKeyId\":\"LTAI5tEPLV6eFkXgFiRcN111\",\"accessKeySecret\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"signName\":\"测试签名\",\"tencentAppId\":\"\",\"templateVerifyCode\":\"SMS_225366344\",\"templateResetPassword\":\"\",\"templateNotice\":\"\",\"enabled\":true}', 7, 1, NULL, '2026-01-31 14:38:29', '2026-02-13 13:52:21');
+INSERT INTO `sys_config_group` VALUES (9, 'storage', '文件配置', NULL, '{\"provider\":\"local\",\"domain\":\"https://mars-1259757313.cos.ap-guangzhou.myqcloud.com\",\"localPath\":\"./uploads\",\"maxSize\":100,\"allowTypes\":\"jpg,jpeg,png,gif,webp,bmp,ico,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,xml,json,yaml,yml,html,htm,css,js,ts,vue,java,py,go,sql,sh,bat,mp4,avi,mov,wmv,flv,mkv,webm,mp3,wav,ogg,flac,aac,zip,rar,7z,tar,gz,apk,exe,dmg\",\"minioEndpoint\":\"\",\"minioAccessKey\":\"test\",\"minioSecretKey\":\"123456\",\"minioBucket\":\"\",\"aliyunEndpoint\":\"https://oss-cn-beijing.aliyuncs.com\",\"aliyunAccessKey\":\"LTAI5tEPLV6eFkXgFiRcNA11\",\"aliyunSecretKey\":\"rOOOUyxCxFsxfWru1NojIycWMOvCWJ\",\"aliyunBucket\":\"test\",\"tencentSecretId\":\"AKIDESjxznOs9D3f5II6hDXeZIn5BC8sRq45\",\"tencentSecretKey\":\"qSs54sTt8Azc2EDyxufDYhgS0LTO5a11\",\"tencentBucket\":\"111\",\"tencentRegion\":\"ap-guangzhou\",\"rustfsEndpoint\":\"\",\"rustfsAccessKey\":\"test\",\"rustfsSecretKey\":\"123456\",\"rustfsBucket\":\"\"}', 9, 1, NULL, '2026-01-31 14:38:29', '2026-02-02 17:02:01');
+INSERT INTO `sys_config_group` VALUES (10, 'push', '推送配置', NULL, '{\"dingtalk\":{\"signName\":\"SECc676d2aebcd1866a9a07688c682e71397cca6c489bf2106c9e8b72138828ebcd\",\"tokenId\":\"https://oapi.dingtalk.com/robot/send?access_token=bd9c580de40dd39508598779c4fc0cd88df6830a52870edc1ad95815bbe48af4\"},\"feishu\":{\"signName\":\"测试机器人\",\"tokenId\":\"https://open.feishu.cn/open-apis/bot/v2/hook/12ad7a09-2e8f-4447-8cfa-9a3d96ed273d\"},\"wechat_work\":{\"signName\":\"\",\"tokenId\":\"\"}}', 10, 1, NULL, '2026-01-31 14:38:29', '2026-02-13 13:53:13');
 INSERT INTO `sys_config_group` VALUES (11, 'thirdParty', '第三方配置', NULL, '{\"wechat\":{\"enabled\":false,\"appId\":\"\",\"appSecret\":\"\"},\"alipay\":{\"enabled\":false,\"appId\":\"\",\"privateKey\":\"\",\"publicKey\":\"\"},\"github\":{\"enabled\":false,\"clientId\":\"\",\"clientSecret\":\"\"}}', 11, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 14:38:29');
 INSERT INTO `sys_config_group` VALUES (12, 'payment', '支付配置', NULL, '{\r\n    \"wechatPay\": {\r\n        \"enabled\": true,\r\n        \"mchId\": \"1627500294\",\r\n        \"appId\": \"wxe97894ad8c7ef7e0\",\r\n        \"apiKey\": \"\",\r\n        \"apiV3Key\": \"lxpvkwojpnxafnoutgqowbecdwdsmpwq\",\r\n        \"privateKey\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDlGsA4SciJOYYq\\nTL+/hYlaRLkkJ060c+2MrOl7egozzwddhNLHRC0wasgGdQdbDI39mAm34I7mLdMV\\nlv10dgtKXgpQBHc9QPKy3bPFcgFrz7rxS0YcFrqmzzB69a0LVVfAsZE2SD/4yKc3\\nVFW8cLKQZKRYYm3gZGwN0rsJFVU3dfWgOaoNlBkc5bNIbY7j4aHeW7tJXOQCiig6\\nKj+Dh7r1/POzTciCfqVB1Vjf+VkFMuF6oyKLxMBzFzxvXCGw3PySL6HuY1g5xI7j\\nbNi+xfqtzxZEQAv1QjbfBjzygQXeLCpsuYGVFRRVdyNYxkV90FDVI8swLXpMh65b\\nYNgBGtn1AgMBAAECggEBAKlIx+mPk07aI2mUBkcU+7WofAjbxosN8eP1TBxBw9Ie\\nUnnmj/xPQvi4ng4vYP0E3NIaCmxE0DICgCs+ww7Pvm336LTRZ+3p1KsXqCLnp2cr\\nOh3bGfXdUZO6Gj9w0qlCKTInwn2SizpfwTbf6O3xc++/fbQVHs0kRrc8E5mVmr77\\n01aGIJvXxtQPfdn/R2TMBwqiN8pO5igILlDzNAEusXnfSDOp3rYsXwcnCxJqgnVm\\nydlo7JMU2iqRKSD09qeKFgb+Hbr9aJIQdcvjGBSNmF3MsCFgs/XIb47B4xvy2HBN\\nvIBRwBy08fFeih0GE+0IKr0LyAQ8naMjRTD8A6SbPE0CgYEA9HJ+qigfUPsh/Q+u\\nyyoZeIrsR1xoNVcwANwpWnChsic+B3V/D/pWMJxPv9wKRsVt/dc4kVht//j69tS8\\ny3BFoUxSfUuoK5hdhI8osk3wdVFOnrPPs57s2bMcPPF3Rd5iMvcRNqM1IENCpDAR\\n4zlrEqcMpGSNfaSVhFEyo0fvsV8CgYEA7+6gxxkZJD7DwoVUk8w0BJoq7pNUZc43\\nC0uI8EIRCWxSkd5ahruJjreJuFM1IQUmmqFgewdhEIdUjyORwgVQlo469uwqYPQ5\\n8RWMJcQVK8+QEWV/TdywO3P7oEFgFmVlII/h7Janz/ZlOFZ1X8ANVvpenqgeB2j+\\nl1JMVfjnUSsCgYAHmvRT6PGofFe/XtiKW6H1PSVCxx464p6MuEzVEoIFX/EvHDm6\\nzogV9RcKGhd7wjK83hBVfVHWz/FG8rF5BuIztYMvgMYXrSLjt+yFN6WOkNwIVgHV\\nTdGCqG7tennCg7u8aDFx6LwDZ/RP1WsJDcVGDEp5ZuN8ED3SoxAXQmqzswKBgCk3\\nOtM40oLRbVtq//5ro7vup9VX5bWfWQFNtnZfQwH1Y7G/GpnueVDU4omRcZz8f4cs\\nlaBMwjXOqY31NEK6Gv/h6usj4pvJGHL7mpmaN3DRNRRn9RhxAq0T3XPIBzORs2+G\\nh+7WanllADpPT9Zk7WW1mK90fcQUGzfvYUGbglEFAoGARffpCUANEp1oedOyUVRN\\nSKIvSRggxxqMuzSdnm7eGKDmm+kbA8Iig2C0jgcn4vQZpngbhlNsGrb26Bvdh8wE\\nTBtkcxSBjzsFBdE4kSdVqxnZeVezouWixvkxL4ax1xwczS9hyJlunDljsUb2PkwZ\\nBE39glMdpIqGYrpSTM3p6mI=\\n-----END PRIVATE KEY-----\",\r\n        \"certSerialNo\": \"2FD947564972A8536BDD750944C4796CDF3265EB\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/wechat\"\r\n    },\r\n    \"alipay\": {\r\n        \"enabled\": true,\r\n        \"appId\": \"2021005192689177\",\r\n        \"privateKey\": \"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCc1KF+8tqemN/+k99xwIxtfrZ8Py7ZtSv6zoDa0Z9pW1IWpYmz+Zm1wtF3CTX5xApyyBTWQgK8Pb/oEz4u4zKzuwcZFX/IdfP2mWaMHRvWnDLunWqH8rQO+JOaWDvzA68lL02AfubuafQldXY+hdeOpt+t5Kj/OnC+o4z0qTAcM9uTpeX9Z8lttlcW9JtCATRP+klr52bRaOcACgh3MIJrQ3OteeiikvbVtZtw4u3X2h5tdRlCl2/youKO6/iZXGmAmtTGRU8Iy8iBAMI6Ow8K6XH5xHccTzTOx8xv1PZ2IszVvMVhLJDXaUg4DyVbhN8hrmKFmu1i9eBbdSZixkNpAgMBAAECggEAXDjFBqu0VxK6lS9Lc86wRSsAECvvVuIsjH2mVAZ0YTXsHZkWUpjyBGodVow6Czd2lWyGpD+I8Dy3frbiGBxOElZmpB96VtzVqyslnDr5xcdwQ9SZcnwL2cnesiI0joCaG5mnT2pQTd5MTUK3V6jIyv/iBJWzsvIgnln6Z1yeB9ai/3c5Lvu0/ZnhC7trqD73BB1x49E0AV90y0/C/IA+FLEKio9/xjgYweSvTiaYTCBKzQv74Oco54HDtd93rlavZUu7F1qdpOWAj903N1xf8A/fepcL8/qPdSZNoRbPr2NgPMZa70hLvnWDfIXRWoaOZ+lFnPtewI8FAaVX4mI3AQKBgQDO8GxdEunrmRuOXbv/JqTj0dG2lXT7kUvDdJ6QVr3HIsmyxkZXQsp/7QdXh/FdRBNFwkOirmClUqrvYq3CbytgjNdxmYdZQ2A/YXqDdTs8J2Li36hbkOPIFNyMZsjtYF39eosf2oF0/ydRSlMqW5B6jpUh5qCYVWkVtUjLuXaM2QKBgQDCAwMqd6Um9X50dKNIqY1X2ImLiRdLVaqn4/pTwylxxIrRO9f5jF7PnenDci809+Sc+yCcZarvdh1QbUE+YGhYOjj2WGaB9sS2TGDFzOguGs7m7hCIQPa6VEyP2I07kaZcpb+r5GqnT9U47mPRcLJe3zop+w3B7cW5JcdtOSCREQKBgQCbpbALzWcOIoncado2Dk3lYPJ4fy+O6/jtWTDOZb+2IQ9OHN3ZUk5XK+PizUgYm1RXmscefEQK9QPGrBT/cnhQ1X5SXmS0Gf4xjdMFP06/buxsskbCIFeDLVW5cLHeASaQufQckE/gvO1IsjudV2NzGv1Gk13lVhCFGGZZfPSS+QKBgG4y2dSAWx1y6d3p9mkqbW9NPms0djfDNAji9GgpfVvyoErSbA2BzsSs1H/AVtIGUCNefRp4oQwdEe+B70In7nzWrU43zhnZ+cf2QC16AxNVBNqktF1AUSRrB4XZIfeI9m6/csyHFJFuRhVtSuNG2PoMX3RC9oCFtv5AWDNQ9I+RAoGAZF1dQs826kCeptQHXnlgTGNNIX9jLGyfO2qysBOCcqwFIrcJpsb11Q1xLrQmju6EHzr4kAINp32Qd5fo/oCM25JuSiw+fK6CgkAEYjSr/9dD4KpGicHmsib3GyfPj850K2RwFz2RckwX+If/NgI3dIecMTgTJ0tfytaaeqFH4PY=\",\r\n        \"publicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiwci3m6eLWeR1kgfeWm/F0V1e68VWUyRB4N5mhnxryTHqiLeN8ilxN9Kn/Ute1C9cL3b4hfx3NYk7zt60QWP9ly8QJQOlqd1H7XsG16AlEpsIaN1SrMYWq16nAD6uwvMmK0nTdzhuNIKOfdC2YWyv3AJTWh0nCTddYV2D+eSH/Ui6xkfgK8pFn/X1Q0xjXvuZrsXxF+WTk5mymEy2u4Kp7/rD/lClfNAv68kOHe92iKj1VzhtROrSp5//xuvL2PA7FLMqo5olZpBmda3eMWgnvHNwvaJvHJENN2ubANwMPNkwMkQ7MKLCBI33fzEERxJBACrJCc6lo8t+wq3zDo/uwIDAQAB\",\r\n        \"signType\": \"RSA2\",\r\n        \"charset\": \"UTF-8\",\r\n        \"gatewayUrl\": \"https://openapi.alipay.com/gateway.do\",\r\n        \"notifyUrl\": \"http://q668fd96.natappfree.cc/api/pay/notify/alipay\",\r\n        \"returnUrl\": \"\"\r\n    }\r\n}', 12, 1, NULL, '2026-01-31 14:38:29', '2026-01-31 16:13:21');
-INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"tokenName\":\"Authorization\",\"tokenTimeout\":86400,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
+INSERT INTO `sys_config_group` VALUES (13, 'security', '安全配置', NULL, '{\"encryptEnabled\":true,\"encryptScope\":\"global\",\"encryptPublicKey\":\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwcKZj5Wdozt6+8i9H2WW2eNaNUvI9iyU7Ot2P5XW9MSfTqRTCbv/aVEUOm60SHm7OXFAbuwUeuo6Pu2P7qPffXiqCXBdC1joo7VywNlapnmkwXP6jhuP+oHM31BvG2uInv40LHocUIRbMhREavnw+By7kT3Cq2SmgLBGsRkoIrpAuMBe47n8DjRGq2cvFde/EoChO0uO0AxlTUpfNXatUDGH0NtCEJeECoMBkg4nI0JAPnZETkimurbryPFoAVk5ld/GJg5WruQ1piicy9YgbOhjWnmb6gJ1RUU9xypNeHI/jLQCdjBn4NGQFtD73v36/WFnv4MgFAZV6iKr5kSdQIDAQAB\",\"encryptPrivateKey\":\"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHBwpmPlZ2jO3r7yL0fZZbZ41o1S8j2LJTs63Y/ldb0xJ9OpFMJu/9pURQ6brRIebs5cUBu7BR66jo+7Y/uo999eKoJcF0LWOijtXLA2VqmeaTBc/qOG4/6gczfUG8ba4ie/jQsehxQhFsyFERq+fD4HLuRPcKrZKaAsEaxGSgiukC4wF7jufwONEarZy8V178SgKE7S47QDGVNSl81dq1QMYfQ20IQl4QKgwGSDicjQkA+dkROSKa6tuvI8WgBWTmV38YmDlau5DWmKJzL1iBs6GNaeZvqAnVFRT3HKk14cj+MtAJ2MGfg0ZAW0Pve/fr9YWe/gyAUBlXqIqvmRJ1AgMBAAECggEAIOYACRCK2EPJXDOGMqXDwc4nKMn8Zc9/AqjztqesJwiHyN1ygQT6rJGx7jIEaGdTNZtxaiztI01x+TkKUhRzfZ20XpkHFj4edxNnMYyZKfrQi0LtsEitqLD1icRNpmj23MpjQZP22SnTmYivJd2ljNJADTSnJUO1tPF5nAQUohipaHm9ikipKzT+Qa605nj1TvG1NF1a0y/IElBGb5FFyQGISgUoiPh8/aZXeO5pS6YMJTTQul/9Q7f9fwJFrzPl3qqc3kDxYjagJcPtV5VmX/nSrMpeLnaTvRIg78ocwNF+XYJ5L1Sr9wxYEADykw4P8E0ijGYynSeZlo0u+Q7U7QKBgQDZaG5ITWYmt+4KQrR0r1HHGFWJPtFVKcwjC+EIm9I1S+gTOjZ/6SG45upDqlHtmCOMf1drRFhSehdD6UHUFL4xN/fAxkP3F+iKU/KfJy6yclCuhW+k0Efi6W4mKR9ZkhINJvVibsNdA0vXQa603bbr7hfHVeJl1xI761htsnEFuwKBgQDqW1s5f67gXowzjmK6a40Z+/DIoHBTd267zOIEknhUg6oaMtW1v/yPjwWrf6wJmpUFO3Mq3xTDd/k1iXBOke2vHmZG2AplNVScreRx20lRBmzuGe+9sSDozTfFJO25oPhH86wmIAmqMB5nu1L1TJjbKRAU+hcdC+v22NWMQ48tjwKBgALF9kIt2pO73Ol8mFi0s9JaWRz7FCiF8/iuehxmAHR1l2xHXdKb4rY9G9fpIEprmmh8Z10S7h1/OTTAkPpnmVV/ZUWsQcmxIGJDV+D32vyjwKu5QAdWMNSQLbuG4sN9vYU1bgPnbc6N8DW6vMPJ4D96Ngtw6QZri+v/wI0FrbNpAoGAcpvuxvXMXemfAu+VFLnYLWbqYBMmG4uC2dDej4HZ2urw2xMVNGcJamN1UGOFjMTOL9rc/ZBPJTCc7TOjeqke5c8mEWtB2jD0ihL4bz3gYwGTb/W7Krde8rq5lW3z3B3+jaF7BMISN+qEVBJmBZRKBJPWS4vqlcfow7VS6d94O70CgYBTLo2LdYZV9rn7FGmgC9/fuJOgWEfeqmunNx8SsYUjaXSyy+Vb+dlgH/YRfypb37rxxsNwWQKggZww6gSO1/TkFoV73W035XBKbMB3XLEFHp2v75qYBYEHvVpW1YEl2QGlUzOUWXrP5G/3v8O0/+5yJwjKcmkWDjPGIIKj8GPZsQ==\",\"xssFilter\":true,\"sqlInject\":true,\"disableDevtool\":false,\"tokenName\":\"Authorization\",\"tokenTimeout\":3600,\"tokenActiveTimeout\":86400,\"tokenIsConcurrent\":true,\"tokenIsShare\":true,\"tokenStyle\":\"uuid\",\"tokenIsLog\":false,\"tokenIsReadBody\":false,\"tokenIsReadCookie\":false,\"tokenIsReadHeader\":true,\"tokenIsPrint\":true,\"tokenIsWriteHeader\":false}', 13, 1, NULL, '2026-01-31 14:38:29', '2026-02-07 16:04:06');
 INSERT INTO `sys_config_group` VALUES (15, 'wechatMiniProgram', '小程序配置', NULL, '{\"enabled\":true,\"appId\":\"wxe97894ad8c7ef7e0\",\"appSecret\":\"ef498f4264b2271eac752b36433aca63\"}', 14, 1, '微信小程序登录配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 INSERT INTO `sys_config_group` VALUES (16, 'wechatMp', '公众号配置', NULL, '{\"enabled\":true,\"appId\":\"wx12721c4ea1370b36\",\"appSecret\":\"f860891f96df4fffe78f0424b913aedd\",\"token\":\"mars_coding_wechat_token1\",\"aesKey\":\"zBtP7b8qZKCSW2eU7Ozm6Jyapv5PCQu2Vxpj1v72qBP\",\"callbackUrl\":\"https://api.mars-coder.cn/api/wechat/callback\",\"oauthRedirectUrl\":\"http://localhost:3001/login\",\"menuConfig\":\"\"}', 15, 1, '微信公众号配置', '2026-02-03 10:48:41', '2026-02-03 10:48:41');
 
@@ -1156,15 +2779,19 @@ CREATE TABLE `sys_dept`  (
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (1, 0, '0', '火星网络科技', 0, '管理员', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
-INSERT INTO `sys_dept` VALUES (2, 1, '0,1', '技术部', 1, '张三', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_dept` VALUES (3, 1, '0,1', '产品部', 2, '李四', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_dept` VALUES (4, 1, '0,1', '运营部', 3, '王五', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
+INSERT INTO `sys_dept` VALUES (1, 0, '0', '火星网络科技', -2, '管理员', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_dept` VALUES (2, 1, '0,1', '技术部', 0, '张三', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_dept` VALUES (3, 1, '0,1', '产品部', 1, '李四', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_dept` VALUES (4, 1, '0,1', '运营部', 2, '王五', NULL, NULL, 1, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_dept` VALUES (5, 0, '0', '测试', -1, 'lisi', '19999999999', '', 1, '2026-02-10 15:59:43', '2026-02-10 15:59:43', 1, 1, 0);
+INSERT INTO `sys_dept` VALUES (6, 5, '0,5', '测试01部门', 1, '11', '22', '2', 1, '2026-02-10 16:10:49', '2026-02-10 16:10:49', 1, 1, 0);
+INSERT INTO `sys_dept` VALUES (7, 5, '0,5', '测试02部门', 0, '01', '202', '2', 1, '2026-02-10 16:11:02', '2026-02-10 16:11:02', 1, 1, 0);
+INSERT INTO `sys_dept` VALUES (8, 5, '0,5', '测试001', 2, '001', '1', '2', 1, '2026-02-10 16:11:15', '2026-02-10 16:11:15', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -1187,7 +2814,7 @@ CREATE TABLE `sys_dict_data`  (
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -1201,6 +2828,8 @@ INSERT INTO `sys_dict_data` VALUES (6, 1, '是', '1', 'sys_yes_no', NULL, 'succe
 INSERT INTO `sys_dict_data` VALUES (7, 2, '否', '0', 'sys_yes_no', NULL, 'error', 0, 1, NULL, '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_dict_data` VALUES (8, 0, 'sex', '1', 'sex', NULL, 'default', 0, 1, '', '2026-01-29 23:21:38', '2026-01-29 23:21:38', 1, 1, 0);
 INSERT INTO `sys_dict_data` VALUES (9, 0, '女', '0', 'sex', NULL, 'default', 0, 1, '', '2026-01-29 23:21:58', '2026-01-29 23:21:58', 1, 1, 0);
+INSERT INTO `sys_dict_data` VALUES (10, 0, '男', '1', 'gender', NULL, 'default', 0, 1, '', '2026-03-01 11:18:33', '2026-03-01 11:18:33', 1, 1, 0);
+INSERT INTO `sys_dict_data` VALUES (11, 0, '女', '2', 'gender', NULL, 'default', 0, 1, '', '2026-03-01 11:18:39', '2026-03-01 11:18:39', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -1219,15 +2848,18 @@ CREATE TABLE `sys_dict_type`  (
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type`(`dict_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
-INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', 1, '用户性别列表', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
+INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', 1, '用户性别列表', '2026-01-29 22:42:08', '2026-03-01 11:18:09', NULL, 1, 1);
 INSERT INTO `sys_dict_type` VALUES (2, '系统状态', 'sys_status', 1, '系统通用状态', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_dict_type` VALUES (3, '是否', 'sys_yes_no', 1, '是否选项', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_dict_type` VALUES (4, '性别', 'sex', 1, '', '2026-01-29 23:21:29', '2026-02-07 15:33:54', 1, 1, 1);
+INSERT INTO `sys_dict_type` VALUES (5, '111', '222', 1, '', '2026-02-07 19:42:53', '2026-02-07 23:26:19', 1, 1, 1);
+INSERT INTO `sys_dict_type` VALUES (6, '222', '333', 1, '', '2026-02-07 19:43:46', '2026-02-07 23:26:17', 1, 1, 1);
+INSERT INTO `sys_dict_type` VALUES (7, '用户性别', 'gender', 1, '', '2026-01-29 22:42:08', '2026-01-29 22:42:08', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -1254,13 +2886,21 @@ CREATE TABLE `sys_file`  (
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE,
   INDEX `idx_group_id`(`group_id` ASC) USING BTREE,
   INDEX `idx_file_type`(`file_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file
 -- ----------------------------
 INSERT INTO `sys_file` VALUES (10, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '97c4a311e92b409db8eeaa919c2014e6.jpg', '2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg', '/api/files/2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-02 16:54:05');
-INSERT INTO `sys_file` VALUES (13, '222.yaml', 'fb28a3b6569746688514518c32bb0237.yaml', '2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', '/api/files/2026/02/02/fb28a3b6569746688514518c32bb0237.yaml', 6582, 'application/octet-stream', '.yaml', 'local', '', NULL, '', '1', '2026-02-02 17:02:45');
+INSERT INTO `sys_file` VALUES (45, 'img_v3_02ui_f0990cef-9f0d-4c6e-bba2-005ed10e088g.jpg', 'e321bfaf05754cb98700459c53fed98a.jpg', '2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg', '/api/files/2026/02/09/e321bfaf05754cb98700459c53fed98a.jpg', 101083, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-09 16:52:03');
+INSERT INTO `sys_file` VALUES (48, 'img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg', 'be55af87595046cdb2834cc611a81f30.jpg', '2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', '/api/files/2026/02/09/be55af87595046cdb2834cc611a81f30.jpg', 108824, 'image/jpeg', '.jpg', 'local', '', 1, '', '1', '2026-02-09 16:54:07');
+INSERT INTO `sys_file` VALUES (74, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', '2026/02/24/09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', '/api/files/2026/02/24/09f3e8016cf94b3ab30bb9457d6a1e9a.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-24 14:18:04');
+INSERT INTO `sys_file` VALUES (75, 'caa41ac5c974e4fa96b1df176aeba849.png', 'cea0ee440cbd4b22a9385e58c8f0993c.png', '2026/02/24/cea0ee440cbd4b22a9385e58c8f0993c.png', '/api/files/2026/02/24/cea0ee440cbd4b22a9385e58c8f0993c.png', 16286, 'image/png', '.png', 'local', '', NULL, '', '1', '2026-02-24 14:18:21');
+INSERT INTO `sys_file` VALUES (76, 'FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg', '4b7ec7ab82f64706a2fe36d913d303ac.jpg', '2026/02/24/4b7ec7ab82f64706a2fe36d913d303ac.jpg', '/api/files/2026/02/24/4b7ec7ab82f64706a2fe36d913d303ac.jpg', 823196, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-24 21:52:41');
+INSERT INTO `sys_file` VALUES (79, 'default-avatar.jpg', '2a43fbbb30774548a73df204819fdf43.jpg', '2026/02/25/2a43fbbb30774548a73df204819fdf43.jpg', '/api/files/2026/02/25/2a43fbbb30774548a73df204819fdf43.jpg', 22859, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-02-25 16:32:19');
+INSERT INTO `sys_file` VALUES (80, 'default-avatar.jpg', '455f90b28929422db2b6beac0174be00.jpg', 'images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg', '/api/files/images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg', 22859, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-03-01 11:29:29');
+INSERT INTO `sys_file` VALUES (81, 'default-avatar.jpg', '25d29e831ee3432ebd87a59c7b53fade.jpg', 'images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg', '/api/files/images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg', 22859, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-03-01 12:08:27');
+INSERT INTO `sys_file` VALUES (82, 'default-avatar.jpg', '0f6511a67ffb431abf18fa218066d992.jpg', 'images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg', '/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg', 22859, 'image/jpeg', '.jpg', 'local', '', NULL, '', '1', '2026-03-01 12:16:11');
 
 -- ----------------------------
 -- Table structure for sys_file_config
@@ -1306,7 +2946,7 @@ CREATE TABLE `sys_file_group`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '文件分组表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_file_group
@@ -1340,7 +2980,7 @@ CREATE TABLE `sys_job`  (
 -- ----------------------------
 INSERT INTO `sys_job` VALUES (1, '系统默认（无参）', 'DEFAULT', 'sampleTask.noParams', '0/10 * * * * ?', 3, 1, 0, '无参数的示例任务', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
 INSERT INTO `sys_job` VALUES (2, '系统默认（有参）', 'DEFAULT', 'sampleTask.withParams(\'hello\')', '0/15 * * * * ?', 3, 1, 0, '有参数的示例任务', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_job` VALUES (3, '1', 'DEFAULT', 'sampleTask.noParams', '0/10 * * * * ?', 3, 1, 0, '111', '2026-01-29 22:59:47', '2026-01-29 22:59:47', 1, 1, 0);
+INSERT INTO `sys_job` VALUES (3, '测试任务', 'DEFAULT', 'sampleTask.noParams', '0/5 * * * * ?', 3, 1, 0, '111', '2026-01-29 22:59:47', '2026-01-29 22:59:47', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_job_log
@@ -1357,7 +2997,7 @@ CREATE TABLE `sys_job_log`  (
   `start_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
   `stop_time` datetime NULL DEFAULT NULL COMMENT '停止时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -1372,6 +3012,27 @@ INSERT INTO `sys_job_log` VALUES (7, '1', 'DEFAULT', 'sampleTask.noParams', '执
 INSERT INTO `sys_job_log` VALUES (8, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-01-31 22:36:20', '2026-01-31 22:36:20');
 INSERT INTO `sys_job_log` VALUES (9, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-01-31 22:36:30', '2026-01-31 22:36:30');
 INSERT INTO `sys_job_log` VALUES (10, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 09:51:50', '2026-02-07 09:51:50');
+INSERT INTO `sys_job_log` VALUES (11, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:54:56', '2026-02-07 23:54:56');
+INSERT INTO `sys_job_log` VALUES (12, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-07 23:55:04', '2026-02-07 23:55:04');
+INSERT INTO `sys_job_log` VALUES (13, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:25', '2026-02-09 17:04:25');
+INSERT INTO `sys_job_log` VALUES (14, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (15, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (16, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (17, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:27', '2026-02-09 17:04:27');
+INSERT INTO `sys_job_log` VALUES (18, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:34', '2026-02-09 17:04:34');
+INSERT INTO `sys_job_log` VALUES (19, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (20, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (21, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (22, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (23, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-09 17:04:35', '2026-02-09 17:04:35');
+INSERT INTO `sys_job_log` VALUES (24, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-10 16:25:18', '2026-02-10 16:25:18');
+INSERT INTO `sys_job_log` VALUES (25, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-13 16:44:42', '2026-02-13 16:44:42');
+INSERT INTO `sys_job_log` VALUES (26, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 21:45:30', '2026-02-28 21:45:30');
+INSERT INTO `sys_job_log` VALUES (27, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 21:45:35', '2026-02-28 21:45:35');
+INSERT INTO `sys_job_log` VALUES (28, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 21:45:40', '2026-02-28 21:45:40');
+INSERT INTO `sys_job_log` VALUES (29, '1', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 21:45:45', '2026-02-28 21:45:45');
+INSERT INTO `sys_job_log` VALUES (30, '系统默认（无参）', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 21:48:03', '2026-02-28 21:48:03');
+INSERT INTO `sys_job_log` VALUES (31, '测试任务', 'DEFAULT', 'sampleTask.noParams', '执行成功', 0, NULL, '2026-02-28 22:03:01', '2026-02-28 22:03:01');
 
 -- ----------------------------
 -- Table structure for sys_login_log
@@ -1388,164 +3049,32 @@ CREATE TABLE `sys_login_log`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 154 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 286 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_login_log
 -- ----------------------------
-INSERT INTO `sys_login_log` VALUES (1, 'admin', '127.0.0.1', NULL, 'Chrome', 'Windows', 0, '登录成功', '2026-01-29 23:12:29');
-INSERT INTO `sys_login_log` VALUES (2, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:20:11');
-INSERT INTO `sys_login_log` VALUES (3, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:31:18');
-INSERT INTO `sys_login_log` VALUES (4, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-29 23:43:45');
-INSERT INTO `sys_login_log` VALUES (5, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-29 23:43:49');
-INSERT INTO `sys_login_log` VALUES (6, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:43:52');
-INSERT INTO `sys_login_log` VALUES (7, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:53:22');
-INSERT INTO `sys_login_log` VALUES (8, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-29 23:55:49');
-INSERT INTO `sys_login_log` VALUES (9, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 15:53:09');
-INSERT INTO `sys_login_log` VALUES (10, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:12:24');
-INSERT INTO `sys_login_log` VALUES (11, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:36:27');
-INSERT INTO `sys_login_log` VALUES (12, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:39:07');
-INSERT INTO `sys_login_log` VALUES (13, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:19');
-INSERT INTO `sys_login_log` VALUES (14, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:20');
-INSERT INTO `sys_login_log` VALUES (15, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:21');
-INSERT INTO `sys_login_log` VALUES (16, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '用户不存在', '2026-01-30 23:57:24');
-INSERT INTO `sys_login_log` VALUES (17, 'test', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-30 23:57:52');
-INSERT INTO `sys_login_log` VALUES (18, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 00:03:15');
-INSERT INTO `sys_login_log` VALUES (19, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:31:44');
-INSERT INTO `sys_login_log` VALUES (20, 'test', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:32:13');
-INSERT INTO `sys_login_log` VALUES (21, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 10:39:20');
-INSERT INTO `sys_login_log` VALUES (22, 'mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 13:54:15');
-INSERT INTO `sys_login_log` VALUES (23, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:34');
-INSERT INTO `sys_login_log` VALUES (24, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:35');
-INSERT INTO `sys_login_log` VALUES (25, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:36');
-INSERT INTO `sys_login_log` VALUES (26, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (27, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (28, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:42');
-INSERT INTO `sys_login_log` VALUES (29, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:43');
-INSERT INTO `sys_login_log` VALUES (30, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:48');
-INSERT INTO `sys_login_log` VALUES (31, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:04:52');
-INSERT INTO `sys_login_log` VALUES (32, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:38');
-INSERT INTO `sys_login_log` VALUES (33, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:51');
-INSERT INTO `sys_login_log` VALUES (34, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:53');
-INSERT INTO `sys_login_log` VALUES (35, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:54');
-INSERT INTO `sys_login_log` VALUES (36, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:55');
-INSERT INTO `sys_login_log` VALUES (37, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:55');
-INSERT INTO `sys_login_log` VALUES (38, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:56');
-INSERT INTO `sys_login_log` VALUES (39, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:57');
-INSERT INTO `sys_login_log` VALUES (40, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:58');
-INSERT INTO `sys_login_log` VALUES (41, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:59');
-INSERT INTO `sys_login_log` VALUES (42, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:05:59');
-INSERT INTO `sys_login_log` VALUES (43, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:00');
-INSERT INTO `sys_login_log` VALUES (44, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:01');
-INSERT INTO `sys_login_log` VALUES (45, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:01');
-INSERT INTO `sys_login_log` VALUES (46, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:02');
-INSERT INTO `sys_login_log` VALUES (47, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:03');
-INSERT INTO `sys_login_log` VALUES (48, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:04');
-INSERT INTO `sys_login_log` VALUES (49, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:04');
-INSERT INTO `sys_login_log` VALUES (50, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:05');
-INSERT INTO `sys_login_log` VALUES (51, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:06');
-INSERT INTO `sys_login_log` VALUES (52, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:07');
-INSERT INTO `sys_login_log` VALUES (53, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:07');
-INSERT INTO `sys_login_log` VALUES (54, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:15');
-INSERT INTO `sys_login_log` VALUES (55, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:22');
-INSERT INTO `sys_login_log` VALUES (56, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:06:31');
-INSERT INTO `sys_login_log` VALUES (57, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:07:27');
-INSERT INTO `sys_login_log` VALUES (58, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:07:30');
-INSERT INTO `sys_login_log` VALUES (59, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:12:31');
-INSERT INTO `sys_login_log` VALUES (60, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:12:34');
-INSERT INTO `sys_login_log` VALUES (61, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:22:09');
-INSERT INTO `sys_login_log` VALUES (62, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:22:13');
-INSERT INTO `sys_login_log` VALUES (63, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:22:17');
-INSERT INTO `sys_login_log` VALUES (64, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:23:58');
-INSERT INTO `sys_login_log` VALUES (65, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:24:08');
-INSERT INTO `sys_login_log` VALUES (66, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:24:56');
-INSERT INTO `sys_login_log` VALUES (67, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:27:19');
-INSERT INTO `sys_login_log` VALUES (68, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:27:22');
-INSERT INTO `sys_login_log` VALUES (69, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:29:20');
-INSERT INTO `sys_login_log` VALUES (70, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:44:07');
-INSERT INTO `sys_login_log` VALUES (71, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 14:56:09');
-INSERT INTO `sys_login_log` VALUES (72, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:57:18');
-INSERT INTO `sys_login_log` VALUES (73, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:57:44');
-INSERT INTO `sys_login_log` VALUES (74, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:58:03');
-INSERT INTO `sys_login_log` VALUES (75, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 14:59:00');
-INSERT INTO `sys_login_log` VALUES (76, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:00:17');
-INSERT INTO `sys_login_log` VALUES (77, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:04:11');
-INSERT INTO `sys_login_log` VALUES (78, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:11:02');
-INSERT INTO `sys_login_log` VALUES (79, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:11:19');
-INSERT INTO `sys_login_log` VALUES (80, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:14:05');
-INSERT INTO `sys_login_log` VALUES (81, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:14:15');
-INSERT INTO `sys_login_log` VALUES (82, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:14:25');
-INSERT INTO `sys_login_log` VALUES (83, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:15:06');
-INSERT INTO `sys_login_log` VALUES (84, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:23:23');
-INSERT INTO `sys_login_log` VALUES (85, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:36:27');
-INSERT INTO `sys_login_log` VALUES (86, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 15:39:07');
-INSERT INTO `sys_login_log` VALUES (87, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:39:16');
-INSERT INTO `sys_login_log` VALUES (88, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:49:43');
-INSERT INTO `sys_login_log` VALUES (89, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 15:50:22');
-INSERT INTO `sys_login_log` VALUES (90, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:08:16');
-INSERT INTO `sys_login_log` VALUES (91, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:28:17');
-INSERT INTO `sys_login_log` VALUES (92, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:28:53');
-INSERT INTO `sys_login_log` VALUES (93, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:40:01');
-INSERT INTO `sys_login_log` VALUES (94, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 16:49:24');
-INSERT INTO `sys_login_log` VALUES (95, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-01-31 20:18:03');
-INSERT INTO `sys_login_log` VALUES (96, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:18:12');
-INSERT INTO `sys_login_log` VALUES (97, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:24:34');
-INSERT INTO `sys_login_log` VALUES (98, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:25:02');
-INSERT INTO `sys_login_log` VALUES (99, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:25:22');
-INSERT INTO `sys_login_log` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:26:57');
-INSERT INTO `sys_login_log` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:31:18');
-INSERT INTO `sys_login_log` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:35:54');
-INSERT INTO `sys_login_log` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:42:37');
-INSERT INTO `sys_login_log` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:47:54');
-INSERT INTO `sys_login_log` VALUES (105, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:48:43');
-INSERT INTO `sys_login_log` VALUES (106, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 20:49:49');
-INSERT INTO `sys_login_log` VALUES (107, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 21:04:05');
-INSERT INTO `sys_login_log` VALUES (108, 'lisi', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 21:29:05');
-INSERT INTO `sys_login_log` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:06:00');
-INSERT INTO `sys_login_log` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:24:30');
-INSERT INTO `sys_login_log` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:28:54');
-INSERT INTO `sys_login_log` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:30:00');
-INSERT INTO `sys_login_log` VALUES (113, 'mars666', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:31:01');
-INSERT INTO `sys_login_log` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:32:57');
-INSERT INTO `sys_login_log` VALUES (115, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 22:42:56');
-INSERT INTO `sys_login_log` VALUES (116, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:07:42');
-INSERT INTO `sys_login_log` VALUES (117, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:08:49');
-INSERT INTO `sys_login_log` VALUES (118, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:09:00');
-INSERT INTO `sys_login_log` VALUES (119, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-01-31 23:57:25');
-INSERT INTO `sys_login_log` VALUES (120, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:25:47');
-INSERT INTO `sys_login_log` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:25:58');
-INSERT INTO `sys_login_log` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:34:16');
-INSERT INTO `sys_login_log` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 16:36:21');
-INSERT INTO `sys_login_log` VALUES (124, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 20:08:22');
-INSERT INTO `sys_login_log` VALUES (125, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 22:08:26');
-INSERT INTO `sys_login_log` VALUES (126, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 22:10:17');
-INSERT INTO `sys_login_log` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-02 23:11:29');
-INSERT INTO `sys_login_log` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:16:53');
-INSERT INTO `sys_login_log` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:21:35');
-INSERT INTO `sys_login_log` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:23:31');
-INSERT INTO `sys_login_log` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:23:47');
-INSERT INTO `sys_login_log` VALUES (132, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:14');
-INSERT INTO `sys_login_log` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:34');
-INSERT INTO `sys_login_log` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-03 09:24:57');
-INSERT INTO `sys_login_log` VALUES (135, 'mars', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:39:57');
-INSERT INTO `sys_login_log` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:40:19');
-INSERT INTO `sys_login_log` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:47:14');
-INSERT INTO `sys_login_log` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:49:07');
-INSERT INTO `sys_login_log` VALUES (139, 'mars', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 09:53:30');
-INSERT INTO `sys_login_log` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:32:22');
-INSERT INTO `sys_login_log` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:50:33');
-INSERT INTO `sys_login_log` VALUES (142, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 15:58:32');
-INSERT INTO `sys_login_log` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:58:49');
-INSERT INTO `sys_login_log` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 15:59:12');
-INSERT INTO `sys_login_log` VALUES (145, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 16:00:35');
-INSERT INTO `sys_login_log` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:01:13');
-INSERT INTO `sys_login_log` VALUES (147, 'test01', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:01:42');
-INSERT INTO `sys_login_log` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:02:30');
-INSERT INTO `sys_login_log` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:05:50');
-INSERT INTO `sys_login_log` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:06:01');
-INSERT INTO `sys_login_log` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'MSEdge', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:08:08');
-INSERT INTO `sys_login_log` VALUES (152, 'test', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '用户已被禁用', '2026-02-07 16:45:45');
-INSERT INTO `sys_login_log` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-07 16:45:53');
+INSERT INTO `sys_login_log` VALUES (265, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 13:48:47');
+INSERT INTO `sys_login_log` VALUES (266, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 14:32:32');
+INSERT INTO `sys_login_log` VALUES (267, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 15:32:57');
+INSERT INTO `sys_login_log` VALUES (268, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 16:09:25');
+INSERT INTO `sys_login_log` VALUES (269, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-25 17:04:11');
+INSERT INTO `sys_login_log` VALUES (270, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 09:00:42');
+INSERT INTO `sys_login_log` VALUES (271, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 09:07:19');
+INSERT INTO `sys_login_log` VALUES (272, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 09:07:24');
+INSERT INTO `sys_login_log` VALUES (273, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 09:07:37');
+INSERT INTO `sys_login_log` VALUES (274, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 09:07:44');
+INSERT INTO `sys_login_log` VALUES (275, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 09:07:50');
+INSERT INTO `sys_login_log` VALUES (276, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '账号已锁定', '2026-02-28 09:07:57');
+INSERT INTO `sys_login_log` VALUES (277, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 09:09:18');
+INSERT INTO `sys_login_log` VALUES (278, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 1, '密码错误', '2026-02-28 12:28:37');
+INSERT INTO `sys_login_log` VALUES (279, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 12:28:45');
+INSERT INTO `sys_login_log` VALUES (280, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 17:09:20');
+INSERT INTO `sys_login_log` VALUES (281, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 21:35:19');
+INSERT INTO `sys_login_log` VALUES (282, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 22:36:40');
+INSERT INTO `sys_login_log` VALUES (283, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-02-28 23:37:44');
+INSERT INTO `sys_login_log` VALUES (284, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-03-01 10:44:17');
+INSERT INTO `sys_login_log` VALUES (285, 'admin', '127.0.0.1', '内网IP', 'Chrome', 'Windows 10 or Windows Server 2016', 0, '登录成功', '2026-03-01 11:44:58');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1570,7 +3099,7 @@ CREATE TABLE `sys_menu`  (
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 278 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 333 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1670,12 +3199,67 @@ INSERT INTO `sys_menu` VALUES (172, 170, '客户表详情', 3, '', '', 'system:c
 INSERT INTO `sys_menu` VALUES (173, 170, '客户表新增', 3, '', '', 'system:customer:add', '', 3, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
 INSERT INTO `sys_menu` VALUES (174, 170, '客户表修改', 3, '', '', 'system:customer:edit', '', 4, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
 INSERT INTO `sys_menu` VALUES (175, 170, '客户表删除', 3, '', '', 'system:customer:remove', '', 5, 1, 1, 0, '2026-02-02 19:57:54', '2026-02-02 19:57:54', NULL, NULL, 0);
-INSERT INTO `sys_menu` VALUES (272, 161, '学生管理', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (273, 272, '学生管理查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (274, 272, '学生管理详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (275, 272, '学生管理新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (276, 272, '学生管理修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
-INSERT INTO `sys_menu` VALUES (277, 272, '学生管理删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-03 08:58:09', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (272, 161, '学生管理', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (273, 272, '学生管理查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (274, 272, '学生管理详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (275, 272, '学生管理新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (276, 272, '学生管理修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (277, 272, '学生管理删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-02-03 08:58:09', '2026-02-09 12:55:57', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (278, 161, '接口文档', 2, '/tool/api-doc', 'https://s.apifox.cn/73166c1b-50fb-47b6-a015-50111f2fbf9e/417351170e0', '', 'DocumentOutline', 0, 1, 1, 1, '2026-02-13 15:18:16', '2026-02-13 15:18:16', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (279, 0, '系统官网', 1, '', 'https://mars-coder.cn', '', 'PlanetOutline', 100, 1, 1, 1, '2026-02-13 15:52:55', '2026-02-13 15:52:55', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (280, 2, '用户导入', 3, '', '', 'sys:user:import', '', 0, 1, 1, 0, '2026-02-25 15:56:46', '2026-02-25 15:56:46', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (281, 2, '用户导出', 3, '', '', 'sys:user:export', '', 0, 1, 1, 0, '2026-02-25 15:57:01', '2026-02-25 15:57:01', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (282, 36, 'SQL监控', 2, '/monitor/druid', '/monitor/druid/index', 'monitor:druid:list', 'PieChartOutline', 4, 1, 1, 0, '2026-02-28 22:30:41', '2026-02-28 22:30:41', NULL, 1, 0);
+INSERT INTO `sys_menu` VALUES (283, 36, 'API访问统计', 2, '/monitor/api-access', '/monitor/api-access/index', 'monitor:apiAccess:list', 'StatsChartOutline', 7, 1, 1, 0, '2026-02-28 22:56:30', '2026-02-28 22:56:30', NULL, NULL, 0);
+INSERT INTO `sys_menu` VALUES (284, 283, '访问统计列表', 3, '', '', 'monitor:apiAccess:list', '', 0, 1, 1, 0, '2026-02-28 22:58:30', '2026-02-28 22:58:30', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (285, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (286, 285, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (287, 285, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (288, 285, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (289, 285, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (290, 285, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 11:14:06', '2026-03-01 11:16:47', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (291, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (292, 291, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (293, 291, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (294, 291, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (295, 291, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (296, 291, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 11:24:24', '2026-03-01 11:27:48', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (297, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (298, 297, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (299, 297, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (300, 297, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (301, 297, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (302, 297, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 11:27:57', '2026-03-01 11:46:03', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (303, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (304, 303, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (305, 303, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (306, 303, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (307, 303, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (308, 303, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 12:04:47', '2026-03-01 12:06:19', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (309, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (310, 309, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (311, 309, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (312, 309, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (313, 309, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (314, 309, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 12:07:02', '2026-03-01 12:09:32', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (315, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (316, 315, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (317, 315, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (318, 315, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (319, 315, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (320, 315, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 12:09:45', '2026-03-01 12:14:37', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (321, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (322, 321, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (323, 321, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (324, 321, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (325, 321, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (326, 321, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 12:15:15', '2026-03-01 12:20:10', 1, 1, 1);
+INSERT INTO `sys_menu` VALUES (327, 161, '学生表', 2, 'system/student', 'system/student/index', 'system:student:list', 'ListOutline', 1, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (328, 327, '学生表查询', 3, NULL, NULL, 'system:student:list', NULL, 1, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (329, 327, '学生表详情', 3, NULL, NULL, 'system:student:query', NULL, 2, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (330, 327, '学生表新增', 3, NULL, NULL, 'system:student:add', NULL, 3, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (331, 327, '学生表修改', 3, NULL, NULL, 'system:student:edit', NULL, 4, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
+INSERT INTO `sys_menu` VALUES (332, 327, '学生表删除', 3, NULL, NULL, 'system:student:remove', NULL, 5, 1, 1, 0, '2026-03-01 12:20:17', '2026-03-01 12:20:17', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1686,6 +3270,9 @@ CREATE TABLE `sys_notice`  (
   `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '通知标题',
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '通知内容',
   `notice_type` tinyint NULL DEFAULT 1 COMMENT '通知类型(1通知 2公告)',
+  `channels` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '[\"station\"]' COMMENT '推送渠道(JSON): station站内信,email邮件,sms短信,webhook飞书/钉钉/企业微信',
+  `target_type` tinyint NULL DEFAULT 3 COMMENT '推送对象类型(1指定用户 2按部门 3全部)',
+  `target_ids` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '推送对象ID(JSON): 用户ID或部门ID数组',
   `status` tinyint NULL DEFAULT 0 COMMENT '状态(0草稿 1发布)',
   `create_by` bigint NULL DEFAULT NULL COMMENT '创建者ID',
   `create_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建者名称',
@@ -1696,12 +3283,68 @@ CREATE TABLE `sys_notice`  (
   INDEX `idx_notice_type`(`notice_type` ASC) USING BTREE,
   INDEX `idx_status`(`status` ASC) USING BTREE,
   INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统通知表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统通知表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO `sys_notice` VALUES (1, '欢迎使用Mars系统', '欢迎使用Mars后台管理系统！这是一条测试通知。', 1, 1, 1, '超级管理员', '2026-01-30 23:53:55', '2026-01-30 23:53:55', 0);
+INSERT INTO `sys_notice` VALUES (1, '欢迎使用Mars系统', '欢迎使用Mars后台管理系统！这是一条测试通知。', 1, '[\"station\"]', 3, NULL, 1, 1, '超级管理员', '2026-01-30 23:53:55', '2026-01-30 23:53:55', 0);
+INSERT INTO `sys_notice` VALUES (2, '12', '11', 1, '[\"station\"]', 3, NULL, 0, 1, '超级管理员', '2026-02-28 21:38:37', '2026-02-28 21:38:40', 1);
+INSERT INTO `sys_notice` VALUES (3, '22', '1212', 2, '[\"station\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 21:38:47', '2026-02-28 21:38:57', 1);
+INSERT INTO `sys_notice` VALUES (4, '11', '11', 1, '[\"station\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:25:28', '2026-02-28 23:44:14', 1);
+INSERT INTO `sys_notice` VALUES (5, '111', '111', 1, '[\"station\",\"webhook\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:26:38', '2026-02-28 23:27:29', 1);
+INSERT INTO `sys_notice` VALUES (6, '1111', '222', 1, '[\"station\",\"webhook\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:27:43', '2026-02-28 23:32:02', 1);
+INSERT INTO `sys_notice` VALUES (7, '11', '222', 1, '[\"station\",\"webhook\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:28:41', '2026-02-28 23:32:00', 1);
+INSERT INTO `sys_notice` VALUES (8, '1212', '22211', 1, '[\"webhook\",\"station\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:32:12', '2026-02-28 23:44:12', 1);
+INSERT INTO `sys_notice` VALUES (9, '111', '222', 1, '[\"station\",\"feishu\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:38:00', '2026-02-28 23:44:10', 1);
+INSERT INTO `sys_notice` VALUES (10, '1212', '1212', 1, '[\"dingtalk\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:46:38', '2026-03-01 00:12:05', 1);
+INSERT INTO `sys_notice` VALUES (11, '1212', '111', 1, '[\"dingtalk\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:47:42', '2026-03-01 00:04:41', 1);
+INSERT INTO `sys_notice` VALUES (12, '1212', '22212', 1, '[\"station\",\"dingtalk\",\"feishu\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:57:08', '2026-03-01 00:04:39', 1);
+INSERT INTO `sys_notice` VALUES (13, '31212', '1212', 1, '[\"station\",\"email\",\"feishu\",\"dingtalk\"]', 3, NULL, 1, 1, '超级管理员', '2026-02-28 23:57:36', '2026-03-01 00:04:37', 1);
+INSERT INTO `sys_notice` VALUES (14, '12', '222', 1, '[\"station\",\"email\",\"dingtalk\",\"feishu\"]', 3, NULL, 1, 1, '超级管理员', '2026-03-01 00:05:01', '2026-03-01 00:12:03', 1);
+INSERT INTO `sys_notice` VALUES (15, '12', '1212', 1, '[\"station\",\"email\",\"dingtalk\",\"feishu\"]', 3, NULL, 1, 1, '超级管理员', '2026-03-01 00:10:48', '2026-03-01 00:12:01', 1);
+INSERT INTO `sys_notice` VALUES (16, '212', '1111', 1, '[\"station\",\"email\",\"dingtalk\",\"feishu\"]', 1, '[1]', 1, 1, '超级管理员', '2026-03-01 00:11:29', '2026-03-01 00:11:46', 1);
+INSERT INTO `sys_notice` VALUES (17, '12', '2222', 1, '[\"station\",\"email\",\"dingtalk\",\"feishu\"]', 1, '[1]', 1, 1, '超级管理员', '2026-03-01 00:12:13', '2026-03-01 00:12:13', 0);
+
+-- ----------------------------
+-- Table structure for sys_notice_send_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice_send_log`;
+CREATE TABLE `sys_notice_send_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `notice_id` bigint NOT NULL COMMENT '通知ID',
+  `channel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '推送渠道: station站内信,email邮件,dingtalk钉钉,feishu飞书,wechat_work企业微信',
+  `status` tinyint NOT NULL DEFAULT 1 COMMENT '状态: 1成功 2失败',
+  `target_count` int NULL DEFAULT 0 COMMENT '推送目标数量',
+  `success_count` int NULL DEFAULT 0 COMMENT '成功数量(邮件/站内信)',
+  `error_msg` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '失败原因',
+  `send_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '推送时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_notice_id`(`notice_id` ASC) USING BTREE,
+  INDEX `idx_send_time`(`send_time` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通知推送记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_notice_send_log
+-- ----------------------------
+INSERT INTO `sys_notice_send_log` VALUES (1, 14, 'station', 1, 4, 4, NULL, '2026-03-01 00:05:04');
+INSERT INTO `sys_notice_send_log` VALUES (2, 14, 'email', 2, 2, 1, '邮件发送失败: Failed messages: org.eclipse.angus.mail.smtp.SMTPSendFailedException: 550 The recipient may contain a non-existent account, please check the recipient address.\n', '2026-03-01 00:05:06');
+INSERT INTO `sys_notice_send_log` VALUES (3, 14, 'dingtalk', 1, 1, 1, NULL, '2026-03-01 00:05:06');
+INSERT INTO `sys_notice_send_log` VALUES (4, 14, 'feishu', 1, 1, 1, NULL, '2026-03-01 00:05:07');
+INSERT INTO `sys_notice_send_log` VALUES (5, 14, 'email', 2, 2, 1, '邮件发送失败: Failed messages: org.eclipse.angus.mail.smtp.SMTPSendFailedException: 550 The recipient may contain a non-existent account, please check the recipient address.\n', '2026-03-01 00:09:16');
+INSERT INTO `sys_notice_send_log` VALUES (6, 14, 'email', 1, 2, 2, NULL, '2026-03-01 00:10:37');
+INSERT INTO `sys_notice_send_log` VALUES (7, 15, 'station', 1, 4, 4, NULL, '2026-03-01 00:10:51');
+INSERT INTO `sys_notice_send_log` VALUES (8, 15, 'email', 1, 2, 2, NULL, '2026-03-01 00:10:53');
+INSERT INTO `sys_notice_send_log` VALUES (9, 15, 'dingtalk', 1, 1, 1, NULL, '2026-03-01 00:10:53');
+INSERT INTO `sys_notice_send_log` VALUES (10, 15, 'feishu', 1, 1, 1, NULL, '2026-03-01 00:10:53');
+INSERT INTO `sys_notice_send_log` VALUES (11, 16, 'station', 1, 1, 1, NULL, '2026-03-01 00:11:33');
+INSERT INTO `sys_notice_send_log` VALUES (12, 16, 'email', 1, 1, 1, NULL, '2026-03-01 00:11:34');
+INSERT INTO `sys_notice_send_log` VALUES (13, 16, 'dingtalk', 1, 1, 1, NULL, '2026-03-01 00:11:34');
+INSERT INTO `sys_notice_send_log` VALUES (14, 16, 'feishu', 1, 1, 1, NULL, '2026-03-01 00:11:34');
+INSERT INTO `sys_notice_send_log` VALUES (15, 17, 'station', 1, 1, 1, NULL, '2026-03-01 00:12:16');
+INSERT INTO `sys_notice_send_log` VALUES (16, 17, 'email', 1, 1, 1, NULL, '2026-03-01 00:12:17');
+INSERT INTO `sys_notice_send_log` VALUES (17, 17, 'dingtalk', 1, 1, 1, NULL, '2026-03-01 00:12:17');
+INSERT INTO `sys_notice_send_log` VALUES (18, 17, 'feishu', 1, 1, 1, NULL, '2026-03-01 00:12:17');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -1723,275 +3366,126 @@ CREATE TABLE `sys_oper_log`  (
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 266 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 726 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (2, '用户管理', 1, 'com.mars.admin.controller.SysUserController.create()', 'POST', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12.4730368\",\"updateTime\":\"2026-01-29T23:21:12.4730368\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"username\":\"test\",\"password\":\"$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq\",\"nickname\":\"mars\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:12', 0);
-INSERT INTO `sys_oper_log` VALUES (3, '字典类型', 1, 'com.mars.admin.controller.SysDictTypeController.create()', 'POST', 'admin', '/sys/dict/type', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T23:21:28.6284556\",\"updateTime\":\"2026-01-29T23:21:28.6284556\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"dictName\":\"男\",\"dictType\":\"sex\",\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:29', 0);
-INSERT INTO `sys_oper_log` VALUES (4, '字典数据', 1, 'com.mars.admin.controller.SysDictDataController.create()', 'POST', 'admin', '/sys/dict/data', '127.0.0.1', '{\"id\":8,\"createTime\":\"2026-01-29T23:21:37.720816\",\"updateTime\":\"2026-01-29T23:21:37.720816\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"sex\",\"dictValue\":\"1\",\"dictType\":\"sex\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:38', 0);
-INSERT INTO `sys_oper_log` VALUES (5, '字典数据', 1, 'com.mars.admin.controller.SysDictDataController.create()', 'POST', 'admin', '/sys/dict/data', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:21:57.5830655\",\"updateTime\":\"2026-01-29T23:21:57.5830655\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"女\",\"dictValue\":\"0\",\"dictType\":\"sex\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:21:58', 0);
-INSERT INTO `sys_oper_log` VALUES (6, '字典类型', 2, 'com.mars.admin.controller.SysDictTypeController.update()', 'PUT', 'admin', '/sys/dict/type', '127.0.0.1', '{\"id\":4,\"createTime\":\"2026-01-29T23:21:29\",\"updateTime\":\"2026-01-29T23:21:29\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"dictName\":\"性别\",\"dictType\":\"sex\",\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:16', 0);
-INSERT INTO `sys_oper_log` VALUES (7, '岗位管理', 1, 'com.mars.admin.controller.SysPostController.create()', 'POST', 'admin', '/sys/post', '127.0.0.1', '{\"id\":5,\"createTime\":\"2026-01-29T23:22:32.6209502\",\"updateTime\":\"2026-01-29T23:22:32.6209502\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"postCode\":\"11\",\"postName\":\"11\",\"sort\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:33', 0);
-INSERT INTO `sys_oper_log` VALUES (8, '岗位管理', 3, 'com.mars.admin.controller.SysPostController.delete()', 'DELETE', 'admin', '/sys/post/5', '127.0.0.1', '5', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:22:36', 0);
-INSERT INTO `sys_oper_log` VALUES (9, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:52:59', 0);
-INSERT INTO `sys_oper_log` VALUES (10, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:50', 0);
-INSERT INTO `sys_oper_log` VALUES (11, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:51', 0);
-INSERT INTO `sys_oper_log` VALUES (12, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:51', 0);
-INSERT INTO `sys_oper_log` VALUES (13, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:52', 0);
-INSERT INTO `sys_oper_log` VALUES (14, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (15, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (16, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (17, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:53', 0);
-INSERT INTO `sys_oper_log` VALUES (18, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:53:54', 0);
-INSERT INTO `sys_oper_log` VALUES (19, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"true\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:55:26', 0);
-INSERT INTO `sys_oper_log` VALUES (20, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-29 23:55:26', 0);
-INSERT INTO `sys_oper_log` VALUES (21, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"false\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:12:50', 0);
-INSERT INTO `sys_oper_log` VALUES (22, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:12:50', 0);
-INSERT INTO `sys_oper_log` VALUES (23, '系统配置', 2, 'com.mars.admin.controller.SysConfigController.update()', 'PUT', 'admin', '/sys/config', '127.0.0.1', '{\"id\":9,\"createTime\":\"2026-01-29T23:55:15\",\"updateTime\":\"2026-01-29T23:55:15\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"configName\":\"接口加密开关\",\"configKey\":\"sys.api.encrypt.enabled\",\"configValue\":\"true\",\"configType\":1,\"remark\":\"是否启用RSA接口加密(true/false)\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:13:07', 0);
-INSERT INTO `sys_oper_log` VALUES (24, '系统配置', 0, 'com.mars.admin.controller.SysConfigController.refresh()', 'POST', 'admin', '/sys/config/refresh', '127.0.0.1', NULL, '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:13:07', 0);
-INSERT INTO `sys_oper_log` VALUES (25, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:36:54', 0);
-INSERT INTO `sys_oper_log` VALUES (26, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,19,20,21,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,19,20,21,126,127,128,129,130,131,132,133]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-30 23:40:20', 0);
-INSERT INTO `sys_oper_log` VALUES (27, '用户管理', 2, 'com.mars.admin.controller.SysUserController.update()', 'PUT', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 00:04:11', 0);
-INSERT INTO `sys_oper_log` VALUES (28, '用户管理', 1, 'com.mars.admin.controller.SysUserController.create()', 'POST', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":3,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"username\":\"mars\",\"password\":\"$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G\",\"nickname\":\"mars\",\"avatar\":null,\"email\":\"1121@qq.com\",\"phone\":\"18888888881\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 00:04:32', 0);
-INSERT INTO `sys_oper_log` VALUES (29, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":1,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"filePath\":\"images/2026/01/31/4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/4e01eb2d5b474a4cb9d981c9a38382c7.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T00:08:56.7388473\",\"remark\":null}}', 0, NULL, '2026-01-31 00:08:57', 0);
-INSERT INTO `sys_oper_log` VALUES (30, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":2,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"filePath\":\"images/2026/01/31/1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/1f44b8e3286f4ea8b770c51398f15b22.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T10:11:54.9186654\",\"remark\":null}}', 0, NULL, '2026-01-31 10:11:55', 0);
-INSERT INTO `sys_oper_log` VALUES (31, '角色管理', 2, 'com.mars.admin.controller.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,126,127,128,129,130,131,132,133,134,135,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 10:32:02', 0);
-INSERT INTO `sys_oper_log` VALUES (32, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":3,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"filePath\":\"images/2026/01/31/1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/1b4f6f9062ab400f9259bdac0eb8db10.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T12:26:51.507376\",\"remark\":null}}', 0, NULL, '2026-01-31 12:26:52', 0);
-INSERT INTO `sys_oper_log` VALUES (33, '上传图片', 1, 'com.mars.admin.controller.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":4,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"788f706ff0a548c0a4b744de208e73a5.jpg\",\"filePath\":\"images/2026/01/31/788f706ff0a548c0a4b744de208e73a5.jpg\",\"url\":\"http://localhost:8080/file/images/2026/01/31/788f706ff0a548c0a4b744de208e73a5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T12:27:02.4947877\",\"remark\":null}}', 0, NULL, '2026-01-31 12:27:03', 0);
-INSERT INTO `sys_oper_log` VALUES (34, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":5,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"40015680077f4bdf99a934b4c8c4110b.jpg\",\"filePath\":\"2026/01/31/40015680077f4bdf99a934b4c8c4110b.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/40015680077f4bdf99a934b4c8c4110b.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:03.0908998\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:03', 0);
-INSERT INTO `sys_oper_log` VALUES (35, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":6,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"c04f38976b2d42a3b6607c796a7f932e.png\",\"filePath\":\"2026/01/31/c04f38976b2d42a3b6607c796a7f932e.png\",\"url\":\"http://localhost:8080/file/2026/01/31/c04f38976b2d42a3b6607c796a7f932e.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:06.1062097\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:06', 0);
-INSERT INTO `sys_oper_log` VALUES (36, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":7,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"c0bf62e221c0443b86e890f160767edb.jpg\",\"filePath\":\"2026/01/31/c0bf62e221c0443b86e890f160767edb.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/c0bf62e221c0443b86e890f160767edb.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T14:28:08.2984259\",\"remark\":null}}', 0, NULL, '2026-01-31 14:28:08', 0);
-INSERT INTO `sys_oper_log` VALUES (37, '删除文件', 3, 'com.mars.admin.controller.SysFileController.delete()', 'DELETE', 'admin', '/sys/file/7', '127.0.0.1', '7', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:28:17', 0);
-INSERT INTO `sys_oper_log` VALUES (38, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/131', '127.0.0.1', '131', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:45', 0);
-INSERT INTO `sys_oper_log` VALUES (39, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/132', '127.0.0.1', '132', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:47', 0);
-INSERT INTO `sys_oper_log` VALUES (40, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/133', '127.0.0.1', '133', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:50', 0);
-INSERT INTO `sys_oper_log` VALUES (41, '菜单管理', 3, 'com.mars.admin.controller.SysMenuController.delete()', 'DELETE', 'admin', '/sys/menu/130', '127.0.0.1', '130', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 14:43:52', 0);
-INSERT INTO `sys_oper_log` VALUES (42, '上传文件', 1, 'com.mars.admin.controller.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":8,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4cd0becad45c44649f88d78000ad9b9d.jpg\",\"filePath\":\"2026/01/31/4cd0becad45c44649f88d78000ad9b9d.jpg\",\"url\":\"http://localhost:8080/file/2026/01/31/4cd0becad45c44649f88d78000ad9b9d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T15:00:46.5929261\",\"remark\":null}}', 0, NULL, '2026-01-31 15:00:47', 0);
-INSERT INTO `sys_oper_log` VALUES (43, '删除文件', 3, 'com.mars.admin.controller.SysFileController.delete()', 'DELETE', 'admin', '/sys/file/8', '127.0.0.1', '8', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 15:01:02', 0);
-INSERT INTO `sys_oper_log` VALUES (44, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":1,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"9f375134efa54ddeb9d19adb5295939f.jpg\",\"filePath\":\"2026/01/31/9f375134efa54ddeb9d19adb5295939f.jpg\",\"url\":\"http://localhost:8080/files/2026/01/31/9f375134efa54ddeb9d19adb5295939f.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-01-31T16:50:36.1890809\",\"remark\":null}}', 0, NULL, '2026-01-31 16:50:36', 0);
-INSERT INTO `sys_oper_log` VALUES (45, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37.2734227\",\"updateTime\":\"2026-01-31T20:17:37.2734227\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:17:37', 0);
-INSERT INTO `sys_oper_log` VALUES (46, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:17:50', 0);
-INSERT INTO `sys_oper_log` VALUES (47, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37.2535381\",\"updateTime\":\"2026-01-31T20:23:37.2535381\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test\",\"component\":\"/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:23:37', 0);
-INSERT INTO `sys_oper_log` VALUES (48, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:24:22', 0);
-INSERT INTO `sys_oper_log` VALUES (49, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:35:26', 0);
-INSERT INTO `sys_oper_log` VALUES (50, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:39:47', 0);
-INSERT INTO `sys_oper_log` VALUES (51, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:40:08', 0);
-INSERT INTO `sys_oper_log` VALUES (52, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test\",\"component\":\"/test/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:40:35', 0);
-INSERT INTO `sys_oper_log` VALUES (53, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:41:14', 0);
-INSERT INTO `sys_oper_log` VALUES (54, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:42:14', 0);
-INSERT INTO `sys_oper_log` VALUES (55, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37\",\"updateTime\":\"2026-01-31T20:17:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":7,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:45:25', 0);
-INSERT INTO `sys_oper_log` VALUES (56, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50.0831627\",\"updateTime\":\"2026-01-31T20:51:50.0841601\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":2,\"name\":\"用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:51:50', 0);
-INSERT INTO `sys_oper_log` VALUES (57, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:12.9077313\",\"updateTime\":\"2026-01-31T20:52:12.9077313\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":6,\"name\":\"角色列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:13', 0);
-INSERT INTO `sys_oper_log` VALUES (58, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":144,\"createTime\":\"2026-01-31T20:52:31.5487596\",\"updateTime\":\"2026-01-31T20:52:31.5487596\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":10,\"name\":\"菜单列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:menu:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:32', 0);
-INSERT INTO `sys_oper_log` VALUES (59, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":145,\"createTime\":\"2026-01-31T20:52:51.9327195\",\"updateTime\":\"2026-01-31T20:52:51.9327195\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":14,\"name\":\"字典列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:dict:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:52:52', 0);
-INSERT INTO `sys_oper_log` VALUES (60, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":146,\"createTime\":\"2026-01-31T20:54:25.6538971\",\"updateTime\":\"2026-01-31T20:54:25.6538971\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":23,\"name\":\"部门列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:dept:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:54:26', 0);
-INSERT INTO `sys_oper_log` VALUES (61, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":147,\"createTime\":\"2026-01-31T20:54:44.7654349\",\"updateTime\":\"2026-01-31T20:54:44.7654349\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":27,\"name\":\"岗位列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:post:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:54:45', 0);
-INSERT INTO `sys_oper_log` VALUES (62, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":148,\"createTime\":\"2026-01-31T20:55:13.9316756\",\"updateTime\":\"2026-01-31T20:55:13.9316756\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":32,\"name\":\"查询日志\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:operlog:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:55:14', 0);
-INSERT INTO `sys_oper_log` VALUES (63, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":149,\"createTime\":\"2026-01-31T20:55:31.7721299\",\"updateTime\":\"2026-01-31T20:55:31.7721299\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":34,\"name\":\"日志列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:loginlog:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:55:32', 0);
-INSERT INTO `sys_oper_log` VALUES (64, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":150,\"createTime\":\"2026-01-31T20:56:04.216496\",\"updateTime\":\"2026-01-31T20:56:04.216496\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":37,\"name\":\"在线用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:online:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:56:04', 0);
-INSERT INTO `sys_oper_log` VALUES (65, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'lisi', '/sys/menu', '127.0.0.1', '{\"id\":151,\"createTime\":\"2026-01-31T20:56:20.3485179\",\"updateTime\":\"2026-01-31T20:56:20.3485179\",\"createBy\":4,\"updateBy\":4,\"deleted\":null,\"parentId\":39,\"name\":\"任务列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:job:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:56:20', 0);
-INSERT INTO `sys_oper_log` VALUES (66, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":152,\"createTime\":\"2026-01-31T20:57:18.2372336\",\"updateTime\":\"2026-01-31T20:57:18.2372336\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":127,\"name\":\"文件列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:file:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:57:18', 0);
-INSERT INTO `sys_oper_log` VALUES (67, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":153,\"createTime\":\"2026-01-31T20:57:55.1807857\",\"updateTime\":\"2026-01-31T20:57:55.1807857\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":135,\"name\":\"系统通知\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:notice:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":null,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:57:55', 0);
-INSERT INTO `sys_oper_log` VALUES (68, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,146,147,148,149,150,151,152,153]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 20:58:24', 0);
-INSERT INTO `sys_oper_log` VALUES (69, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,146,147,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:34', 0);
-INSERT INTO `sys_oper_log` VALUES (70, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:44', 0);
-INSERT INTO `sys_oper_log` VALUES (71, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,148,149,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:52', 0);
-INSERT INTO `sys_oper_log` VALUES (72, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:01:56', 0);
-INSERT INTO `sys_oper_log` VALUES (73, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,150,151,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:00', 0);
-INSERT INTO `sys_oper_log` VALUES (74, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:04', 0);
-INSERT INTO `sys_oper_log` VALUES (75, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,152,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:08', 0);
-INSERT INTO `sys_oper_log` VALUES (76, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:12', 0);
-INSERT INTO `sys_oper_log` VALUES (77, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,134,135,136,137,138,139,140,141,153,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:15', 0);
-INSERT INTO `sys_oper_log` VALUES (78, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,140,141,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:20', 0);
-INSERT INTO `sys_oper_log` VALUES (79, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,140,141,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:23', 0);
-INSERT INTO `sys_oper_log` VALUES (80, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:26', 0);
-INSERT INTO `sys_oper_log` VALUES (81, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[6,7,8,9,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,130,131,132,133,143,1,2,142,3,4,5,10,144,11,12,13,14,145,15,16,17,18,19,20,21,22,23,146,24,25,26,27,147,28,29,30,31,32,148,33,34,149,35,36,37,150,38,39,151,40,41,42,43,44,45,126,127,152,128,129,134,135,153,136,137,138,139,140,141]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:02:29', 0);
-INSERT INTO `sys_oper_log` VALUES (82, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,142,143,144,145,146,147,148,149,150,151,152,153,128]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:03:45', 0);
-INSERT INTO `sys_oper_log` VALUES (83, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,142,143,144,145,146,147,148,149,150,151,152,153,128,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:08:30', 0);
-INSERT INTO `sys_oper_log` VALUES (84, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:08:40', 0);
-INSERT INTO `sys_oper_log` VALUES (85, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,142,2,3,4,5,1,23,27,32,34,37,39,127,135,22,31,36,126,134]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:10', 0);
-INSERT INTO `sys_oper_log` VALUES (86, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:30', 0);
-INSERT INTO `sys_oper_log` VALUES (87, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:11:57', 0);
-INSERT INTO `sys_oper_log` VALUES (88, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:17:02', 0);
-INSERT INTO `sys_oper_log` VALUES (89, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50\",\"updateTime\":\"2026-01-31T20:51:50\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":2,\"name\":\"用户列表\",\"type\":2,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:25', 0);
-INSERT INTO `sys_oper_log` VALUES (90, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:13\",\"updateTime\":\"2026-01-31T20:52:13\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":6,\"name\":\"角色列表\",\"type\":2,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:36', 0);
-INSERT INTO `sys_oper_log` VALUES (91, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:20:46', 0);
-INSERT INTO `sys_oper_log` VALUES (92, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":142,\"createTime\":\"2026-01-31T20:51:50\",\"updateTime\":\"2026-01-31T20:51:50\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":2,\"name\":\"用户列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:21:24', 0);
-INSERT INTO `sys_oper_log` VALUES (93, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":143,\"createTime\":\"2026-01-31T20:52:13\",\"updateTime\":\"2026-01-31T20:52:13\",\"createBy\":4,\"updateBy\":4,\"deleted\":0,\"parentId\":6,\"name\":\"角色列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:role:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:21:34', 0);
-INSERT INTO `sys_oper_log` VALUES (94, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:25:14', 0);
-INSERT INTO `sys_oper_log` VALUES (95, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,2,3,4,5,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:25:35', 0);
-INSERT INTO `sys_oper_log` VALUES (96, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[18,19,20,21,43,44,45,130,131,132,133,139,143,144,145,146,147,148,149,150,151,152,153,128,6,7,8,9,10,11,12,13,14,15,16,17,23,27,32,34,37,39,127,135,22,31,36,126,134,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:26:16', 0);
-INSERT INTO `sys_oper_log` VALUES (97, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,7,8,9,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,6,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,1,2,3,4,5]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:31:45', 0);
-INSERT INTO `sys_oper_log` VALUES (98, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,7,8,9,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,6,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,2,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:31:57', 0);
-INSERT INTO `sys_oper_log` VALUES (99, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,128,11,12,13,15,16,17,24,25,26,28,29,30,33,35,38,40,41,42,129,136,137,138,142,10,14,18,23,27,32,34,37,39,43,127,135,22,31,36,126,134,2,6,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:32:39', 0);
-INSERT INTO `sys_oper_log` VALUES (100, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"普通用户\",\"code\":\"user\",\"sort\":2,\"status\":1,\"remark\":\"普通用户角色\"},\"menuIds\":[19,20,21,44,45,139,143,144,145,146,147,148,149,150,151,152,153,142,18,43,128,2,6,10,14,23,27,32,34,37,39,127,135,1,22,31,36,126,134]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 21:41:49', 0);
-INSERT INTO `sys_oper_log` VALUES (101, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/sys/user', '127.0.0.1', '{\"user\":{\"id\":4,\"createTime\":\"2026-01-31T20:49:34\",\"updateTime\":\"2026-01-31T20:49:34\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"username\":\"lisi\",\"password\":null,\"nickname\":\"lisi\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 22:28:30', 0);
-INSERT INTO `sys_oper_log` VALUES (102, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,2,6,10,14,18,23,27,32,34,37,39,43,127,135,1,22,31,126,134,140,154,155,156,157,158,159,160,36]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 23:42:41', 0);
-INSERT INTO `sys_oper_log` VALUES (103, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":154,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":36,\"name\":\"服务器管理\",\"type\":2,\"path\":\"/monitor/server-manager\",\"component\":\"/monitor/server-manager/index\",\"permission\":null,\"icon\":\"ServerOutline\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":155,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"服务器列表\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:list\",\"icon\":null,\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":156,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"服务器详情\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:query\",\"icon\":null,\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":157,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"新增服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:add\",\"icon\":null,\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":158,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"编辑服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:edit\",\"icon\":null,\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":159,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"删除服务器\",\"type\":3,\"path\":null,\"component\":null,\"permission\":\"monitor:server:remove\",\"icon\":null,\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":160,\"createTime\":\"2026-01-31T23:37:21\",\"updateTime\":\"2026-01-31T23:37:21\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":154,\"name\":\"测试连接\",\"type\":3,\"pa', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-01-31 23:45:06', 0);
-INSERT INTO `sys_oper_log` VALUES (104, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":2,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"facf51bceffa4b0594a876dcd470c8d9.png\",\"filePath\":\"2026/02/02/facf51bceffa4b0594a876dcd470c8d9.png\",\"url\":\"http://localhost:8080/files/2026/02/02/facf51bceffa4b0594a876dcd470c8d9.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:28:15.0087984\",\"remark\":null}}', 0, NULL, '2026-02-02 16:28:15', 0);
-INSERT INTO `sys_oper_log` VALUES (105, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":3,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"ba6a6df521634d65a01ee41000bcfe4d.png\",\"filePath\":\"2026/02/02/ba6a6df521634d65a01ee41000bcfe4d.png\",\"url\":\"http://localhost:8080/files/2026/02/02/ba6a6df521634d65a01ee41000bcfe4d.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:29:59.7196597\",\"remark\":null}}', 0, NULL, '2026-02-02 16:30:00', 0);
-INSERT INTO `sys_oper_log` VALUES (106, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":4,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"filePath\":\"2026/02/02/d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"url\":\"http://localhost:8080/files/2026/02/02/d47f0d3f2dc04be48a6fe677cbe164e9.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:30:06.3784107\",\"remark\":null}}', 0, NULL, '2026-02-02 16:30:06', 0);
-INSERT INTO `sys_oper_log` VALUES (107, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":5,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"c127252a197948c99afaff2412937344.png\",\"filePath\":\"2026/02/02/c127252a197948c99afaff2412937344.png\",\"url\":\"http://localhost:8080/files/2026/02/02/c127252a197948c99afaff2412937344.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:33:56.2953548\",\"remark\":null}}', 0, NULL, '2026-02-02 16:33:56', 0);
-INSERT INTO `sys_oper_log` VALUES (108, '创建文件分组', 1, 'com.mars.web.controller.file.SysFileGroupController.create()', 'POST', 'admin', '/sys/file-group', '127.0.0.1', '{\"id\":1,\"name\":\"测试分组\",\"sort\":0,\"fileCount\":null,\"createBy\":null,\"createTime\":\"2026-02-02T16:50:49.7601501\",\"updateTime\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 16:50:50', 0);
-INSERT INTO `sys_oper_log` VALUES (109, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":6,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"b4d670b1b94544caafebff8ccb391af5.jpg\",\"filePath\":\"2026/02/02/b4d670b1b94544caafebff8ccb391af5.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/b4d670b1b94544caafebff8ccb391af5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:11.7194099\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:12', 0);
-INSERT INTO `sys_oper_log` VALUES (110, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":7,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"filePath\":\"2026/02/02/5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/5c08b37f9c6a409c8b133f921910c9d5.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:19.0010822\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:19', 0);
-INSERT INTO `sys_oper_log` VALUES (111, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":8,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"1d792369c1324ebbb1ae1c6abb1c385b.png\",\"filePath\":\"2026/02/02/1d792369c1324ebbb1ae1c6abb1c385b.png\",\"url\":\"http://localhost:8080/files/2026/02/02/1d792369c1324ebbb1ae1c6abb1c385b.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:24.5108305\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:25', 0);
-INSERT INTO `sys_oper_log` VALUES (112, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":9,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"filePath\":\"2026/02/02/5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/5b383a79cea94e13b4cf198a46f7bf5c.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:51:30.1302856\",\"remark\":null}}', 0, NULL, '2026-02-02 16:51:30', 0);
-INSERT INTO `sys_oper_log` VALUES (113, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":10,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"97c4a311e92b409db8eeaa919c2014e6.jpg\",\"filePath\":\"2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg\",\"url\":\"http://localhost:8080/files/2026/02/02/97c4a311e92b409db8eeaa919c2014e6.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:54:05.3938291\",\"remark\":null}}', 0, NULL, '2026-02-02 16:54:05', 0);
-INSERT INTO `sys_oper_log` VALUES (114, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":11,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"630542f51b124c519f14fdf97db37b7b.png\",\"filePath\":\"2026/02/02/630542f51b124c519f14fdf97db37b7b.png\",\"url\":\"http://localhost:8080/files/2026/02/02/630542f51b124c519f14fdf97db37b7b.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T16:54:07.0094663\",\"remark\":null}}', 0, NULL, '2026-02-02 16:54:07', 0);
-INSERT INTO `sys_oper_log` VALUES (115, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: mp4，允许的类型: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx', '2026-02-02 16:55:23', 0);
-INSERT INTO `sys_oper_log` VALUES (116, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: mp4，允许的类型: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx', '2026-02-02 16:58:26', 0);
-INSERT INTO `sys_oper_log` VALUES (117, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":12,\"originalName\":\"d46297cfbd32ba4d300eaca236a934a2.mp4\",\"fileName\":\"83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"filePath\":\"2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"url\":\"http://localhost:8080/files/2026/02/02/83e50180167b4f8c82aa0664c4d6bc81.mp4\",\"fileSize\":345989,\"fileType\":\"video/mp4\",\"fileSuffix\":\".mp4\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:00:18.0270023\",\"remark\":null}}', 0, NULL, '2026-02-02 17:00:18', 0);
-INSERT INTO `sys_oper_log` VALUES (118, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', NULL, 1, '不支持的文件类型: yaml，允许的类型: jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,mp4,avi,mov,wmv,flv,mkv,mp3,wav,ogg,zip,rar,7z', '2026-02-02 17:01:05', 0);
-INSERT INTO `sys_oper_log` VALUES (119, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":13,\"originalName\":\"222.yaml\",\"fileName\":\"fb28a3b6569746688514518c32bb0237.yaml\",\"filePath\":\"2026/02/02/fb28a3b6569746688514518c32bb0237.yaml\",\"url\":\"http://localhost:8080/files/2026/02/02/fb28a3b6569746688514518c32bb0237.yaml\",\"fileSize\":6582,\"fileType\":\"application/octet-stream\",\"fileSuffix\":\".yaml\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:02:45.4955269\",\"remark\":null}}', 0, NULL, '2026-02-02 17:02:46', 0);
-INSERT INTO `sys_oper_log` VALUES (120, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":14,\"originalName\":\"222.yaml\",\"fileName\":\"8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"filePath\":\"2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"url\":\"http://localhost:8080/files/2026/02/02/8c501c0e2ffc42edb75a9c3b4491a918.yaml\",\"fileSize\":6582,\"fileType\":\"application/octet-stream\",\"fileSuffix\":\".yaml\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:02:50.9339581\",\"remark\":null}}', 0, NULL, '2026-02-02 17:02:51', 0);
-INSERT INTO `sys_oper_log` VALUES (121, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":15,\"originalName\":\"王先生简历.pdf\",\"fileName\":\"cd7d82145cf54c8abab1007437338f7f.pdf\",\"filePath\":\"2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf\",\"url\":\"http://localhost:8080/files/2026/02/02/cd7d82145cf54c8abab1007437338f7f.pdf\",\"fileSize\":170770,\"fileType\":\"application/pdf\",\"fileSuffix\":\".pdf\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-02T17:03:06.3922265\",\"remark\":null}}', 0, NULL, '2026-02-02 17:03:06', 0);
-INSERT INTO `sys_oper_log` VALUES (122, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,2,6,10,14,18,23,27,32,34,37,39,43,154,127,135,1,22,31,36,126,134,140,161,162,163,164,165,166,167,168,169]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:52:54', 0);
-INSERT INTO `sys_oper_log` VALUES (123, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"sys_file\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:53:23', 0);
-INSERT INTO `sys_oper_log` VALUES (124, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"customer\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 19:54:31', 0);
-INSERT INTO `sys_oper_log` VALUES (125, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[2]', NULL, 0, NULL, '2026-02-02 19:54:41', 0);
-INSERT INTO `sys_oper_log` VALUES (126, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:05:31', 0);
-INSERT INTO `sys_oper_log` VALUES (127, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,2,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,22,31,36,126,134,140,161,170,171,172,173,174,175,1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:05:42', 0);
-INSERT INTO `sys_oper_log` VALUES (128, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:06:27', 0);
-INSERT INTO `sys_oper_log` VALUES (129, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/system/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:07:14', 0);
-INSERT INTO `sys_oper_log` VALUES (130, '客户表', 1, 'com.mars.web.controller.CustomerController.add()', 'POST', 'admin', '/system/customer', '127.0.0.1', '{\"id\":5,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"deleted\":1,\"createTime\":\"2026-02-02T20:09:32.3541679\",\"updateTime\":\"2026-02-02T20:09:32.3541679\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 20:09:32', 0);
-INSERT INTO `sys_oper_log` VALUES (131, '导入表结构', 1, 'com.mars.web.controller.tool.GenController.importTable()', 'POST', 'admin', '/tool/gen/import', '127.0.0.1', '[\"student\"]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:21:29', 0);
-INSERT INTO `sys_oper_log` VALUES (132, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"timeType\":false,\"stringType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"timeType\":false,\"stringType\":true,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"timeType\":false,\"stringType\":true,\"numberT', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:21:38', 0);
-INSERT INTO `sys_oper_log` VALUES (133, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[3]', NULL, 0, NULL, '2026-02-02 22:21:40', 0);
-INSERT INTO `sys_oper_log` VALUES (134, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:26:31', 0);
-INSERT INTO `sys_oper_log` VALUES (135, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":170,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":1,\"name\":\"客户表\",\"type\":2,\"path\":\"/system/customer\",\"component\":\"/system/customer/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":0,\"status\":0,\"isFrame\":0,\"children\":[{\"id\":171,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":172,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":173,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":174,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":175,\"createTime\":\"2026-02-02T19:57:54\",\"updateTime\":\"2026-02-02T19:57:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":170,\"name\":\"客户表删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:customer:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:28:15', 0);
-INSERT INTO `sys_oper_log` VALUES (136, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,176,177,178,179,180,181]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:28:30', 0);
-INSERT INTO `sys_oper_log` VALUES (137, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":176,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":161,\"name\":\"学生管理\",\"type\":2,\"path\":\"/system/student\",\"component\":\"/system/student/index\",\"permission\":\"\",\"icon\":\"ListOutline\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":[{\"id\":177,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理查询\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:list\",\"icon\":\"\",\"sort\":1,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":178,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理详情\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:query\",\"icon\":\"\",\"sort\":2,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":179,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理新增\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:add\",\"icon\":\"\",\"sort\":3,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":180,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理修改\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:edit\",\"icon\":\"\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null},{\"id\":181,\"createTime\":\"2026-02-02T22:27:54\",\"updateTime\":\"2026-02-02T22:27:54\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":176,\"name\":\"学生管理删除\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"system:student:remove\",\"icon\":\"\",\"sort\":5,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:29:13', 0);
-INSERT INTO `sys_oper_log` VALUES (138, '菜单管理', 2, 'com.mars.web.controller.system.SysMenuController.update()', 'PUT', 'admin', '/sys/menu', '127.0.0.1', '{\"id\":140,\"createTime\":\"2026-01-31T20:17:37\",\"updateTime\":\"2026-01-31T20:17:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"name\":\"测试菜单\",\"type\":1,\"path\":\"/test\",\"component\":\"\",\"permission\":\"\",\"icon\":\"StarOutline\",\"sort\":7,\"visible\":0,\"status\":0,\"isFrame\":0,\"children\":[{\"id\":141,\"createTime\":\"2026-01-31T20:23:37\",\"updateTime\":\"2026-01-31T20:23:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"parentId\":140,\"name\":\"测试菜单\",\"type\":2,\"path\":\"/test/test\",\"component\":\"/test/test/index\",\"permission\":\"\",\"icon\":\"SearchOutline\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 22:31:03', 0);
-INSERT INTO `sys_oper_log` VALUES (139, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:55:40', 0);
-INSERT INTO `sys_oper_log` VALUES (140, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:55:57', 0);
-INSERT INTO `sys_oper_log` VALUES (141, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:56:50', 0);
-INSERT INTO `sys_oper_log` VALUES (142, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\"]}', 0, NULL, '2026-02-02 22:57:22', 0);
-INSERT INTO `sys_oper_log` VALUES (143, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:01:25', 0);
-INSERT INTO `sys_oper_log` VALUES (144, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:01:38', 0);
-INSERT INTO `sys_oper_log` VALUES (145, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:04:11', 0);
-INSERT INTO `sys_oper_log` VALUES (146, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:07:15', 0);
-INSERT INTO `sys_oper_log` VALUES (147, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:07:43', 0);
-INSERT INTO `sys_oper_log` VALUES (148, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,194,195,196,197,198,199]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:08:04', 0);
-INSERT INTO `sys_oper_log` VALUES (149, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":6,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:10:23.8491886\",\"updateTime\":\"2026-02-02T23:10:23.8501851\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:10:24', 0);
-INSERT INTO `sys_oper_log` VALUES (150, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:19:37', 0);
-INSERT INTO `sys_oper_log` VALUES (151, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:19:53', 0);
-INSERT INTO `sys_oper_log` VALUES (152, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/6', '127.0.0.1', '[6]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:22:18', 0);
-INSERT INTO `sys_oper_log` VALUES (153, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":7,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:22:26.1590412\",\"updateTime\":\"2026-02-02T23:22:26.1590412\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:22:26', 0);
-INSERT INTO `sys_oper_log` VALUES (154, '生成代码', 5, 'com.mars.web.controller.tool.GenController.download()', 'GET', 'admin', '/tool/gen/download', '127.0.0.1', '[3]', NULL, 0, NULL, '2026-02-02 23:23:41', 0);
-INSERT INTO `sys_oper_log` VALUES (155, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:24:54', 0);
-INSERT INTO `sys_oper_log` VALUES (156, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,206,207,208,209,210,211]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:24', 0);
-INSERT INTO `sys_oper_log` VALUES (157, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":8,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:25:39.4626787\",\"updateTime\":\"2026-02-02T23:25:39.4626787\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:39', 0);
-INSERT INTO `sys_oper_log` VALUES (158, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/8', '127.0.0.1', '[8]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:42', 0);
-INSERT INTO `sys_oper_log` VALUES (159, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/7', '127.0.0.1', '[7]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:25:44', 0);
-INSERT INTO `sys_oper_log` VALUES (160, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":9,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:29:02.6810732\",\"updateTime\":\"2026-02-02T23:29:02.6812107\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:03', 0);
-INSERT INTO `sys_oper_log` VALUES (161, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/9', '127.0.0.1', '[9]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:05', 0);
-INSERT INTO `sys_oper_log` VALUES (162, '同步表结构', 2, 'com.mars.web.controller.tool.GenController.sync()', 'POST', 'admin', '/tool/gen/sync/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:29:22', 0);
-INSERT INTO `sys_oper_log` VALUES (163, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:30:30', 0);
-INSERT INTO `sys_oper_log` VALUES (164, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:30:58', 0);
-INSERT INTO `sys_oper_log` VALUES (165, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,212,213,214,215,216,217]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:31:06', 0);
-INSERT INTO `sys_oper_log` VALUES (166, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:33:40', 0);
-INSERT INTO `sys_oper_log` VALUES (167, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"numberT', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:34:00', 0);
-INSERT INTO `sys_oper_log` VALUES (168, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":2,\"tableName\":\"customer\",\"tableComment\":\"客户表\",\"className\":\"Customer\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"customer\",\"functionName\":\"客户表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T19:54:31\",\"updateTime\":\"2026-02-02T19:54:31\",\"columns\":[{\"id\":15,\"tableId\":2,\"columnName\":\"id\",\"columnComment\":\"客户ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":16,\"tableId\":2,\"columnName\":\"name\",\"columnComment\":\"客户姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":17,\"tableId\":2,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":18,\"tableId\":2,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":19,\"tableId\":2,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"num', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:16', 0);
-INSERT INTO `sys_oper_log` VALUES (169, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:36:22', 0);
-INSERT INTO `sys_oper_log` VALUES (170, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,218,219,220,221,222,223]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:41', 0);
-INSERT INTO `sys_oper_log` VALUES (171, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":10,\"name\":\"12\",\"phone\":\"121\",\"idCard\":\"2\",\"address\":\"12\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:36:48.7311674\",\"updateTime\":\"2026-02-02T23:36:48.7311674\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:49', 0);
-INSERT INTO `sys_oper_log` VALUES (172, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/10', '127.0.0.1', '[10]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:36:53', 0);
-INSERT INTO `sys_oper_log` VALUES (173, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:38:03.0427541\",\"updateTime\":\"2026-02-02T23:38:03.0427541\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:38:03', 0);
-INSERT INTO `sys_oper_log` VALUES (174, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"122222222\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:38:03\",\"updateTime\":\"2026-02-02T23:38:03\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:38:08', 0);
-INSERT INTO `sys_oper_log` VALUES (175, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:38:19', 0);
-INSERT INTO `sys_oper_log` VALUES (176, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"n', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:39:03', 0);
-INSERT INTO `sys_oper_log` VALUES (177, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:39:09', 0);
-INSERT INTO `sys_oper_log` VALUES (178, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,224,225,226,227,228,229]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:39:48', 0);
-INSERT INTO `sys_oper_log` VALUES (179, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":16,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"de36558603754856be6984d6cdc0654a.jpg\",\"filePath\":\"images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/de36558603754856be6984d6cdc0654a.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:40:00.0648201\",\"remark\":null}}', 0, NULL, '2026-02-02 23:40:00', 0);
-INSERT INTO `sys_oper_log` VALUES (180, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:43:09', 0);
-INSERT INTO `sys_oper_log` VALUES (181, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"stringType\":true,\"timeType\":false,\"n', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:43:19', 0);
-INSERT INTO `sys_oper_log` VALUES (182, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:43:26', 0);
-INSERT INTO `sys_oper_log` VALUES (183, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,230,231,232,233,234,235]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:43:33', 0);
-INSERT INTO `sys_oper_log` VALUES (184, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":17,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"13e1fb150b264caca201dbe58b74b69a.jpg\",\"filePath\":\"images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/13e1fb150b264caca201dbe58b74b69a.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:43:47.2100967\",\"remark\":null}}', 0, NULL, '2026-02-02 23:43:47', 0);
-INSERT INTO `sys_oper_log` VALUES (185, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:44:22', 0);
-INSERT INTO `sys_oper_log` VALUES (186, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:44:50', 0);
-INSERT INTO `sys_oper_log` VALUES (187, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:45:00', 0);
-INSERT INTO `sys_oper_log` VALUES (188, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"numberType\":true,\"timeType\":false,\"stringType\":false},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"imageUpload\",\"dictType\":\"\",\"sort\":2,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"numberType\":false,\"timeType\":false,\"', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:45:45', 0);
-INSERT INTO `sys_oper_log` VALUES (189, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:46:17', 0);
-INSERT INTO `sys_oper_log` VALUES (190, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:46:35', 0);
-INSERT INTO `sys_oper_log` VALUES (191, '同步表结构', 2, 'com.mars.web.controller.tool.GenController.sync()', 'POST', 'admin', '/tool/gen/sync/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:10', 0);
-INSERT INTO `sys_oper_log` VALUES (192, '修改代码生成配置', 2, 'com.mars.web.controller.tool.GenController.update()', 'PUT', 'admin', '/tool/gen', '127.0.0.1', '{\"id\":3,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生管理\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-02T22:21:29\",\"updateTime\":\"2026-02-02T22:21:29\",\"columns\":[{\"id\":24,\"tableId\":3,\"columnName\":\"id\",\"columnComment\":\"学生ID\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"numberType\":true,\"timeType\":false,\"stringType\":false},{\"id\":25,\"tableId\":3,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":26,\"tableId\":3,\"columnName\":\"phone\",\"columnComment\":\"手机号\",\"columnType\":\"varchar(20)\",\"javaType\":\"String\",\"javaField\":\"phone\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":27,\"tableId\":3,\"columnName\":\"id_card\",\"columnComment\":\"身份证号\",\"columnType\":\"varchar(30)\",\"javaType\":\"String\",\"javaField\":\"idCard\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":4,\"numberType\":false,\"timeType\":false,\"stringType\":true},{\"id\":28,\"tableId\":3,\"columnName\":\"address\",\"columnComment\":\"地址\",\"columnType\":\"varchar(200)\",\"javaType\":\"String\",\"javaField\":\"address\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":5,\"numberType\":false,\"timeType\":false,\"string', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:20', 0);
-INSERT INTO `sys_oper_log` VALUES (193, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:47:25', 0);
-INSERT INTO `sys_oper_log` VALUES (194, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,248,249,250,251,252,253]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:47:35', 0);
-INSERT INTO `sys_oper_log` VALUES (195, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":18,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"d53bc5adf9d94423ab00010afc726afd.jpg\",\"filePath\":\"images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/d53bc5adf9d94423ab00010afc726afd.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:48:03.0698288\",\"remark\":null}}', 0, NULL, '2026-02-02 23:48:03', 0);
-INSERT INTO `sys_oper_log` VALUES (196, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":12,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:48:03.7784222\",\"updateTime\":\"2026-02-02T23:48:03.779419\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:48:04', 0);
-INSERT INTO `sys_oper_log` VALUES (197, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":19,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"filePath\":\"images/2026/02/02/8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/8c840f34120849e4851ee1d1c5c1e37d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:48:31.6491554\",\"remark\":null}}', 0, NULL, '2026-02-02 23:48:32', 0);
-INSERT INTO `sys_oper_log` VALUES (198, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":11,\"name\":\"12\",\"phone\":\"122222222\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:38:03\",\"updateTime\":\"2026-02-02T23:38:03\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:48:56', 0);
-INSERT INTO `sys_oper_log` VALUES (199, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":20,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"1bd9460f122741c28e20f77d1d231a6d.jpg\",\"filePath\":\"images/2026/02/02/1bd9460f122741c28e20f77d1d231a6d.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/1bd9460f122741c28e20f77d1d231a6d.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:49:05.7732622\",\"remark\":null}}', 0, NULL, '2026-02-02 23:49:06', 0);
-INSERT INTO `sys_oper_log` VALUES (200, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":12,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":0,\"createTime\":\"2026-02-02T23:48:04\",\"updateTime\":\"2026-02-02T23:48:04\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:08', 0);
-INSERT INTO `sys_oper_log` VALUES (201, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/11', '127.0.0.1', '[11]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:11', 0);
-INSERT INTO `sys_oper_log` VALUES (202, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/12', '127.0.0.1', '[12]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:14', 0);
-INSERT INTO `sys_oper_log` VALUES (203, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":21,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"filePath\":\"images/2026/02/02/7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/7eaebea3ffeb4b67a6a74fee66b2f41c.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:49:21.9637381\",\"remark\":null}}', 0, NULL, '2026-02-02 23:49:22', 0);
-INSERT INTO `sys_oper_log` VALUES (204, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":13,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"1\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:49:27.3862397\",\"updateTime\":\"2026-02-02T23:49:27.3862397\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:49:27', 0);
-INSERT INTO `sys_oper_log` VALUES (205, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:53:29', 0);
-INSERT INTO `sys_oper_log` VALUES (206, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,254,255,256,257,258,259]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:53:45', 0);
-INSERT INTO `sys_oper_log` VALUES (207, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":22,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"199c326d1eed480dafedf70e10375b91.jpg\",\"filePath\":\"images/2026/02/02/199c326d1eed480dafedf70e10375b91.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/199c326d1eed480dafedf70e10375b91.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:54:08.8939937\",\"remark\":null}}', 0, NULL, '2026-02-02 23:54:09', 0);
-INSERT INTO `sys_oper_log` VALUES (208, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":14,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:54:15.4908614\",\"updateTime\":\"2026-02-02T23:54:15.4908614\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:15', 0);
-INSERT INTO `sys_oper_log` VALUES (209, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/14', '127.0.0.1', '[14]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:19', 0);
-INSERT INTO `sys_oper_log` VALUES (210, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":23,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"filePath\":\"images/2026/02/02/47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/47e7d35c2f3349c3aef90071f21ecde5.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:54:27.5184948\",\"remark\":null}}', 0, NULL, '2026-02-02 23:54:28', 0);
-INSERT INTO `sys_oper_log` VALUES (211, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":15,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:54:43.7524124\",\"updateTime\":\"2026-02-02T23:54:43.7524124\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:54:44', 0);
-INSERT INTO `sys_oper_log` VALUES (212, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/13', '127.0.0.1', '[13]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:20', 0);
-INSERT INTO `sys_oper_log` VALUES (213, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/15', '127.0.0.1', '[15]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:22', 0);
-INSERT INTO `sys_oper_log` VALUES (214, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-02 23:57:31', 0);
-INSERT INTO `sys_oper_log` VALUES (215, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-02 23:57:43', 0);
-INSERT INTO `sys_oper_log` VALUES (216, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,260,261,262,263,264,265]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:57:50', 0);
-INSERT INTO `sys_oper_log` VALUES (217, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":24,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"filePath\":\"images/2026/02/02/0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/02/0a8336b1efbd4d3da7e740fa9fbace00.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-02T23:58:00.9002807\",\"remark\":null}}', 0, NULL, '2026-02-02 23:58:01', 0);
-INSERT INTO `sys_oper_log` VALUES (218, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":16,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":null,\"deleted\":null,\"createTime\":\"2026-02-02T23:58:05.2950956\",\"updateTime\":\"2026-02-02T23:58:05.2950956\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-02 23:58:05', 0);
-INSERT INTO `sys_oper_log` VALUES (219, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-03 08:51:02', 0);
-INSERT INTO `sys_oper_log` VALUES (220, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-03 08:51:14', 0);
-INSERT INTO `sys_oper_log` VALUES (221, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,266,267,268,269,270,271]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:51:42', 0);
-INSERT INTO `sys_oper_log` VALUES (222, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":25,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"6589513e71ce435c9ca1ab46ca520864.jpg\",\"filePath\":\"images/2026/02/03/6589513e71ce435c9ca1ab46ca520864.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/6589513e71ce435c9ca1ab46ca520864.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:51:55.5341708\",\"remark\":null}}', 0, NULL, '2026-02-03 08:51:56', 0);
-INSERT INTO `sys_oper_log` VALUES (223, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":17,\"name\":\"1\",\"phone\":\"1\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":\"\",\"deleted\":null,\"createTime\":\"2026-02-03T08:51:57.0308485\",\"updateTime\":\"2026-02-03T08:51:57.0308485\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:51:57', 0);
-INSERT INTO `sys_oper_log` VALUES (224, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":26,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"4baf87ff9a24412585bafbf558606a5f.jpg\",\"filePath\":\"images/2026/02/03/4baf87ff9a24412585bafbf558606a5f.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/4baf87ff9a24412585bafbf558606a5f.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:52:09.5045282\",\"remark\":null}}', 0, NULL, '2026-02-03 08:52:10', 0);
-INSERT INTO `sys_oper_log` VALUES (225, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":18,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"1\",\"address\":\"1\",\"remark\":null,\"image\":\"\",\"deleted\":null,\"createTime\":\"2026-02-03T08:52:11.607751\",\"updateTime\":\"2026-02-03T08:52:11.607751\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:52:12', 0);
-INSERT INTO `sys_oper_log` VALUES (226, '移除已生成代码', 3, 'com.mars.web.controller.tool.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/tool/gen/remove-code/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-02-03 08:57:26', 0);
-INSERT INTO `sys_oper_log` VALUES (227, '生成代码到项目', 1, 'com.mars.web.controller.tool.GenController.generateToProject()', 'POST', 'admin', '/tool/gen/generate/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-system/src/main/java/com/mars/system/entity/Student.java\",\"/mars-system/src/main/java/com/mars/system/mapper/StudentMapper.java\",\"/mars-system/src/main/java/com/mars/system/service/StudentService.java\",\"/mars-system/src/main/java/com/mars/system/service/impl/StudentServiceImpl.java\",\"/mars-web/src/main/java/com/mars/web/controller/system/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-02-03 08:58:09', 0);
-INSERT INTO `sys_oper_log` VALUES (228, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,152,128,129,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,36,126,134,140,161,272,273,274,275,276,277]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:19', 0);
-INSERT INTO `sys_oper_log` VALUES (229, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":27,\"originalName\":\"FPj0uHDhtvlIgwhfEk0-Lu-bp4Duopj5_GorB8Sxbqe4pKUR4-7HxwbA7VFa8fTK.jpg\",\"fileName\":\"7365ea7837094dffb3e64258e69490c7.jpg\",\"filePath\":\"images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"fileSize\":823196,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:58:53.0509031\",\"remark\":null}}', 0, NULL, '2026-02-03 08:58:53', 0);
-INSERT INTO `sys_oper_log` VALUES (230, '学生管理', 1, 'com.mars.web.controller.system.StudentController.add()', 'POST', 'admin', '/system/student', '127.0.0.1', '{\"id\":19,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":\"http://localhost:8080/files/images/2026/02/03/7365ea7837094dffb3e64258e69490c7.jpg\",\"deleted\":null,\"createTime\":\"2026-02-03T08:58:53.813062\",\"updateTime\":\"2026-02-03T08:58:53.813062\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:54', 0);
-INSERT INTO `sys_oper_log` VALUES (231, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/18', '127.0.0.1', '[18]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:57', 0);
-INSERT INTO `sys_oper_log` VALUES (232, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/17', '127.0.0.1', '[17]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:58:59', 0);
-INSERT INTO `sys_oper_log` VALUES (233, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/16', '127.0.0.1', '[16]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:02', 0);
-INSERT INTO `sys_oper_log` VALUES (234, '上传图片', 1, 'com.mars.web.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":28,\"originalName\":\"img_v3_02t8_80c939c9-3e79-4c59-b10c-1716a88818ag.jpg\",\"fileName\":\"ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"filePath\":\"images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"url\":\"http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"fileSize\":108824,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T08:59:12.4025898\",\"remark\":null}}', 0, NULL, '2026-02-03 08:59:12', 0);
-INSERT INTO `sys_oper_log` VALUES (235, '学生管理', 2, 'com.mars.web.controller.system.StudentController.edit()', 'PUT', 'admin', '/system/student', '127.0.0.1', '{\"id\":19,\"name\":\"12\",\"phone\":\"12\",\"idCard\":\"12\",\"address\":\"12\",\"remark\":null,\"image\":\"http://localhost:8080/files/images/2026/02/03/ae8f9cdafd5b46ccbbbf4491eaf8516c.jpg\",\"deleted\":0,\"createTime\":\"2026-02-03T08:58:54\",\"updateTime\":\"2026-02-03T08:58:54\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:14', 0);
-INSERT INTO `sys_oper_log` VALUES (236, '学生管理', 3, 'com.mars.web.controller.system.StudentController.remove()', 'DELETE', 'admin', '/system/student/19', '127.0.0.1', '[19]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 08:59:22', 0);
-INSERT INTO `sys_oper_log` VALUES (237, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":29,\"originalName\":\"caa41ac5c974e4fa96b1df176aeba849.png\",\"fileName\":\"7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"filePath\":\"2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"url\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com/2026/02/03/7dee1e8a6c254fbc83932ec3a65ebb33.png\",\"fileSize\":16286,\"fileType\":\"image/png\",\"fileSuffix\":\".png\",\"storageType\":\"aliyun\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-03T09:01:55.1847937\",\"remark\":null}}', 0, NULL, '2026-02-03 09:01:55', 0);
-INSERT INTO `sys_oper_log` VALUES (238, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/sys/file/batch', '127.0.0.1', '[15]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-03 10:24:00', 0);
-INSERT INTO `sys_oper_log` VALUES (239, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":30,\"originalName\":\"profile.jpg\",\"fileName\":\"8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"filePath\":\"2026/02/07/8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"url\":\"https://mars-coder.oss-cn-beijing.aliyuncs.com/files/2026/02/07/8961fe8a8a1f494aa5600c9d9f66318f.jpg\",\"fileSize\":93672,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T09:48:10.2173522\",\"remark\":null}}', 0, NULL, '2026-02-07 09:48:10', 0);
-INSERT INTO `sys_oper_log` VALUES (240, '字典类型', 3, 'com.mars.web.controller.system.SysDictTypeController.delete()', 'DELETE', 'admin', '/api/sys/dict/type/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:33:54', 0);
-INSERT INTO `sys_oper_log` VALUES (241, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":5,\"createTime\":\"2026-01-31T22:30:46\",\"updateTime\":\"2026-01-31T22:30:46\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars666\",\"password\":null,\"nickname\":\"mars666\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:10', 0);
-INSERT INTO `sys_oper_log` VALUES (242, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":4,\"createTime\":\"2026-01-31T20:49:34\",\"updateTime\":\"2026-01-31T20:49:34\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":3,\"deptName\":null,\"username\":\"lisi\",\"password\":null,\"nickname\":\"lisi\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:17', 0);
-INSERT INTO `sys_oper_log` VALUES (243, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:26', 0);
-INSERT INTO `sys_oper_log` VALUES (244, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":3,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"username\":\"mars\",\"password\":null,\"nickname\":\"mars\",\"avatar\":null,\"email\":\"1121@qq.com\",\"phone\":\"18888888881\",\"gender\":1,\"status\":1,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:43', 0);
-INSERT INTO `sys_oper_log` VALUES (245, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:58:21\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":1,\"deptName\":null,\"username\":\"admin\",\"password\":null,\"nickname\":\"超级管理员\",\"avatar\":null,\"email\":null,\"phone\":null,\"gender\":0,\"status\":1,\"remark\":null},\"roleIds\":[1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:39:51', 0);
-INSERT INTO `sys_oper_log` VALUES (246, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":2,\"createTime\":\"2026-01-29T23:21:12\",\"updateTime\":\"2026-01-29T23:21:12\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":4,\"deptName\":null,\"username\":\"test\",\"password\":null,\"nickname\":\"test\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"1888888888\",\"gender\":1,\"status\":0,\"remark\":\"\"},\"roleIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:45:39', 0);
-INSERT INTO `sys_oper_log` VALUES (247, '部门管理', 2, 'com.mars.web.controller.system.SysDeptController.update()', 'PUT', 'admin', '/api/sys/dept', '127.0.0.1', '{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":0,\"ancestors\":\"0\",\"deptName\":\"火星网络科技\",\"sort\":0,\"leader\":\"管理员\",\"phone\":null,\"email\":null,\"status\":1,\"children\":[{\"id\":2,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"技术部\",\"sort\":1,\"leader\":\"张三\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null},{\"id\":3,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"产品部\",\"sort\":2,\"leader\":\"李四\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null},{\"id\":4,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":null,\"deleted\":0,\"parentId\":1,\"ancestors\":\"0,1\",\"deptName\":\"运营部\",\"sort\":3,\"leader\":\"王五\",\"phone\":null,\"email\":null,\"status\":1,\"children\":null}]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 15:52:59', 0);
-INSERT INTO `sys_oper_log` VALUES (248, '用户管理', 2, 'com.mars.web.controller.system.SysUserController.approve()', 'POST', 'admin', '/api/sys/user/6/approve', '127.0.0.1', '6', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:01:26', 0);
-INSERT INTO `sys_oper_log` VALUES (249, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":31,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"e65166e0cdac405ea5796650dae2d331.jpg\",\"filePath\":\"2026/02/07/e65166e0cdac405ea5796650dae2d331.jpg\",\"url\":\"http://localhost:8080/files/2026/02/07/e65166e0cdac405ea5796650dae2d331.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:09:38.0325839\",\"remark\":null}}', 0, NULL, '2026-02-07 16:09:38', 0);
-INSERT INTO `sys_oper_log` VALUES (250, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":32,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"484b47f7dda444cd8efe94ba67549862.jpg\",\"filePath\":\"2026/02/07/484b47f7dda444cd8efe94ba67549862.jpg\",\"url\":\"http://localhost:8080/files/2026/02/07/484b47f7dda444cd8efe94ba67549862.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:09:52.7168384\",\"remark\":null}}', 0, NULL, '2026-02-07 16:09:53', 0);
-INSERT INTO `sys_oper_log` VALUES (251, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":33,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"filePath\":\"2026/02/07/00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"url\":\"/files/2026/02/07/00b8f47b50a34bc7b06b8f9aefd78c13.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:22:03.8842027\",\"remark\":null}}', 0, NULL, '2026-02-07 16:22:04', 0);
-INSERT INTO `sys_oper_log` VALUES (252, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16,9,8]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:25:27', 0);
-INSERT INTO `sys_oper_log` VALUES (253, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[7,6,5,4,3,2,1]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:25:31', 0);
-INSERT INTO `sys_oper_log` VALUES (254, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":34,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"1a873f3def2944cfa92b5ff2e1517330.jpg\",\"filePath\":\"2026/02/07/1a873f3def2944cfa92b5ff2e1517330.jpg\",\"url\":\"/files/2026/02/07/1a873f3def2944cfa92b5ff2e1517330.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:25:35.9542121\",\"remark\":null}}', 0, NULL, '2026-02-07 16:25:36', 0);
-INSERT INTO `sys_oper_log` VALUES (255, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[34]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:29:35', 0);
-INSERT INTO `sys_oper_log` VALUES (256, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":35,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"filePath\":\"2026/02/07/40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"url\":\"/api/files/2026/02/07/40dbec736c2848e59b8f96f1f5cbfc3b.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:29:40.8707584\",\"remark\":null}}', 0, NULL, '2026-02-07 16:29:41', 0);
-INSERT INTO `sys_oper_log` VALUES (257, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[35]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:30:03', 0);
-INSERT INTO `sys_oper_log` VALUES (258, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":36,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"filePath\":\"2026/02/07/8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"url\":\"/api/files/2026/02/07/8889ce50963641c7bc6e08303e1a7bc7.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:30:07.2482939\",\"remark\":null}}', 0, NULL, '2026-02-07 16:30:07', 0);
-INSERT INTO `sys_oper_log` VALUES (259, '上传文件', 1, 'com.mars.web.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":37,\"originalName\":\"img_v3_02um_28a3adbb-e6be-44bf-aea8-eddc766dc36g.jpg\",\"fileName\":\"6d2e629e1bf64af0a2003b9c07747000.jpg\",\"filePath\":\"2026/02/07/6d2e629e1bf64af0a2003b9c07747000.jpg\",\"url\":\"/api/files/2026/02/07/6d2e629e1bf64af0a2003b9c07747000.jpg\",\"fileSize\":100417,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":1,\"createBy\":\"1\",\"createTime\":\"2026-02-07T16:32:48.7832288\",\"remark\":null}}', 0, NULL, '2026-02-07 16:32:49', 0);
-INSERT INTO `sys_oper_log` VALUES (260, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[12]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:32:59', 0);
-INSERT INTO `sys_oper_log` VALUES (261, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[14]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:33:40', 0);
-INSERT INTO `sys_oper_log` VALUES (262, '移动文件', 2, 'com.mars.web.controller.file.SysFileController.moveToGroup()', 'POST', 'admin', '/api/sys/file/move', '127.0.0.1', '{\"fileIds\":[36],\"groupId\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:33:52', 0);
-INSERT INTO `sys_oper_log` VALUES (263, '批量删除文件', 3, 'com.mars.web.controller.file.SysFileController.deleteBatch()', 'DELETE', 'admin', '/api/sys/file/batch', '127.0.0.1', '[37,36,11]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:34:14', 0);
-INSERT INTO `sys_oper_log` VALUES (264, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,2,170,6,10,14,18,23,27,32,34,37,39,43,154,135,162,272,1,22,31,36,134,140,161]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:47:05', 0);
-INSERT INTO `sys_oper_log` VALUES (265, '角色管理', 2, 'com.mars.web.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29T22:42:08\",\"updateTime\":\"2026-01-29T22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,163,164,165,166,167,168,169,171,172,173,174,175,273,274,275,276,277,2,170,6,10,14,18,23,27,32,34,37,39,43,154,135,162,272,1,22,31,36,134,140,161,126,127,152,128,129]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-07 16:47:14', 0);
+INSERT INTO `sys_oper_log` VALUES (611, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":280,\"createTime\":\"2026-02-25 15:56:46\",\"updateTime\":\"2026-02-25 15:56:46\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":2,\"name\":\"用户导入\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:import\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:56:46', 38);
+INSERT INTO `sys_oper_log` VALUES (612, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":281,\"createTime\":\"2026-02-25 15:57:01\",\"updateTime\":\"2026-02-25 15:57:01\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":2,\"name\":\"用户导出\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"sys:user:export\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:57:01', 13);
+INSERT INTO `sys_oper_log` VALUES (613, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,22,31,36,126,134,140,161,2,280,281,1],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:57:29', 167);
+INSERT INTO `sys_oper_log` VALUES (614, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 15:57:37', 272);
+INSERT INTO `sys_oper_log` VALUES (615, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":18,\"createTime\":\"2026-02-25 15:57:37\",\"updateTime\":\"2026-02-25 15:57:37\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":null,\"postNames\":null,\"username\":\"11\",\"password\":null,\"nickname\":\"11\",\"avatar\":null,\"email\":\"111@qq.com\",\"phone\":\"18483689569\",\"gender\":1,\"status\":1,\"remark\":null,\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 15:58:01', 22);
+INSERT INTO `sys_oper_log` VALUES (616, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 16:00:18', 118);
+INSERT INTO `sys_oper_log` VALUES (617, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.delete()', 'DELETE', 'admin', '/api/sys/user/19', '127.0.0.1', '19', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:13:45', 33);
+INSERT INTO `sys_oper_log` VALUES (618, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:13:53', 388);
+INSERT INTO `sys_oper_log` VALUES (619, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.delete()', 'DELETE', 'admin', '/api/sys/user/18', '127.0.0.1', '18', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:14:10', 11);
+INSERT INTO `sys_oper_log` VALUES (620, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:14:15', 105);
+INSERT INTO `sys_oper_log` VALUES (621, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":1,\"successCount\":0,\"errors\":[\"用户[222]导入失败: \\r\\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\r\\n### The error may exist in com/mars/system/mapper/SysUserMapper.java (best guess)\\r\\n### The error may involve com.mars.system.mapper.SysUserMapper.insert-Inline\\r\\n### The error occurred while setting parameters\\r\\n### SQL: INSERT INTO sys_user  ( dept_id, username, password, nickname,  email, phone, gender, status,  user_type,  is_quit, create_time, update_time, create_by, update_by, deleted )  VALUES (  ?, ?, ?, ?,  ?, ?, ?, ?,  ?,  ?, ?, ?, ?, ?, ?  )\\r\\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'222\' for key \'sys_user.uk_username\'\\n; Duplicate entry \'222\' for key \'sys_user.uk_username\'\"]}}', 0, NULL, '2026-02-25 16:14:22', 104);
+INSERT INTO `sys_oper_log` VALUES (622, '用户管理', 6, 'com.mars.admin.controller.system.SysUserController.importData()', 'POST', 'admin', '/api/sys/user/import', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"failCount\":0,\"successCount\":1,\"errors\":[]}}', 0, NULL, '2026-02-25 16:16:18', 113);
+INSERT INTO `sys_oper_log` VALUES (623, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '', NULL, 0, NULL, '2026-02-25 16:16:31', 61);
+INSERT INTO `sys_oper_log` VALUES (624, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '\"23\"', NULL, 0, NULL, '2026-02-25 16:19:07', 681);
+INSERT INTO `sys_oper_log` VALUES (625, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '\"23,11,10,13,14,15,16,17,5,4,2,3,1\"', NULL, 0, NULL, '2026-02-25 16:26:42', 710);
+INSERT INTO `sys_oper_log` VALUES (626, '用户管理', 5, 'com.mars.admin.controller.system.SysUserController.export()', 'GET', 'admin', '/api/sys/user/export', '127.0.0.1', '', NULL, 0, NULL, '2026-02-25 16:27:06', 89);
+INSERT INTO `sys_oper_log` VALUES (627, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.deleteBatch()', 'DELETE', 'admin', '/api/sys/user/batch', '127.0.0.1', '[23]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:28:46', 27);
+INSERT INTO `sys_oper_log` VALUES (628, '上传文件', 1, 'com.mars.admin.controller.file.SysFileController.upload()', 'POST', 'admin', '/api/sys/file/upload', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":79,\"originalName\":\"default-avatar.jpg\",\"fileName\":\"2a43fbbb30774548a73df204819fdf43.jpg\",\"filePath\":\"2026/02/25/2a43fbbb30774548a73df204819fdf43.jpg\",\"url\":\"/api/files/2026/02/25/2a43fbbb30774548a73df204819fdf43.jpg\",\"fileSize\":22859,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-02-25 16:32:19\",\"remark\":null}}', 0, NULL, '2026-02-25 16:32:19', 11);
+INSERT INTO `sys_oper_log` VALUES (629, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.deleteBatch()', 'DELETE', 'admin', '/api/sys/user/batch', '127.0.0.1', '[11,13,15,16,17,5,14]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 16:55:31', 61);
+INSERT INTO `sys_oper_log` VALUES (630, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-02-24 22:02:00\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":1,\"deptName\":\"火星网络科技\",\"postNames\":\"董事长\",\"username\":\"admin\",\"password\":null,\"nickname\":\"超级管理员\",\"avatar\":\"\",\"email\":\"111@qq.com\",\"phone\":\"18888888888\",\"gender\":0,\"status\":1,\"remark\":\"111\",\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[1],\"postIds\":[1]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 17:16:41', 31);
+INSERT INTO `sys_oper_log` VALUES (631, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-02-24 22:02:00\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"deptId\":1,\"deptName\":\"火星网络科技\",\"postNames\":\"董事长\",\"username\":\"admin\",\"password\":null,\"nickname\":\"超级管理员\",\"avatar\":\"\",\"email\":\"111@qq.com\",\"phone\":\"18888888888\",\"gender\":1,\"status\":1,\"remark\":\"111\",\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[1],\"postIds\":[1,2]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-25 17:17:10', 13);
+INSERT INTO `sys_oper_log` VALUES (632, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":2,\"title\":\"12\",\"content\":\"11\",\"noticeType\":1,\"status\":0,\"createBy\":1,\"createName\":\"超级管理员\",\"createTime\":\"2026-02-28 21:38:36\",\"updateTime\":null,\"deleted\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 21:38:37', 44);
+INSERT INTO `sys_oper_log` VALUES (633, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/2', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 21:38:40', 18);
+INSERT INTO `sys_oper_log` VALUES (634, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":3,\"title\":\"22\",\"content\":\"1212\",\"noticeType\":2,\"status\":0,\"createBy\":1,\"createName\":\"超级管理员\",\"createTime\":\"2026-02-28 21:38:46\",\"updateTime\":null,\"deleted\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 21:38:47', 11);
+INSERT INTO `sys_oper_log` VALUES (635, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/3/publish', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 21:38:49', 22);
+INSERT INTO `sys_oper_log` VALUES (636, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/3', '127.0.0.1', '3', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 21:38:58', 8);
+INSERT INTO `sys_oper_log` VALUES (637, '菜单管理', 2, 'com.mars.admin.controller.system.SysMenuController.update()', 'PUT', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":282,\"createTime\":\"2026-02-28 22:30:41\",\"updateTime\":\"2026-02-28 22:30:41\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"parentId\":36,\"name\":\"SQL监控\",\"type\":2,\"path\":\"/monitor/druid\",\"component\":\"/monitor/druid/index\",\"permission\":\"monitor:druid:list\",\"icon\":\"PieChartOutline\",\"sort\":4,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 22:32:24', 27);
+INSERT INTO `sys_oper_log` VALUES (638, '菜单管理', 1, 'com.mars.admin.controller.system.SysMenuController.create()', 'POST', 'admin', '/api/sys/menu', '127.0.0.1', '{\"id\":284,\"createTime\":\"2026-02-28 22:58:29\",\"updateTime\":\"2026-02-28 22:58:29\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"parentId\":283,\"name\":\"访问统计列表\",\"type\":3,\"path\":\"\",\"component\":\"\",\"permission\":\"monitor:apiAccess:list\",\"icon\":\"\",\"sort\":0,\"visible\":1,\"status\":1,\"isFrame\":0,\"children\":null}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 22:58:30', 30);
+INSERT INTO `sys_oper_log` VALUES (639, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,280,281,282,2,170,6,10,14,18,23,27,32,34,37,39,43,154,127,135,162,1,22,31,126,134,140,161,36,283,284],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 22:58:38', 175);
+INSERT INTO `sys_oper_log` VALUES (640, '用户管理', 3, 'com.mars.admin.controller.system.SysUserController.delete()', 'DELETE', 'admin', '/api/sys/user/2', '127.0.0.1', '2', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:02:26', 16);
+INSERT INTO `sys_oper_log` VALUES (641, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"11\",\"content\":\"11\",\"noticeType\":1,\"channels\":[\"station\"],\"targetType\":3,\"targetIds\":[],\"status\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:25:28', 40);
+INSERT INTO `sys_oper_log` VALUES (642, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"111\",\"content\":\"111\",\"noticeType\":1,\"channels\":[\"station\",\"webhook\"],\"targetType\":3,\"targetIds\":[],\"status\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:26:38', 13);
+INSERT INTO `sys_oper_log` VALUES (643, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/5', '127.0.0.1', '5', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:27:29', 72);
+INSERT INTO `sys_oper_log` VALUES (644, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"1111\",\"content\":\"222\",\"noticeType\":1,\"channels\":[\"station\",\"webhook\"],\"targetType\":3,\"targetIds\":[],\"status\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:27:43', 30);
+INSERT INTO `sys_oper_log` VALUES (645, '修改通知', 2, 'com.mars.admin.controller.message.SysNoticeController.update()', 'PUT', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":6,\"title\":\"1111\",\"content\":\"222\",\"noticeType\":1,\"channels\":[\"station\",\"webhook\"],\"targetType\":3,\"targetIds\":[],\"status\":1}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:28:16', 19);
+INSERT INTO `sys_oper_log` VALUES (646, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"11\",\"content\":\"222\",\"noticeType\":1,\"channels\":[\"station\",\"webhook\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:28:41', 21);
+INSERT INTO `sys_oper_log` VALUES (647, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/7/publish', '127.0.0.1', '7', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:31:46', 173827);
+INSERT INTO `sys_oper_log` VALUES (648, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/7', '127.0.0.1', '7', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:32:00', 9);
+INSERT INTO `sys_oper_log` VALUES (649, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/6', '127.0.0.1', '6', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:32:02', 7);
+INSERT INTO `sys_oper_log` VALUES (650, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"1212\",\"content\":\"22211\",\"noticeType\":1,\"channels\":[\"webhook\",\"station\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:32:12', 15);
+INSERT INTO `sys_oper_log` VALUES (651, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/8/publish', '127.0.0.1', '8', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:32:20', 5142);
+INSERT INTO `sys_oper_log` VALUES (652, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"111\",\"content\":\"222\",\"noticeType\":1,\"channels\":[\"station\",\"feishu\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:38:00', 41);
+INSERT INTO `sys_oper_log` VALUES (653, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/9/publish', '127.0.0.1', '9', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:38:03', 520);
+INSERT INTO `sys_oper_log` VALUES (654, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/9', '127.0.0.1', '9', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:44:10', 57);
+INSERT INTO `sys_oper_log` VALUES (655, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/8', '127.0.0.1', '8', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:44:12', 10);
+INSERT INTO `sys_oper_log` VALUES (656, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:44:14', 10);
+INSERT INTO `sys_oper_log` VALUES (657, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"1212\",\"content\":\"1212\",\"noticeType\":1,\"channels\":[\"dingtalk\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:46:38', 13);
+INSERT INTO `sys_oper_log` VALUES (658, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/10/publish', '127.0.0.1', '10', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:46:43', 240);
+INSERT INTO `sys_oper_log` VALUES (659, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"1212\",\"content\":\"111\",\"noticeType\":1,\"channels\":[\"dingtalk\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:47:42', 145);
+INSERT INTO `sys_oper_log` VALUES (660, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/11/publish', '127.0.0.1', '11', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:47:45', 339);
+INSERT INTO `sys_oper_log` VALUES (661, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"1212\",\"content\":\"22212\",\"noticeType\":1,\"channels\":[\"station\",\"dingtalk\",\"feishu\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:57:08', 190);
+INSERT INTO `sys_oper_log` VALUES (662, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/12/publish', '127.0.0.1', '12', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:57:18', 713);
+INSERT INTO `sys_oper_log` VALUES (663, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"31212\",\"content\":\"1212\",\"noticeType\":1,\"channels\":[\"station\",\"email\",\"feishu\",\"dingtalk\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:57:36', 22);
+INSERT INTO `sys_oper_log` VALUES (664, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/13/publish', '127.0.0.1', '13', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:57:42', 3213);
+INSERT INTO `sys_oper_log` VALUES (665, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/13/publish', '127.0.0.1', '13', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-02-28 23:57:44', 3066);
+INSERT INTO `sys_oper_log` VALUES (666, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/13', '127.0.0.1', '13', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:04:37', 37);
+INSERT INTO `sys_oper_log` VALUES (667, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/12', '127.0.0.1', '12', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:04:40', 10);
+INSERT INTO `sys_oper_log` VALUES (668, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/11', '127.0.0.1', '11', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:04:41', 12);
+INSERT INTO `sys_oper_log` VALUES (669, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"12\",\"content\":\"222\",\"noticeType\":1,\"channels\":[\"station\",\"email\",\"dingtalk\",\"feishu\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:05:01', 32);
+INSERT INTO `sys_oper_log` VALUES (670, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/14/publish', '127.0.0.1', '14', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:05:07', 2963);
+INSERT INTO `sys_oper_log` VALUES (671, '重试通知推送', 2, 'com.mars.admin.controller.message.SysNoticeController.retry()', 'POST', 'admin', '/api/sys/notice/14/retry', '127.0.0.1', '14 \"email\"', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:09:17', 2346);
+INSERT INTO `sys_oper_log` VALUES (672, '用户管理', 2, 'com.mars.admin.controller.system.SysUserController.update()', 'PUT', 'admin', '/api/sys/user', '127.0.0.1', '{\"user\":{\"id\":3,\"createTime\":\"2026-01-29 23:21:12\",\"updateTime\":\"2026-02-08 16:44:59\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"deptId\":2,\"deptName\":\"技术部\",\"postNames\":null,\"username\":\"mars11\",\"password\":null,\"nickname\":\"mars11\",\"avatar\":null,\"email\":\"wqexpore@163.com\",\"phone\":\"18888888881\",\"gender\":1,\"status\":1,\"remark\":\"\",\"userType\":\"admin\",\"openId\":null,\"isQuit\":0},\"roleIds\":[2],\"postIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:10:28', 45);
+INSERT INTO `sys_oper_log` VALUES (673, '重试通知推送', 2, 'com.mars.admin.controller.message.SysNoticeController.retry()', 'POST', 'admin', '/api/sys/notice/14/retry', '127.0.0.1', '14 \"email\"', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:10:37', 2090);
+INSERT INTO `sys_oper_log` VALUES (674, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"12\",\"content\":\"1212\",\"noticeType\":1,\"channels\":[\"station\",\"email\",\"dingtalk\",\"feishu\"],\"targetType\":3,\"targetIds\":[],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:10:48', 23);
+INSERT INTO `sys_oper_log` VALUES (675, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/15/publish', '127.0.0.1', '15', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:10:53', 2795);
+INSERT INTO `sys_oper_log` VALUES (676, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"212\",\"content\":\"1111\",\"noticeType\":1,\"channels\":[\"station\",\"email\",\"dingtalk\",\"feishu\"],\"targetType\":1,\"targetIds\":[1],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:11:29', 20);
+INSERT INTO `sys_oper_log` VALUES (677, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/16/publish', '127.0.0.1', '16', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:11:34', 1707);
+INSERT INTO `sys_oper_log` VALUES (678, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/16', '127.0.0.1', '16', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:11:47', 13);
+INSERT INTO `sys_oper_log` VALUES (679, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/15', '127.0.0.1', '15', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:12:02', 8);
+INSERT INTO `sys_oper_log` VALUES (680, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/14', '127.0.0.1', '14', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:12:03', 6);
+INSERT INTO `sys_oper_log` VALUES (681, '删除通知', 3, 'com.mars.admin.controller.message.SysNoticeController.delete()', 'DELETE', 'admin', '/api/sys/notice/10', '127.0.0.1', '10', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:12:05', 7);
+INSERT INTO `sys_oper_log` VALUES (682, '新增通知', 1, 'com.mars.admin.controller.message.SysNoticeController.create()', 'POST', 'admin', '/api/sys/notice', '127.0.0.1', '{\"id\":null,\"title\":\"12\",\"content\":\"2222\",\"noticeType\":1,\"channels\":[\"station\",\"email\",\"dingtalk\",\"feishu\"],\"targetType\":1,\"targetIds\":[1],\"status\":0}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:12:13', 12);
+INSERT INTO `sys_oper_log` VALUES (683, '发布通知', 2, 'com.mars.admin.controller.message.SysNoticeController.publish()', 'POST', 'admin', '/api/sys/notice/17/publish', '127.0.0.1', '17', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 00:12:18', 1625);
+INSERT INTO `sys_oper_log` VALUES (684, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 11:14:06', 227);
+INSERT INTO `sys_oper_log` VALUES (685, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,280,281,282,284,286,287,288,289,290],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:15:48', 161);
+INSERT INTO `sys_oper_log` VALUES (686, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,280,281,282,284,2,170,6,10,14,18,23,27,32,34,37,39,43,154,283,127,135,162,1,22,31,36,126,134,140,161],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:15:54', 120);
+INSERT INTO `sys_oper_log` VALUES (687, '角色管理', 2, 'com.mars.admin.controller.system.SysRoleController.update()', 'PUT', 'admin', '/api/sys/role', '127.0.0.1', '{\"role\":{\"id\":1,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":null,\"updateBy\":1,\"deleted\":0,\"name\":\"超级管理员\",\"code\":\"admin\",\"sort\":1,\"status\":1,\"dataScope\":1,\"remark\":\"拥有所有权限\"},\"menuIds\":[7,8,9,143,142,3,4,5,144,11,12,13,145,15,16,17,19,20,21,146,24,25,26,147,28,29,30,148,33,149,35,150,38,151,40,41,42,44,45,153,136,137,138,139,141,155,156,157,158,159,160,171,172,173,174,175,152,128,129,278,163,164,165,166,167,168,169,279,280,281,282,284,2,170,6,10,14,18,23,27,32,34,37,39,43,154,283,127,135,162,1,22,31,36,126,134,140,285,286,287,288,289,290,161],\"deptIds\":[]}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:15:59', 134);
+INSERT INTO `sys_oper_log` VALUES (688, '学生表', 1, 'com.mars.system.controller.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":5,\"studentNo\":\"12\",\"name\":\"12\",\"gender\":null,\"birthday\":null,\"phone\":\"1\",\"email\":\"1\",\"address\":\"1\",\"classId\":1,\"status\":null,\"deleted\":null,\"createTime\":\"2026-03-01 11:16:14\",\"updateTime\":\"2026-03-01 11:16:14\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:16:15', 13);
+INSERT INTO `sys_oper_log` VALUES (689, '学生表', 3, 'com.mars.system.controller.StudentController.remove()', 'DELETE', 'admin', '/api/system/student/5', '127.0.0.1', '[5]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:16:34', 17);
+INSERT INTO `sys_oper_log` VALUES (690, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 11:16:48', 21);
+INSERT INTO `sys_oper_log` VALUES (691, '字典类型', 3, 'com.mars.admin.controller.system.SysDictTypeController.delete()', 'DELETE', 'admin', '/api/sys/dict/type/1', '127.0.0.1', '1', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:18:09', 6);
+INSERT INTO `sys_oper_log` VALUES (692, '字典类型', 1, 'com.mars.admin.controller.system.SysDictTypeController.create()', 'POST', 'admin', '/api/sys/dict/type', '127.0.0.1', '{\"id\":7,\"createTime\":\"2026-01-29 22:42:08\",\"updateTime\":\"2026-01-29 22:42:08\",\"createBy\":1,\"updateBy\":1,\"deleted\":0,\"dictName\":\"用户性别\",\"dictType\":\"gender\",\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:18:21', 18);
+INSERT INTO `sys_oper_log` VALUES (693, '字典数据', 1, 'com.mars.admin.controller.system.SysDictDataController.create()', 'POST', 'admin', '/api/sys/dict/data', '127.0.0.1', '{\"id\":10,\"createTime\":\"2026-03-01 11:18:32\",\"updateTime\":\"2026-03-01 11:18:32\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"男\",\"dictValue\":\"1\",\"dictType\":\"gender\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:18:33', 12);
+INSERT INTO `sys_oper_log` VALUES (694, '字典数据', 1, 'com.mars.admin.controller.system.SysDictDataController.create()', 'POST', 'admin', '/api/sys/dict/data', '127.0.0.1', '{\"id\":11,\"createTime\":\"2026-03-01 11:18:38\",\"updateTime\":\"2026-03-01 11:18:38\",\"createBy\":1,\"updateBy\":1,\"deleted\":null,\"sort\":0,\"dictLabel\":\"女\",\"dictValue\":\"2\",\"dictType\":\"gender\",\"cssClass\":null,\"listClass\":\"default\",\"isDefault\":0,\"status\":1,\"remark\":\"\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:18:39', 7);
+INSERT INTO `sys_oper_log` VALUES (695, '修改代码生成配置', 2, 'com.mars.admin.controller.gen.GenController.update()', 'PUT', 'admin', '/api/tool/gen', '127.0.0.1', '{\"id\":4,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-09 12:44:26\",\"updateTime\":\"2026-02-09 12:44:26\",\"columns\":[{\"id\":34,\"tableId\":4,\"columnName\":\"id\",\"columnComment\":\"id\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"numberType\":true,\"timeType\":false},{\"id\":35,\"tableId\":4,\"columnName\":\"student_no\",\"columnComment\":\"学号\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"studentNo\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"numberType\":false,\"timeType\":false},{\"id\":36,\"tableId\":4,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"numberType\":false,\"timeType\":false},{\"id\":37,\"tableId\":4,\"columnName\":\"gender\",\"columnComment\":\"性别 1男 2女\",\"columnType\":\"tinyint\",\"javaType\":\"Integer\",\"javaField\":\"gender\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"select\",\"dictType\":\"gender\",\"sort\":4,\"stringType\":false,\"numberType\":true,\"timeType\":false},{\"id\":38,\"tableId\":4,\"columnName\":\"birthday\",\"columnComment\":\"出生日期\",\"columnType\":\"date\",\"javaType\":\"LocalDate\",\"javaField\":\"birthday\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"datetime\",\"dictType\":\"\",\"sort\":5,\"stringType\":false,\"numberTyp', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:24:19', 69);
+INSERT INTO `sys_oper_log` VALUES (696, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 11:24:24', 203);
+INSERT INTO `sys_oper_log` VALUES (697, '学生表', 1, 'com.mars.system.controller.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":6,\"studentNo\":\"1\",\"name\":\"1\",\"gender\":1,\"birthday\":null,\"phone\":\"11\",\"email\":\"1\",\"address\":\"1\",\"classId\":1,\"status\":1,\"deleted\":null,\"createTime\":\"2026-03-01 11:26:55\",\"updateTime\":\"2026-03-01 11:26:55\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:26:55', 28);
+INSERT INTO `sys_oper_log` VALUES (698, '学生表', 3, 'com.mars.system.controller.StudentController.remove()', 'DELETE', 'admin', '/api/system/student/6', '127.0.0.1', '[6]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:27:08', 15);
+INSERT INTO `sys_oper_log` VALUES (699, '修改代码生成配置', 2, 'com.mars.admin.controller.gen.GenController.update()', 'PUT', 'admin', '/api/tool/gen', '127.0.0.1', '{\"id\":4,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-09 12:44:26\",\"updateTime\":\"2026-02-09 12:44:26\",\"columns\":[{\"id\":34,\"tableId\":4,\"columnName\":\"id\",\"columnComment\":\"id\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":35,\"tableId\":4,\"columnName\":\"student_no\",\"columnComment\":\"学号\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"studentNo\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":36,\"tableId\":4,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":37,\"tableId\":4,\"columnName\":\"gender\",\"columnComment\":\"性别 1男 2女\",\"columnType\":\"tinyint\",\"javaType\":\"Integer\",\"javaField\":\"gender\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"select\",\"dictType\":\"gender\",\"sort\":4,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":38,\"tableId\":4,\"columnName\":\"birthday\",\"columnComment\":\"出生日期\",\"columnType\":\"date\",\"javaType\":\"LocalDate\",\"javaField\":\"birthday\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"datetime\",\"dictType\":\"\",\"sort\":5,\"stringType\":false,\"timeType\"', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:27:45', 41);
+INSERT INTO `sys_oper_log` VALUES (700, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 11:27:49', 22);
+INSERT INTO `sys_oper_log` VALUES (701, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 11:27:57', 145);
+INSERT INTO `sys_oper_log` VALUES (702, '上传图片', 1, 'com.mars.admin.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/api/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":80,\"originalName\":\"default-avatar.jpg\",\"fileName\":\"455f90b28929422db2b6beac0174be00.jpg\",\"filePath\":\"images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg\",\"url\":\"/api/files/images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg\",\"fileSize\":22859,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-03-01 11:29:28\",\"remark\":null}}', 0, NULL, '2026-03-01 11:29:29', 39);
+INSERT INTO `sys_oper_log` VALUES (703, '学生表', 1, 'com.mars.system.controller.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":7,\"studentNo\":\"12\",\"name\":\"12\",\"gender\":1,\"birthday\":null,\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/455f90b28929422db2b6beac0174be00.jpg\",\"classId\":2,\"status\":1,\"deleted\":null,\"createTime\":\"2026-03-01 11:29:31\",\"updateTime\":\"2026-03-01 11:29:31\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 11:29:32', 33);
+INSERT INTO `sys_oper_log` VALUES (704, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 11:46:03', 44);
+INSERT INTO `sys_oper_log` VALUES (705, '修改代码生成配置', 2, 'com.mars.admin.controller.gen.GenController.update()', 'PUT', 'admin', '/api/tool/gen', '127.0.0.1', '{\"id\":4,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"formLayout\":\"grid\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-09 12:44:26\",\"updateTime\":\"2026-02-09 12:44:26\",\"columns\":[{\"id\":34,\"tableId\":4,\"columnName\":\"id\",\"columnComment\":\"id\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"timeType\":false,\"numberType\":true,\"stringType\":false},{\"id\":35,\"tableId\":4,\"columnName\":\"student_no\",\"columnComment\":\"学号\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"studentNo\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"timeType\":false,\"numberType\":false,\"stringType\":true},{\"id\":36,\"tableId\":4,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"timeType\":false,\"numberType\":false,\"stringType\":true},{\"id\":37,\"tableId\":4,\"columnName\":\"gender\",\"columnComment\":\"性别 1男 2女\",\"columnType\":\"tinyint\",\"javaType\":\"Integer\",\"javaField\":\"gender\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"select\",\"dictType\":\"gender\",\"sort\":4,\"timeType\":false,\"numberType\":true,\"stringType\":false},{\"id\":38,\"tableId\":4,\"columnName\":\"birthday\",\"columnComment\":\"出生日期\",\"columnType\":\"date\",\"javaType\":\"LocalDate\",\"javaField\":\"birthday\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"datetime\",\"dictType\":\"\",\"sort\":5,\"timeType', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:04:41', 66);
+INSERT INTO `sys_oper_log` VALUES (706, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 12:04:48', 158);
+INSERT INTO `sys_oper_log` VALUES (707, '学生表', 3, 'com.mars.system.controller.StudentController.remove()', 'DELETE', 'admin', '/api/system/student/7', '127.0.0.1', '[7]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:06:11', 37);
+INSERT INTO `sys_oper_log` VALUES (708, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 12:06:19', 34);
+INSERT INTO `sys_oper_log` VALUES (709, '修改代码生成配置', 2, 'com.mars.admin.controller.gen.GenController.update()', 'PUT', 'admin', '/api/tool/gen', '127.0.0.1', '{\"id\":4,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"formLayout\":\"grid\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-09 12:44:26\",\"updateTime\":\"2026-02-09 12:44:26\",\"columns\":[{\"id\":34,\"tableId\":4,\"columnName\":\"id\",\"columnComment\":\"id\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":35,\"tableId\":4,\"columnName\":\"student_no\",\"columnComment\":\"学号\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"studentNo\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":36,\"tableId\":4,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"stringType\":true,\"timeType\":false,\"numberType\":false},{\"id\":37,\"tableId\":4,\"columnName\":\"gender\",\"columnComment\":\"性别\",\"columnType\":\"tinyint\",\"javaType\":\"Integer\",\"javaField\":\"gender\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"select\",\"dictType\":\"gender\",\"sort\":4,\"stringType\":false,\"timeType\":false,\"numberType\":true},{\"id\":38,\"tableId\":4,\"columnName\":\"birthday\",\"columnComment\":\"出生日期\",\"columnType\":\"date\",\"javaType\":\"LocalDate\",\"javaField\":\"birthday\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"datetime\",\"dictType\":\"\",\"sort\":5,\"stringType\":fa', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:06:54', 46);
+INSERT INTO `sys_oper_log` VALUES (710, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 12:07:02', 209);
+INSERT INTO `sys_oper_log` VALUES (711, '上传图片', 1, 'com.mars.admin.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/api/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":81,\"originalName\":\"default-avatar.jpg\",\"fileName\":\"25d29e831ee3432ebd87a59c7b53fade.jpg\",\"filePath\":\"images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg\",\"url\":\"/api/files/images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg\",\"fileSize\":22859,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-03-01 12:08:27\",\"remark\":null}}', 0, NULL, '2026-03-01 12:08:27', 41);
+INSERT INTO `sys_oper_log` VALUES (712, '学生表', 1, 'com.mars.system.controller.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":8,\"studentNo\":\"11\",\"name\":\"1\",\"gender\":1,\"birthday\":null,\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/25d29e831ee3432ebd87a59c7b53fade.jpg\",\"classId\":1,\"status\":1,\"deleted\":null,\"createTime\":\"2026-03-01 12:08:31\",\"updateTime\":\"2026-03-01 12:08:31\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:08:31', 22);
+INSERT INTO `sys_oper_log` VALUES (713, '修改代码生成配置', 2, 'com.mars.admin.controller.gen.GenController.update()', 'PUT', 'admin', '/api/tool/gen', '127.0.0.1', '{\"id\":4,\"tableName\":\"student\",\"tableComment\":\"学生表\",\"className\":\"Student\",\"packageName\":\"com.mars.system\",\"moduleName\":\"system\",\"businessName\":\"student\",\"functionName\":\"学生表\",\"author\":\"Mars\",\"genType\":\"crud\",\"genPath\":\"/\",\"frontType\":\"naive-ui\",\"formLayout\":\"grid\",\"parentMenuId\":null,\"remark\":null,\"createTime\":\"2026-02-09 12:44:26\",\"updateTime\":\"2026-02-09 12:44:26\",\"columns\":[{\"id\":34,\"tableId\":4,\"columnName\":\"id\",\"columnComment\":\"id\",\"columnType\":\"bigint\",\"javaType\":\"Long\",\"javaField\":\"id\",\"isPk\":1,\"isIncrement\":1,\"isRequired\":1,\"isInsert\":0,\"isEdit\":0,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":1,\"numberType\":true,\"stringType\":false,\"timeType\":false},{\"id\":35,\"tableId\":4,\"columnName\":\"student_no\",\"columnComment\":\"学号\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"studentNo\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":2,\"numberType\":false,\"stringType\":true,\"timeType\":false},{\"id\":36,\"tableId\":4,\"columnName\":\"name\",\"columnComment\":\"姓名\",\"columnType\":\"varchar(50)\",\"javaType\":\"String\",\"javaField\":\"name\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":1,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":1,\"queryType\":\"EQ\",\"htmlType\":\"input\",\"dictType\":\"\",\"sort\":3,\"numberType\":false,\"stringType\":true,\"timeType\":false},{\"id\":37,\"tableId\":4,\"columnName\":\"gender\",\"columnComment\":\"性别\",\"columnType\":\"tinyint\",\"javaType\":\"Integer\",\"javaField\":\"gender\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"select\",\"dictType\":\"gender\",\"sort\":4,\"numberType\":true,\"stringType\":false,\"timeType\":false},{\"id\":38,\"tableId\":4,\"columnName\":\"birthday\",\"columnComment\":\"出生日期\",\"columnType\":\"date\",\"javaType\":\"LocalDate\",\"javaField\":\"birthday\",\"isPk\":0,\"isIncrement\":0,\"isRequired\":0,\"isInsert\":1,\"isEdit\":1,\"isList\":1,\"isQuery\":0,\"queryType\":\"EQ\",\"htmlType\":\"datetime\",\"dictType\":\"\",\"sort\":5,\"numberType\":fa', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:09:27', 41);
+INSERT INTO `sys_oper_log` VALUES (714, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 12:09:32', 28);
+INSERT INTO `sys_oper_log` VALUES (715, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 12:09:45', 206);
+INSERT INTO `sys_oper_log` VALUES (716, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 12:14:37', 44);
+INSERT INTO `sys_oper_log` VALUES (717, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 12:15:15', 266);
+INSERT INTO `sys_oper_log` VALUES (718, '学生表', 3, 'com.mars.system.controller.StudentController.remove()', 'DELETE', 'admin', '/api/system/student/8', '127.0.0.1', '[8]', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:15:55', 54);
+INSERT INTO `sys_oper_log` VALUES (719, '上传图片', 1, 'com.mars.admin.controller.file.SysFileController.uploadImage()', 'POST', 'admin', '/api/sys/file/upload/image', '127.0.0.1', '', '{\"code\":200,\"message\":\"操作成功\",\"data\":{\"id\":82,\"originalName\":\"default-avatar.jpg\",\"fileName\":\"0f6511a67ffb431abf18fa218066d992.jpg\",\"filePath\":\"images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"url\":\"/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"fileSize\":22859,\"fileType\":\"image/jpeg\",\"fileSuffix\":\".jpg\",\"storageType\":\"local\",\"bucketName\":null,\"groupId\":null,\"createBy\":\"1\",\"createTime\":\"2026-03-01 12:16:10\",\"remark\":null}}', 0, NULL, '2026-03-01 12:16:11', 23);
+INSERT INTO `sys_oper_log` VALUES (720, '学生表', 1, 'com.mars.system.controller.StudentController.add()', 'POST', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":9,\"studentNo\":\"1\",\"name\":\"1\",\"gender\":1,\"birthday\":\"2026-03-02\",\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"classId\":1,\"status\":1,\"deleted\":null,\"createTime\":\"2026-03-01 12:16:12\",\"updateTime\":\"2026-03-01 12:16:12\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:16:13', 15);
+INSERT INTO `sys_oper_log` VALUES (721, '移除已生成代码', 3, 'com.mars.admin.controller.gen.GenController.removeGeneratedCode()', 'DELETE', 'admin', '/api/tool/gen/remove-code/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已删除\"]}', 0, NULL, '2026-03-01 12:20:10', 46);
+INSERT INTO `sys_oper_log` VALUES (722, '生成代码到项目', 1, 'com.mars.admin.controller.gen.GenController.generateToProject()', 'POST', 'admin', '/api/tool/gen/generate/4', '127.0.0.1', '4', '{\"code\":200,\"message\":\"操作成功\",\"data\":[\"/mars-core/mars-biz/src/main/java/com/mars/biz/entity/Student.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/StudentMapper.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/StudentService.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/StudentServiceImpl.java\",\"/mars-core/mars-biz/src/main/java/com/mars/biz/controller/StudentController.java\",\"/mars-ui/src/api/student.ts\",\"/mars-ui/src/views/system/student/index.vue\",\"[数据库] 菜单数据已自动创建\"]}', 0, NULL, '2026-03-01 12:20:17', 226);
+INSERT INTO `sys_oper_log` VALUES (723, '学生表', 2, 'com.mars.system.controller.StudentController.edit()', 'PUT', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":9,\"studentNo\":\"1\",\"name\":\"1\",\"gender\":1,\"birthday\":\"2026-03-01\",\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"classId\":1,\"status\":1,\"deleted\":0,\"createTime\":\"2026-03-01 04:16:13\",\"updateTime\":\"2026-03-01 04:16:13\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:21:39', 28);
+INSERT INTO `sys_oper_log` VALUES (724, '学生表', 2, 'com.mars.system.controller.StudentController.edit()', 'PUT', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":9,\"studentNo\":\"1\",\"name\":\"1\",\"gender\":1,\"birthday\":\"2026-03-02\",\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"classId\":1,\"status\":1,\"deleted\":0,\"createTime\":\"2026-02-28 20:16:13\",\"updateTime\":\"2026-02-28 20:16:13\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:21:45', 10);
+INSERT INTO `sys_oper_log` VALUES (725, '学生表', 2, 'com.mars.system.controller.StudentController.edit()', 'PUT', 'admin', '/api/system/student', '127.0.0.1', '{\"id\":9,\"studentNo\":\"1\",\"name\":\"1\",\"gender\":1,\"birthday\":\"2026-03-03\",\"phone\":\"1\",\"email\":\"1\",\"address\":\"/api/files/images/2026/03/01/0f6511a67ffb431abf18fa218066d992.jpg\",\"classId\":1,\"status\":1,\"deleted\":0,\"createTime\":\"2026-02-28 12:16:13\",\"updateTime\":\"2026-02-28 12:16:13\"}', '{\"code\":200,\"message\":\"操作成功\",\"data\":null}', 0, NULL, '2026-03-01 12:21:51', 12);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1999,6 +3493,7 @@ INSERT INTO `sys_oper_log` VALUES (265, '角色管理', 2, 'com.mars.web.control
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父岗位ID',
   `post_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位编码',
   `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位名称',
   `sort` int NULL DEFAULT 0 COMMENT '显示顺序',
@@ -2011,16 +3506,18 @@ CREATE TABLE `sys_post`  (
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_post_code`(`post_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '岗位表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '岗位表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, 1, '公司董事长', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (2, 'cto', '技术总监', 2, 1, '技术总监', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (3, 'pm', '产品经理', 3, 1, '产品经理', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (4, 'dev', '开发工程师', 4, 1, '开发工程师', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
-INSERT INTO `sys_post` VALUES (5, '11', '11', 0, 1, '', '2026-01-29 23:22:33', '2026-01-29 23:22:36', 1, 1, 1);
+INSERT INTO `sys_post` VALUES (1, 0, 'ceo', '董事长', 1, 1, '公司董事长', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, NULL, 0);
+INSERT INTO `sys_post` VALUES (2, 6, 'cto', '技术总监', 2, 1, '技术总监', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (3, 2, 'pm', '产品经理', 3, 1, '产品经理', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (4, 6, 'dev', '开发工程师', 4, 1, '开发工程师', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_post` VALUES (6, 1, 'manager', '总经理', 2, 1, '', '2026-01-29 22:42:08', '2026-01-29 22:42:08', 1, 1, 0);
+INSERT INTO `sys_post` VALUES (7, 2, 'test_coder', '测试工程师', 0, 1, '', '2026-02-09 15:47:35', '2026-02-09 17:03:40', 1, 1, 1);
+INSERT INTO `sys_post` VALUES (8, 2, 'test001', '测试', 0, 1, '', '2026-02-10 16:42:47', '2026-02-10 16:42:47', 1, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -2038,6 +3535,7 @@ CREATE TABLE `sys_role`  (
   `create_by` bigint NULL DEFAULT NULL COMMENT '创建人',
   `update_by` bigint NULL DEFAULT NULL COMMENT '更新人',
   `deleted` tinyint NULL DEFAULT 0 COMMENT '删除标识(0-未删除 1-已删除)',
+  `data_scope` tinyint NOT NULL DEFAULT 1 COMMENT '数据范围(1全部 2自定义 3本部门 4本部门及以下 5仅本人)',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_code`(`code` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
@@ -2045,8 +3543,24 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, 1, '拥有所有权限', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
-INSERT INTO `sys_role` VALUES (2, '普通用户', 'user', 2, 1, '普通用户角色', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0);
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, 1, '拥有所有权限', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0, 1);
+INSERT INTO `sys_role` VALUES (2, '普通用户', 'user', 2, 1, '普通用户角色', '2026-01-29 22:42:08', '2026-01-29 22:42:08', NULL, 1, 0, 3);
+
+-- ----------------------------
+-- Table structure for sys_role_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `role_id` bigint NOT NULL,
+  `dept_id` bigint NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_role_dept`(`role_id` ASC, `dept_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色-部门 数据权限关联' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -2059,147 +3573,225 @@ CREATE TABLE `sys_role_menu`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE,
   INDEX `idx_menu_id`(`menu_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6645 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8844 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色菜单关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (5001, 2, 19);
-INSERT INTO `sys_role_menu` VALUES (5002, 2, 20);
-INSERT INTO `sys_role_menu` VALUES (5003, 2, 21);
-INSERT INTO `sys_role_menu` VALUES (5004, 2, 44);
-INSERT INTO `sys_role_menu` VALUES (5005, 2, 45);
-INSERT INTO `sys_role_menu` VALUES (5006, 2, 139);
-INSERT INTO `sys_role_menu` VALUES (5007, 2, 143);
-INSERT INTO `sys_role_menu` VALUES (5008, 2, 144);
-INSERT INTO `sys_role_menu` VALUES (5009, 2, 145);
-INSERT INTO `sys_role_menu` VALUES (5010, 2, 146);
-INSERT INTO `sys_role_menu` VALUES (5011, 2, 147);
-INSERT INTO `sys_role_menu` VALUES (5012, 2, 148);
-INSERT INTO `sys_role_menu` VALUES (5013, 2, 149);
-INSERT INTO `sys_role_menu` VALUES (5014, 2, 150);
-INSERT INTO `sys_role_menu` VALUES (5015, 2, 151);
-INSERT INTO `sys_role_menu` VALUES (5016, 2, 152);
-INSERT INTO `sys_role_menu` VALUES (5017, 2, 153);
-INSERT INTO `sys_role_menu` VALUES (5018, 2, 142);
-INSERT INTO `sys_role_menu` VALUES (5019, 2, 18);
-INSERT INTO `sys_role_menu` VALUES (5020, 2, 43);
-INSERT INTO `sys_role_menu` VALUES (5021, 2, 128);
-INSERT INTO `sys_role_menu` VALUES (5022, 2, 2);
-INSERT INTO `sys_role_menu` VALUES (5023, 2, 6);
-INSERT INTO `sys_role_menu` VALUES (5024, 2, 10);
-INSERT INTO `sys_role_menu` VALUES (5025, 2, 14);
-INSERT INTO `sys_role_menu` VALUES (5026, 2, 23);
-INSERT INTO `sys_role_menu` VALUES (5027, 2, 27);
-INSERT INTO `sys_role_menu` VALUES (5028, 2, 32);
-INSERT INTO `sys_role_menu` VALUES (5029, 2, 34);
-INSERT INTO `sys_role_menu` VALUES (5030, 2, 37);
-INSERT INTO `sys_role_menu` VALUES (5031, 2, 39);
-INSERT INTO `sys_role_menu` VALUES (5032, 2, 127);
-INSERT INTO `sys_role_menu` VALUES (5033, 2, 135);
-INSERT INTO `sys_role_menu` VALUES (5034, 2, 1);
-INSERT INTO `sys_role_menu` VALUES (5035, 2, 22);
-INSERT INTO `sys_role_menu` VALUES (5036, 2, 31);
-INSERT INTO `sys_role_menu` VALUES (5037, 2, 36);
-INSERT INTO `sys_role_menu` VALUES (5038, 2, 126);
-INSERT INTO `sys_role_menu` VALUES (5039, 2, 134);
-INSERT INTO `sys_role_menu` VALUES (6548, 1, 7);
-INSERT INTO `sys_role_menu` VALUES (6549, 1, 8);
-INSERT INTO `sys_role_menu` VALUES (6550, 1, 9);
-INSERT INTO `sys_role_menu` VALUES (6551, 1, 143);
-INSERT INTO `sys_role_menu` VALUES (6552, 1, 142);
-INSERT INTO `sys_role_menu` VALUES (6553, 1, 3);
-INSERT INTO `sys_role_menu` VALUES (6554, 1, 4);
-INSERT INTO `sys_role_menu` VALUES (6555, 1, 5);
-INSERT INTO `sys_role_menu` VALUES (6556, 1, 144);
-INSERT INTO `sys_role_menu` VALUES (6557, 1, 11);
-INSERT INTO `sys_role_menu` VALUES (6558, 1, 12);
-INSERT INTO `sys_role_menu` VALUES (6559, 1, 13);
-INSERT INTO `sys_role_menu` VALUES (6560, 1, 145);
-INSERT INTO `sys_role_menu` VALUES (6561, 1, 15);
-INSERT INTO `sys_role_menu` VALUES (6562, 1, 16);
-INSERT INTO `sys_role_menu` VALUES (6563, 1, 17);
-INSERT INTO `sys_role_menu` VALUES (6564, 1, 19);
-INSERT INTO `sys_role_menu` VALUES (6565, 1, 20);
-INSERT INTO `sys_role_menu` VALUES (6566, 1, 21);
-INSERT INTO `sys_role_menu` VALUES (6567, 1, 146);
-INSERT INTO `sys_role_menu` VALUES (6568, 1, 24);
-INSERT INTO `sys_role_menu` VALUES (6569, 1, 25);
-INSERT INTO `sys_role_menu` VALUES (6570, 1, 26);
-INSERT INTO `sys_role_menu` VALUES (6571, 1, 147);
-INSERT INTO `sys_role_menu` VALUES (6572, 1, 28);
-INSERT INTO `sys_role_menu` VALUES (6573, 1, 29);
-INSERT INTO `sys_role_menu` VALUES (6574, 1, 30);
-INSERT INTO `sys_role_menu` VALUES (6575, 1, 148);
-INSERT INTO `sys_role_menu` VALUES (6576, 1, 33);
-INSERT INTO `sys_role_menu` VALUES (6577, 1, 149);
-INSERT INTO `sys_role_menu` VALUES (6578, 1, 35);
-INSERT INTO `sys_role_menu` VALUES (6579, 1, 150);
-INSERT INTO `sys_role_menu` VALUES (6580, 1, 38);
-INSERT INTO `sys_role_menu` VALUES (6581, 1, 151);
-INSERT INTO `sys_role_menu` VALUES (6582, 1, 40);
-INSERT INTO `sys_role_menu` VALUES (6583, 1, 41);
-INSERT INTO `sys_role_menu` VALUES (6584, 1, 42);
-INSERT INTO `sys_role_menu` VALUES (6585, 1, 44);
-INSERT INTO `sys_role_menu` VALUES (6586, 1, 45);
-INSERT INTO `sys_role_menu` VALUES (6587, 1, 153);
-INSERT INTO `sys_role_menu` VALUES (6588, 1, 136);
-INSERT INTO `sys_role_menu` VALUES (6589, 1, 137);
-INSERT INTO `sys_role_menu` VALUES (6590, 1, 138);
-INSERT INTO `sys_role_menu` VALUES (6591, 1, 139);
-INSERT INTO `sys_role_menu` VALUES (6592, 1, 141);
-INSERT INTO `sys_role_menu` VALUES (6593, 1, 155);
-INSERT INTO `sys_role_menu` VALUES (6594, 1, 156);
-INSERT INTO `sys_role_menu` VALUES (6595, 1, 157);
-INSERT INTO `sys_role_menu` VALUES (6596, 1, 158);
-INSERT INTO `sys_role_menu` VALUES (6597, 1, 159);
-INSERT INTO `sys_role_menu` VALUES (6598, 1, 160);
-INSERT INTO `sys_role_menu` VALUES (6599, 1, 163);
-INSERT INTO `sys_role_menu` VALUES (6600, 1, 164);
-INSERT INTO `sys_role_menu` VALUES (6601, 1, 165);
-INSERT INTO `sys_role_menu` VALUES (6602, 1, 166);
-INSERT INTO `sys_role_menu` VALUES (6603, 1, 167);
-INSERT INTO `sys_role_menu` VALUES (6604, 1, 168);
-INSERT INTO `sys_role_menu` VALUES (6605, 1, 169);
-INSERT INTO `sys_role_menu` VALUES (6606, 1, 171);
-INSERT INTO `sys_role_menu` VALUES (6607, 1, 172);
-INSERT INTO `sys_role_menu` VALUES (6608, 1, 173);
-INSERT INTO `sys_role_menu` VALUES (6609, 1, 174);
-INSERT INTO `sys_role_menu` VALUES (6610, 1, 175);
-INSERT INTO `sys_role_menu` VALUES (6611, 1, 273);
-INSERT INTO `sys_role_menu` VALUES (6612, 1, 274);
-INSERT INTO `sys_role_menu` VALUES (6613, 1, 275);
-INSERT INTO `sys_role_menu` VALUES (6614, 1, 276);
-INSERT INTO `sys_role_menu` VALUES (6615, 1, 277);
-INSERT INTO `sys_role_menu` VALUES (6616, 1, 2);
-INSERT INTO `sys_role_menu` VALUES (6617, 1, 170);
-INSERT INTO `sys_role_menu` VALUES (6618, 1, 6);
-INSERT INTO `sys_role_menu` VALUES (6619, 1, 10);
-INSERT INTO `sys_role_menu` VALUES (6620, 1, 14);
-INSERT INTO `sys_role_menu` VALUES (6621, 1, 18);
-INSERT INTO `sys_role_menu` VALUES (6622, 1, 23);
-INSERT INTO `sys_role_menu` VALUES (6623, 1, 27);
-INSERT INTO `sys_role_menu` VALUES (6624, 1, 32);
-INSERT INTO `sys_role_menu` VALUES (6625, 1, 34);
-INSERT INTO `sys_role_menu` VALUES (6626, 1, 37);
-INSERT INTO `sys_role_menu` VALUES (6627, 1, 39);
-INSERT INTO `sys_role_menu` VALUES (6628, 1, 43);
-INSERT INTO `sys_role_menu` VALUES (6629, 1, 154);
-INSERT INTO `sys_role_menu` VALUES (6630, 1, 135);
-INSERT INTO `sys_role_menu` VALUES (6631, 1, 162);
-INSERT INTO `sys_role_menu` VALUES (6632, 1, 272);
-INSERT INTO `sys_role_menu` VALUES (6633, 1, 1);
-INSERT INTO `sys_role_menu` VALUES (6634, 1, 22);
-INSERT INTO `sys_role_menu` VALUES (6635, 1, 31);
-INSERT INTO `sys_role_menu` VALUES (6636, 1, 36);
-INSERT INTO `sys_role_menu` VALUES (6637, 1, 134);
-INSERT INTO `sys_role_menu` VALUES (6638, 1, 140);
-INSERT INTO `sys_role_menu` VALUES (6639, 1, 161);
-INSERT INTO `sys_role_menu` VALUES (6640, 1, 126);
-INSERT INTO `sys_role_menu` VALUES (6641, 1, 127);
-INSERT INTO `sys_role_menu` VALUES (6642, 1, 152);
-INSERT INTO `sys_role_menu` VALUES (6643, 1, 128);
-INSERT INTO `sys_role_menu` VALUES (6644, 1, 129);
+INSERT INTO `sys_role_menu` VALUES (7457, 2, 139);
+INSERT INTO `sys_role_menu` VALUES (7458, 2, 153);
+INSERT INTO `sys_role_menu` VALUES (7459, 2, 136);
+INSERT INTO `sys_role_menu` VALUES (7460, 2, 137);
+INSERT INTO `sys_role_menu` VALUES (7461, 2, 138);
+INSERT INTO `sys_role_menu` VALUES (7462, 2, 150);
+INSERT INTO `sys_role_menu` VALUES (7463, 2, 38);
+INSERT INTO `sys_role_menu` VALUES (7464, 2, 151);
+INSERT INTO `sys_role_menu` VALUES (7465, 2, 40);
+INSERT INTO `sys_role_menu` VALUES (7466, 2, 41);
+INSERT INTO `sys_role_menu` VALUES (7467, 2, 42);
+INSERT INTO `sys_role_menu` VALUES (7468, 2, 44);
+INSERT INTO `sys_role_menu` VALUES (7469, 2, 45);
+INSERT INTO `sys_role_menu` VALUES (7470, 2, 155);
+INSERT INTO `sys_role_menu` VALUES (7471, 2, 156);
+INSERT INTO `sys_role_menu` VALUES (7472, 2, 157);
+INSERT INTO `sys_role_menu` VALUES (7473, 2, 158);
+INSERT INTO `sys_role_menu` VALUES (7474, 2, 159);
+INSERT INTO `sys_role_menu` VALUES (7475, 2, 160);
+INSERT INTO `sys_role_menu` VALUES (7476, 2, 148);
+INSERT INTO `sys_role_menu` VALUES (7477, 2, 33);
+INSERT INTO `sys_role_menu` VALUES (7478, 2, 149);
+INSERT INTO `sys_role_menu` VALUES (7479, 2, 35);
+INSERT INTO `sys_role_menu` VALUES (7480, 2, 142);
+INSERT INTO `sys_role_menu` VALUES (7481, 2, 3);
+INSERT INTO `sys_role_menu` VALUES (7482, 2, 4);
+INSERT INTO `sys_role_menu` VALUES (7483, 2, 5);
+INSERT INTO `sys_role_menu` VALUES (7484, 2, 171);
+INSERT INTO `sys_role_menu` VALUES (7485, 2, 172);
+INSERT INTO `sys_role_menu` VALUES (7486, 2, 173);
+INSERT INTO `sys_role_menu` VALUES (7487, 2, 174);
+INSERT INTO `sys_role_menu` VALUES (7488, 2, 175);
+INSERT INTO `sys_role_menu` VALUES (7489, 2, 143);
+INSERT INTO `sys_role_menu` VALUES (7490, 2, 7);
+INSERT INTO `sys_role_menu` VALUES (7491, 2, 8);
+INSERT INTO `sys_role_menu` VALUES (7492, 2, 9);
+INSERT INTO `sys_role_menu` VALUES (7493, 2, 144);
+INSERT INTO `sys_role_menu` VALUES (7494, 2, 11);
+INSERT INTO `sys_role_menu` VALUES (7495, 2, 12);
+INSERT INTO `sys_role_menu` VALUES (7496, 2, 13);
+INSERT INTO `sys_role_menu` VALUES (7497, 2, 145);
+INSERT INTO `sys_role_menu` VALUES (7498, 2, 15);
+INSERT INTO `sys_role_menu` VALUES (7499, 2, 16);
+INSERT INTO `sys_role_menu` VALUES (7500, 2, 17);
+INSERT INTO `sys_role_menu` VALUES (7501, 2, 19);
+INSERT INTO `sys_role_menu` VALUES (7502, 2, 20);
+INSERT INTO `sys_role_menu` VALUES (7503, 2, 21);
+INSERT INTO `sys_role_menu` VALUES (7504, 2, 146);
+INSERT INTO `sys_role_menu` VALUES (7505, 2, 24);
+INSERT INTO `sys_role_menu` VALUES (7506, 2, 25);
+INSERT INTO `sys_role_menu` VALUES (7507, 2, 26);
+INSERT INTO `sys_role_menu` VALUES (7508, 2, 147);
+INSERT INTO `sys_role_menu` VALUES (7509, 2, 28);
+INSERT INTO `sys_role_menu` VALUES (7510, 2, 29);
+INSERT INTO `sys_role_menu` VALUES (7511, 2, 30);
+INSERT INTO `sys_role_menu` VALUES (7512, 2, 152);
+INSERT INTO `sys_role_menu` VALUES (7513, 2, 128);
+INSERT INTO `sys_role_menu` VALUES (7514, 2, 129);
+INSERT INTO `sys_role_menu` VALUES (7515, 2, 141);
+INSERT INTO `sys_role_menu` VALUES (7516, 2, 163);
+INSERT INTO `sys_role_menu` VALUES (7517, 2, 164);
+INSERT INTO `sys_role_menu` VALUES (7518, 2, 165);
+INSERT INTO `sys_role_menu` VALUES (7519, 2, 166);
+INSERT INTO `sys_role_menu` VALUES (7520, 2, 167);
+INSERT INTO `sys_role_menu` VALUES (7521, 2, 168);
+INSERT INTO `sys_role_menu` VALUES (7522, 2, 169);
+INSERT INTO `sys_role_menu` VALUES (8416, 2, 282);
+INSERT INTO `sys_role_menu` VALUES (8418, 2, 283);
+INSERT INTO `sys_role_menu` VALUES (8698, 1, 7);
+INSERT INTO `sys_role_menu` VALUES (8699, 1, 8);
+INSERT INTO `sys_role_menu` VALUES (8700, 1, 9);
+INSERT INTO `sys_role_menu` VALUES (8701, 1, 143);
+INSERT INTO `sys_role_menu` VALUES (8702, 1, 142);
+INSERT INTO `sys_role_menu` VALUES (8703, 1, 3);
+INSERT INTO `sys_role_menu` VALUES (8704, 1, 4);
+INSERT INTO `sys_role_menu` VALUES (8705, 1, 5);
+INSERT INTO `sys_role_menu` VALUES (8706, 1, 144);
+INSERT INTO `sys_role_menu` VALUES (8707, 1, 11);
+INSERT INTO `sys_role_menu` VALUES (8708, 1, 12);
+INSERT INTO `sys_role_menu` VALUES (8709, 1, 13);
+INSERT INTO `sys_role_menu` VALUES (8710, 1, 145);
+INSERT INTO `sys_role_menu` VALUES (8711, 1, 15);
+INSERT INTO `sys_role_menu` VALUES (8712, 1, 16);
+INSERT INTO `sys_role_menu` VALUES (8713, 1, 17);
+INSERT INTO `sys_role_menu` VALUES (8714, 1, 19);
+INSERT INTO `sys_role_menu` VALUES (8715, 1, 20);
+INSERT INTO `sys_role_menu` VALUES (8716, 1, 21);
+INSERT INTO `sys_role_menu` VALUES (8717, 1, 146);
+INSERT INTO `sys_role_menu` VALUES (8718, 1, 24);
+INSERT INTO `sys_role_menu` VALUES (8719, 1, 25);
+INSERT INTO `sys_role_menu` VALUES (8720, 1, 26);
+INSERT INTO `sys_role_menu` VALUES (8721, 1, 147);
+INSERT INTO `sys_role_menu` VALUES (8722, 1, 28);
+INSERT INTO `sys_role_menu` VALUES (8723, 1, 29);
+INSERT INTO `sys_role_menu` VALUES (8724, 1, 30);
+INSERT INTO `sys_role_menu` VALUES (8725, 1, 148);
+INSERT INTO `sys_role_menu` VALUES (8726, 1, 33);
+INSERT INTO `sys_role_menu` VALUES (8727, 1, 149);
+INSERT INTO `sys_role_menu` VALUES (8728, 1, 35);
+INSERT INTO `sys_role_menu` VALUES (8729, 1, 150);
+INSERT INTO `sys_role_menu` VALUES (8730, 1, 38);
+INSERT INTO `sys_role_menu` VALUES (8731, 1, 151);
+INSERT INTO `sys_role_menu` VALUES (8732, 1, 40);
+INSERT INTO `sys_role_menu` VALUES (8733, 1, 41);
+INSERT INTO `sys_role_menu` VALUES (8734, 1, 42);
+INSERT INTO `sys_role_menu` VALUES (8735, 1, 44);
+INSERT INTO `sys_role_menu` VALUES (8736, 1, 45);
+INSERT INTO `sys_role_menu` VALUES (8737, 1, 153);
+INSERT INTO `sys_role_menu` VALUES (8738, 1, 136);
+INSERT INTO `sys_role_menu` VALUES (8739, 1, 137);
+INSERT INTO `sys_role_menu` VALUES (8740, 1, 138);
+INSERT INTO `sys_role_menu` VALUES (8741, 1, 139);
+INSERT INTO `sys_role_menu` VALUES (8742, 1, 141);
+INSERT INTO `sys_role_menu` VALUES (8743, 1, 155);
+INSERT INTO `sys_role_menu` VALUES (8744, 1, 156);
+INSERT INTO `sys_role_menu` VALUES (8745, 1, 157);
+INSERT INTO `sys_role_menu` VALUES (8746, 1, 158);
+INSERT INTO `sys_role_menu` VALUES (8747, 1, 159);
+INSERT INTO `sys_role_menu` VALUES (8748, 1, 160);
+INSERT INTO `sys_role_menu` VALUES (8749, 1, 171);
+INSERT INTO `sys_role_menu` VALUES (8750, 1, 172);
+INSERT INTO `sys_role_menu` VALUES (8751, 1, 173);
+INSERT INTO `sys_role_menu` VALUES (8752, 1, 174);
+INSERT INTO `sys_role_menu` VALUES (8753, 1, 175);
+INSERT INTO `sys_role_menu` VALUES (8754, 1, 152);
+INSERT INTO `sys_role_menu` VALUES (8755, 1, 128);
+INSERT INTO `sys_role_menu` VALUES (8756, 1, 129);
+INSERT INTO `sys_role_menu` VALUES (8757, 1, 278);
+INSERT INTO `sys_role_menu` VALUES (8758, 1, 163);
+INSERT INTO `sys_role_menu` VALUES (8759, 1, 164);
+INSERT INTO `sys_role_menu` VALUES (8760, 1, 165);
+INSERT INTO `sys_role_menu` VALUES (8761, 1, 166);
+INSERT INTO `sys_role_menu` VALUES (8762, 1, 167);
+INSERT INTO `sys_role_menu` VALUES (8763, 1, 168);
+INSERT INTO `sys_role_menu` VALUES (8764, 1, 169);
+INSERT INTO `sys_role_menu` VALUES (8765, 1, 279);
+INSERT INTO `sys_role_menu` VALUES (8766, 1, 280);
+INSERT INTO `sys_role_menu` VALUES (8767, 1, 281);
+INSERT INTO `sys_role_menu` VALUES (8768, 1, 282);
+INSERT INTO `sys_role_menu` VALUES (8769, 1, 284);
+INSERT INTO `sys_role_menu` VALUES (8770, 1, 2);
+INSERT INTO `sys_role_menu` VALUES (8771, 1, 170);
+INSERT INTO `sys_role_menu` VALUES (8772, 1, 6);
+INSERT INTO `sys_role_menu` VALUES (8773, 1, 10);
+INSERT INTO `sys_role_menu` VALUES (8774, 1, 14);
+INSERT INTO `sys_role_menu` VALUES (8775, 1, 18);
+INSERT INTO `sys_role_menu` VALUES (8776, 1, 23);
+INSERT INTO `sys_role_menu` VALUES (8777, 1, 27);
+INSERT INTO `sys_role_menu` VALUES (8778, 1, 32);
+INSERT INTO `sys_role_menu` VALUES (8779, 1, 34);
+INSERT INTO `sys_role_menu` VALUES (8780, 1, 37);
+INSERT INTO `sys_role_menu` VALUES (8781, 1, 39);
+INSERT INTO `sys_role_menu` VALUES (8782, 1, 43);
+INSERT INTO `sys_role_menu` VALUES (8783, 1, 154);
+INSERT INTO `sys_role_menu` VALUES (8784, 1, 283);
+INSERT INTO `sys_role_menu` VALUES (8785, 1, 127);
+INSERT INTO `sys_role_menu` VALUES (8786, 1, 135);
+INSERT INTO `sys_role_menu` VALUES (8787, 1, 162);
+INSERT INTO `sys_role_menu` VALUES (8788, 1, 1);
+INSERT INTO `sys_role_menu` VALUES (8789, 1, 22);
+INSERT INTO `sys_role_menu` VALUES (8790, 1, 31);
+INSERT INTO `sys_role_menu` VALUES (8791, 1, 36);
+INSERT INTO `sys_role_menu` VALUES (8792, 1, 126);
+INSERT INTO `sys_role_menu` VALUES (8793, 1, 134);
+INSERT INTO `sys_role_menu` VALUES (8794, 1, 140);
+INSERT INTO `sys_role_menu` VALUES (8795, 1, 285);
+INSERT INTO `sys_role_menu` VALUES (8796, 1, 286);
+INSERT INTO `sys_role_menu` VALUES (8797, 1, 287);
+INSERT INTO `sys_role_menu` VALUES (8798, 1, 288);
+INSERT INTO `sys_role_menu` VALUES (8799, 1, 289);
+INSERT INTO `sys_role_menu` VALUES (8800, 1, 290);
+INSERT INTO `sys_role_menu` VALUES (8801, 1, 161);
+INSERT INTO `sys_role_menu` VALUES (8802, 1, 291);
+INSERT INTO `sys_role_menu` VALUES (8803, 1, 292);
+INSERT INTO `sys_role_menu` VALUES (8804, 1, 293);
+INSERT INTO `sys_role_menu` VALUES (8805, 1, 294);
+INSERT INTO `sys_role_menu` VALUES (8806, 1, 295);
+INSERT INTO `sys_role_menu` VALUES (8807, 1, 296);
+INSERT INTO `sys_role_menu` VALUES (8808, 1, 297);
+INSERT INTO `sys_role_menu` VALUES (8809, 1, 298);
+INSERT INTO `sys_role_menu` VALUES (8810, 1, 299);
+INSERT INTO `sys_role_menu` VALUES (8811, 1, 300);
+INSERT INTO `sys_role_menu` VALUES (8812, 1, 301);
+INSERT INTO `sys_role_menu` VALUES (8813, 1, 302);
+INSERT INTO `sys_role_menu` VALUES (8814, 1, 303);
+INSERT INTO `sys_role_menu` VALUES (8815, 1, 304);
+INSERT INTO `sys_role_menu` VALUES (8816, 1, 305);
+INSERT INTO `sys_role_menu` VALUES (8817, 1, 306);
+INSERT INTO `sys_role_menu` VALUES (8818, 1, 307);
+INSERT INTO `sys_role_menu` VALUES (8819, 1, 308);
+INSERT INTO `sys_role_menu` VALUES (8820, 1, 309);
+INSERT INTO `sys_role_menu` VALUES (8821, 1, 310);
+INSERT INTO `sys_role_menu` VALUES (8822, 1, 311);
+INSERT INTO `sys_role_menu` VALUES (8823, 1, 312);
+INSERT INTO `sys_role_menu` VALUES (8824, 1, 313);
+INSERT INTO `sys_role_menu` VALUES (8825, 1, 314);
+INSERT INTO `sys_role_menu` VALUES (8826, 1, 315);
+INSERT INTO `sys_role_menu` VALUES (8827, 1, 316);
+INSERT INTO `sys_role_menu` VALUES (8828, 1, 317);
+INSERT INTO `sys_role_menu` VALUES (8829, 1, 318);
+INSERT INTO `sys_role_menu` VALUES (8830, 1, 319);
+INSERT INTO `sys_role_menu` VALUES (8831, 1, 320);
+INSERT INTO `sys_role_menu` VALUES (8832, 1, 321);
+INSERT INTO `sys_role_menu` VALUES (8833, 1, 322);
+INSERT INTO `sys_role_menu` VALUES (8834, 1, 323);
+INSERT INTO `sys_role_menu` VALUES (8835, 1, 324);
+INSERT INTO `sys_role_menu` VALUES (8836, 1, 325);
+INSERT INTO `sys_role_menu` VALUES (8837, 1, 326);
+INSERT INTO `sys_role_menu` VALUES (8838, 1, 327);
+INSERT INTO `sys_role_menu` VALUES (8839, 1, 328);
+INSERT INTO `sys_role_menu` VALUES (8840, 1, 329);
+INSERT INTO `sys_role_menu` VALUES (8841, 1, 330);
+INSERT INTO `sys_role_menu` VALUES (8842, 1, 331);
+INSERT INTO `sys_role_menu` VALUES (8843, 1, 332);
 
 -- ----------------------------
 -- Table structure for sys_server
@@ -2235,6 +3827,39 @@ CREATE TABLE `sys_server`  (
 INSERT INTO `sys_server` VALUES (1, '测试服务器', '47.108.187.25', 22, 'root', 1, '111', '', '', '', 1, 0, '2026-02-07 09:52:27', 1, '2026-01-31 23:46:31', 1, '2026-02-07 09:52:27', 0);
 
 -- ----------------------------
+-- Table structure for sys_sms_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_sms_log`;
+CREATE TABLE `sys_sms_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
+  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '短信内容/验证码',
+  `sms_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'verify_code' COMMENT '短信类型：verify_code-验证码 notice-通知 marketing-营销',
+  `template_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模板ID',
+  `template_params` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模板参数（JSON格式）',
+  `provider` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务商：aliyun-阿里云 tencent-腾讯云 console-控制台',
+  `status` tinyint NULL DEFAULT 0 COMMENT '发送状态：0-发送中 1-成功 2-失败',
+  `result_msg` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '发送结果消息',
+  `biz_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '服务商返回的消息ID',
+  `send_time` datetime NULL DEFAULT NULL COMMENT '发送时间',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
+  `biz_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '业务类型：login-登录 register-注册 reset_password-重置密码 bind_phone-绑定手机',
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'IP地址',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_phone`(`phone` ASC) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_send_time`(`send_time` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '短信发送记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_sms_log
+-- ----------------------------
+INSERT INTO `sys_sms_log` VALUES (1, '18483678377', '473578', 'verify_code', NULL, NULL, 'aliyun', 1, 'OK', '140425370962994532^0', '2026-02-13 14:09:54', NULL, 'login', NULL, '2026-02-13 14:09:54');
+INSERT INTO `sys_sms_log` VALUES (2, '18483678377', '358716', 'verify_code', NULL, NULL, 'aliyun', 2, '该账号下找不到对应签名', NULL, '2026-02-13 15:51:43', NULL, 'login', '127.0.0.1', '2026-02-13 15:51:43');
+
+-- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
@@ -2249,6 +3874,7 @@ CREATE TABLE `sys_user`  (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
   `gender` tinyint NULL DEFAULT 0 COMMENT '性别(0-未知 1-男 2-女)',
   `status` tinyint NULL DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
+  `is_quit` tinyint NULL DEFAULT 0 COMMENT '是否离职(0-否 1-是)',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -2261,17 +3887,27 @@ CREATE TABLE `sys_user`  (
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
   INDEX `idx_open_id`(`open_id` ASC) USING BTREE,
   INDEX `idx_user_type`(`user_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$NHwBrsRfesK2pSMgG3NjZ.3JiUXd0msi5ib34QAROfTNq5t0UTL6y', '超级管理员', NULL, NULL, NULL, 0, 1, NULL, '2026-01-29 22:42:08', '2026-01-29 22:58:21', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888888', 1, 0, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (3, 2, 'mars', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars', NULL, '1121@qq.com', '18888888881', 1, 1, '', '2026-01-29 23:21:12', '2026-01-29 23:21:12', 1, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$DrZPHQH49c0ywbmlYOmhBeNDOquQlC/VqulezUj5jHlif.jVkTKRO', 'mars666', NULL, NULL, NULL, 0, 1, NULL, '2026-01-31 22:30:46', '2026-01-31 22:30:46', NULL, 1, 'admin', NULL, 0);
-INSERT INTO `sys_user` VALUES (6, NULL, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, NULL, '2026-02-07 16:01:02', '2026-02-07 16:01:02', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (1, 1, 'admin', '$2a$10$zqQcoU.zIWJQy42DAzxj5usRR9RLNx.HZ729ocAzSgnB90/sI3s5u', '超级管理员', '', '850994281@qq.com', '18888888888', 1, 1, 0, '111', '2026-01-29 22:42:08', '2026-02-24 22:02:00', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (2, 4, 'test', '$2a$10$kTn0Z9BPDnOAU1qB.sJrF.unLh4bbj9FQ7tVsG4AtSBQXFs1V/ewq', 'test', NULL, '111@qq.com', '1888888881', 1, 1, 1, '', '2026-01-29 23:21:12', '2026-02-28 23:02:26', 1, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (3, 2, 'mars11', '$2a$10$goR4f6wAzry8a6jTrWHDGeI7Fiq2SovcXYrVprcoRgC6mCnK1fM4G', 'mars11', NULL, 'wqexpore@163.com', '18888888881', 1, 1, 0, '', '2026-01-29 23:21:12', '2026-02-08 16:44:59', 1, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (4, 3, 'lisi', '$2a$10$4pFtybVAOwePb9T9LsnYU.OJzo7PIOf3ZxU4MOylb03D6MUK/bSb6', 'lisi', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-01-31 20:49:34', '2026-01-31 20:49:34', NULL, 1, 'admin', NULL, 0);
+INSERT INTO `sys_user` VALUES (5, 2, 'mars666', '$2a$10$i3ztgmo5kmPow2ro8Kuxouq0yLnv/JM4huDoZdVIeDp3ErKtBSxiS', 'mars666', NULL, 'wqexpore@163.com', '18888888882', 1, 1, 0, NULL, '2026-01-31 22:30:46', '2026-02-25 16:55:31', 5, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (6, 2, 'test01', '$2a$10$ML3nX/GYeLWlCMroXCmSv.i61Rnu9/UEKpWE8uXRi6ly86stXYZqu', 'test01', NULL, NULL, NULL, 0, 1, 0, NULL, '2026-02-07 16:01:02', '2026-02-24 13:38:01', NULL, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (10, 2, 'Mars', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-08 16:46:40', NULL, 10, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 0);
+INSERT INTO `sys_user` VALUES (11, 8, 'mars02', '$2a$10$c/D7zIqiJQ.f9k/in6NGe.j7hRBdRChNKu4OGjSGee4ZN0f6MwW4O', 'mars02', NULL, '111@qq.com', '18888888888', 1, 1, 0, '', '2026-02-09 14:31:09', '2026-02-25 16:55:30', 5, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (13, 2, 'Mars111', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 0, 1, NULL, '2026-02-08 16:46:40', '2026-02-25 16:55:30', NULL, 1, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 1);
+INSERT INTO `sys_user` VALUES (14, 2, 'Mars222', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-25 16:55:31', NULL, 1, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 1);
+INSERT INTO `sys_user` VALUES (15, 2, 'Mars333', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-25 16:55:31', NULL, 1, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 1);
+INSERT INTO `sys_user` VALUES (16, 2, 'Mars444', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-25 16:55:31', NULL, 1, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 1);
+INSERT INTO `sys_user` VALUES (17, 2, 'Mars555', '$2a$10$zr4zrzbZasuckIfyahZiL.LUgzgoCARw9ocLTXV.HsV7fU9PxgMa.', 'Mars', 'http://m8e8f9e2.natappfree.cc/api/files/images/2026/02/08/3008954e93634f0ebbf0d78f2fe26fc0.jpg', NULL, NULL, 0, 1, 0, NULL, '2026-02-08 16:46:40', '2026-02-25 16:55:31', NULL, 1, 'app', 'opzUF43XlvnVUw5S9qS2cI6L7p9M', 1);
+INSERT INTO `sys_user` VALUES (18, 2, '11', '$2a$10$WF34d4VPwUbL4zWfJKmE5OgbIbjgKtaFjy6zUBulu3ZSSQDEk2A6u', '11', NULL, '111@qq.com', '18483689569', 1, 1, 0, NULL, '2026-02-25 15:57:37', '2026-02-25 16:14:10', 1, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (19, 2, '222', '$2a$10$vIsmaa111WDaZGNmM2cc6unBgXEADOGEsKCy4BBOMbae56nq.KrHC', '222', NULL, '111@qq.com', '18483689511', 1, 1, 0, NULL, '2026-02-25 16:00:18', '2026-02-25 16:13:45', 1, 1, 'admin', NULL, 1);
+INSERT INTO `sys_user` VALUES (23, 2, '121', '$2a$10$3yZ0uuskfjBSyJHokoXCG.AbQtXq6n2Z3ZSxF5lWtQ8HxmbnwSDeq', '1212', NULL, '11112@qq.com', '18483686589', 1, 1, 0, NULL, '2026-02-25 16:16:18', '2026-02-25 16:28:46', 1, 1, 'admin', NULL, 1);
 
 -- ----------------------------
 -- Table structure for sys_user_blacklist
@@ -2307,11 +3943,32 @@ CREATE TABLE `sys_user_notice`  (
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_notice_id`(`notice_id` ASC) USING BTREE,
   INDEX `idx_is_read`(`is_read` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户通知关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户通知关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_notice
 -- ----------------------------
+INSERT INTO `sys_user_notice` VALUES (36, 1, 17, 0, NULL);
+
+-- ----------------------------
+-- Table structure for sys_user_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_post`;
+CREATE TABLE `sys_user_post`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `post_id` bigint NOT NULL COMMENT '岗位ID',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
+  INDEX `idx_post_id`(`post_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户岗位关联表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_user_post
+-- ----------------------------
+INSERT INTO `sys_user_post` VALUES (5, 10, 4);
+INSERT INTO `sys_user_post` VALUES (15, 1, 1);
+INSERT INTO `sys_user_post` VALUES (16, 1, 2);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -2324,45 +3981,15 @@ CREATE TABLE `sys_user_role`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户角色关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (8, 5, 2);
 INSERT INTO `sys_user_role` VALUES (9, 4, 2);
-INSERT INTO `sys_user_role` VALUES (11, 3, 2);
-INSERT INTO `sys_user_role` VALUES (12, 1, 1);
-INSERT INTO `sys_user_role` VALUES (13, 2, 2);
-INSERT INTO `sys_user_role` VALUES (14, 6, 2);
-
--- ----------------------------
--- Table structure for t_order
--- ----------------------------
-DROP TABLE IF EXISTS `t_order`;
-CREATE TABLE `t_order`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号（业务订单号）',
-  `product_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品名称',
-  `product_desc` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '商品描述',
-  `amount` decimal(10, 2) NOT NULL COMMENT '订单金额（单位：元）',
-  `payment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '支付方式（WECHAT/ALIPAY）',
-  `status` int NOT NULL DEFAULT 0 COMMENT '支付状态（0-待支付 1-支付中 2-支付成功 3-支付失败 4-已退款 5-已关闭）',
-  `third_order_no` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方订单号（微信/支付宝返回的订单号）',
-  `user_id` bigint NULL DEFAULT NULL COMMENT '用户ID',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `pay_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_order_no`(`order_no` ASC) USING BTREE,
-  INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
-  INDEX `idx_status`(`status` ASC) USING BTREE,
-  INDEX `idx_create_time`(`create_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '订单表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of t_order
--- ----------------------------
+INSERT INTO `sys_user_role` VALUES (25, 7, 2);
+INSERT INTO `sys_user_role` VALUES (37, 10, 2);
+INSERT INTO `sys_user_role` VALUES (45, 1, 1);
+INSERT INTO `sys_user_role` VALUES (46, 3, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;

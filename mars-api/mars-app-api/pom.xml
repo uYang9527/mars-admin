@@ -25,14 +25,15 @@
             <groupId>com.mars</groupId>
             <artifactId>mars-sms</artifactId>
         </dependency>
+        <!-- 文件模块 -->
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-file</artifactId>
+        </dependency>
         <!-- 业务模块 -->
         <dependency>
             <groupId>com.mars</groupId>
             <artifactId>mars-system</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mars</groupId>
-            <artifactId>mars-mall</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mars</groupId>

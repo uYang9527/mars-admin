@@ -1,229 +1,199 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const utils_api = require("../../utils/api.js");
+const utils_auth = require("../../utils/auth.js");
+const utils_websocket = require("../../utils/websocket.js");
 const _sfc_main = {
   data() {
     return {
-      statusBarHeight: 0,
-      isLoggedIn: false,
-      userInfo: {
-        name: "请登录",
-        avatar: "/static/default-avatar.png"
-      },
-      stats: [
-        {
-          icon: "fas fa-ticket-alt",
-          label: "优惠券",
-          value: "0",
-          color: "#059669",
-          bg: "linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05))"
-        },
-        {
-          icon: "fas fa-star",
-          label: "积分",
-          value: "0",
-          color: "#f59e0b",
-          bg: "linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))"
-        },
-        {
-          icon: "fas fa-coins",
-          label: "余额",
-          value: "¥0.00",
-          color: "#ef4444",
-          bg: "linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))"
-        },
-        {
-          icon: "fas fa-wallet",
-          label: "钱包",
-          value: "",
-          color: "#6366f1",
-          bg: "linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05))"
-        }
-      ],
-      orders: [
-        { id: 0, icon: "far fa-credit-card", label: "待付款", badge: 0 },
-        { id: 1, icon: "fas fa-box", label: "待发货", badge: 0 },
-        { id: 2, icon: "fas fa-shipping-fast", label: "待收货", badge: 0 },
-        { id: 3, icon: "far fa-comment-dots", label: "已完成", badge: 0 }
-      ],
-      menus1: [
-        {
-          id: 1,
-          icon: "fas fa-map-marker-alt",
-          label: "收货地址",
-          color: "#059669",
-          bg: "linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05))",
-          url: "/pages/address/list"
-        },
-        {
-          id: 2,
-          icon: "fas fa-heart",
-          label: "我的收藏",
-          color: "#ef4444",
-          bg: "linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))",
-          url: "/pages/favorite/index"
-        }
-      ],
-      menus2: [
-        {
-          id: 3,
-          icon: "fas fa-headset",
-          label: "客服中心",
-          color: "#3b82f6",
-          bg: "linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))"
-        },
-        {
-          id: 4,
-          icon: "fas fa-cog",
-          label: "设置",
-          color: "#6b7280",
-          bg: "linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05))",
-          url: "/pages/settings/index"
-        }
-      ]
+      userInfo: {},
+      cacheSize: "0 KB",
+      statusBarHeight: 20
     };
   },
   onLoad() {
-    const systemInfo = common_vendor.index.getSystemInfoSync();
-    this.statusBarHeight = systemInfo.statusBarHeight || 0;
+    const sysInfo = common_vendor.index.getSystemInfoSync();
+    this.statusBarHeight = sysInfo.statusBarHeight || 20;
   },
   onShow() {
-    this.checkLoginAndLoad();
+    this.userInfo = utils_auth.getUserInfo() || {};
+    this.loadProfile();
+    this.calcCacheSize();
   },
   methods: {
-    // 检查登录状态并加载数据
-    async checkLoginAndLoad() {
-      const memberInfo = common_vendor.index.getStorageSync("memberInfo");
-      this.isLoggedIn = !!(memberInfo && memberInfo.memberId);
-      if (this.isLoggedIn) {
-        this.userInfo = {
-          name: memberInfo.nickname || "用户",
-          avatar: memberInfo.avatar || "/static/default-avatar.png"
-        };
-        this.stats[1].value = memberInfo.points || "0";
-        this.loadMemberInfo();
-        this.loadOrderCount();
-      } else {
-        this.userInfo = {
-          name: "请登录",
-          avatar: "/static/default-avatar.png"
-        };
-      }
-    },
-    // 加载会员信息
-    async loadMemberInfo() {
+    async loadProfile() {
       try {
-        const res = await utils_api.getMemberInfo();
-        if (res.code === 200 && res.data) {
-          this.userInfo.name = res.data.nickname || "用户";
-          this.userInfo.avatar = res.data.avatar || "/static/default-avatar.png";
-          this.stats[1].value = res.data.points || "0";
-          this.stats[2].value = `¥${res.data.balance || "0.00"}`;
-          const stored = common_vendor.index.getStorageSync("memberInfo");
-          common_vendor.index.setStorageSync("memberInfo", { ...stored, ...res.data });
+        const res = await utils_api.getAppProfile();
+        if (res.data) {
+          this.userInfo = { ...this.userInfo, ...res.data };
+          utils_auth.setUserInfo(this.userInfo);
         }
-      } catch (e) {
-        common_vendor.index.__f__("error", "at pages/profile/index.vue:212", "加载会员信息失败", e);
+      } catch (err) {
       }
     },
-    // 加载订单数量
-    async loadOrderCount() {
+    calcCacheSize() {
       try {
-        const res = await utils_api.getOrderCount();
-        if (res.code === 200 && res.data) {
-          this.orders[0].badge = res.data.pendingPay || 0;
-          this.orders[1].badge = res.data.pendingShip || 0;
-          this.orders[2].badge = res.data.pendingReceive || 0;
-          this.orders[3].badge = res.data.completed || 0;
-        }
+        const info = common_vendor.index.getStorageInfoSync();
+        const s = info.currentSize || 0;
+        this.cacheSize = s > 1024 ? (s / 1024).toFixed(1) + " MB" : s + " KB";
       } catch (e) {
-        common_vendor.index.__f__("error", "at pages/profile/index.vue:230", "加载订单数量失败", e);
+        this.cacheSize = "0 KB";
       }
     },
-    goSettings() {
-      common_vendor.index.navigateTo({ url: "/pages/settings/index" });
-    },
-    goProfile() {
-      if (!this.isLoggedIn) {
-        common_vendor.index.navigateTo({ url: "/pages/login/index" });
-        return;
-      }
-      common_vendor.index.showToast({ title: "编辑资料", icon: "none" });
-    },
-    goOrders() {
-      if (!this.isLoggedIn) {
-        common_vendor.index.navigateTo({ url: "/pages/login/index" });
-        return;
-      }
-      common_vendor.index.navigateTo({ url: "/pages/orders/index" });
-    },
-    handleStat(stat) {
-      if (!this.isLoggedIn) {
-        common_vendor.index.navigateTo({ url: "/pages/login/index" });
-        return;
-      }
-      common_vendor.index.showToast({ title: stat.label, icon: "none" });
-    },
-    handleOrder(order) {
-      if (!this.isLoggedIn) {
-        common_vendor.index.navigateTo({ url: "/pages/login/index" });
-        return;
-      }
-      common_vendor.index.navigateTo({ url: `/pages/orders/index?status=${order.id}` });
-    },
-    handleMenu(menu) {
-      if (menu.url) {
-        if (!this.isLoggedIn && menu.id !== 4 && menu.id !== 3) {
-          common_vendor.index.navigateTo({ url: "/pages/login/index" });
-          return;
+    handleChangeAvatar() {
+      common_vendor.index.chooseImage({
+        count: 1,
+        sizeType: ["compressed"],
+        success: async (res) => {
+          common_vendor.index.showLoading({ title: "上传中..." });
+          try {
+            const r = await utils_api.uploadAvatar(res.tempFilePaths[0]);
+            const url = r.data || "";
+            await utils_api.updateAppProfile({ avatar: url });
+            this.userInfo.avatar = url;
+            utils_auth.setUserInfo(this.userInfo);
+            common_vendor.index.showToast({ title: "头像已更新", icon: "success" });
+          } catch (e) {
+            common_vendor.index.showToast({ title: "上传失败", icon: "none" });
+          } finally {
+            common_vendor.index.hideLoading();
+          }
         }
-        common_vendor.index.navigateTo({ url: menu.url });
-      } else {
-        common_vendor.index.showToast({ title: menu.label, icon: "none" });
-      }
+      });
+    },
+    handleEditProfile() {
+      common_vendor.index.navigateTo({ url: "/pages/profile/edit" });
+    },
+    handleChangePassword() {
+      common_vendor.index.navigateTo({ url: "/pages/profile/password" });
+    },
+    handleBlacklist() {
+      common_vendor.index.showToast({ title: "功能开发中", icon: "none" });
+    },
+    handleClearCache() {
+      common_vendor.index.showModal({
+        title: "清除缓存",
+        content: `当前缓存 ${this.cacheSize}，确定清除？`,
+        success: (res) => {
+          if (res.confirm) {
+            const t = common_vendor.index.getStorageSync("token");
+            const u = common_vendor.index.getStorageSync("userInfo");
+            common_vendor.index.clearStorageSync();
+            if (t)
+              common_vendor.index.setStorageSync("token", t);
+            if (u)
+              common_vendor.index.setStorageSync("userInfo", u);
+            this.calcCacheSize();
+            common_vendor.index.showToast({ title: "已清除", icon: "success" });
+          }
+        }
+      });
+    },
+    handleAbout() {
+      common_vendor.index.showModal({
+        title: "Mars办公",
+        content: "v1.0.0\n高效沟通，智慧办公",
+        showCancel: false
+      });
+    },
+    handleLogout() {
+      common_vendor.index.showModal({
+        title: "退出登录",
+        content: "确定要退出当前账号吗？",
+        confirmColor: "#FA5151",
+        success: async (res) => {
+          if (res.confirm) {
+            try {
+              await utils_api.logout().catch(() => {
+              });
+            } catch (e) {
+            }
+            utils_websocket.wsClient.close();
+            utils_auth.clearAuth();
+            common_vendor.index.reLaunch({ url: "/pages/login/index" });
+          }
+        }
+      });
     }
   }
 };
+if (!Array) {
+  const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
+  _easycom_u_icon2();
+}
+const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u-icon.js";
+if (!Math) {
+  _easycom_u_icon();
+}
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: $data.statusBarHeight + "px",
-    b: $data.userInfo.avatar,
-    c: common_vendor.t($data.userInfo.name),
-    d: common_vendor.o((...args) => $options.goProfile && $options.goProfile(...args)),
-    e: common_vendor.o((...args) => $options.goOrders && $options.goOrders(...args)),
-    f: common_vendor.f($data.orders, (order, k0, i0) => {
-      return common_vendor.e({
-        a: common_vendor.n(order.icon),
-        b: order.badge
-      }, order.badge ? {
-        c: common_vendor.t(order.badge)
-      } : {}, {
-        d: order.badge ? 1 : "",
-        e: common_vendor.t(order.label),
-        f: order.id,
-        g: common_vendor.o(($event) => $options.handleOrder(order), order.id)
-      });
+    b: $data.userInfo.avatar || "/static/default-avatar.png",
+    c: common_vendor.p({
+      name: "camera-fill",
+      color: "#FFF",
+      size: "11"
     }),
-    g: common_vendor.f($data.menus1, (menu, index, i0) => {
-      return {
-        a: common_vendor.n(menu.icon),
-        b: menu.color,
-        c: menu.bg,
-        d: common_vendor.t(menu.label),
-        e: index,
-        f: common_vendor.o(($event) => $options.handleMenu(menu), index)
-      };
+    d: common_vendor.o((...args) => $options.handleChangeAvatar && $options.handleChangeAvatar(...args)),
+    e: common_vendor.t($data.userInfo.nickname || "未设置昵称"),
+    f: common_vendor.t($data.userInfo.userId || "--"),
+    g: common_vendor.p({
+      name: "account",
+      color: "#07C160",
+      size: "18"
     }),
-    h: common_vendor.f($data.menus2, (menu, index, i0) => {
-      return {
-        a: common_vendor.n(menu.icon),
-        b: menu.color,
-        c: menu.bg,
-        d: common_vendor.t(menu.label),
-        e: index,
-        f: common_vendor.o(($event) => $options.handleMenu(menu), index)
-      };
-    })
+    h: common_vendor.p({
+      name: "arrow-right",
+      color: "#CCCCCC",
+      size: "14"
+    }),
+    i: common_vendor.o((...args) => $options.handleEditProfile && $options.handleEditProfile(...args)),
+    j: common_vendor.p({
+      name: "lock",
+      color: "#1890FF",
+      size: "18"
+    }),
+    k: common_vendor.p({
+      name: "arrow-right",
+      color: "#CCCCCC",
+      size: "14"
+    }),
+    l: common_vendor.o((...args) => $options.handleChangePassword && $options.handleChangePassword(...args)),
+    m: common_vendor.p({
+      name: "minus-circle",
+      color: "#FAAD14",
+      size: "18"
+    }),
+    n: common_vendor.p({
+      name: "arrow-right",
+      color: "#CCCCCC",
+      size: "14"
+    }),
+    o: common_vendor.o((...args) => $options.handleBlacklist && $options.handleBlacklist(...args)),
+    p: common_vendor.p({
+      name: "trash",
+      color: "#999",
+      size: "18"
+    }),
+    q: common_vendor.t($data.cacheSize),
+    r: common_vendor.p({
+      name: "arrow-right",
+      color: "#CCCCCC",
+      size: "14"
+    }),
+    s: common_vendor.o((...args) => $options.handleClearCache && $options.handleClearCache(...args)),
+    t: common_vendor.p({
+      name: "info-circle",
+      color: "#722ED1",
+      size: "18"
+    }),
+    v: common_vendor.p({
+      name: "arrow-right",
+      color: "#CCCCCC",
+      size: "14"
+    }),
+    w: common_vendor.o((...args) => $options.handleAbout && $options.handleAbout(...args)),
+    x: common_vendor.o((...args) => $options.handleLogout && $options.handleLogout(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-201c0da5"]]);

@@ -34,6 +34,9 @@ export const deptApi = {
   },
   delete(id: number): Promise<void> {
     return request({ url: `/sys/dept/${id}`, method: 'delete' })
+  },
+  move(id: number, parentId: number, sort?: number): Promise<void> {
+    return request({ url: '/sys/dept/move', method: 'put', params: { id, parentId, sort } })
   }
 }
 
@@ -148,6 +151,24 @@ export interface SysConfigGroup {
   remark?: string
 }
 
+// 短信发送记录
+export interface SmsLog {
+  id: number
+  phone: string
+  content: string
+  smsType: string
+  templateId: string
+  provider: string
+  status: number // 0-发送中 1-成功 2-失败
+  resultMsg: string
+  bizId: string
+  sendTime: string
+  userId: number
+  bizType: string
+  ip: string
+  createTime: string
+}
+
 export const configGroupApi = {
   list(): Promise<SysConfigGroup[]> {
     return request({ url: '/sys/config-group/list', method: 'get' })
@@ -168,6 +189,7 @@ export const configGroupApi = {
     register: { enabled: boolean; verifyEmail: boolean; verifyPhone: boolean; needAudit: boolean }
     password: { minLength: number; maxLength: number; requireUppercase: boolean; requireLowercase: boolean; requireNumber: boolean; requireSpecial: boolean }
     storage: { maxSize: number; allowTypes: string }
+    security: { disableDevtool: boolean }
   }> {
     return request({ url: '/sys/config-group/public', method: 'get' })
   },
@@ -182,5 +204,17 @@ export const configGroupApi = {
   // 生成RSA密钥对
   generateKeys(): Promise<{ publicKey: string; privateKey: string }> {
     return request({ url: '/sys/config-group/generate-keys', method: 'post' })
+  },
+  // 测试发送短信
+  testSms(phone: string): Promise<void> {
+    return request({ url: '/sys/config-group/test-sms', method: 'post', data: { phone } })
+  },
+  // 获取最近短信发送记录
+  getRecentSmsLogs(limit?: number): Promise<SmsLog[]> {
+    return request({ url: '/sys/config-group/sms-logs/recent', method: 'get', params: { limit } })
+  },
+  // 分页查询短信发送记录
+  getSmsLogs(params: { page: number; size: number; phone?: string; status?: number }): Promise<{ records: SmsLog[]; total: number; pages: number }> {
+    return request({ url: '/sys/config-group/sms-logs', method: 'get', params })
   }
 }

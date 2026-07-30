@@ -1,6 +1,7 @@
 package com.mars.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mars.common.annotation.DataScope;
 import com.mars.system.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,11 +9,22 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
+import org.apache.ibatis.annotations.Param;
+
 /**
  * 用户Mapper
  */
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
+
+    /**
+     * 分页查询用户
+     */
+    @DataScope(deptAlias = "dept_id", userAlias = "create_by")
+    IPage<SysUser> selectUserPage(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
 
     /**
      * 根据用户ID获取角色编码列表
@@ -30,4 +42,10 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
             "INNER JOIN sys_user_role ur ON rm.role_id = ur.role_id " +
             "WHERE ur.user_id = #{userId} AND m.status = 1 AND m.deleted = 0 AND m.permission IS NOT NULL AND m.permission != ''")
     List<String> selectPermissionsByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户名查询用户
+     */
+    @Select("SELECT * FROM sys_user WHERE username = #{username} AND deleted = 0")
+    SysUser selectByUsername(@Param("username") String username);
 }

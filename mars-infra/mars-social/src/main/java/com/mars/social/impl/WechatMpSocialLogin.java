@@ -1,7 +1,7 @@
 package com.mars.social.impl;
 
 import com.mars.social.SocialLoginService;
-import com.mars.system.service.SystemConfigHelper;
+import com.mars.system.helper.SystemConfigHelper;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;

@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <n-card>
+    <n-card class="page-layout">
       <!-- 搜索表单 -->
       <div class="search-form">
         <n-form inline :model="searchForm" label-placement="left">
@@ -30,7 +30,7 @@
           </n-form-item>
         </n-form>
       </div>
-      
+
       <!-- 工具栏 -->
       <div class="table-toolbar">
         <n-button v-if="hasPermission('sys:menu:add')" type="primary" @click="handleAdd()">
@@ -38,7 +38,7 @@
           新增菜单
         </n-button>
       </div>
-      
+
       <!-- 表格 -->
       <n-data-table
         :columns="columns"
@@ -48,7 +48,7 @@
         default-expand-all
       />
     </n-card>
-    
+
     <!-- 新增/编辑弹窗 -->
     <n-modal
       v-model:show="modalVisible"
@@ -84,10 +84,20 @@
         <n-form-item label="菜单名称" path="name">
           <n-input v-model:value="formData.name" placeholder="请输入菜单名称" />
         </n-form-item>
-        <n-form-item v-if="formData.type !== 3" label="路由地址" path="path">
+        <n-form-item v-if="formData.type !== 3" label="是否外链" path="isFrame">
+          <n-switch v-model:value="formData.isFrame" :checked-value="1" :unchecked-value="0">
+            <template #checked>是</template>
+            <template #unchecked>否</template>
+          </n-switch>
+          <span style="margin-left: 8px; color: #999; font-size: 12px;">外链点击后将在新窗口打开</span>
+        </n-form-item>
+        <n-form-item v-if="formData.type !== 3 && !formData.isFrame" label="路由地址" path="path">
           <n-input v-model:value="formData.path" placeholder="请输入路由地址" />
         </n-form-item>
-        <n-form-item v-if="formData.type === 2" label="组件路径" path="component">
+        <n-form-item v-if="formData.type !== 3 && formData.isFrame" label="外链地址" path="component">
+          <n-input v-model:value="formData.component" placeholder="请输入外链地址，如：https://example.com" />
+        </n-form-item>
+        <n-form-item v-if="formData.type === 2 && !formData.isFrame" label="组件路径" path="component">
           <n-input v-model:value="formData.component" placeholder="请输入组件路径" />
         </n-form-item>
         <n-form-item v-if="formData.type === 3" label="权限标识" path="permission">
@@ -166,7 +176,7 @@ const menuOptions = computed<TreeSelectOption[]>(() => {
   const options: TreeSelectOption[] = [
     { key: 0, label: '顶级菜单' }
   ]
-  
+
   function convert(menus: SysMenu[]): TreeSelectOption[] {
     return menus
       .filter(m => m.type !== 3) // 按钮不能作为上级
@@ -176,7 +186,7 @@ const menuOptions = computed<TreeSelectOption[]>(() => {
         children: menu.children ? convert(menu.children) : undefined
       }))
   }
-  
+
   options.push(...convert(tableData.value))
   return options
 })
@@ -187,7 +197,7 @@ const columns: DataTableColumns<SysMenu> = [
   {
     title: '类型',
     key: 'type',
-    width: 80,
+    width: 120,
     render(row) {
       const info = typeMap[row.type]
       return h(NTag, { type: info.type, size: 'small' }, { default: () => info.text })
@@ -196,7 +206,7 @@ const columns: DataTableColumns<SysMenu> = [
   {
     title: '图标',
     key: 'icon',
-    width: 120,
+    width: 180,
     render(row) {
       if (!row.icon) return '-'
       const iconComponent = getIconComponent(row.icon)
@@ -211,9 +221,15 @@ const columns: DataTableColumns<SysMenu> = [
       return row.icon
     }
   },
-  { title: '路由地址', key: 'path', width: 180 },
-  { title: '组件路径', key: 'component', width: 200 },
-  { title: '权限标识', key: 'permission', width: 150 },
+  { title: '路由地址', key: 'path', width: 200 , render(row) {
+      return row.path || '-'
+    }},
+  { title: '组件路径', key: 'component', width: 200 , render(row) {
+      return row.component || '-'
+    }},
+  { title: '权限标识', key: 'permission', width: 200 , render(row) {
+      return row.permission || '-'
+    }},
   { title: '排序', key: 'sort', width: 80 },
   {
     title: '可见',
@@ -278,7 +294,8 @@ const formData = reactive<SysMenu>({
   icon: '',
   sort: 0,
   visible: 1,
-  status: 1
+  status: 1,
+  isFrame: 0
 })
 
 const rules: FormRules = {
@@ -328,7 +345,8 @@ function handleAdd(parentId?: number) {
     icon: '',
     sort: 0,
     visible: 1,
-    status: 1
+    status: 1,
+    isFrame: 0
   })
   modalVisible.value = true
 }
@@ -345,7 +363,7 @@ async function handleSubmit() {
   try {
     await formRef.value?.validate()
     submitLoading.value = true
-    
+
     if (formData.id) {
       await menuApi.update({ ...formData })
       message.success('更新成功')
@@ -353,7 +371,7 @@ async function handleSubmit() {
       await menuApi.create({ ...formData })
       message.success('创建成功')
     }
-    
+
     modalVisible.value = false
     loadData()
   } catch (error) {
@@ -386,3 +404,7 @@ onMounted(() => {
   loadData()
 })
 </script>
+
+<style lang="scss" scoped>
+
+</style>

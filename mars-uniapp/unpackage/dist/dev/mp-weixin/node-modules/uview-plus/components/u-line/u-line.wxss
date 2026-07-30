@@ -1,0 +1,36 @@
+/* uview-plus 主题 */
+/* Mars办公 - 主题变量 */
+/* 品牌颜色 - 微信绿 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 聊天气泡 */
+/* 字体大小 */
+/* uni-app 内置变量覆盖 */
+.u-empty.data-v-bbd9963c,
+.u-empty__wrap.data-v-bbd9963c,
+.u-tabs.data-v-bbd9963c,
+.u-tabs__wrapper.data-v-bbd9963c,
+.u-tabs__wrapper__scroll-view-wrapper.data-v-bbd9963c,
+.u-tabs__wrapper__scroll-view.data-v-bbd9963c,
+.u-tabs__wrapper__nav.data-v-bbd9963c,
+.u-tabs__wrapper__nav__line.data-v-bbd9963c,
+.up-empty.data-v-bbd9963c,
+.up-empty__wrap.data-v-bbd9963c,
+.up-tabs.data-v-bbd9963c,
+.up-tabs__wrapper.data-v-bbd9963c,
+.up-tabs__wrapper__scroll-view-wrapper.data-v-bbd9963c,
+.up-tabs__wrapper__scroll-view.data-v-bbd9963c,
+.up-tabs__wrapper__nav.data-v-bbd9963c,
+.up-tabs__wrapper__nav__line.data-v-bbd9963c {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-line.data-v-bbd9963c {
+  vertical-align: middle;
+}

@@ -9,6 +9,10 @@ import com.mars.gen.entity.*;
 import com.mars.gen.mapper.GenTableColumnMapper;
 import com.mars.gen.mapper.GenTableMapper;
 import com.mars.system.mapper.SysMenuMapper;
+import com.mars.system.entity.SysRole;
+import com.mars.system.entity.SysRoleMenu;
+import com.mars.system.mapper.SysRoleMapper;
+import com.mars.system.mapper.SysRoleMenuMapper;
 import com.mars.gen.service.GenTableService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,8 @@ public class GenTableServiceImpl implements GenTableService {
     private final GenTableMapper genTableMapper;
     private final GenTableColumnMapper genTableColumnMapper;
     private final SysMenuMapper sysMenuMapper;
+    private final SysRoleMenuMapper sysRoleMenuMapper;
+    private final SysRoleMapper sysRoleMapper;
 
     // Java类型映射
     private static final Map<String, String> TYPE_MAP = new HashMap<>();
@@ -98,9 +104,10 @@ public class GenTableServiceImpl implements GenTableService {
             table.setTableName(tableName);
             table.setTableComment(dbTable.getTableComment());
             table.setClassName(toClassName(tableName));
-            table.setPackageName("com.mars.system");
-            table.setModuleName("system");
+            table.setPackageName("com.mars.biz");
+            table.setModuleName("biz");
             table.setBusinessName(toBusinessName(tableName));
+            table.setFormLayout("vertical");
             table.setFunctionName(StrUtil.isNotBlank(dbTable.getTableComment()) ? 
                     dbTable.getTableComment() : toClassName(tableName));
             table.setAuthor("Mars");
@@ -142,6 +149,7 @@ public class GenTableServiceImpl implements GenTableService {
                 column.setIsQuery(column.getIsPk() == 1 || "name".equals(javaField) || "status".equals(javaField) ? 1 : 0);
                 column.setQueryType("EQ");
                 column.setHtmlType(getHtmlType(column));
+                column.setDictType(getDictType(column));
 
                 genTableColumnMapper.insert(column);
             }
@@ -375,6 +383,9 @@ public class GenTableServiceImpl implements GenTableService {
         
         Long mainMenuId = mainMenu.getId();
         
+        // 自动授权给超级管理员 (role.code = admin)
+        authorizeToAdmin(mainMenuId);
+        
         // 创建按钮权限
         String[][] buttons = {
             {functionName + "查询", moduleName + ":" + businessName + ":list", "1"},
@@ -396,9 +407,41 @@ public class GenTableServiceImpl implements GenTableService {
             btnMenu.setIsFrame(0);
             btnMenu.setDeleted(0);
             sysMenuMapper.insert(btnMenu);
+            
+            // 按钮也授权给超级管理员
+            authorizeToAdmin(btnMenu.getId());
         }
         
-        log.info("菜单创建成功: {}", functionName);
+        log.info("菜单创建成功并已授权给超级管理员: {}", functionName);
+    }
+
+    /**
+     * 授权给超级管理员
+     */
+    private void authorizeToAdmin(Long menuId) {
+        // 查找超级管理员角色 (role.code = admin)
+        LambdaQueryWrapper<SysRole> roleWrapper = new LambdaQueryWrapper<>();
+        roleWrapper.eq(SysRole::getCode, "admin")
+                .last("LIMIT 1");
+        SysRole adminRole = sysRoleMapper.selectOne(roleWrapper);
+        if (adminRole == null) {
+            log.warn("未找到超级管理员角色(role.code=admin)，跳过菜单授权: menuId={}", menuId);
+            return;
+        }
+
+        // 避免重复授权
+        LambdaQueryWrapper<SysRoleMenu> existWrapper = new LambdaQueryWrapper<>();
+        existWrapper.eq(SysRoleMenu::getRoleId, adminRole.getId())
+                .eq(SysRoleMenu::getMenuId, menuId)
+                .last("LIMIT 1");
+        if (sysRoleMenuMapper.selectCount(existWrapper) > 0) {
+            return;
+        }
+
+        SysRoleMenu roleMenu = new SysRoleMenu();
+        roleMenu.setRoleId(adminRole.getId());
+        roleMenu.setMenuId(menuId);
+        sysRoleMenuMapper.insert(roleMenu);
     }
 
     @Override
@@ -531,11 +574,11 @@ public class GenTableServiceImpl implements GenTableService {
         String businessName = table.getBusinessName();
         
         return switch (fileName) {
-            case "Entity.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/entity/" + className + ".java";
-            case "Mapper.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/mapper/" + className + "Mapper.java";
-            case "Service.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/service/" + className + "Service.java";
-            case "ServiceImpl.java" -> projectRoot + "/mars-system/src/main/java/com/mars/system/service/impl/" + className + "ServiceImpl.java";
-            case "Controller.java" -> projectRoot + "/mars-web/src/main/java/com/mars/web/controller/" + moduleName + "/" + className + "Controller.java";
+            case "Entity.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/entity/" + className + ".java";
+            case "Mapper.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/mapper/" + className + "Mapper.java";
+            case "Service.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/service/" + className + "Service.java";
+            case "ServiceImpl.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/service/impl/" + className + "ServiceImpl.java";
+            case "Controller.java" -> projectRoot + "/mars-core/mars-biz/src/main/java/com/mars/biz/controller/" + className + "Controller.java";
             case "api.ts" -> projectRoot + "/mars-ui/src/api/" + businessName + ".ts";
             case "index.vue" -> projectRoot + "/mars-ui/src/views/" + moduleName + "/" + businessName + "/index.vue";
             case "menu.sql" -> null; // SQL 文件不自动写入
@@ -609,6 +652,7 @@ public class GenTableServiceImpl implements GenTableService {
                 newCol.setIsQuery(0);
                 newCol.setQueryType("EQ");
                 newCol.setHtmlType(getHtmlType(newCol));
+                newCol.setDictType(getDictType(newCol));
                 newCol.setSort(dbCol.getOrdinalPosition());
                 genTableColumnMapper.insert(newCol);
             }
@@ -719,6 +763,27 @@ public class GenTableServiceImpl implements GenTableService {
     }
 
     /**
+     * 根据字段名推断字典类型（仅对 select/radio/checkbox 有效）
+     */
+    private String getDictType(GenTableColumn column) {
+        if (!"select".equals(column.getHtmlType()) && !"radio".equals(column.getHtmlType()) && !"checkbox".equals(column.getHtmlType())) {
+            return "";
+        }
+        String columnName = column.getColumnName().toLowerCase();
+        String javaField = column.getJavaField().toLowerCase();
+        if (columnName.contains("gender") || columnName.contains("sex") || javaField.contains("gender") || javaField.contains("sex")) {
+            return "sex";
+        }
+        if (columnName.contains("status") || javaField.contains("status")) {
+            return "sys_status";
+        }
+        if (columnName.contains("yes_no") || columnName.contains("yn") || javaField.contains("yesno")) {
+            return "sys_yes_no";
+        }
+        return "";
+    }
+
+    /**
      * 准备模板上下文
      */
     private VelocityContext prepareContext(GenTable table) {
@@ -736,6 +801,7 @@ public class GenTableServiceImpl implements GenTableService {
         context.put("columns", table.getColumns());
         context.put("pkColumn", table.getPkColumn());
         context.put("table", table);
+        context.put("formLayout", table.getFormLayout() != null ? table.getFormLayout() : "vertical");
         
         // 判断是否需要导入 BigDecimal、LocalDateTime 等
         boolean hasBigDecimal = false;
@@ -796,7 +862,7 @@ public class GenTableServiceImpl implements GenTableService {
             case "Mapper.java" -> packagePath + "/mapper/" + className + "Mapper.java";
             case "Service.java" -> packagePath + "/service/" + className + "Service.java";
             case "ServiceImpl.java" -> packagePath + "/service/impl/" + className + "ServiceImpl.java";
-            case "Controller.java" -> "com/mars/web/controller/" + table.getModuleName() + "/" + className + "Controller.java";
+            case "Controller.java" -> packagePath + "/controller/" + className + "Controller.java";
             case "api.ts" -> "frontend/api/" + table.getBusinessName() + ".ts";
             case "index.vue" -> "frontend/views/" + table.getModuleName() + "/" + table.getBusinessName() + "/index.vue";
             case "menu.sql" -> "sql/" + table.getTableName() + "_menu.sql";

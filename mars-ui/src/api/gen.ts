@@ -22,6 +22,7 @@ export interface GenTable {
   genType: string
   genPath?: string
   frontType: string
+  formLayout?: string
   parentMenuId?: number
   remark?: string
   createTime?: string

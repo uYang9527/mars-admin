@@ -5,6 +5,9 @@ import type { MenuInfo } from '@/api/auth'
 // 动态导入所有页面组件
 const modules = import.meta.glob('/src/views/**/*.vue')
 
+// iframe 通用组件
+const IframeComponent = () => import('@/views/common/iframe.vue')
+
 // 路由配置
 const routes: RouteRecordRaw[] = [
   {
@@ -30,6 +33,13 @@ const routes: RouteRecordRaw[] = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         meta: { title: '首页', icon: 'HomeOutline' }
+      },
+      // 个人中心
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/profile/index.vue'),
+        meta: { title: '个人中心', icon: 'PersonOutline' }
       },
       // 系统管理
       {
@@ -139,6 +149,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '缓存监控', icon: 'ServerOutline' }
       },
       {
+        path: 'monitor/api-access',
+        name: 'MonitorApiAccess',
+        component: () => import('@/views/monitor/api-access/index.vue'),
+        meta: { title: 'API访问统计', icon: 'StatsChartOutline' }
+      },
+      {
         path: 'monitor/server',
         name: 'MonitorServer',
         component: () => import('@/views/monitor/server/index.vue'),
@@ -149,6 +165,12 @@ const routes: RouteRecordRaw[] = [
         name: 'ServerManager',
         component: () => import('@/views/monitor/server-manager/index.vue'),
         meta: { title: '服务器管理', icon: 'ServerOutline' }
+      },
+      {
+        path: 'monitor/druid',
+        name: 'MonitorDruid',
+        component: IframeComponent,
+        meta: { title: 'Druid监控', icon: 'PieChartOutline', frameSrc: '/druid/index.html' }
       },
       {
         path: 'test/test',
@@ -162,6 +184,13 @@ const routes: RouteRecordRaw[] = [
         name: 'ToolGen',
         component: () => import('@/views/tool/gen/index.vue'),
         meta: { title: '代码生成', icon: 'CodeSlashOutline' }
+      },
+      // 页签刷新中转路由
+      {
+        path: 'redirect/:path(.*)',
+        name: 'Redirect',
+        component: () => import('@/views/redirect/index.vue'),
+        meta: { title: '重定向', requiresAuth: true }
       }
     ]
   },
@@ -189,8 +218,8 @@ export function addDynamicRoutes(menus: MenuInfo[]) {
   
   const addRoutes = (menuList: MenuInfo[]) => {
     for (const menu of menuList) {
-      // 只处理菜单类型(type=2)，且有 path 和 component
-      if (menu.type === 2 && menu.path && menu.component) {
+      // 只处理菜单类型(type=2)，且有 path
+      if (menu.type === 2 && menu.path) {
         const routeName = 'Dynamic-' + menu.id
         
         // 检查是否已经有同路径的静态路由
@@ -208,28 +237,46 @@ export function addDynamicRoutes(menus: MenuInfo[]) {
           continue
         }
         
-        // 处理 component 路径（去掉开头的斜杠）
-        const componentName = menu.component.startsWith('/') ? menu.component.slice(1) : menu.component
-        const componentPath = `/src/views/${componentName}.vue`
-        const component = modules[componentPath]
-        
-        console.log(`[动态路由] 处理: path=${menuPath}, component=${componentPath}, 组件存在=${!!component}`)
-        
-        if (component) {
+        // 判断是否是外链菜单
+        if (menu.isFrame === 1 && menu.component) {
+          // 外链菜单，使用 iframe 组件
           router.addRoute('Layout', {
             path: menuPath,
             name: routeName,
-            component: component,
+            component: IframeComponent,
             meta: {
               title: menu.name,
               icon: menu.icon,
-              permission: menu.permission
+              permission: menu.permission,
+              frameSrc: menu.component  // 外链地址存在 component 字段
             }
           })
           addedRouteNames.add(routeName)
-          console.log(`[动态路由] ✓ 添加成功: ${menuPath}`)
-        } else {
-          console.warn(`[动态路由] ✗ 组件不存在: ${componentPath}`)
+          console.log(`[动态路由] ✓ 添加外链成功: ${menuPath} -> ${menu.component}`)
+        } else if (menu.component) {
+          // 普通菜单，加载组件
+          const componentName = menu.component.startsWith('/') ? menu.component.slice(1) : menu.component
+          const componentPath = `/src/views/${componentName}.vue`
+          const component = modules[componentPath]
+          
+          console.log(`[动态路由] 处理: path=${menuPath}, component=${componentPath}, 组件存在=${!!component}`)
+          
+          if (component) {
+            router.addRoute('Layout', {
+              path: menuPath,
+              name: routeName,
+              component: component,
+              meta: {
+                title: menu.name,
+                icon: menu.icon,
+                permission: menu.permission
+              }
+            })
+            addedRouteNames.add(routeName)
+            console.log(`[动态路由] ✓ 添加成功: ${menuPath}`)
+          } else {
+            console.warn(`[动态路由] ✗ 组件不存在: ${componentPath}`)
+          }
         }
       }
       
