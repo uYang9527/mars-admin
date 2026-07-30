@@ -1,13 +1,13 @@
-package com.mars.system.controller;
+package com.mars.biz.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.excel.EasyExcel;
+import com.mars.biz.entity.Student;
+import com.mars.biz.service.StudentService;
 import com.mars.common.result.PageResult;
 import com.mars.common.result.Result;
 import com.mars.system.annotation.Log;
 import com.mars.system.annotation.Log.BusinessType;
-import com.mars.system.entity.Student;
-import com.mars.system.service.StudentService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

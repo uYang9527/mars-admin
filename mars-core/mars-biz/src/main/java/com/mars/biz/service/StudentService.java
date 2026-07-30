@@ -1,7 +1,7 @@
-package com.mars.system.service;
+package com.mars.biz.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mars.system.entity.Student;
+import com.mars.biz.entity.Student;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
