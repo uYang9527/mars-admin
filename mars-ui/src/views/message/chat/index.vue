@@ -1,9 +1,9 @@
 <template>
   <div class="page-container">
-    <n-card 
-      class="chat-card" 
-      :class="{ 'chat-fullscreen': isFullscreen }"
-      :style="{ width: cardWidth + 'px', height: cardHeight + 'px' }"
+    <n-card
+        class="chat-card"
+        :class="{ 'chat-fullscreen': isFullscreen }"
+        :style="{ width: cardWidth + 'px', height: cardHeight + 'px' }"
     >
       <!-- 右下角拖拽调整大小 -->
       <div class="card-resize-handle" @mousedown="startCardResize"></div>
@@ -32,11 +32,11 @@
           <!-- 私聊列表 -->
           <div v-if="chatMode === 'private'" class="contact-list">
             <div
-              v-for="user in filteredUsers"
-              :key="user.id"
-              class="contact-item"
-              :class="{ active: selectedUser?.id === user.id && !selectedGroup, blocked: user.isBlocked }"
-              @click="selectUser(user)"
+                v-for="user in filteredUsers"
+                :key="user.id"
+                class="contact-item"
+                :class="{ active: selectedUser?.id === user.id && !selectedGroup, blocked: user.isBlocked }"
+                @click="selectUser(user)"
             >
               <div class="avatar-wrapper">
                 <n-avatar round size="small" :src="user.avatar || undefined">
@@ -68,11 +68,11 @@
           <!-- 群聊列表 -->
           <div v-else class="contact-list">
             <div
-              v-for="group in filteredGroups"
-              :key="group.id"
-              class="contact-item"
-              :class="{ active: selectedGroup?.id === group.id }"
-              @click="selectGroup(group)"
+                v-for="group in filteredGroups"
+                :key="group.id"
+                class="contact-item"
+                :class="{ active: selectedGroup?.id === group.id }"
+                @click="selectGroup(group)"
             >
               <n-avatar round size="small" :style="{ background: '#18a058' }">
                 {{ group.name?.charAt(0) || 'G' }}
@@ -94,11 +94,11 @@
             <n-empty v-if="filteredGroups.length === 0" description="暂无群聊" size="small" />
           </div>
         </div>
-        
+
         <!-- 可拖拽分隔条 -->
-        <div 
-          class="resize-handle"
-          @mousedown="startResize"
+        <div
+            class="resize-handle"
+            @mousedown="startResize"
         ></div>
 
         <!-- 右侧聊天区域 -->
@@ -134,11 +134,11 @@
                       </template>
                     </n-input>
                     <div class="search-results" v-if="messageSearchKeyword">
-                      <div 
-                        v-for="msg in filteredMessages" 
-                        :key="msg.id" 
-                        class="search-result-item"
-                        @click="scrollToMessage(msg.id!)"
+                      <div
+                          v-for="msg in filteredMessages"
+                          :key="msg.id"
+                          class="search-result-item"
+                          @click="scrollToMessage(msg.id!)"
                       >
                         <span class="result-content">{{ msg.content.slice(0, 30) }}{{ msg.content.length > 30 ? '...' : '' }}</span>
                         <span class="result-time">{{ formatTime(msg.sendTime) }}</span>
@@ -166,125 +166,125 @@
               </div>
             </div>
 
-        <!-- 消息列表 -->
-        <div ref="messageListRef" class="message-list" @scroll="handleScroll">
-          <div v-if="loadingHistory" class="loading-more">
-            <n-spin size="small" />
-          </div>
-          <div
-            v-for="msg in messages"
-            :key="msg.id"
-            :data-msg-id="msg.id"
-            class="message-item"
-            :class="{ 'message-self': msg.senderId === currentUserId }"
-          >
-            <n-avatar round size="small" :src="msg.senderAvatar || undefined">
-              {{ msg.senderName?.charAt(0) || 'U' }}
-            </n-avatar>
-            <div class="message-content">
-              <!-- 图片消息 -->
-              <div v-if="msg.msgType === 2" class="message-image" @click="previewImage(msg.content)">
-                <img :src="msg.content" alt="图片" />
+            <!-- 消息列表 -->
+            <div ref="messageListRef" class="message-list" @scroll="handleScroll">
+              <div v-if="loadingHistory" class="loading-more">
+                <n-spin size="small" />
               </div>
-              <!-- 文本消息 -->
-              <div v-else class="message-bubble">{{ msg.content }}</div>
-              <div class="message-time">{{ formatTime(msg.sendTime) }}</div>
+              <div
+                  v-for="msg in messages"
+                  :key="msg.id"
+                  :data-msg-id="msg.id"
+                  class="message-item"
+                  :class="{ 'message-self': msg.senderId === currentUserId }"
+              >
+                <n-avatar round size="small" :src="msg.senderAvatar || undefined">
+                  {{ msg.senderName?.charAt(0) || 'U' }}
+                </n-avatar>
+                <div class="message-content">
+                  <!-- 图片消息 -->
+                  <div v-if="msg.msgType === 2" class="message-image" @click="previewImage(msg.content)">
+                    <img :src="msg.content" alt="图片" />
+                  </div>
+                  <!-- 文本消息 -->
+                  <div v-else class="message-bubble">{{ msg.content }}</div>
+                  <div class="message-time">{{ formatTime(msg.sendTime) }}</div>
+                </div>
+              </div>
+              <n-empty v-if="messages.length === 0 && !loadingHistory" description="暂无消息" />
             </div>
-          </div>
-          <n-empty v-if="messages.length === 0 && !loadingHistory" description="暂无消息" />
-        </div>
 
-        <!-- 输入区域 -->
-        <div class="chat-input">
-          <div class="input-toolbar">
-            <!-- 表情选择 -->
-            <n-popover trigger="click" placement="top-start" :show-arrow="false">
-              <template #trigger>
-                <n-button quaternary circle>
-                  <template #icon>
-                    <n-icon size="20"><HappyOutline /></n-icon>
+            <!-- 输入区域 -->
+            <div class="chat-input">
+              <div class="input-toolbar">
+                <!-- 表情选择 -->
+                <n-popover trigger="click" placement="top-start" :show-arrow="false">
+                  <template #trigger>
+                    <n-button quaternary circle>
+                      <template #icon>
+                        <n-icon size="20"><HappyOutline /></n-icon>
+                      </template>
+                    </n-button>
                   </template>
-                </n-button>
-              </template>
-              <div class="emoji-panel">
-                <div class="emoji-tabs">
+                  <div class="emoji-panel">
+                    <div class="emoji-tabs">
                   <span
-                    v-for="(group, idx) in emojiGroups"
-                    :key="idx"
-                    class="emoji-tab"
-                    :class="{ active: activeEmojiTab === idx }"
-                    @click="activeEmojiTab = idx"
+                      v-for="(group, idx) in emojiGroups"
+                      :key="idx"
+                      class="emoji-tab"
+                      :class="{ active: activeEmojiTab === idx }"
+                      @click="activeEmojiTab = idx"
                   >
                     {{ group.icon }}
                   </span>
-                </div>
-                <div class="emoji-list">
+                    </div>
+                    <div class="emoji-list">
                   <span
-                    v-for="emoji in emojiGroups[activeEmojiTab].emojis"
-                    :key="emoji"
-                    class="emoji-item"
-                    @click="insertEmoji(emoji)"
+                      v-for="emoji in emojiGroups[activeEmojiTab].emojis"
+                      :key="emoji"
+                      class="emoji-item"
+                      @click="insertEmoji(emoji)"
                   >
                     {{ emoji }}
                   </span>
-                </div>
-              </div>
-            </n-popover>
-            <!-- 图片上传 -->
-            <n-upload
-              :custom-request="handleUploadImage"
-              :show-file-list="false"
-              accept="image/*"
-            >
-              <n-button quaternary circle>
-                <template #icon>
-                  <n-icon size="20"><ImageOutline /></n-icon>
-                </template>
-              </n-button>
-            </n-upload>
-            <!-- 快捷语 -->
-            <n-popover trigger="click" placement="top-start" :show-arrow="false">
-              <template #trigger>
-                <n-button quaternary circle title="快捷语">
-                  <template #icon>
-                    <n-icon size="20"><FlashOutline /></n-icon>
-                  </template>
-                </n-button>
-              </template>
-              <div class="quick-reply-panel">
-                <div class="quick-reply-header">
-                  <span>常用快捷语</span>
-                  <n-button text size="small" @click="showQuickReplyEdit = true">管理</n-button>
-                </div>
-                <div class="quick-reply-list">
-                  <div
-                    v-for="(item, idx) in quickReplies"
-                    :key="idx"
-                    class="quick-reply-item"
-                    @click="insertQuickReply(item)"
-                  >
-                    {{ item }}
+                    </div>
                   </div>
-                </div>
+                </n-popover>
+                <!-- 图片上传 -->
+                <n-upload
+                    :custom-request="handleUploadImage"
+                    :show-file-list="false"
+                    accept="image/*"
+                >
+                  <n-button quaternary circle>
+                    <template #icon>
+                      <n-icon size="20"><ImageOutline /></n-icon>
+                    </template>
+                  </n-button>
+                </n-upload>
+                <!-- 快捷语 -->
+                <n-popover trigger="click" placement="top-start" :show-arrow="false">
+                  <template #trigger>
+                    <n-button quaternary circle title="快捷语">
+                      <template #icon>
+                        <n-icon size="20"><FlashOutline /></n-icon>
+                      </template>
+                    </n-button>
+                  </template>
+                  <div class="quick-reply-panel">
+                    <div class="quick-reply-header">
+                      <span>常用快捷语</span>
+                      <n-button text size="small" @click="showQuickReplyEdit = true">管理</n-button>
+                    </div>
+                    <div class="quick-reply-list">
+                      <div
+                          v-for="(item, idx) in quickReplies"
+                          :key="idx"
+                          class="quick-reply-item"
+                          @click="insertQuickReply(item)"
+                      >
+                        {{ item }}
+                      </div>
+                    </div>
+                  </div>
+                </n-popover>
               </div>
-            </n-popover>
-          </div>
-          <div class="input-area">
-            <n-input
-              ref="inputRef"
-              v-model:value="inputContent"
-              type="textarea"
-              placeholder="输入消息，按Enter发送"
-              :rows="2"
-              @keydown.enter.exact.prevent="handleSend"
-            />
-          </div>
-          <n-button type="primary" @click="handleSend" :disabled="!inputContent.trim()">
-            发送
-          </n-button>
-        </div>
+              <div class="input-area">
+                <n-input
+                    ref="inputRef"
+                    v-model:value="inputContent"
+                    type="textarea"
+                    placeholder="输入消息，按Enter发送"
+                    :rows="2"
+                    @keydown.enter.exact.prevent="handleSend"
+                />
+              </div>
+              <n-button type="primary" @click="handleSend" :disabled="!inputContent.trim()">
+                发送
+              </n-button>
+            </div>
           </template>
-          
+
           <!-- 群聊模式 -->
           <template v-else-if="selectedGroup">
             <!-- 群聊头部 -->
@@ -314,17 +314,17 @@
                 </n-button>
               </div>
             </div>
-            
+
             <!-- 群消息列表 -->
             <div ref="groupMessageListRef" class="message-list" @scroll="handleScroll">
               <div v-if="loadingHistory" class="loading-more">
                 <n-spin size="small" />
               </div>
               <div
-                v-for="msg in groupMessages"
-                :key="msg.id"
-                class="message-item"
-                :class="{ 
+                  v-for="msg in groupMessages"
+                  :key="msg.id"
+                  class="message-item"
+                  :class="{
                   'message-self': msg.senderId === currentUserId,
                   'message-system': msg.msgType === 4
                 }"
@@ -352,7 +352,7 @@
               </div>
               <n-empty v-if="groupMessages.length === 0 && !loadingHistory" description="暂无消息" />
             </div>
-            
+
             <!-- 群聊输入区域 -->
             <div class="chat-input">
               <div class="input-toolbar">
@@ -368,21 +368,21 @@
                   <div class="emoji-panel">
                     <div class="emoji-tabs">
                       <span
-                        v-for="(group, idx) in emojiGroups"
-                        :key="idx"
-                        class="emoji-tab"
-                        :class="{ active: activeEmojiTab === idx }"
-                        @click="activeEmojiTab = idx"
+                          v-for="(group, idx) in emojiGroups"
+                          :key="idx"
+                          class="emoji-tab"
+                          :class="{ active: activeEmojiTab === idx }"
+                          @click="activeEmojiTab = idx"
                       >
                         {{ group.icon }}
                       </span>
                     </div>
                     <div class="emoji-list">
                       <span
-                        v-for="emoji in emojiGroups[activeEmojiTab].emojis"
-                        :key="emoji"
-                        class="emoji-item"
-                        @click="insertGroupEmoji(emoji)"
+                          v-for="emoji in emojiGroups[activeEmojiTab].emojis"
+                          :key="emoji"
+                          class="emoji-item"
+                          @click="insertGroupEmoji(emoji)"
                       >
                         {{ emoji }}
                       </span>
@@ -391,9 +391,9 @@
                 </n-popover>
                 <!-- 图片上传 -->
                 <n-upload
-                  :custom-request="handleUploadGroupImage"
-                  :show-file-list="false"
-                  accept="image/*"
+                    :custom-request="handleUploadGroupImage"
+                    :show-file-list="false"
+                    accept="image/*"
                 >
                   <n-button quaternary circle>
                     <template #icon>
@@ -404,12 +404,12 @@
               </div>
               <div class="input-area">
                 <n-input
-                  ref="groupInputRef"
-                  v-model:value="groupInputContent"
-                  type="textarea"
-                  placeholder="输入消息，按Enter发送"
-                  :rows="2"
-                  @keydown.enter.exact.prevent="handleGroupSend"
+                    ref="groupInputRef"
+                    v-model:value="groupInputContent"
+                    type="textarea"
+                    placeholder="输入消息，按Enter发送"
+                    :rows="2"
+                    @keydown.enter.exact.prevent="handleGroupSend"
                 />
               </div>
               <n-button type="primary" @click="handleGroupSend" :disabled="!groupInputContent.trim()">
@@ -417,7 +417,7 @@
               </n-button>
             </div>
           </template>
-          
+
           <div v-else class="chat-empty">
             <n-empty description="选择一个联系人或群聊开始聊天" />
           </div>
@@ -425,21 +425,21 @@
 
       </div>
     </n-card>
-    
+
     <!-- 图片预览 -->
     <n-modal v-model:show="previewVisible" preset="card" title="图片预览" style="width: auto; max-width: 90vw">
       <img :src="previewUrl" alt="预览" style="max-width: 100%; max-height: 80vh" />
     </n-modal>
-    
+
     <!-- 快捷语管理弹窗 -->
     <n-modal v-model:show="showQuickReplyEdit" preset="card" title="管理快捷语" style="width: 500px">
       <div class="quick-reply-edit">
         <div class="edit-tip">每行一条快捷语，最多20条</div>
         <n-input
-          v-model:value="quickReplyEditText"
-          type="textarea"
-          placeholder="请输入快捷语，每行一条"
-          :rows="10"
+            v-model:value="quickReplyEditText"
+            type="textarea"
+            placeholder="请输入快捷语，每行一条"
+            :rows="10"
         />
       </div>
       <template #footer>
@@ -450,7 +450,7 @@
         </n-space>
       </template>
     </n-modal>
-    
+
     <!-- 创建群聊弹窗 -->
     <n-modal v-model:show="showCreateGroup" preset="card" title="创建群聊" style="width: 500px">
       <n-form label-placement="left" label-width="80">
@@ -459,10 +459,10 @@
         </n-form-item>
         <n-form-item label="选择成员">
           <n-transfer
-            v-model:value="newGroupMembers"
-            :options="userOptions"
-            source-filterable
-            style="height: 300px"
+              v-model:value="newGroupMembers"
+              :options="userOptions"
+              source-filterable
+              style="height: 300px"
           />
         </n-form-item>
       </n-form>
@@ -473,7 +473,7 @@
         </n-space>
       </template>
     </n-modal>
-    
+
     <!-- 群详情/设置弹窗 -->
     <n-modal v-model:show="showGroupDetail" preset="card" title="群聊设置" style="width: 600px">
       <div v-if="selectedGroup" class="group-detail">
@@ -523,14 +523,14 @@
         </div>
       </div>
     </n-modal>
-    
+
     <!-- 添加成员弹窗 -->
     <n-modal v-model:show="showAddMember" preset="card" title="添加成员" style="width: 400px">
       <n-transfer
-        v-model:value="addMemberIds"
-        :options="availableUsers"
-        source-filterable
-        style="height: 300px"
+          v-model:value="addMemberIds"
+          :options="availableUsers"
+          source-filterable
+          style="height: 300px"
       />
       <template #footer>
         <n-space justify="end">
@@ -539,7 +539,7 @@
         </n-space>
       </template>
     </n-modal>
-    
+
     <!-- 用户资料弹窗 -->
     <n-modal v-model:show="showUserProfile" preset="card" title="用户资料" style="width: 400px">
       <div v-if="selectedUser" class="user-profile">
@@ -562,7 +562,7 @@
         </n-descriptions>
       </div>
     </n-modal>
-    
+
     <!-- 清空聊天确认弹窗 -->
     <n-modal v-model:show="showClearConfirm" preset="dialog" title="清空聊天记录" positive-text="确定" negative-text="取消" @positive-click="handleClearMessages">
       <template #icon>
@@ -570,7 +570,7 @@
       </template>
       确定要清空与 {{ selectedUser?.nickname }} 的所有聊天记录吗？此操作不可恢复。
     </n-modal>
-    
+
     <!-- 拉黑用户确认弹窗 -->
     <n-modal v-model:show="showBlockConfirm" preset="dialog" title="拉黑用户" positive-text="确定" negative-text="取消" @positive-click="handleBlockUser">
       <template #icon>
@@ -675,7 +675,7 @@ const defaultQuickReplies = [
   '祝你工作顺利！'
 ]
 const quickReplies = ref<string[]>(
-  JSON.parse(localStorage.getItem('chat-quick-replies') || 'null') || defaultQuickReplies
+    JSON.parse(localStorage.getItem('chat-quick-replies') || 'null') || defaultQuickReplies
 )
 const emojiGroups = [
   {
@@ -712,8 +712,8 @@ const emojiGroups = [
 const filteredUsers = computed(() => {
   if (!searchKeyword.value) return users.value
   return users.value.filter(u =>
-    u.nickname?.includes(searchKeyword.value) ||
-    u.username?.includes(searchKeyword.value)
+      u.nickname?.includes(searchKeyword.value) ||
+      u.username?.includes(searchKeyword.value)
   )
 })
 
@@ -721,8 +721,8 @@ const filteredUsers = computed(() => {
 const filteredMessages = computed(() => {
   if (!messageSearchKeyword.value) return []
   const keyword = messageSearchKeyword.value.toLowerCase()
-  return messages.value.filter(m => 
-    m.msgType === 1 && m.content.toLowerCase().includes(keyword)
+  return messages.value.filter(m =>
+      m.msgType === 1 && m.content.toLowerCase().includes(keyword)
   )
 })
 
@@ -733,21 +733,21 @@ const privateChatOptions = computed(() => {
     { label: '清空记录', key: 'clear', icon: () => h(NIcon, null, { default: () => h(TrashOutline) }) },
     { type: 'divider', key: 'd1' }
   ]
-  
+
   if (selectedUser.value?.isBlocked) {
-    options.push({ 
-      label: '取消拉黑', 
-      key: 'unblock', 
-      icon: () => h(NIcon, null, { default: () => h(PersonOutline) }) 
+    options.push({
+      label: '取消拉黑',
+      key: 'unblock',
+      icon: () => h(NIcon, null, { default: () => h(PersonOutline) })
     })
   } else {
-    options.push({ 
-      label: '拉黑用户', 
-      key: 'block', 
-      icon: () => h(NIcon, null, { default: () => h(BanOutline) }) 
+    options.push({
+      label: '拉黑用户',
+      key: 'block',
+      icon: () => h(NIcon, null, { default: () => h(BanOutline) })
     })
   }
-  
+
   return options
 })
 
@@ -760,16 +760,16 @@ const filteredGroups = computed(() => {
 // 用户选项（用于创建群聊）
 const userOptions = computed(() => {
   return users.value
-    .filter(u => u.id !== currentUserId.value)
-    .map(u => ({ label: u.nickname, value: u.id }))
+      .filter(u => u.id !== currentUserId.value)
+      .map(u => ({ label: u.nickname, value: u.id }))
 })
 
 // 可添加的用户（排除已在群内的）
 const availableUsers = computed(() => {
   const memberIds = groupMembers.value.map(m => m.userId)
   return users.value
-    .filter(u => !memberIds.includes(u.id))
-    .map(u => ({ label: u.nickname, value: u.id }))
+      .filter(u => !memberIds.includes(u.id))
+      .map(u => ({ label: u.nickname, value: u.id }))
 })
 
 // 是否可以编辑群
@@ -823,20 +823,93 @@ async function loadMessages() {
   }
 }
 
-// 更新联系人的最新消息
-function updateUserLastMessage(userId: number, content: string, msgType: number = 1) {
-  const user = users.value.find(u => u.id === userId)
-  if (user) {
-    user.lastMessage = msgType === 2 ? '[图片]' : content
+// 更新联系人的最新消息（并置顶）
+let loadUsersTimer: ReturnType<typeof setTimeout> | undefined
+let loadGroupsTimer: ReturnType<typeof setTimeout> | undefined
+
+function scheduleLoadUsers() {
+  if (loadUsersTimer) clearTimeout(loadUsersTimer)
+  loadUsersTimer = setTimeout(() => {
+    loadUsers()
+  }, 300)
+}
+
+function scheduleLoadGroups() {
+  if (loadGroupsTimer) clearTimeout(loadGroupsTimer)
+  loadGroupsTimer = setTimeout(() => {
+    loadGroups()
+  }, 300)
+}
+
+function normalizeTime(input?: unknown): string {
+  if (input instanceof Date) return input.toISOString()
+  if (typeof input === 'number') {
+    const d = new Date(input)
+    return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString()
+  }
+  if (typeof input === 'string') {
+    const d = new Date(input)
+    return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString()
+  }
+  return new Date().toISOString()
+}
+
+function updateUserLastMessage(
+    userId: number,
+    content: string,
+    msgType: number = 1,
+    time?: string,
+    moveToTop: boolean = true
+) {
+  const safeContent = content || ''
+  const idx = users.value.findIndex(u => u.id === userId)
+  if (idx === -1) {
+    scheduleLoadUsers()
+    return
+  }
+
+  const user = users.value[idx]
+
+  // 清空聊天记录场景
+  if (safeContent.length === 0) {
+    user.lastMessage = undefined
+    user.lastMessageTime = undefined
+    return
+  }
+
+  user.lastMessage = msgType === 2 ? '[图片]' : safeContent
+  user.lastMessageTime = normalizeTime(time)
+
+  if (moveToTop && idx > 0) {
+    users.value.splice(idx, 1)
+    users.value.unshift(user)
   }
 }
 
-// 更新群聊的最新消息
-function updateGroupLastMessage(groupId: number, senderName: string, content: string, msgType: number = 1) {
-  const group = groups.value.find(g => g.id === groupId)
-  if (group) {
-    const displayContent = msgType === 2 ? '[图片]' : (msgType === 4 ? '[系统消息] ' + content : content)
-    group.lastMessage = senderName + ': ' + displayContent
+// 更新群聊的最新消息（并置顶）
+function updateGroupLastMessage(
+    groupId: number,
+    senderName: string,
+    content: string,
+    msgType: number = 1,
+    time?: string,
+    moveToTop: boolean = true
+) {
+  const safeContent = content || ''
+  const idx = groups.value.findIndex(g => g.id === groupId)
+  if (idx === -1) {
+    scheduleLoadGroups()
+    return
+  }
+
+  const group = groups.value[idx]
+  const displayContent = msgType === 2 ? '[图片]' : (msgType === 4 ? '[系统消息] ' + safeContent : safeContent)
+  group.lastMessage = senderName + ': ' + displayContent
+  group.lastMessageTime = normalizeTime(time)
+
+  if (moveToTop && idx > 0) {
+    groups.value.splice(idx, 1)
+    groups.value.unshift(group)
   }
 }
 
@@ -852,7 +925,7 @@ async function handleSend() {
     })
     messages.value.push(msg)
     // 更新联系人最新消息
-    updateUserLastMessage(selectedUser.value.id, msg.content, 1)
+    updateUserLastMessage(selectedUser.value.id, msg.content, 1, msg.sendTime, true)
     inputContent.value = ''
     await nextTick()
     scrollToBottom()
@@ -881,7 +954,7 @@ async function handleUploadImage(options: UploadCustomRequestOptions) {
     })
     messages.value.push(msg)
     // 更新联系人最新消息
-    updateUserLastMessage(selectedUser.value.id, '[图片]', 2)
+    updateUserLastMessage(selectedUser.value.id, msg.content, 2, msg.sendTime, true)
     await nextTick()
     scrollToBottom()
 
@@ -934,10 +1007,10 @@ watch(showQuickReplyEdit, (val) => {
 // 保存快捷语
 function saveQuickReplies() {
   const lines = quickReplyEditText.value
-    .split('\n')
-    .map(s => s.trim())
-    .filter(s => s.length > 0)
-    .slice(0, 20)
+      .split('\n')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .slice(0, 20)
   quickReplies.value = lines
   localStorage.setItem('chat-quick-replies', JSON.stringify(lines))
   showQuickReplyEdit.value = false
@@ -998,16 +1071,16 @@ async function loadGroupMembers() {
 // 发送群消息
 async function handleGroupSend() {
   if (!groupInputContent.value.trim() || !selectedGroup.value) return
-  
+
   try {
     const msg = await groupChatApi.sendMessage(
-      selectedGroup.value.id!,
-      groupInputContent.value.trim(),
-      1
+        selectedGroup.value.id!,
+        groupInputContent.value.trim(),
+        1
     )
     groupMessages.value.push(msg)
     // 更新群聊最新消息
-    updateGroupLastMessage(selectedGroup.value.id!, msg.senderName || '我', msg.content, 1)
+    updateGroupLastMessage(selectedGroup.value.id!, msg.senderName || '我', msg.content, 1, msg.sendTime, true)
     groupInputContent.value = ''
     await nextTick()
     scrollGroupToBottom()
@@ -1023,17 +1096,17 @@ async function handleUploadGroupImage(options: UploadCustomRequestOptions) {
     options.onError()
     return
   }
-  
+
   try {
     const result = await fileApi.uploadImage(options.file.file as File)
     const msg = await groupChatApi.sendMessage(
-      selectedGroup.value.id!,
-      result.url,
-      2
+        selectedGroup.value.id!,
+        result.url,
+        2
     )
     groupMessages.value.push(msg)
     // 更新群聊最新消息
-    updateGroupLastMessage(selectedGroup.value.id!, msg.senderName || '我', '[图片]', 2)
+    updateGroupLastMessage(selectedGroup.value.id!, msg.senderName || '我', msg.content, 2, msg.sendTime, true)
     await nextTick()
     scrollGroupToBottom()
     options.onFinish()
@@ -1130,7 +1203,7 @@ function getMemberOptions(member: ChatGroupMember) {
   const options: any[] = []
   const currentMember = groupMembers.value.find(m => m.userId === currentUserId.value)
   if (!currentMember) return options
-  
+
   if (currentMember.role === 2) {
     // 群主操作
     if (member.role === 1) {
@@ -1140,7 +1213,7 @@ function getMemberOptions(member: ChatGroupMember) {
     }
     options.push({ label: '转让群主', key: 'transfer' })
   }
-  
+
   if (currentMember.role >= 1 && member.role < currentMember.role) {
     if (member.muted) {
       options.push({ label: '取消禁言', key: 'unmute' })
@@ -1149,14 +1222,14 @@ function getMemberOptions(member: ChatGroupMember) {
     }
     options.push({ label: '移出群聊', key: 'remove' })
   }
-  
+
   return options
 }
 
 // 处理成员操作
 async function handleMemberAction(key: string, member: ChatGroupMember) {
   if (!selectedGroup.value) return
-  
+
   try {
     switch (key) {
       case 'setAdmin':
@@ -1195,7 +1268,7 @@ async function handleMemberAction(key: string, member: ChatGroupMember) {
 async function handleDissolveGroup() {
   if (!selectedGroup.value) return
   if (!confirm('确定要解散该群聊吗？此操作不可恢复。')) return
-  
+
   try {
     await groupChatApi.dissolve(selectedGroup.value.id!)
     message.success('群聊已解散')
@@ -1212,7 +1285,7 @@ async function handleDissolveGroup() {
 async function handleQuitGroup() {
   if (!selectedGroup.value) return
   if (!confirm('确定要退出该群聊吗？')) return
-  
+
   try {
     await groupChatApi.quit(selectedGroup.value.id!)
     message.success('已退出群聊')
@@ -1235,14 +1308,14 @@ function startResize(e: MouseEvent) {
   isResizing.value = true
   const startX = e.clientX
   const startWidth = sidebarWidth.value
-  
+
   const onMouseMove = (e: MouseEvent) => {
     if (!isResizing.value) return
     const diff = e.clientX - startX
     const newWidth = Math.min(Math.max(startWidth + diff, 200), 400)
     sidebarWidth.value = newWidth
   }
-  
+
   const onMouseUp = () => {
     isResizing.value = false
     localStorage.setItem('chat-sidebar-width', sidebarWidth.value.toString())
@@ -1251,7 +1324,7 @@ function startResize(e: MouseEvent) {
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
   }
-  
+
   document.addEventListener('mousemove', onMouseMove)
   document.addEventListener('mouseup', onMouseUp)
   document.body.style.cursor = 'col-resize'
@@ -1265,7 +1338,7 @@ function startCardResize(e: MouseEvent) {
   const startY = e.clientY
   const startWidth = cardWidth.value
   const startHeight = cardHeight.value
-  
+
   const onMouseMove = (e: MouseEvent) => {
     const diffX = e.clientX - startX
     const diffY = e.clientY - startY
@@ -1275,7 +1348,7 @@ function startCardResize(e: MouseEvent) {
     cardWidth.value = newWidth
     cardHeight.value = newHeight
   }
-  
+
   const onMouseUp = () => {
     localStorage.setItem('chat-card-width', cardWidth.value.toString())
     localStorage.setItem('chat-card-height', cardHeight.value.toString())
@@ -1284,7 +1357,7 @@ function startCardResize(e: MouseEvent) {
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
   }
-  
+
   document.addEventListener('mousemove', onMouseMove)
   document.addEventListener('mouseup', onMouseUp)
   document.body.style.cursor = 'nwse-resize'
@@ -1369,11 +1442,7 @@ async function handleClearMessages() {
     await chatApi.clearHistory(selectedUser.value.id)
     messages.value = []
     // 更新联系人最新消息
-    updateUserLastMessage(selectedUser.value.id, '', 1)
-    const user = users.value.find(u => u.id === selectedUser.value?.id)
-    if (user) {
-      user.lastMessage = undefined
-    }
+    updateUserLastMessage(selectedUser.value.id, '', 1, undefined, false)
     message.success('聊天记录已清空')
   } catch (error) {
     // 错误已在拦截器处理
@@ -1403,34 +1472,34 @@ function formatListTime(time?: string): string {
   if (!time) return ''
   const date = new Date(time)
   if (isNaN(date.getTime())) return ''
-  
+
   const now = new Date()
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
   const weekStart = new Date(today.getTime() - today.getDay() * 24 * 60 * 60 * 1000)
   const targetDay = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-  
+
   // 今天：显示 HH:mm
   if (targetDay.getTime() === today.getTime()) {
     return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
   }
-  
+
   // 昨天
   if (targetDay.getTime() === yesterday.getTime()) {
     return '昨天'
   }
-  
+
   // 本周内：显示星期几
   if (targetDay.getTime() >= weekStart.getTime()) {
     const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
     return weekDays[date.getDay()]
   }
-  
+
   // 今年内：显示 MM/DD
   if (date.getFullYear() === now.getFullYear()) {
     return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`
   }
-  
+
   // 更早：显示 YYYY/MM/DD
   return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`
 }
@@ -1439,9 +1508,10 @@ function formatListTime(time?: string): string {
 function setupWebSocket() {
   // 私聊消息
   wsManager.on('chat', (data) => {
+    const t = normalizeTime((data as any)?.time ?? (data as any)?.sendTime)
     // 更新联系人列表的最新消息
-    updateUserLastMessage(data.senderId, data.content, data.msgType || 1)
-    
+    updateUserLastMessage(data.senderId, data.content, data.msgType || 1, t, true)
+
     // 如果是当前聊天对象的消息
     if (selectedUser.value && data.senderId === selectedUser.value.id) {
       messages.value.push({
@@ -1451,19 +1521,20 @@ function setupWebSocket() {
         receiverId: currentUserId.value!,
         content: data.content,
         msgType: data.msgType || 1,
-        sendTime: new Date().toISOString()
+        sendTime: t
       })
       nextTick(() => scrollToBottom())
       // 标记已读
       chatApi.markAsRead(data.senderId)
     }
   })
-  
+
   // 群聊消息
   wsManager.on('groupChat', (data) => {
+    const t = normalizeTime((data as any)?.time ?? (data as any)?.sendTime)
     // 更新群聊列表的最新消息
-    updateGroupLastMessage(data.groupId, data.senderName, data.content, data.msgType || 1)
-    
+    updateGroupLastMessage(data.groupId, data.senderName, data.content, data.msgType || 1, t, true)
+
     // 如果是当前群聊的消息
     if (selectedGroup.value && data.groupId === selectedGroup.value.id) {
       groupMessages.value.push({
@@ -1474,7 +1545,7 @@ function setupWebSocket() {
         senderAvatar: data.senderAvatar,
         content: data.content,
         msgType: data.msgType || 1,
-        sendTime: new Date().toISOString()
+        sendTime: t
       })
       nextTick(() => scrollGroupToBottom())
     }
@@ -1485,7 +1556,7 @@ onMounted(async () => {
   await loadUsers()
   loadGroups()
   setupWebSocket()
-  
+
   // 检查是否有指定的群ID（从群聊通知跳转过来）
   const targetGroupId = route.query.groupId
   if (targetGroupId) {
