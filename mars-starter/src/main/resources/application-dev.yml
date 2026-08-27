@@ -72,6 +72,18 @@ mars:
   # false: 关闭演示模式，允许所有操作
   demo-mode: false
 
+# Warm-Flow 工作流配置
+warm-flow:
+  enabled: true
+  banner: true
+  ui: true
+  key_type: SnowId19
+  logic_delete: true
+  logic_delete_value: 2
+  logic_not_delete_value: 0
+  token-name: Authorization
+  data_source_type: mysql
+
 # 日志配置
 logging:
   level:

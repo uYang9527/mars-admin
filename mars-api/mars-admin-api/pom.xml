@@ -57,6 +57,10 @@
             <groupId>com.mars</groupId>
             <artifactId>mars-job</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mars</groupId>
+            <artifactId>mars-workflow</artifactId>
+        </dependency>
 
         <!-- WebSocket基础设施 -->
         <dependency>

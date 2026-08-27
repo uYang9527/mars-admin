@@ -30,6 +30,10 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
+        List<String> roleList = getRoleList(loginId, loginType);
+        if (roleList.contains("admin")) {
+            return userService.getPermissions(Long.parseLong(loginId.toString()));
+        }
         SaSession session = StpUtil.getSessionByLoginId(loginId);
         return session.get(CACHE_KEY_PERMISSIONS, () -> {
             log.debug("从数据库加载用户权限: userId={}", loginId);

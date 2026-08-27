@@ -5,6 +5,43 @@ import type { MenuInfo } from '@/api/auth'
 // 动态导入所有页面组件
 const modules = import.meta.glob('/src/views/**/*.vue')
 
+// 工作流页面显式映射（避免 glob 缓存导致新页面未注册）
+const workflowViewMap: Record<string, () => Promise<unknown>> = {
+  'workflow/definition/index': () => import('@/views/workflow/definition/index.vue'),
+  'workflow/designer/index': () => import('@/views/workflow/designer/index.vue'),
+  'workflow/task/todo': () => import('@/views/workflow/task/todo.vue'),
+  'workflow/task/done': () => import('@/views/workflow/task/done.vue'),
+  'workflow/monitor/index': () => import('@/views/workflow/monitor/index.vue')
+}
+
+function normalizeMenuPath(path: string) {
+  return path.startsWith('/') ? path.slice(1) : path
+}
+
+function isLayoutRouteExists(menuPath: string) {
+  const resolved = router.resolve('/' + normalizeMenuPath(menuPath))
+  return resolved.matched.some(record => record.name === 'Layout')
+    && resolved.matched.length > 1
+    && resolved.name !== 'NotFound'
+}
+
+function resolveMenuComponent(component: string) {
+  const componentName = component.startsWith('/') ? component.slice(1) : component
+  if (workflowViewMap[componentName]) {
+    return workflowViewMap[componentName]
+  }
+  const candidates = [
+    `/src/views/${componentName}.vue`,
+    `/src/views/${componentName}/index.vue`
+  ]
+  for (const candidate of candidates) {
+    if (modules[candidate]) {
+      return modules[candidate]
+    }
+  }
+  return null
+}
+
 // iframe 通用组件
 const IframeComponent = () => import('@/views/common/iframe.vue')
 
@@ -185,20 +222,52 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/tool/gen/index.vue'),
         meta: { title: '代码生成', icon: 'CodeSlashOutline' }
       },
+      // 流程管理
+      {
+        path: 'workflow/definition',
+        name: 'WorkflowDefinition',
+        component: () => import('@/views/workflow/definition/index.vue'),
+        meta: { title: '流程定义', icon: 'DocumentTextOutline' }
+      },
+      {
+        path: 'workflow/designer',
+        name: 'WorkflowDesigner',
+        component: () => import('@/views/workflow/designer/index.vue'),
+        meta: { title: '流程设计', icon: 'CreateOutline', activeMenu: '/workflow/definition' }
+      },
+      {
+        path: 'workflow/task/todo',
+        name: 'WorkflowTodo',
+        component: () => import('@/views/workflow/task/todo.vue'),
+        meta: { title: '我的待办', icon: 'CheckboxOutline' }
+      },
+      {
+        path: 'workflow/task/done',
+        name: 'WorkflowDone',
+        component: () => import('@/views/workflow/task/done.vue'),
+        meta: { title: '我的已办', icon: 'CheckmarkDoneOutline' }
+      },
+      {
+        path: 'workflow/monitor',
+        name: 'WorkflowMonitor',
+        component: () => import('@/views/workflow/monitor/index.vue'),
+        meta: { title: '流程监控', icon: 'AnalyticsOutline' }
+      },
       // 页签刷新中转路由
       {
         path: 'redirect/:path(.*)',
         name: 'Redirect',
         component: () => import('@/views/redirect/index.vue'),
         meta: { title: '重定向', requiresAuth: true }
+      },
+      // 未匹配路由（放在 Layout 内，保留侧边栏）
+      {
+        path: ':pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/views/error/404.vue'),
+        meta: { title: '404', requiresAuth: false }
       }
     ]
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: () => import('@/views/error/404.vue'),
-    meta: { title: '404', requiresAuth: false }
   }
 ]
 
@@ -221,13 +290,9 @@ export function addDynamicRoutes(menus: MenuInfo[]) {
       // 只处理菜单类型(type=2)，且有 path
       if (menu.type === 2 && menu.path) {
         const routeName = 'Dynamic-' + menu.id
-        
-        // 检查是否已经有同路径的静态路由
-        const existingRoutes = router.getRoutes()
-        const menuPath = menu.path.startsWith('/') ? menu.path.slice(1) : menu.path
-        const pathExists = existingRoutes.some(r => r.path === '/' + menuPath || r.path === menuPath)
-        
-        if (pathExists) {
+        const menuPath = normalizeMenuPath(menu.path)
+
+        if (isLayoutRouteExists(menuPath)) {
           console.log(`[动态路由] 跳过(已存在): ${menuPath}`)
           continue
         }
@@ -254,12 +319,9 @@ export function addDynamicRoutes(menus: MenuInfo[]) {
           addedRouteNames.add(routeName)
           console.log(`[动态路由] ✓ 添加外链成功: ${menuPath} -> ${menu.component}`)
         } else if (menu.component) {
-          // 普通菜单，加载组件
-          const componentName = menu.component.startsWith('/') ? menu.component.slice(1) : menu.component
-          const componentPath = `/src/views/${componentName}.vue`
-          const component = modules[componentPath]
-          
-          console.log(`[动态路由] 处理: path=${menuPath}, component=${componentPath}, 组件存在=${!!component}`)
+          const component = resolveMenuComponent(menu.component)
+
+          console.log(`[动态路由] 处理: path=${menuPath}, component=${menu.component}, 组件存在=${!!component}`)
           
           if (component) {
             router.addRoute('Layout', {
@@ -275,7 +337,7 @@ export function addDynamicRoutes(menus: MenuInfo[]) {
             addedRouteNames.add(routeName)
             console.log(`[动态路由] ✓ 添加成功: ${menuPath}`)
           } else {
-            console.warn(`[动态路由] ✗ 组件不存在: ${componentPath}`)
+            console.warn(`[动态路由] ✗ 组件不存在: ${menu.component}`)
           }
         }
       }

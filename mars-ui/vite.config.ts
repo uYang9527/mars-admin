@@ -29,6 +29,14 @@ export default defineConfig({
         target: 'ws://localhost:8080',
         ws: true,
         changeOrigin: true
+      },
+      '/warm-flow': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      },
+      '/warm-flow-ui': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
       }
     }
   }

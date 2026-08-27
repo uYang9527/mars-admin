@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mars.workflow.mapper.WorkflowMapper">
+
+    <select id="selectTodoPage" resultType="com.mars.workflow.vo.WorkflowTaskVo">
+        SELECT DISTINCT
+            t.id,
+            t.definition_id,
+            t.instance_id,
+            t.node_code,
+            t.node_name,
+            t.flow_status,
+            d.flow_code,
+            d.flow_name,
+            i.business_id,
+            t.create_by,
+            t.create_time,
+            t.update_time
+        FROM flow_task t
+        INNER JOIN flow_instance i ON t.instance_id = i.id AND i.del_flag = '0'
+        INNER JOIN flow_definition d ON t.definition_id = d.id AND d.del_flag = '0'
+        INNER JOIN flow_user u ON t.id = u.associated AND u.type = '1' AND u.del_flag = '0'
+        WHERE t.del_flag = '0'
+        <if test="permissions != null and permissions.size() > 0">
+            AND u.processed_by IN
+            <foreach collection="permissions" item="perm" open="(" separator="," close=")">
+                #{perm}
+            </foreach>
+        </if>
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+        ORDER BY t.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countTodo" resultType="long">
+        SELECT COUNT(DISTINCT t.id)
+        FROM flow_task t
+        INNER JOIN flow_instance i ON t.instance_id = i.id AND i.del_flag = '0'
+        INNER JOIN flow_definition d ON t.definition_id = d.id AND d.del_flag = '0'
+        INNER JOIN flow_user u ON t.id = u.associated AND u.type = '1' AND u.del_flag = '0'
+        WHERE t.del_flag = '0'
+        <if test="permissions != null and permissions.size() > 0">
+            AND u.processed_by IN
+            <foreach collection="permissions" item="perm" open="(" separator="," close=")">
+                #{perm}
+            </foreach>
+        </if>
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+    </select>
+
+    <select id="selectDonePage" resultType="com.mars.workflow.vo.WorkflowTaskVo">
+        SELECT
+            h.id,
+            h.definition_id,
+            h.instance_id,
+            h.node_code,
+            h.node_name,
+            h.flow_status,
+            d.flow_code,
+            d.flow_name,
+            i.business_id,
+            h.approver AS create_by,
+            h.create_time,
+            h.update_time
+        FROM flow_his_task h
+        INNER JOIN flow_instance i ON h.instance_id = i.id AND i.del_flag = '0'
+        INNER JOIN flow_definition d ON h.definition_id = d.id AND d.del_flag = '0'
+        WHERE h.del_flag = '0'
+        AND h.approver = #{approver}
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+        ORDER BY h.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countDone" resultType="long">
+        SELECT COUNT(1)
+        FROM flow_his_task h
+        INNER JOIN flow_definition d ON h.definition_id = d.id AND d.del_flag = '0'
+        WHERE h.del_flag = '0'
+        AND h.approver = #{approver}
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+    </select>
+
+    <select id="selectInstancePage" resultType="com.mars.workflow.vo.WorkflowInstanceVo">
+        SELECT
+            i.id,
+            i.definition_id,
+            i.business_id,
+            i.node_code,
+            i.node_name,
+            i.flow_status,
+            d.flow_code,
+            d.flow_name,
+            i.create_by,
+            i.create_time,
+            i.update_time
+        FROM flow_instance i
+        INNER JOIN flow_definition d ON i.definition_id = d.id AND d.del_flag = '0'
+        WHERE i.del_flag = '0'
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+        <if test="flowStatus != null and flowStatus != ''">
+            AND i.flow_status = #{flowStatus}
+        </if>
+        ORDER BY i.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countInstance" resultType="long">
+        SELECT COUNT(1)
+        FROM flow_instance i
+        INNER JOIN flow_definition d ON i.definition_id = d.id AND d.del_flag = '0'
+        WHERE i.del_flag = '0'
+        <if test="flowName != null and flowName != ''">
+            AND d.flow_name LIKE CONCAT('%', #{flowName}, '%')
+        </if>
+        <if test="flowStatus != null and flowStatus != ''">
+            AND i.flow_status = #{flowStatus}
+        </if>
+    </select>
+</mapper>

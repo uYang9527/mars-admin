@@ -53,14 +53,14 @@
           <div class="login-form">
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
-            <n-form ref="formRef" :model="formData" :rules="rules" size="large">
+            <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
               <n-form-item path="username" label="用户名">
-                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" :input-props="usernameInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="PersonOutline" /></template>
                 </n-input>
               </n-form-item>
               <n-form-item path="password" label="密码">
-                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" :input-props="passwordInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="LockClosedOutline" /></template>
                 </n-input>
               </n-form-item>
@@ -142,14 +142,14 @@
           <div class="login-form">
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
-            <n-form ref="formRef" :model="formData" :rules="rules" size="large">
+            <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
               <n-form-item path="username" label="用户名">
-                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" :input-props="usernameInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="PersonOutline" /></template>
                 </n-input>
               </n-form-item>
               <n-form-item path="password" label="密码">
-                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" :input-props="passwordInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="LockClosedOutline" /></template>
                 </n-input>
               </n-form-item>
@@ -231,14 +231,14 @@
           <div class="login-form">
             <h2 class="form-title">欢迎回来</h2>
             <p class="form-subtitle">请输入您的账号信息登录系统</p>
-            <n-form ref="formRef" :model="formData" :rules="rules" size="large">
+            <n-form ref="formRef" :model="formData" :rules="rules" size="large" autocomplete="off">
               <n-form-item path="username" label="用户名">
-                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.username" placeholder="请输入用户名" :maxlength="50" :input-props="usernameInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="PersonOutline" /></template>
                 </n-input>
               </n-form-item>
               <n-form-item path="password" label="密码">
-                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" @keyup.enter="handleLogin">
+                <n-input v-model:value="formData.password" type="password" placeholder="请输入密码" show-password-on="click" :maxlength="50" :input-props="passwordInputProps" @keyup.enter="handleLogin">
                   <template #prefix><n-icon :component="LockClosedOutline" /></template>
                 </n-input>
               </n-form-item>
@@ -544,6 +544,10 @@ const formData = reactive({
   code: '',
   rememberMe: true
 })
+
+// 禁用浏览器自动填充账号密码
+const usernameInputProps = { autocomplete: 'off', name: 'mars-login-account' }
+const passwordInputProps = { autocomplete: 'new-password', name: 'mars-login-password' }
 
 const rules: FormRules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -1211,7 +1215,7 @@ function adjustColor(hex: string, percent: number): string {
   left: 0;
   right: 0;
   text-align: center;
-  color: rgba(255, 255, 255, 0.5);
+  color: #9CA3AF;
   font-size: 13px;
   z-index: 1;
 }

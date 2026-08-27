@@ -45,10 +45,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
                             return requestedResource;
                         }
                         
-                        // 如果是 API 请求、WebSocket 请求或文件上传目录，不处理（交给 Controller）
-                        if (resourcePath.startsWith("api/") || 
-                            resourcePath.startsWith("ws/") ||
-                            resourcePath.startsWith("uploads/")) {
+                        // 如果是 API 请求、WebSocket、文件上传或 Warm-Flow 路径，不处理（交给 Controller）
+                        if (resourcePath.startsWith("api/")
+                                || resourcePath.startsWith("ws/")
+                                || resourcePath.startsWith("uploads/")
+                                || resourcePath.startsWith("warm-flow/")
+                                || resourcePath.startsWith("warm-flow-ui/")) {
                             return null;
                         }
                         

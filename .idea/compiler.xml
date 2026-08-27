@@ -11,6 +11,7 @@
         <module name="mars-crypto" />
         <module name="mars-wechat" />
         <module name="mars-web-api" />
+        <module name="mars-workflow" />
         <module name="mars-redis" />
         <module name="mars-websocket" />
         <module name="mars-mail" />
@@ -70,6 +71,7 @@
       <module name="mars-web-api" options="-parameters" />
       <module name="mars-websocket" options="-parameters" />
       <module name="mars-wechat" options="-parameters" />
+      <module name="mars-workflow" options="-parameters" />
     </option>
   </component>
 </project>

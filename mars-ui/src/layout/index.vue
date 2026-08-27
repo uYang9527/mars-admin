@@ -796,8 +796,8 @@ const menuOptions = computed<MenuOption[]>(() => {
   return [homeMenu, ...dynamicMenus]
 })
 
-// 当前激活菜单
-const activeMenu = computed(() => route.path)
+// 当前激活菜单（设计器等子页面可通过 meta.activeMenu 高亮父菜单）
+const activeMenu = computed(() => (route.meta.activeMenu as string) || route.path)
 
 // 面包屑
 const breadcrumbs = computed(() => {

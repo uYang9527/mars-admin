@@ -199,6 +199,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<String> getPermissions(Long userId) {
+        List<String> roleCodes = getRoleCodes(userId);
+        if (roleCodes != null && roleCodes.contains("admin")) {
+            return baseMapper.selectAllPermissions();
+        }
         return baseMapper.selectPermissionsByUserId(userId);
     }
 

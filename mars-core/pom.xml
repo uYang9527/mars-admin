@@ -21,5 +21,6 @@
         <module>mars-message</module>
         <module>mars-auth</module>
         <module>mars-biz</module>
+        <module>mars-workflow</module>
     </modules>
 </project>

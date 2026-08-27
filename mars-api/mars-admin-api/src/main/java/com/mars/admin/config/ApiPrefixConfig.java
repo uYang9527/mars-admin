@@ -15,6 +15,9 @@ public class ApiPrefixConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         // 给所有 @RestController 注解的控制器添加 /api 前缀
-        configurer.addPathPrefix("/api", c -> c.isAnnotationPresent(RestController.class));
+        // Warm-Flow 设计器使用固定路径 /warm-flow、/warm-flow-ui，不能加 /api 前缀
+        configurer.addPathPrefix("/api", c ->
+                c.isAnnotationPresent(RestController.class)
+                        && !c.getPackageName().startsWith("org.dromara.warm.flow"));
     }
 }
